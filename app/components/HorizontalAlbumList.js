@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
+import theme from '../utils/theme';
 
 const HorizontalAlbumList = ({ config, title, type, navigation }) => {
 	const [albums, setAlbums] = React.useState([]);
@@ -28,7 +29,8 @@ const HorizontalAlbumList = ({ config, title, type, navigation }) => {
 				<Text style={styles.subTitle}>{title}</Text>
 				<Button
 					title={'>'}
-					color={'white'}>
+					style={{ textDecoration: 'bold'}}
+					color={theme.secondaryTouch}>
 				</Button>
 			</View>
 			<ScrollView horizontal={true} style={styles.albumList}>
@@ -59,7 +61,7 @@ const styles = {
 		paddingLeft: 10,
 	},
 	subTitle: {
-		color: 'white',
+		color: theme.primaryLight,
 		fontSize: 25,
 		fontWeight: 'bold',
 		marginTop: 20,
@@ -78,14 +80,14 @@ const styles = {
 		marginBottom: 6,
 	},
 	titleAlbum: {
-		color: 'white',
+		color: theme.primaryLight,
 		fontSize: 14,
 		width: 160,
 		marginBottom: 3,
 		marginTop: 3,
 	},
 	artist: {
-		color: 'grey',
+		color: theme.secondaryLight,
 		fontSize: 14,
 		width: 160,
 	},

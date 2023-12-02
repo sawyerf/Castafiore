@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import theme from '../utils/theme';
 
 const PlayerBox = () => {
 	const insets = useSafeAreaInsets();
@@ -12,11 +13,9 @@ const PlayerBox = () => {
 			left: 0,
 
 			flexDirection: 'row',
-			backgroundColor: '#212121',
+			backgroundColor: theme.secondaryDark,
 			padding: 10,
-			marginBottom: insets.bottom,
-			marginLeft: insets.left + 10,
-			marginRight: insets.right + 10,
+			margin: 10,
 			borderRadius: 10,
 		}}>
 			<View style={styles.boxPlayerImage}>
@@ -28,14 +27,16 @@ const PlayerBox = () => {
 				/>
 			</View>
 			<View style={styles.boxPlayerText}>
-				<Text style={{ color: 'white', flex: 1 }} numberOfLines={1}>Song Title</Text>
-				<Text style={{ color: 'gray', flex: 1 }} numberOfLines={1}>Artist</Text>
+				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>Song Title</Text>
+				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>Artist</Text>
 			</View>
 			<View style={styles.boxPlayerButton}>
 				<Button
+					color={theme.primaryTouch}
 					title={'N'}>
 				</Button>
 				<Button
+					color={theme.primaryTouch}
 					title={'P'}>
 				</Button>
 			</View>
@@ -55,7 +56,6 @@ const styles = {
 	},
 	boxPlayerText: {
 		flex: 1,
-		color: 'white',
 	},
 	boxPlayerButton: {
 		flex: 0,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import md5 from 'md5';
+import theme from '../utils/theme';
 
 const SetServer = ({ navigation }) => {
 	const [serverUrl, setServerUrl] = React.useState('');
@@ -44,13 +45,13 @@ const SetServer = ({ navigation }) => {
 	}
 
 	return (
-		<View style={{ flex: 1, backgroundColor: '#0e0e0e', alignItems: 'center', justifyContent: 'center' }} >
+		<View style={{ flex: 1, backgroundColor: theme.primaryDark, alignItems: 'center', justifyContent: 'center' }} >
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.inputText}
 					placeholder="Server Url"
 					value={serverUrl}
-					placeholderTextColor="white"
+					placeholderTextColor={theme.primaryLight}
 					onChangeText={(serverUrl) => setServerUrl(serverUrl)}
 				/>
 			</View>
@@ -58,7 +59,7 @@ const SetServer = ({ navigation }) => {
 				<TextInput
 					style={styles.inputText}
 					placeholder="Username"
-					placeholderTextColor="white"
+					placeholderTextColor={theme.primaryLight}
 					value={username}
 					onChangeText={(username) => setUsername(username)}
 				/>
@@ -67,7 +68,7 @@ const SetServer = ({ navigation }) => {
 				<TextInput
 					style={styles.inputText}
 					placeholder="Password"
-					placeholderTextColor="white"
+					placeholderTextColor={theme.primaryLight}
 					secureTextEntry={true}
 					value={password}
 					onChangeText={(password) => setPassword(password)}
@@ -76,6 +77,7 @@ const SetServer = ({ navigation }) => {
 			<Button
 				style={styles.loginBtn}
 				title="Connect"
+				color={theme.primaryTouch}
 				onPress={connect}
 			/>
 		</View>
@@ -85,22 +87,22 @@ const SetServer = ({ navigation }) => {
 const styles = {
 	inputView: {
 		width: "80%",
-		backgroundColor: "#121212",
+		backgroundColor: theme.secondaryDark,
 		borderRadius: 25,
 		height: 50,
 		marginBottom: 20,
 		justifyContent: "center",
 		padding: 20,
-		borderColor: "white",
+		borderColor: theme.secondaryLight,
 		borderWidth: 1
 	},
 	inputText: {
 		height: 50,
-		color: "white"
+		color: theme.primaryLight
 	},
 	loginBtn: {
 		width: "80%",
-		backgroundColor: "#fb5b5a",
+		// backgroundColor: "#fb5b5a",
 		borderRadius: 25,
 		height: 50,
 		alignItems: "center",

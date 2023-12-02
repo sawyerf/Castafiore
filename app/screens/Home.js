@@ -1,10 +1,14 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Audio } from 'expo-av';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import theme from '../utils/theme';
+import { getConfig } from '../utils/config';
 import HorizontalAlbumList from '../components/HorizontalAlbumList';
 import PlayerBox from '../components/PlayerBox';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Audio } from 'expo-av';
 
 const Home = (navigation) => {
 	const insets = useSafeAreaInsets();
@@ -39,26 +43,26 @@ const Home = (navigation) => {
 			})
 	}
 
-	const getConfig = async () => {
-		const query = await AsyncStorage.getItem('config.query')
-		const configUrl = await AsyncStorage.getItem('config.url')
-		setConfig({ url: configUrl, query: query })
-	}
 
 	React.useEffect(() => {
 		getConfig()
+			.then((config) => {
+				setConfig(config)
+			})
 	}, [])
 
 	return (
 		<View style={{ flex: 1 }}>
-			<ScrollView vertical={true} style={{
-				flex: 1,
-				backgroundColor: '#0e0e0e',
-				paddingTop: insets.top,
-				paddingBottom: insets.bottom,
-				paddingLeft: insets.left,
-				paddingRight: insets.right,
-			}}>
+			<ScrollView vertical={true}
+				style={{
+					flex: 1,
+					backgroundColor: theme.primaryDark,
+					paddingTop: insets.top,
+					paddingBottom: insets.bottom,
+					paddingLeft: insets.left,
+					paddingRight: insets.right,
+				}}
+				contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}>
 				<View style={styles.boxRandom} onTouchEnd={clickRandomSong}>
 					<Text style={styles.textRandom}>Random Song from</Text>
 					<Text style={styles.textRandom}>My Music</Text>
@@ -74,7 +78,7 @@ const Home = (navigation) => {
 
 const styles = {
 	boxRandom: {
-		backgroundColor: 'green',
+		backgroundColor: theme.primaryTouch,
 		height: 100,
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -83,7 +87,7 @@ const styles = {
 	},
 	textRandom: {
 		fontSize: 20,
-		color: 'white',
+		color: theme.primaryLight,
 		fontWeight: 'bold',
 	}
 }

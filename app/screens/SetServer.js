@@ -1,11 +1,20 @@
 import React from 'react';
 import { Text, View, Button, TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import md5 from 'md5';
 
 const SetServer = ({ navigation }) => {
 	const [serverUrl, setServerUrl] = React.useState('');
 	const [username, setUsername] = React.useState('');
 	const [password, setPassword] = React.useState('');
 
+	React.useEffect(() => {
+		AsyncStorage.getItem('config.url').then((serverUrl) => {
+			if (serverUrl) {
+				navigation.navigate('Home')
+			}
+		})
+	})
 	const stringToHex = (str) => {
 		let hex = '';
 		for (let i = 0; i < str.length; i++) {
@@ -18,13 +27,15 @@ const SetServer = ({ navigation }) => {
 	};
 	const connect = async () => {
 		const res = await fetch(
-			serverUrl + '/rest/ping.view?u=' + username + '&p=enc:' + stringToHex(password) + '&v=1.16.1&c=sublol',
+			serverUrl + '/rest/ping.view?u=' + username + '&p=enc:' + stringToHex(password) + '&v=1.16.1&c=sublol&f=json',
 		)
 		console.log('res', res.status);
 		console.log('cookie', res.headers.get('set-cookie'));
-		console.log('body', await res.text())
+		console.log('body', await res.json())
 		if (res.status === 200) {
 			navigation.navigate('Home')
+			await AsyncStorage.setItem('config.url', serverUrl)
+			await AsyncStorage.setItem('config.query', 'u=' + username + '&t=' + md5(password + '123456') + '&s=' + '123456' + '&v=1.16.1&c=sublol')
 		}
 	}
 

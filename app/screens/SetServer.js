@@ -9,12 +9,15 @@ const SetServer = ({ navigation }) => {
 	const [password, setPassword] = React.useState('');
 
 	React.useEffect(() => {
-		AsyncStorage.getItem('config.url').then((serverUrl) => {
-			if (serverUrl) {
-				navigation.navigate('Home')
-			}
-		})
-	})
+		AsyncStorage.getItem('config.url')
+			.then((configUrl) => {
+				console.log('configUrl', configUrl)
+				setServerUrl(configUrl)
+				if (configUrl) {
+					navigation.navigate('Home')
+				}
+			})
+	}, [])
 	const stringToHex = (str) => {
 		let hex = '';
 		for (let i = 0; i < str.length; i++) {
@@ -26,8 +29,9 @@ const SetServer = ({ navigation }) => {
 		return hex;
 	};
 	const connect = async () => {
+		const query = 'u=' + username + '&t=' + md5(password + '123456') + '&s=' + '123456' + '&v=1.16.1&c=sublol&f=json'
 		const res = await fetch(
-			serverUrl + '/rest/ping.view?u=' + username + '&p=enc:' + stringToHex(password) + '&v=1.16.1&c=sublol&f=json',
+			serverUrl + '/rest/ping.view?' + query,
 		)
 		console.log('res', res.status);
 		console.log('cookie', res.headers.get('set-cookie'));
@@ -35,7 +39,7 @@ const SetServer = ({ navigation }) => {
 		if (res.status === 200) {
 			navigation.navigate('Home')
 			await AsyncStorage.setItem('config.url', serverUrl)
-			await AsyncStorage.setItem('config.query', 'u=' + username + '&t=' + md5(password + '123456') + '&s=' + '123456' + '&v=1.16.1&c=sublol')
+			await AsyncStorage.setItem('config.query', query)
 		}
 	}
 
@@ -45,6 +49,7 @@ const SetServer = ({ navigation }) => {
 				<TextInput
 					style={styles.inputText}
 					placeholder="Server Url"
+					value={serverUrl}
 					placeholderTextColor="white"
 					onChangeText={(serverUrl) => setServerUrl(serverUrl)}
 				/>
@@ -54,6 +59,7 @@ const SetServer = ({ navigation }) => {
 					style={styles.inputText}
 					placeholder="Username"
 					placeholderTextColor="white"
+					value={username}
 					onChangeText={(username) => setUsername(username)}
 				/>
 			</View>
@@ -63,6 +69,7 @@ const SetServer = ({ navigation }) => {
 					placeholder="Password"
 					placeholderTextColor="white"
 					secureTextEntry={true}
+					value={password}
 					onChangeText={(password) => setPassword(password)}
 				/>
 			</View>

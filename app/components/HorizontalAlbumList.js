@@ -5,18 +5,32 @@ const HorizontalAlbumList = ({ config, title, type, navigation }) => {
 	const [albums, setAlbums] = React.useState([]);
 
 	const getAlbumList = async () => {
-		const res = await fetch(config.url + '/rest/getAlbumList?f=json&type=' + type + '&' + config.query)
-		const data = await res.json()
-		setAlbums(data['subsonic-response'].albumList.album)
+		fetch(config.url + '/rest/getAlbumList?f=json&type=' + type + '&' + config.query)
+			.then((response) => response.json())
+			.then((json) => {
+				setAlbums(json['subsonic-response'].albumList.album)
+			})
 	}
 
 	React.useEffect(() => {
 		getAlbumList()
-	})
+	}, [])
 
 	return (
 		<View>
-			<Text style={styles.subTitle}>{title}</Text>
+			<View
+				style={{
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					paddingRight: 10,
+				}}>
+				<Text style={styles.subTitle}>{title}</Text>
+				<Button
+					title={'>'}
+					color={'white'}>
+				</Button>
+			</View>
 			<ScrollView horizontal={true} style={styles.albumList}>
 				{albums?.map((album) => {
 					return (
@@ -54,17 +68,13 @@ const styles = {
 	},
 	album: {
 		margin: 10,
-		// backgroundColor: '#1e1e1e',
 		width: 160,
 		height: 210,
 		alignItems: 'center',
-		// borderRadius: 10,
 	},
 	albumCover: {
 		width: 160,
 		height: 160,
-		// borderTopLeftRadius: 10,
-		// borderTopRightRadius: 10,
 		marginBottom: 6,
 	},
 	titleAlbum: {

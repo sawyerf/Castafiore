@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import theme from '../utils/theme';
+import { pauseSong } from '../utils/playSong';
 
 const PlayerBox = () => {
 	const insets = useSafeAreaInsets();
@@ -36,6 +37,7 @@ const PlayerBox = () => {
 					title={'N'}>
 				</Button>
 				<Button
+					onPress={pauseSong}
 					color={theme.primaryTouch}
 					title={'P'}>
 				</Button>

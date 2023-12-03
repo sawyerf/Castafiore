@@ -9,28 +9,11 @@ import theme from '../utils/theme';
 import { getConfig } from '../utils/config';
 import HorizontalAlbumList from '../components/HorizontalAlbumList';
 import PlayerBox from '../components/PlayerBox';
+import { playSong } from '../utils/playSong';
 
-const Home = (navigation) => {
+const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const [config, setConfig] = React.useState({});
-
-	const [sound, setSound] = React.useState();
-
-	const playSound = async (streamUrl) => {
-		// play sound with Expo AV
-		console.log(streamUrl)
-		if (sound) {
-			await sound.unloadAsync()
-			await sound.loadAsync({ uri: streamUrl })
-			sound.playAsync()
-		} else {
-			const sound = new Audio.Sound()
-			setSound(sound)
-			await sound.loadAsync({ uri: streamUrl })
-			sound.playAsync()
-		}
-
-	}
 
 	const clickRandomSong = async () => {
 		console.log('clickRandomSong')
@@ -39,10 +22,9 @@ const Home = (navigation) => {
 			.then((json) => {
 				console.log(json)
 				const song = json['subsonic-response'].randomSongs.song[0]
-				playSound(config.url + '/rest/download?id=' + song.id + '&' + config.query)
+				playSong(config.url + '/rest/download?id=' + song.id + '&' + config.query)
 			})
 	}
-
 
 	React.useEffect(() => {
 		getConfig()
@@ -67,9 +49,9 @@ const Home = (navigation) => {
 					<Text style={styles.textRandom}>Random Song from</Text>
 					<Text style={styles.textRandom}>My Music</Text>
 				</View>
-				{config?.url && <HorizontalAlbumList config={config} title={'Recently Added'} type={'newest'} navigation={navigation} />}
-				{config?.url && <HorizontalAlbumList config={config} title={'Most Played'} type={'frequent'} navigation={navigation} />}
-				{config?.url && <HorizontalAlbumList config={config} title={'Recently Played'} type={'recent'} navigation={navigation} />}
+				{config?.url && <HorizontalAlbumList config={config} title={'Recently Added'} type={'newest'} />}
+				{config?.url && <HorizontalAlbumList config={config} title={'Most Played'} type={'frequent'} />}
+				{config?.url && <HorizontalAlbumList config={config} title={'Recently Played'} type={'recent'} />}
 			</ScrollView>
 			<PlayerBox />
 		</View>

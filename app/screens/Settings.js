@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import md5 from 'md5';
 import theme from '../utils/theme';
 
-const SetServer = ({ navigation }) => {
+const Settings = ({ navigation }) => {
 	const [serverUrl, setServerUrl] = React.useState('');
 	const [username, setUsername] = React.useState('');
 	const [password, setPassword] = React.useState('');
@@ -19,16 +19,7 @@ const SetServer = ({ navigation }) => {
 				}
 			})
 	}, [])
-	const stringToHex = (str) => {
-		let hex = '';
-		for (let i = 0; i < str.length; i++) {
-			const charCode = str.charCodeAt(i);
-			const hexValue = charCode.toString(16);
 
-			hex += hexValue.padStart(2, '0');
-		}
-		return hex;
-	};
 	const connect = async () => {
 		const query = 'u=' + username + '&t=' + md5(password + '123456') + '&s=' + '123456' + '&v=1.16.1&c=sublol&f=json'
 		const res = await fetch(
@@ -111,4 +102,4 @@ const styles = {
 		marginBottom: 10
 	}
 }
-export default SetServer;
+export default Settings;

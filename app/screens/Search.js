@@ -25,7 +25,6 @@ const Search = () => {
 				contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}>
 				<Text style={{ color: theme.primaryLight, fontSize: 30, fontWeight: 'bold', marginBottom: 20, marginTop: 30, marginStart: 20 }}>Test</Text>
 			</ScrollView>
-			<PlayerBox />
 		</View>
 	)
 }

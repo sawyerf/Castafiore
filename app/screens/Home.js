@@ -9,10 +9,11 @@ import theme from '../utils/theme';
 import { getConfig } from '../utils/config';
 import HorizontalAlbumList from '../components/HorizontalAlbumList';
 import PlayerBox from '../components/PlayerBox';
-import { playSong } from '../utils/playSong';
+import { SoundContext, playSong } from '../utils/playSong';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
+	const sound = React.useContext(SoundContext)
 	const [config, setConfig] = React.useState({});
 
 	const clickRandomSong = async () => {
@@ -22,7 +23,7 @@ const Home = ({ navigation }) => {
 			.then((json) => {
 				console.log(json)
 				const song = json['subsonic-response'].randomSongs.song[0]
-				playSong(config.url + '/rest/download?id=' + song.id + '&' + config.query)
+				playSong(sound, config.url + '/rest/download?id=' + song.id + '&' + config.query)
 			})
 	}
 
@@ -53,7 +54,6 @@ const Home = ({ navigation }) => {
 				{config?.url && <HorizontalAlbumList config={config} title={'Most Played'} type={'frequent'} />}
 				{config?.url && <HorizontalAlbumList config={config} title={'Recently Played'} type={'recent'} />}
 			</ScrollView>
-			<PlayerBox />
 		</View>
 	);
 }

@@ -6,7 +6,6 @@ import PlayerBox from '../components/PlayerBox';
 import theme from '../utils/theme';
 import { getConfig } from '../utils/config';
 import SongsList from '../components/SongsList';
-import { playSong } from '../utils/playSong';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -21,11 +20,13 @@ const Album = ({ navigation, route }) => {
 	}, [])
 
 	React.useEffect(() => {
+		if (config.url) {
 		fetch(config.url + '/rest/getAlbum?id=' + route.params.album.id + '&' + config.query)
 			.then((response) => response.json())
 			.then((json) => {
 				setSongs(json['subsonic-response'].album.song)
 			})
+		}
 	}, [config])
 
 	return (
@@ -51,7 +52,6 @@ const Album = ({ navigation, route }) => {
 				<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 40, marginStart: 15 }}>{route.params.album.artist}</Text>
 				<SongsList config={config} songs={songs} />
 			</ScrollView>
-			<PlayerBox />
 		</View>
 	)
 }

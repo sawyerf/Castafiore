@@ -1,11 +1,13 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
-import { playSong } from '../utils/playSong';
+import { SoundContext, playSong } from '../utils/playSong';
 
 const SongsList = ({ config, songs }) => {
+	const sound = React.useContext(SoundContext)
+
 	return (
 		<View style={{
 			flexDirection: 'column',
@@ -14,8 +16,9 @@ const SongsList = ({ config, songs }) => {
 			paddingRight: 10,
 		}}>
 			{songs?.map((song) => {
+				// console.log(song)
 				return (
-					<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(config.url + '/rest/download?id=' + song.id + '&' + config.query)}>
+					<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, config.url + '/rest/download?id=' + song.id + '&' + config.query)}>
 						<Image
 							style={styles.albumCover}
 							source={{
@@ -26,6 +29,14 @@ const SongsList = ({ config, songs }) => {
 							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{song.title}</Text>
 							<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
 						</View>
+						<TouchableOpacity onPress={() => console.log('Pressed heart')} style={{ marginRight: 10, padding: 5 }}>
+							{song?.starred
+								? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
+								<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
+						</TouchableOpacity>
+						{/* <TouchableOpacity onPress={() => console.log('Pressed play')} style={{marginRight: 15}}>
+							<Icon name="play" size={23} color={theme.primaryTouch} />
+						</TouchableOpacity> */}
 					</TouchableOpacity>
 				)
 			})}

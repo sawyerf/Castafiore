@@ -6,6 +6,7 @@ import HorizontalAlbumList from '../components/HorizontalAlbumList';
 import PlayerBox from '../components/PlayerBox';
 import theme from '../utils/theme';
 import { getConfig } from '../utils/config';
+import SongsList from '../components/SongsList';
 
 
 const Playlists = () => {
@@ -67,24 +68,7 @@ const Playlists = () => {
 					<Text style={styles.subTitle}>❤️ Favorited</Text>
 					<Text style={{ color: theme.secondaryLight, fontWeight: 'bold' }}>{favorited?.length} ></Text>
 				</View>
-				{
-					favorited?.slice(0, 3).map((song) => {
-						return (
-							<View style={styles.favoritedSong} key={song.id}>
-								<Image
-									style={styles.albumCover}
-									source={{
-										uri: config.url + '/rest/getCoverArt?id=' + song.coverArt + '&size=100&' + config.query,
-									}}
-								/>
-								<View style={{ flex: 1, flexDirection: 'column' }}>
-									<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{song.title}</Text>
-									<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
-								</View>
-							</View>
-						)
-					})
-				}
+					<SongsList songs={favorited?.slice(0, 3)} config={config} />
 				<Text style={styles.subTitle}>❤️ Playlists</Text>
 				{
 					playlists.map((playlist) => {
@@ -106,7 +90,6 @@ const Playlists = () => {
 					})
 				}
 			</ScrollView>
-			<PlayerBox />
 		</View>
 	)
 }

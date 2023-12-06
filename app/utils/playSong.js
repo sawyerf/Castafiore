@@ -1,14 +1,18 @@
 import { Audio } from 'expo-av';
+import React from 'react';
 
 // TODO: Solve Unhandle Promise Rejection Warning
-const sound = new Audio.Sound()
+export const SoundContext = React.createContext()
 
-export const playSong = async (streamUrl) => {
+export const playSong = async (sound, streamUrl) => {
 	await sound.unloadAsync()
-	await sound.loadAsync({ uri: streamUrl })
+	await sound.loadAsync(
+		{ uri: streamUrl },
+		{ shouldPlay: true, staysActiveInBackground: true }
+	)
 	sound.playAsync()
 }
 
-export const pauseSong = async () => {
+export const pauseSong = async (sound) => {
 	await sound.pauseAsync()
 }

@@ -1,16 +1,27 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
+import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import theme from '../utils/theme';
-import { pauseSong } from '../utils/playSong';
+import { SoundContext } from '../utils/playSong';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const PlayerBox = () => {
 	const insets = useSafeAreaInsets();
+	const sound = React.useContext(SoundContext)
+	const [isPlaying, setIsPlaying] = React.useState(false)
+
+	// get play or pause icon
+	React.useEffect(() => {
+		sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+			// console.log(playbackStatus)
+			setIsPlaying(playbackStatus.isPlaying)
+		})
+	}, [])
 
 	return (
 		<View style={{
 			position: 'absolute',
-			bottom: 0,
+			bottom: insets.bottom + 53,
 			left: 0,
 
 			flexDirection: 'row',
@@ -32,15 +43,18 @@ const PlayerBox = () => {
 				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>Artist</Text>
 			</View>
 			<View style={styles.boxPlayerButton}>
-				<Button
-					color={theme.primaryTouch}
-					title={'N'}>
-				</Button>
-				<Button
-					onPress={pauseSong}
-					color={theme.primaryTouch}
-					title={'P'}>
-				</Button>
+				<TouchableOpacity
+					style={{ justifyContent: 'center', marginRight: 10 }}>
+					<Icon name="step-forward" size={23} color={theme.primaryTouch} />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => isPlaying ? sound.pauseAsync() : sound.playAsync()}
+					style={{ justifyContent: 'center', marginRight: 10 }}>
+					{
+						isPlaying
+							? <Icon name="pause" size={23} color={theme.primaryTouch} />
+							: <Icon name="play" size={23} color={theme.primaryTouch} />
+					}
+				</TouchableOpacity>
 			</View>
 		</View>
 	)

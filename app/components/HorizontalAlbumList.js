@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
+import HorizontalAlbums from './HorizontalAlbums';
 
 const HorizontalAlbumList = ({ config, title, type }) => {
 	const [albums, setAlbums] = React.useState();
@@ -12,7 +14,11 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 		fetch(config.url + '/rest/getAlbumList?f=json&type=' + type + '&' + config.query)
 			.then((response) => response.json())
 			.then((json) => {
-				setAlbums(json['subsonic-response'].albumList.album)
+				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
+					setAlbums(json['subsonic-response']?.albumList?.album)
+				} else {
+					console.log('getAlbumList:', json['subsonic-response']?.error)
+				}
 			})
 	}
 
@@ -28,33 +34,17 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 					justifyContent: 'space-between',
 					alignItems: 'center',
 					paddingRight: 10,
+					marginTop: 20,
+					marginBottom: 10,
 				}}>
 				<Text style={styles.subTitle}>{title}</Text>
-				<Button
-					title={'>'}
+				<TouchableOpacity
 					style={{ textDecoration: 'bold' }}
 					color={theme.secondaryTouch}>
-				</Button>
+					<Icon name="chevron-right" size={20} color={theme.secondaryTouch} />
+				</TouchableOpacity>
 			</View>
-			<ScrollView horizontal={true} style={styles.albumList}>
-				{albums?.map((album) => {
-					return (
-						<TouchableOpacity
-							style={styles.album}
-							key={album.id}
-							onPress={() => navigation.navigate('Album', { album: album })}>
-							<Image
-								style={styles.albumCover}
-								source={{
-									uri: config.url + '/rest/getCoverArt?id=' + album.coverArt + '&' + config.query,
-								}}
-							/>
-							<Text numberOfLines={1} style={styles.titleAlbum}>{album.name}</Text>
-							<Text numberOfLines={1} style={styles.artist}>{album.artist}</Text>
-						</TouchableOpacity >
-					)
-				})}
-			</ScrollView>
+			<HorizontalAlbums config={config} albums={albums} />
 		</View>
 	)
 }
@@ -68,8 +58,6 @@ const styles = {
 		color: theme.primaryLight,
 		fontSize: 25,
 		fontWeight: 'bold',
-		marginTop: 20,
-		marginBottom: 10,
 		marginLeft: 20,
 	},
 	album: {

@@ -58,7 +58,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
               style={{ flex: 1 }}
               key={index}
             >
-              <Icon name={options.icon} size={20} color={isFocused ? theme.primaryTouch : theme.primaryLight} style={{ alignSelf: 'center', marginBottom: 5, color: isFocused ? theme.primaryTouch : theme.primaryLight }} />
+              <Icon name={options.icon} size={20} color={isFocused ? theme.primaryTouch : theme.primaryLight} style={{ alignSelf: 'center', marginBottom: 5 }} />
               <Text style={{ color: isFocused ? theme.primaryTouch : theme.primaryLight, textAlign: 'center' }}>
                 {options.title}
               </Text>

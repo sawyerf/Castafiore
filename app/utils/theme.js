@@ -3,6 +3,6 @@ export default {
 	secondaryDark: '#1e1e1e',
 	primaryLight: '#fffae3',
 	secondaryLight: 'gray',
-	primaryTouch: '#a057f9',
-	secondaryTouch: '#55268e',
+	primaryTouch: '#cd1921',
+	secondaryTouch: '#891116',
 }

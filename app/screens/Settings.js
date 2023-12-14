@@ -12,7 +12,6 @@ const Settings = ({ navigation }) => {
 	React.useEffect(() => {
 		AsyncStorage.getItem('config.url')
 			.then((configUrl) => {
-				console.log('configUrl', configUrl)
 				setServerUrl(configUrl)
 				if (configUrl) {
 					navigation.navigate('Home')

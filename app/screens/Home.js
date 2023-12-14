@@ -17,11 +17,9 @@ const Home = ({ navigation }) => {
 	const [config, setConfig] = React.useState({});
 
 	const clickRandomSong = async () => {
-		console.log('clickRandomSong')
 		fetch(config.url + '/rest/getRandomSongs?' + config.query)
 			.then((response) => response.json())
 			.then((json) => {
-				console.log(json)
 				const song = json['subsonic-response'].randomSongs.song[0]
 				playSong(sound, config.url + '/rest/download?id=' + song.id + '&' + config.query)
 			})

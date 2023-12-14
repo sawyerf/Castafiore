@@ -7,7 +7,7 @@ import theme from '../utils/theme';
 import { getConfig } from '../utils/config';
 import SongsList from '../components/SongsList';
 
-const Album = ({ navigation, route }) => {
+const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
 	const [config, setConfig] = React.useState({});
 	const [songs, setSongs] = React.useState([]);
@@ -21,13 +21,13 @@ const Album = ({ navigation, route }) => {
 
 	React.useEffect(() => {
 		if (config.url) {
-			fetch(config.url + '/rest/getAlbum?id=' + route.params.album.id + '&' + config.query)
+			fetch(config.url + '/rest/getPlaylist?id=' + route.params.playlist.id + '&' + config.query)
 				.then((response) => response.json())
 				.then((json) => {
 					if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-						setSongs(json['subsonic-response'].album?.song)
+						setSongs(json['subsonic-response'].playlist?.entry)
 					} else {
-						console.log('getAlbum:', json['subsonic-response']?.error)
+						console.log('getPlaylist:', json['subsonic-response']?.error)
 					}
 				})
 		}
@@ -47,13 +47,13 @@ const Album = ({ navigation, route }) => {
 				}}
 				contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}>
 				{config.url && <Image
-					style={styles.albumCover}
+					style={styles.playlistCover}
 					source={{
-						uri: config.url + '/rest/getCoverArt?id=' + route.params.album.coverArt + '&' + config.query,
+						uri: config.url + '/rest/getCoverArt?id=' + route.params.playlist.coverArt + '&' + config.query,
 					}}
 				/>}
-				<Text style={{ color: theme.primaryLight, fontSize: 30, fontWeight: 'bold', margin: 15, marginBottom: 0 }}>{route.params.album.name}</Text>
-				<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 40, marginStart: 15 }}>{route.params.album.artist}</Text>
+				<Text style={{ color: theme.primaryLight, fontSize: 30, fontWeight: 'bold', margin: 15, marginBottom: 0 }}>{route.params.playlist.name}</Text>
+				<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 40, marginStart: 15 }}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>
 				<SongsList config={config} songs={songs} />
 			</ScrollView>
 		</View>
@@ -61,11 +61,11 @@ const Album = ({ navigation, route }) => {
 }
 
 const styles = {
-	albumCover: {
+	playlistCover: {
 		flex: 1,
 		width: "100%",
 		height: 300,
 	},
 }
 
-export default Album;
+export default Playlist;

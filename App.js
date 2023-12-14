@@ -15,6 +15,7 @@ import Album from './app/screens/Album';
 import { SoundContext } from './app/utils/playSong';
 import PlayerBox from './app/components/PlayerBox';
 import TabBar from './app/components/TabBar';
+import Playlist from './app/screens/Playlist';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -37,6 +38,41 @@ const HomeStack = () => {
   )
 }
 
+const SearchStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.secondaryDark,
+          borderTopColor: theme.secondaryDark,
+          tabBarActiveTintColor: theme.primaryTouch,
+        }
+      }}
+    >
+      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Album" component={Album} />
+    </Stack.Navigator>
+  )
+}
+const PlaylistsStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.secondaryDark,
+          borderTopColor: theme.secondaryDark,
+          tabBarActiveTintColor: theme.primaryTouch,
+        }
+      }}
+    >
+      <Stack.Screen name="Playlists" component={Playlists} />
+      <Stack.Screen name="Playlist" component={Playlist} />
+    </Stack.Navigator>
+  )
+}
+
 const App = () => {
   return (
     <SoundContext.Provider value={new Audio.Sound()}>
@@ -54,9 +90,9 @@ const App = () => {
               }}
             >
               <Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
-              <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} />
-              <Tab.Screen name="Search" options={{ title: 'Search', icon: "search" }} component={Search} />
-              <Tab.Screen name="Playlists" options={{ title: 'Playlists', icon: "book" }} component={Playlists} />
+              {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
+              <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
+              <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
               <Tab.Screen name="Settings" options={{ title: 'Settings', icon: "gear" }} component={Settings} />
             </Tab.Navigator>
           </NavigationContainer>

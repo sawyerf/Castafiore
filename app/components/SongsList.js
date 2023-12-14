@@ -16,7 +16,6 @@ const SongsList = ({ config, songs }) => {
 			paddingRight: 10,
 		}}>
 			{songs?.map((song) => {
-				// console.log(song)
 				return (
 					<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, config.url + '/rest/download?id=' + song.id + '&' + config.query)}>
 						<Image
@@ -29,14 +28,11 @@ const SongsList = ({ config, songs }) => {
 							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{song.title}</Text>
 							<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
 						</View>
-						<TouchableOpacity onPress={() => console.log('Pressed heart')} style={{ marginRight: 10, padding: 5 }}>
+						<TouchableOpacity onPress={() => console.log('Pressed heart')} style={{ marginRight: 10, padding: 5, paddingStart: 10 }}>
 							{song?.starred
 								? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
 								<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
 						</TouchableOpacity>
-						{/* <TouchableOpacity onPress={() => console.log('Pressed play')} style={{marginRight: 15}}>
-							<Icon name="play" size={23} color={theme.primaryTouch} />
-						</TouchableOpacity> */}
 					</TouchableOpacity>
 				)
 			})}

@@ -2,11 +2,13 @@ import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SoundContext, playSong } from '../utils/playSong';
+import { useNavigation } from '@react-navigation/native';
 
 import theme from '../utils/theme';
 
 const HorizontalArtists = ({ config, artists }) => {
 	const sound = React.useContext(SoundContext)
+	const navigation = useNavigation();
 
 	return (
 		<ScrollView horizontal={true} style={{
@@ -17,11 +19,11 @@ const HorizontalArtists = ({ config, artists }) => {
 		}}>
 			{artists?.map((artist) => {
 				return (
-					<TouchableOpacity style={styles.artist} key={artist.id} >
+					<TouchableOpacity style={styles.artist} key={artist.id} onPress={() => navigation.navigate('Artist', {artist})} >
 						<Image
 							style={styles.artistCover}
 							source={{
-								uri: config.url + '/rest/getCoverArt?id=' + artist.coverArt + '&size=300&' + config.query,
+								uri: `${config.url}/rest/getCoverArt?id=${artist.coverArt}&size=300&${config.query}`,
 							}}
 						/>
 						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2, width: 100, textAlign: 'center' }}>{artist.name}</Text>

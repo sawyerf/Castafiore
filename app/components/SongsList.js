@@ -5,9 +5,44 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../utils/theme';
 import { SoundContext, playSong } from '../utils/playSong';
 
-const SongsList = ({ config, songs }) => {
+const SongItem = ({ song, config }) => {
+	const [star, setStar] = React.useState(song?.starred ? true : false)
 	const sound = React.useContext(SoundContext)
 
+	const onPressFavorited = () => {
+		fetch(`${config.url}/rest/${star ? 'unstar' : 'star'}?id=${song.id}&${config.query}`)
+			.then((response) => response.json())
+			.then((json) => {
+				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
+					setStar(!star)
+				} else {
+					console.log('star:', json['subsonic-response']?.error)
+				}
+			})
+	}
+
+	return (
+		<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, `${config.url}/rest/download?id=${song.id}&${config.query}`)}>
+			<Image
+				style={styles.albumCover}
+				source={{
+					uri: config?.url ? `${config.url}/rest/getCoverArt?id=${song.coverArt}&size=100&${config.query}` : null,
+				}}
+			/>
+			<View style={{ flex: 1, flexDirection: 'column' }}>
+				<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{song.title}</Text>
+				<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
+			</View>
+			<TouchableOpacity onPress={() => onPressFavorited()} style={{ marginRight: 10, padding: 5, paddingStart: 10 }}>
+				{star
+					? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
+					<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
+			</TouchableOpacity>
+		</TouchableOpacity>
+	)
+}
+
+const SongsList = ({ config, songs }) => {
 	return (
 		<View style={{
 			flexDirection: 'column',
@@ -15,27 +50,7 @@ const SongsList = ({ config, songs }) => {
 			alignItems: 'center',
 			paddingRight: 10,
 		}}>
-			{songs?.map((song) => {
-				return (
-					<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, config.url + '/rest/download?id=' + song.id + '&' + config.query)}>
-						<Image
-							style={styles.albumCover}
-							source={{
-								uri: config.url + '/rest/getCoverArt?id=' + song.coverArt + '&size=100&' + config.query,
-							}}
-						/>
-						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{song.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
-						</View>
-						<TouchableOpacity onPress={() => console.log('Pressed heart')} style={{ marginRight: 10, padding: 5, paddingStart: 10 }}>
-							{song?.starred
-								? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
-								<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
-						</TouchableOpacity>
-					</TouchableOpacity>
-				)
-			})}
+			{songs?.map((song, index) => (<SongItem song={song} key={index} config={config} />))}
 		</View>
 	)
 }

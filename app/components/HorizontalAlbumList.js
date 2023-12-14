@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
+import mainStyles from '../styles/main';
 import HorizontalAlbums from './HorizontalAlbums';
 
 const HorizontalAlbumList = ({ config, title, type }) => {
@@ -11,7 +12,7 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 	const navigation = useNavigation();
 
 	const getAlbumList = async () => {
-		fetch(config.url + '/rest/getAlbumList?f=json&type=' + type + '&' + config.query)
+		fetch(`${config.url}/rest/getAlbumList?f=json&type=${type}&${config.query}`)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
@@ -37,7 +38,7 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 					marginTop: 20,
 					marginBottom: 10,
 				}}>
-				<Text style={styles.subTitle}>{title}</Text>
+				<Text style={{...mainStyles.subTitle, ...mainStyles.stdVerticalMargin}}>{title}</Text>
 				<TouchableOpacity
 					style={{ textDecoration: 'bold' }}
 					color={theme.secondaryTouch}>
@@ -53,12 +54,6 @@ const styles = {
 	albumList: {
 		width: '100%',
 		paddingLeft: 10,
-	},
-	subTitle: {
-		color: theme.primaryLight,
-		fontSize: 25,
-		fontWeight: 'bold',
-		marginLeft: 20,
 	},
 	album: {
 		margin: 10,

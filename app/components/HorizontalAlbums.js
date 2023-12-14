@@ -19,7 +19,7 @@ const HorizontalAlbums = ({ config, albums }) => {
 						<Image
 							style={styles.albumCover}
 							source={{
-								uri: config.url + '/rest/getCoverArt?id=' + album.coverArt + '&' + config.query,
+								uri: `${config.url}/rest/getCoverArt?id=${album.coverArt}&${config.query}`,
 							}}
 						/>
 						<Text numberOfLines={1} style={styles.titleAlbum}>{album.name}</Text>
@@ -35,14 +35,6 @@ const styles = {
 	albumList: {
 		width: '100%',
 		paddingLeft: 10,
-	},
-	subTitle: {
-		color: theme.primaryLight,
-		fontSize: 25,
-		fontWeight: 'bold',
-		marginTop: 20,
-		marginBottom: 10,
-		marginLeft: 20,
 	},
 	album: {
 		margin: 10,

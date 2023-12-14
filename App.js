@@ -5,17 +5,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Audio } from 'expo-av';
 import React from 'react';
 
-import Settings from './app/screens/Settings';
-import Home from './app/screens/Home';
-import Playlists from './app/screens/Playlists';
-import theme from './app/utils/theme';
-import Explorer from './app/screens/Explorer';
-import Search from './app/screens/Search';
+import Home from './app/screens/tabs/Home';
+import Playlists from './app/screens/tabs/Playlists';
+import Search from './app/screens/tabs/Search';
+import Settings from './app/screens/tabs/Settings';
+
 import Album from './app/screens/Album';
-import { SoundContext } from './app/utils/playSong';
-import PlayerBox from './app/components/PlayerBox';
-import TabBar from './app/components/TabBar';
+import Artist from './app/screens/Artist';
+import Favorited from './app/screens/Favorited';
 import Playlist from './app/screens/Playlist';
+
+import TabBar from './app/components/TabBar';
+
+import theme from './app/utils/theme';
+import { SoundContext } from './app/utils/playSong';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,6 +37,7 @@ const HomeStack = () => {
     >
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Album" component={Album} />
+      <Stack.Screen name="Artist" component={Artist} />
     </Stack.Navigator>
   )
 }
@@ -52,6 +56,7 @@ const SearchStack = () => {
     >
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Album" component={Album} />
+      <Stack.Screen name="Artist" component={Artist} />
     </Stack.Navigator>
   )
 }
@@ -69,6 +74,7 @@ const PlaylistsStack = () => {
     >
       <Stack.Screen name="Playlists" component={Playlists} />
       <Stack.Screen name="Playlist" component={Playlist} />
+      <Stack.Screen name="Favorited" component={Favorited} />
     </Stack.Navigator>
   )
 }

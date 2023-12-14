@@ -2,10 +2,11 @@ import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import PlayerBox from '../components/PlayerBox';
 import theme from '../utils/theme';
 import { getConfig } from '../utils/config';
 import SongsList from '../components/SongsList';
+import mainStyles from '../styles/main';
+import presStyles from '../styles/pres';
 
 const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -21,7 +22,7 @@ const Playlist = ({ navigation, route }) => {
 
 	React.useEffect(() => {
 		if (config.url) {
-			fetch(config.url + '/rest/getPlaylist?id=' + route.params.playlist.id + '&' + config.query)
+			fetch(`${config.url}/rest/getPlaylist?id=${route.params.playlist.id}&${config.query}`)
 				.then((response) => response.json())
 				.then((json) => {
 					if (json['subsonic-response'] && !json['subsonic-response']?.error) {
@@ -31,41 +32,30 @@ const Playlist = ({ navigation, route }) => {
 					}
 				})
 		}
-	}, [config])
+	}, [config, route.params.playlist])
 
 	return (
-		<View style={{ flex: 1 }}>
-			<ScrollView
-				vertical={true}
-				style={{
-					flex: 1,
-					backgroundColor: theme.primaryDark,
-					// paddingTop: insets.top,
-					paddingBottom: insets.bottom,
-					paddingLeft: insets.left,
-					paddingRight: insets.right,
+		<ScrollView
+			vertical={true}
+			style={{
+				...mainStyles.mainContainer(insets),
+				paddingTop: 0,
+			}}
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			{config.url && <Image
+				style={presStyles.cover}
+				source={{
+					uri: `${config.url}/rest/getCoverArt?id=${route.params.playlist.coverArt}&${config.query}`,
 				}}
-				contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}>
-				{config.url && <Image
-					style={styles.playlistCover}
-					source={{
-						uri: config.url + '/rest/getCoverArt?id=' + route.params.playlist.coverArt + '&' + config.query,
-					}}
-				/>}
-				<Text style={{ color: theme.primaryLight, fontSize: 30, fontWeight: 'bold', margin: 15, marginBottom: 0 }}>{route.params.playlist.name}</Text>
-				<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 40, marginStart: 15 }}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>
-				<SongsList config={config} songs={songs} />
-			</ScrollView>
-		</View>
+			/>}
+			<Text style={presStyles.title}>{route.params.playlist.name}</Text>
+			<Text style={presStyles.subTitle}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>
+			<SongsList config={config} songs={songs} />
+		</ScrollView>
 	)
 }
 
 const styles = {
-	playlistCover: {
-		flex: 1,
-		width: "100%",
-		height: 300,
-	},
 }
 
 export default Playlist;

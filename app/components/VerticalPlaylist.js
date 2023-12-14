@@ -18,7 +18,7 @@ const VerticalPlaylist = ({ config, playlists }) => {
 							<Image
 								style={styles.albumCover}
 								source={{
-									uri: config.url + '/rest/getCoverArt?id=' + playlist.coverArt + '&size=100&' + config.query,
+									uri: `${config.url}/rest/getCoverArt?id=${playlist.coverArt}&size=100&${config.query}`,
 								}}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>

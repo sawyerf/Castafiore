@@ -7,7 +7,6 @@ import { SoundContext, playSong } from '../utils/playSong';
 
 const SongItem = ({ song, config }) => {
 	const [star, setStar] = React.useState(song?.starred ? true : false)
-	const sound = React.useContext(SoundContext)
 
 	const onPressFavorited = () => {
 		fetch(`${config.url}/rest/${star ? 'unstar' : 'star'}?id=${song.id}&${config.query}`)
@@ -22,7 +21,7 @@ const SongItem = ({ song, config }) => {
 	}
 
 	return (
-		<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, `${config.url}/rest/download?id=${song.id}&${config.query}`)}>
+		<>
 			<Image
 				style={styles.albumCover}
 				source={{
@@ -38,11 +37,13 @@ const SongItem = ({ song, config }) => {
 					? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
 					<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
 			</TouchableOpacity>
-		</TouchableOpacity>
+		</>
 	)
 }
 
 const SongsList = ({ config, songs }) => {
+	const sound = React.useContext(SoundContext)
+
 	return (
 		<View style={{
 			flexDirection: 'column',
@@ -50,7 +51,11 @@ const SongsList = ({ config, songs }) => {
 			alignItems: 'center',
 			paddingRight: 10,
 		}}>
-			{songs?.map((song, index) => (<SongItem song={song} key={index} config={config} />))}
+			{songs?.map((song, index) => (
+				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, songs, index)}>
+					<SongItem song={song} index={index} key={index} config={config} />
+				</TouchableOpacity>
+			))}
 		</View>
 	)
 }

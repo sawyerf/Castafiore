@@ -19,7 +19,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
         backgroundColor: theme.secondaryDark,
         borderTopColor: theme.secondaryDark,
         borderTopWidth: 1,
-        paddingBottom: insets.bottom,
+        paddingBottom: insets.bottom ? insets.bottom : 10,
         paddingTop: 10,
         paddingLeft: insets.left,
         paddingRight: insets.right,

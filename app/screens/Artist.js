@@ -57,7 +57,7 @@ const Artist = ({ navigation, route }) => {
 			.then((json) => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
 					const songs = json['subsonic-response'].similarSongs.song
-					playSong(sound, `${config.url}/rest/download?id=${songs[0].id}&${config.query}`)
+					playSong(sound, songs, 0)
 				} else {
 					console.log('getSimilarSongs:', json['subsonic-response']?.error)
 				}

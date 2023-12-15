@@ -1,27 +1,36 @@
 import React from 'react';
 import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import theme from '../utils/theme';
-import { SoundContext } from '../utils/playSong';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { SoundContext, nextSong } from '../utils/playSong';
+import { getConfig } from '../utils/config';
+import theme from '../utils/theme';
 
 const PlayerBox = () => {
 	const insets = useSafeAreaInsets();
 	const sound = React.useContext(SoundContext)
 	const [isPlaying, setIsPlaying] = React.useState(false)
+	const [config, setConfig] = React.useState({});
 
 	// get play or pause icon
 	React.useEffect(() => {
+		getConfig()
+			.then((config) => {
+				setConfig(config)
+			})
 		sound.setOnPlaybackStatusUpdate((playbackStatus) => {
-			// console.log(playbackStatus)
 			setIsPlaying(playbackStatus.isPlaying)
+			if (playbackStatus.didJustFinish) {
+				nextSong(sound)
+			}
 		})
 	}, [])
 
 	return (
 		<View style={{
 			position: 'absolute',
-			bottom: insets.bottom + 53,
+			bottom: (insets.bottom ? insets.bottom : 10) + 53,
 			left: 0,
 
 			flexDirection: 'row',
@@ -30,20 +39,22 @@ const PlayerBox = () => {
 			margin: 10,
 			borderRadius: 10,
 		}}>
-			<View style={styles.boxPlayerImage}>
+			<View style={{ ...styles.boxPlayerImage, backgroundColor: theme.secondaryTouch }}>
+				<Icon name="music" size={23} color={theme.primaryLight} style={{ position: 'absolute', top: 9, left: 9 }} />
 				<Image
 					style={styles.boxPlayerImage}
 					source={{
-						uri: 'https://i.scdn.co/image/ab67616d0000b2736d59695e16cdf5e16d423e63',
+						uri: config?.url ? `${config.url}/rest/getCoverArt?id=${sound?.songInfo?.coverArt}&size=100&${config.query}` : null,
 					}}
 				/>
 			</View>
 			<View style={styles.boxPlayerText}>
-				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>Song Title</Text>
-				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>Artist</Text>
+				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.title ? sound.songInfo.title : 'Song title'}</Text>
+				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.artist ? sound.songInfo.artist : 'Artist'}</Text>
 			</View>
 			<View style={styles.boxPlayerButton}>
 				<TouchableOpacity
+					onPress={() => nextSong(sound)}
 					style={{ justifyContent: 'center', marginRight: 10 }}>
 					<Icon name="step-forward" size={23} color={theme.primaryTouch} />
 				</TouchableOpacity>

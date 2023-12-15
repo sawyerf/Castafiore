@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { Text, View, Button, TextInput, Image, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -68,7 +68,7 @@ const Home = ({ navigation }) => {
 	return (
 		<ScrollView vertical={true}
 			style={mainStyles.mainContainer(insets)}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} />}
+			refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
 				<TouchableOpacity style={styles.boxRandom} onPress={clickRandomSong}>

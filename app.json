@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sub",
-    "slug": "sub",
+    "name": "Castafiore",
+    "slug": "Castafiore",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,15 +23,15 @@
       }
     },
     "android": {
-      "package": "com.sawyerf.sub",
+      "package": "com.sawyerf.castafiore",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "shortName": "sub",
-      "favicon": "./assets/favicon.png"
+      "shortName": "Castafiore",
+      "favicon": "./assets/icon.png"
     }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -72,7 +72,7 @@ const Playlists = ({ navigation }) => {
 				...mainStyles.mainContainer(insets),
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} />}
+			refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<Text style={mainStyles.mainTitle}>Your Playlists</Text>
 			<TouchableOpacity style={styles.subTitleParent} onPress={() => navigation.navigate('Favorited', { favorited })}>

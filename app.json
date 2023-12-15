@@ -30,6 +30,7 @@
       }
     },
     "web": {
+      "shortName": "sub",
       "favicon": "./assets/favicon.png"
     }
   }

@@ -52,7 +52,7 @@ const Album = ({ navigation, route }) => {
 			<TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}>
 				<Text style={presStyles.subTitle}>{route.params.album.artist}</Text>
 			</TouchableOpacity>
-			<SongsList config={config} songs={songs} />
+			<SongsList config={config} songs={songs} isIndex={true} />
 		</ScrollView>
 	)
 }

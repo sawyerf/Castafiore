@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../utils/theme';
 import { SoundContext, playSong } from '../utils/playSong';
 
-const SongItem = ({ song, config }) => {
+const SongItem = ({ song, isIndex, config }) => {
 	const [star, setStar] = React.useState(song?.starred ? true : false)
 
 	const onPressFavorited = () => {
@@ -29,7 +29,7 @@ const SongItem = ({ song, config }) => {
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
-				<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{song.title}</Text>
+				<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{isIndex ? `${song.track}. ` : null}{song.title}</Text>
 				<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
 			</View>
 			<TouchableOpacity onPress={() => onPressFavorited()} style={{ marginRight: 10, padding: 5, paddingStart: 10 }}>
@@ -41,19 +41,17 @@ const SongItem = ({ song, config }) => {
 	)
 }
 
-const SongsList = ({ config, songs }) => {
+const SongsList = ({ config, songs, isIndex = false }) => {
 	const sound = React.useContext(SoundContext)
 
 	return (
 		<View style={{
 			flexDirection: 'column',
-			justifyContent: 'space-between',
-			alignItems: 'center',
 			paddingRight: 10,
 		}}>
 			{songs?.map((song, index) => (
 				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, songs, index)}>
-					<SongItem song={song} index={index} key={index} config={config} />
+					<SongItem song={song} index={index} key={index} config={config} isIndex={isIndex} />
 				</TouchableOpacity>
 			))}
 		</View>

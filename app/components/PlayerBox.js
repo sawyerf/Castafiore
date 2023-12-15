@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -32,6 +32,7 @@ const PlayerBox = () => {
 			position: 'absolute',
 			bottom: (insets.bottom ? insets.bottom : 10) + 53,
 			left: 0,
+			right: 0,
 
 			flexDirection: 'row',
 			backgroundColor: theme.secondaryDark,
@@ -39,7 +40,7 @@ const PlayerBox = () => {
 			margin: 10,
 			borderRadius: 10,
 		}}>
-			<View style={{ ...styles.boxPlayerImage, backgroundColor: theme.secondaryTouch }}>
+			<View style={{ ...styles.boxPlayerImage, backgroundColor: theme.secondaryTouch, flex: Platform.OS === 'android' ? 0 : 'initial' }}>
 				<Icon name="music" size={23} color={theme.primaryLight} style={{ position: 'absolute', top: 9, left: 9 }} />
 				<Image
 					style={styles.boxPlayerImage}
@@ -72,10 +73,7 @@ const PlayerBox = () => {
 }
 
 const styles = {
-	boxPlayer: {
-	},
 	boxPlayerImage: {
-		flex: 0,
 		height: 40,
 		width: 40,
 		marginRight: 10,
@@ -85,7 +83,7 @@ const styles = {
 		flex: 1,
 	},
 	boxPlayerButton: {
-		flex: 0,
+		flex: Platform.OS === 'android' ? 0 : 'initial',
 		flexDirection: 'row',
 	},
 

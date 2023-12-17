@@ -1,7 +1,8 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/sawyerf/Castafiore/assets/22857002/ad3f2f95-92d8-4b09-83fe-d0d9a4dd61e1#gh-dark-mode-only">
-  <img alt="Shows an illustrated sun in light color mode and a moon with stars in dark color mode." src="https://github.com/sawyerf/Castafiore/assets/22857002/a6969f24-415a-497a-99ef-f2c9da432d27#gh-light-mode-only">
+  <img alt="logo" src="https://github.com/sawyerf/Castafiore/assets/22857002/a6969f24-415a-497a-99ef-f2c9da432d27#gh-light-mode-only">
 </picture>
+
 
 <div align="center">
 <img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/9427318a-79ad-4b60-876f-275df971d287" />

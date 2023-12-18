@@ -3,9 +3,11 @@ import { Text, View, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import md5 from 'md5';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import pkg from '../../../package.json';
 
 import theme from '../../utils/theme';
 import mainStyles from '../../styles/main';
+import { ConfigContext, SetConfigContext } from '../../utils/config';
 
 const Settings = ({ navigation }) => {
 	const [serverUrl, setServerUrl] = React.useState('');
@@ -13,15 +15,13 @@ const Settings = ({ navigation }) => {
 	const [password, setPassword] = React.useState('');
 	const [error, setError] = React.useState('');
 	const insets = useSafeAreaInsets();
+	const config = React.useContext(ConfigContext)
+	const setConfig = React.useContext(SetConfigContext)
 
 	React.useEffect(() => {
-		AsyncStorage.getItem('config.url')
-			.then((configUrl) => {
-				if (configUrl?.length) {
-					setServerUrl(configUrl)
-				}
-			})
-	}, [])
+		if (config?.url?.length) setServerUrl(config.url)
+		if (config?.username?.length) setUsername(config.username)
+	}, [config])
 
 	const connect = () => {
 		const url = serverUrl.replace(/\/$/, '')
@@ -35,6 +35,8 @@ const Settings = ({ navigation }) => {
 					AsyncStorage.setItem('config.url', url)
 					AsyncStorage.setItem('config.user', username)
 					AsyncStorage.setItem('config.query', query)
+					// config.setConfig({ url, username, query })
+					setConfig({ url, username, query })
 					navigation.navigate('Home')
 				} else if (json && json['subsonic-response']?.error) {
 					console.log('error message', json['subsonic-response'].error)
@@ -50,6 +52,7 @@ const Settings = ({ navigation }) => {
 
 	return (
 		<View style={{ ...mainStyles.mainContainer(insets), alignItems: 'center', justifyContent: 'center' }} >
+			<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20 }}>Castafiore {pkg.version}</Text>
 			<Text style={{ color: theme.primaryTouch }} color={theme.primaryLight}>{error}</Text>
 			<View style={styles.inputView}>
 				<TextInput

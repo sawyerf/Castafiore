@@ -29,7 +29,7 @@ const SongItem = ({ song, isIndex, config }) => {
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
-				<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{isIndex ? `${song.track}. ` : null}{song.title}</Text>
+				<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
 				<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
 			</View>
 			<TouchableOpacity onPress={() => onPressFavorited()} style={{ marginRight: 10, padding: 5, paddingStart: 10 }}>

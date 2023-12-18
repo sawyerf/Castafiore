@@ -24,8 +24,8 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 	}
 
 	React.useEffect(() => {
-		getAlbumList()
-	}, [])
+		if (config.url) getAlbumList()
+	}, [config])
 
 	return (
 		<View>

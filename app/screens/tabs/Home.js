@@ -7,20 +7,18 @@ import HorizontalAlbumList from '../../components/HorizontalAlbumList';
 import mainStyles from '../../styles/main';
 import theme from '../../utils/theme';
 import { SoundContext, playSong } from '../../utils/playSong';
-import { getConfig } from '../../utils/config';
+import { getConfig, ConfigContext } from '../../utils/config';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const sound = React.useContext(SoundContext)
-	const [config, setConfig] = React.useState({});
+	const config = React.useContext(ConfigContext)
 	const [statusRefresh, setStatusRefresh] = React.useState();
-
 	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = () => {
 		if (refreshing) return;
 		setRefreshing(true);
-		setConfig({ ...config, refresh: Math.random() })
 		setTimeout(() => {
 			setRefreshing(false);
 		}, 1000)
@@ -45,7 +43,6 @@ const Home = ({ navigation }) => {
 					setStatusRefresh(json['subsonic-response'].scanStatus)
 				} else {
 					setStatusRefresh()
-					setConfig({ ...config, refresh: Math.random() })
 				}
 			})
 	}
@@ -57,13 +54,6 @@ const Home = ({ navigation }) => {
 				getStatusRefresh()
 			})
 	}
-
-	React.useEffect(() => {
-		getConfig()
-			.then((config) => {
-				setConfig(config)
-			})
-	}, [])
 
 	return (
 		<ScrollView vertical={true}

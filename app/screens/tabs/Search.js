@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../../utils/theme';
-import { getConfig } from '../../utils/config';
+import { ConfigContext, SetConfigContext } from '../../utils/config';
 import SongsList from '../../components/SongsList';
 import HorizontalArtists from '../../components/HorizontalArtists';
 import HorizontalAlbums from '../../components/HorizontalAlbums';
@@ -13,17 +13,10 @@ import mainStyles from '../../styles/main';
 
 const Search = () => {
 	const insets = useSafeAreaInsets();
-	const [config, setConfig] = React.useState({});
+	const config = React.useContext(ConfigContext)
 	const [query, setQuery] = React.useState('');
 	const [results, setResults] = React.useState();
 	const [timeout, setTimeoutState] = React.useState(null);
-
-	React.useEffect(() => {
-		getConfig()
-			.then((config) => {
-				setConfig(config)
-			})
-	}, [])
 
 	React.useEffect(() => {
 		if (query.length > 1) {
@@ -80,7 +73,7 @@ const Search = () => {
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 80 }}>
 				{
-					!query.length && ['la feve', 'jul', 'welarue'].map((previousSearch, index) => {
+					!query.length && ['la feve', 'jul', 'welarue', 'isha'].map((previousSearch, index) => {
 						return (
 							<TouchableOpacity key={index} onPress={() => setQuery(previousSearch)} style={mainStyles.stdVerticalMargin}>
 								<Text style={{ color: theme.secondaryLight, fontSize: 17, marginBottom: 15, marginTop: 10 }}><Icon name="eye" size={17} color={theme.secondaryLight} />  {previousSearch}</Text>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Castafiore",
     "slug": "Castafiore",
-    "version": "1.0.0",
+    "version": "2023.12.17",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,7 +25,7 @@
     "android": {
       "package": "com.sawyerf.castafiore",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       }
     },

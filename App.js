@@ -19,6 +19,7 @@ import TabBar from './app/components/TabBar';
 
 import theme from './app/utils/theme';
 import { SoundContext } from './app/utils/playSong';
+import { ConfigContext, SetConfigContext, getConfig } from './app/utils/config';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -80,29 +81,42 @@ const PlaylistsStack = () => {
 }
 
 const App = () => {
+  const [config, setConfig] = React.useState({});
+
+  React.useEffect(() => {
+    getConfig()
+      .then((config) => {
+        setConfig(config)
+      })
+  }, [])
+
   return (
     <SoundContext.Provider value={new Audio.Sound()}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <Tab.Navigator
-              tabBar={(props) => <TabBar {...props} />}
-              screenOptions={{
-                headerShown: false,
-                tabBarStyle: {
-                  backgroundColor: theme.secondaryDark,
-                  borderTopColor: theme.secondaryDark,
-                  tabBarActiveTintColor: theme.primaryTouch,
-                }
-              }}
-            >
-              <Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
-              {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
-              <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
-              <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
-              <Tab.Screen name="Settings" options={{ title: 'Settings', icon: "gear" }} component={Settings} />
-            </Tab.Navigator>
-          </NavigationContainer>
-        </SafeAreaProvider>
+      <SetConfigContext.Provider value={setConfig}>
+        <ConfigContext.Provider value={config}>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <Tab.Navigator
+                tabBar={(props) => <TabBar {...props} />}
+                screenOptions={{
+                  headerShown: false,
+                  tabBarStyle: {
+                    backgroundColor: theme.secondaryDark,
+                    borderTopColor: theme.secondaryDark,
+                    tabBarActiveTintColor: theme.primaryTouch,
+                  }
+                }}
+              >
+                <Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
+                {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
+                <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
+                <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
+                <Tab.Screen name="Settings" options={{ title: 'Settings', icon: "gear" }} component={Settings} />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </ConfigContext.Provider>
+      </SetConfigContext.Provider>
     </SoundContext.Provider>
   );
 }

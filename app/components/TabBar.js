@@ -13,7 +13,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
   return (
     <View>
-      <PlayerBox />
+      <PlayerBox navigation={navigation} />
       <View style={{
         flexDirection: 'row',
         backgroundColor: theme.secondaryDark,

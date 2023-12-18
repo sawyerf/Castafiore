@@ -4,18 +4,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../../utils/theme';
-import { getConfig } from '../../utils/config';
 import SongsList from '../../components/SongsList';
 import VerticalPlaylist from '../../components/VerticalPlaylist';
 import mainStyles from '../../styles/main';
+import { ConfigContext } from '../../utils/config';
 
 
 const Playlists = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
+	const config = React.useContext(ConfigContext)
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
-	const [config, setConfig] = React.useState({});
-
 	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = () => {
@@ -50,13 +49,6 @@ const Playlists = ({ navigation }) => {
 				setRefreshing(false);
 			})
 	}
-
-	React.useEffect(() => {
-		getConfig()
-			.then((config) => {
-				setConfig(config)
-			})
-	}, [])
 
 	React.useEffect(() => {
 		if (config.url) {

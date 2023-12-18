@@ -4,26 +4,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
-import { getConfig } from '../utils/config';
 import HorizontalAlbums from '../components/HorizontalAlbums';
 import HorizontalArtists from '../components/HorizontalArtists';
 import mainStyles from '../styles/main';
 import presStyles from '../styles/pres';
 import { SoundContext, playSong } from '../utils/playSong';
+import { ConfigContext } from '../utils/config';
+import BackButton from '../components/BackButton';
 
 const Artist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
-	const [config, setConfig] = React.useState({});
 	const [artist, setArtist] = React.useState([]);
 	const [artistInfo, setArtistInfo] = React.useState([]);
 	const sound = React.useContext(SoundContext)
-
-	React.useEffect(() => {
-		getConfig()
-			.then((config) => {
-				setConfig(config)
-			})
-	}, [])
+	const config = React.useContext(ConfigContext)
 
 	const getArtistInfo = () => {
 		fetch(`${config.url}/rest/getArtistInfo?id=${route.params.artist.id}&${config.query}`)
@@ -79,6 +73,7 @@ const Artist = ({ navigation, route }) => {
 			}}
 			vertical={true}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			<BackButton />
 			{config.url && <Image
 				style={presStyles.cover}
 				source={{

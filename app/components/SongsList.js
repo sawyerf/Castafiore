@@ -50,7 +50,7 @@ const SongsList = ({ config, songs, isIndex = false }) => {
 			paddingRight: 10,
 		}}>
 			{songs?.map((song, index) => (
-				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(sound, songs, index)}>
+				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(config, sound, songs, index)}>
 					<SongItem song={song} index={index} key={index} config={config} isIndex={isIndex} />
 				</TouchableOpacity>
 			))}

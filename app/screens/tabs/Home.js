@@ -28,7 +28,7 @@ const Home = ({ navigation }) => {
 		fetch(`${config.url}/rest/getRandomSongs?${config.query}&count=50`)
 			.then((response) => response.json())
 			.then((json) => {
-				playSong(sound, json['subsonic-response'].randomSongs.song, 0)
+				playSong(config, sound, json['subsonic-response'].randomSongs.song, 0)
 			})
 	}
 

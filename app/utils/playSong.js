@@ -5,28 +5,32 @@ import { getConfig } from './config';
 // TODO: Solve Unhandle Promise Rejection Warning
 export const SoundContext = React.createContext()
 
-export const playSong = async (sound, songs, index) => {
-	const config = await getConfig()
-
+export const playSong = async (config, sound, songs, index) => {
 	sound.songInfo = songs[index]
-	sound.songList = songs
+	sound.index = index
 	await sound.unloadAsync()
-	// sound.songInfo.title = `${config.url}/rest/download?id=${songs[index].id}&${config.query}`
-	// console.log(`${config.url}/rest/download?id=${songs[index].id}&${config.query}`)
 	await sound.loadAsync(
-		{ uri: `${config.url}/rest/download?id=${songs[index].id}&${config.query}`, title: songs[index].title },
-		{ shouldPlay: true, staysActiveInBackground: true }
+		{ uri: `${config.url}/rest/download?id=${songs[index].id}&${config.query}` },
+		{
+			shouldPlay: true,
+			staysActiveInBackground: true,
+			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+			playsInSilentModeIOS: true,
+		}
 	)
-	await sound.playAsync()
+	fetch('/lolipop/keepAppUp')
+		.catch((error) => console.log('error'))
+	sound.songList = songs
 }
 
-export const nextSong = async (sound) => {
+export const nextSong = async (config, sound) => {
 	if (sound.songList) {
-		const index = sound.songList.findIndex((song) => song.id === sound.songInfo.id)
-		await playSong(sound, sound.songList, (index + 1) % sound.songList.length)
+		await playSong(config, sound, sound.songList, (sound.index + 1) % sound.songList.length)
 	}
 }
 
-export const pauseSong = async (sound) => {
-	await sound.pauseAsync()
+export const previousSong = async (config, sound) => {
+	if (sound.songList) {
+		await playSong(config, sound, sound.songList, (sound.songList.length + sound.index - 1) % sound.songList.length)
+	}
 }

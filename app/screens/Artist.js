@@ -32,17 +32,15 @@ const Artist = ({ navigation, route }) => {
 	}
 
 	const getArtist = () => {
-		if (config.url) {
-			fetch(`${config.url}/rest/getArtist?id=${route.params.artist.id}&${config.query}`)
-				.then((res) => res.json())
-				.then((json) => {
-					if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-						setArtist(json['subsonic-response'].artist)
-					} else {
-						console.log('getArtist:', json['subsonic-response']?.error)
-					}
-				})
-		}
+		fetch(`${config.url}/rest/getArtist?id=${route.params.artist.id}&${config.query}`)
+			.then((res) => res.json())
+			.then((json) => {
+				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
+					setArtist(json['subsonic-response'].artist)
+				} else {
+					console.log('getArtist:', json['subsonic-response']?.error)
+				}
+			})
 	}
 
 	const getSimilarSongs = () => {
@@ -51,7 +49,7 @@ const Artist = ({ navigation, route }) => {
 			.then((json) => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
 					const songs = json['subsonic-response'].similarSongs.song
-					playSong(sound, songs, 0)
+					playSong(config, sound, songs, 0)
 				} else {
 					console.log('getSimilarSongs:', json['subsonic-response']?.error)
 				}

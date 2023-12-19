@@ -6,9 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../utils/theme';
 import presStyles from '../styles/pres';
 import { SoundContext, playSong } from '../utils/playSong';
+import { ConfigContext } from '../utils/config';
 
 const RandomButton = ({ songList }) => {
 	const sound = React.useContext(SoundContext)
+	const config = React.useContext(ConfigContext)
 
 	function shuffle(array) {
 		let currentIndex = array.length, randomIndex;
@@ -31,7 +33,7 @@ const RandomButton = ({ songList }) => {
 	const shuffleSong = () => {
 		if (songList?.length) {
 			shuffle(songList)
-			playSong(sound, songList, 0)
+			playSong(config, sound, songList, 0)
 		}
 	}
 

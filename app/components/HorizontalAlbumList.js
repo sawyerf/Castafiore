@@ -6,21 +6,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../utils/theme';
 import mainStyles from '../styles/main';
 import HorizontalAlbums from './HorizontalAlbums';
+import { getApi } from '../utils/api';
 
 const HorizontalAlbumList = ({ config, title, type }) => {
 	const [albums, setAlbums] = React.useState();
 	const navigation = useNavigation();
 
 	const getAlbumList = async () => {
-		fetch(`${config.url}/rest/getAlbumList?f=json&type=${type}&${config.query}`)
-			.then((response) => response.json())
+		getApi(config, 'getAlbumList', `type=${type}`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					setAlbums(json['subsonic-response']?.albumList?.album)
-				} else {
-					console.log('getAlbumList:', json['subsonic-response']?.error)
-				}
+				setAlbums(json?.albumList?.album)
 			})
+			.catch((error) => { })
 	}
 
 	React.useEffect(() => {
@@ -38,7 +35,7 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 					marginTop: 20,
 					marginBottom: 10,
 				}}>
-				<Text style={{...mainStyles.subTitle, ...mainStyles.stdVerticalMargin}}>{title}</Text>
+				<Text style={{ ...mainStyles.subTitle, ...mainStyles.stdVerticalMargin }}>{title}</Text>
 				<TouchableOpacity
 					style={{ textDecoration: 'bold' }}
 					color={theme.secondaryTouch}>

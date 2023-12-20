@@ -5,6 +5,7 @@ import { SoundContext, playSong } from '../utils/playSong';
 import { useNavigation } from '@react-navigation/native';
 
 import theme from '../utils/theme';
+import { urlCover } from '../utils/api';
 
 const HorizontalArtists = ({ config, artists }) => {
 	const sound = React.useContext(SoundContext)
@@ -23,7 +24,7 @@ const HorizontalArtists = ({ config, artists }) => {
 						<Image
 							style={styles.artistCover}
 							source={{
-								uri: `${config.url}/rest/getCoverArt?id=${artist.coverArt}&size=300&${config.query}`,
+								uri: urlCover(config, artist.id),
 							}}
 						/>
 						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2, width: 100, textAlign: 'center' }}>{artist.name}</Text>

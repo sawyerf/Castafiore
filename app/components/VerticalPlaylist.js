@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import theme from '../utils/theme';
 import { SoundContext, playSong } from '../utils/playSong';
+import { urlCover } from '../utils/api';
 
 const VerticalPlaylist = ({ config, playlists }) => {
 	const navigation = useNavigation();
@@ -18,7 +19,7 @@ const VerticalPlaylist = ({ config, playlists }) => {
 							<Image
 								style={styles.albumCover}
 								source={{
-									uri: `${config.url}/rest/getCoverArt?id=${playlist.coverArt}&size=100&${config.query}`,
+									uri: urlCover(config, playlist.id, 100),
 								}}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>

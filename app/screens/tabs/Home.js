@@ -8,6 +8,7 @@ import mainStyles from '../../styles/main';
 import theme from '../../utils/theme';
 import { SoundContext, playSong } from '../../utils/playSong';
 import { getConfig, ConfigContext } from '../../utils/config';
+import { getApi } from '../../utils/api';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -25,34 +26,34 @@ const Home = ({ navigation }) => {
 	};
 
 	const clickRandomSong = () => {
-		fetch(`${config.url}/rest/getRandomSongs?${config.query}&count=50`)
-			.then((response) => response.json())
+		getApi(config, 'getRandomSongs', `count=50`)
 			.then((json) => {
-				playSong(config, sound, json['subsonic-response'].randomSongs.song, 0)
+				playSong(config, sound, json.randomSongs.song, 0)
 			})
+			.catch((error) => { })
 	}
 
 	const getStatusRefresh = () => {
-		fetch(`${config.url}/rest/getScanStatus?${config.query}`)
-			.then((response) => response.json())
+		getApi(config, 'getScanStatus')
 			.then((json) => {
-				if (json['subsonic-response'].scanStatus.scanning) {
+				if (json.scanStatus.scanning) {
 					setTimeout(() => {
 						getStatusRefresh()
 					}, 1000)
-					setStatusRefresh(json['subsonic-response'].scanStatus)
+					setStatusRefresh(json.scanStatus)
 				} else {
 					setStatusRefresh()
 				}
 			})
+			.catch((error) => { })
 	}
 
 	const refreshServer = () => {
-		fetch(`${config.url}/rest/startScan?${config.query}&fullScan=true`)
-			.then((response) => response.json())
+		getApi(config, 'startScan', 'fullScan=true')
 			.then((json) => {
 				getStatusRefresh()
 			})
+			.catch((error) => { })
 	}
 
 	return (

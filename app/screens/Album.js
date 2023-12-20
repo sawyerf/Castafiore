@@ -9,6 +9,7 @@ import mainStyles from '../styles/main';
 import presStyles from '../styles/pres';
 import RandomButton from '../components/RandomButton';
 import BackButton from '../components/BackButton';
+import { getApi, urlCover } from '../utils/api';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -17,15 +18,11 @@ const Album = ({ navigation, route }) => {
 
 	React.useEffect(() => {
 		if (config.url) {
-			fetch(`${config.url}/rest/getAlbum?id=${route.params.album.id}&${config.query}`)
-				.then((response) => response.json())
+			getApi(config, 'getAlbum', `id=${route.params.album.id}`)
 				.then((json) => {
-					if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-						setSongs(json['subsonic-response'].album?.song)
-					} else {
-						console.log('getAlbum:', json['subsonic-response']?.error)
-					}
+						setSongs(json?.album?.song)
 				})
+				.catch((error) => { })
 		}
 	}, [config, route.params.album])
 
@@ -38,12 +35,12 @@ const Album = ({ navigation, route }) => {
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
 			<BackButton />
-			{config.url && <Image
+			<Image
 				style={presStyles.cover}
 				source={{
-					uri: `${config.url}/rest/getCoverArt?id=${route.params.album.coverArt}&${config.query}`,
+					uri: urlCover(config, route.params.album.id),
 				}}
-			/>}
+			/>
 			<View>
 				<Text style={presStyles.title}>{route.params.album.name}</Text>
 				<TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}>

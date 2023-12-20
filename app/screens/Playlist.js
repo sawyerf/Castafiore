@@ -9,6 +9,7 @@ import presStyles from '../styles/pres';
 import RandomButton from '../components/RandomButton';
 import { ConfigContext } from '../utils/config';
 import BackButton from '../components/BackButton';
+import { getApi, urlCover } from '../utils/api';
 
 const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -17,14 +18,9 @@ const Playlist = ({ navigation, route }) => {
 
 	React.useEffect(() => {
 		if (config.url) {
-			fetch(`${config.url}/rest/getPlaylist?id=${route.params.playlist.id}&${config.query}`)
-				.then((response) => response.json())
+			getApi(config, 'getPlaylist', `id=${route.params.playlist.id}`)
 				.then((json) => {
-					if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-						setSongs(json['subsonic-response'].playlist?.entry)
-					} else {
-						console.log('getPlaylist:', json['subsonic-response']?.error)
-					}
+						setSongs(json?.playlist?.entry)
 				})
 		}
 	}, [config, route.params.playlist])
@@ -38,12 +34,12 @@ const Playlist = ({ navigation, route }) => {
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
 			<BackButton />
-			{config.url && <Image
+			<Image
 				style={presStyles.cover}
 				source={{
-					uri: `${config.url}/rest/getCoverArt?id=${route.params.playlist.coverArt}&${config.query}`,
+					uri: urlCover(config, route.params.playlist.id),
 				}}
-			/>}
+			/>
 			<View>
 				<Text style={presStyles.title}>{route.params.playlist.name}</Text>
 				<Text style={presStyles.subTitle}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>

@@ -11,6 +11,7 @@ import presStyles from '../styles/pres';
 import { SoundContext, playSong } from '../utils/playSong';
 import { ConfigContext } from '../utils/config';
 import BackButton from '../components/BackButton';
+import { getApi, urlCover } from '../utils/api';
 
 const Artist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -20,40 +21,28 @@ const Artist = ({ navigation, route }) => {
 	const config = React.useContext(ConfigContext)
 
 	const getArtistInfo = () => {
-		fetch(`${config.url}/rest/getArtistInfo?id=${route.params.artist.id}&${config.query}`)
-			.then((res) => res.json())
+		getApi(config, 'getArtistInfo', `id=${route.params.artist.id}`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					setArtistInfo(json['subsonic-response'].artistInfo)
-				} else {
-					console.log('getArtistInfo:', json['subsonic-response']?.error)
-				}
+					setArtistInfo(json.artistInfo)
 			})
+			.catch((error) => { })
 	}
 
 	const getArtist = () => {
-		fetch(`${config.url}/rest/getArtist?id=${route.params.artist.id}&${config.query}`)
-			.then((res) => res.json())
+		getApi(config, 'getArtist', `id=${route.params.artist.id}`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					setArtist(json['subsonic-response'].artist)
-				} else {
-					console.log('getArtist:', json['subsonic-response']?.error)
-				}
+					setArtist(json.artist)
 			})
+			.catch((error) => { })
 	}
 
 	const getSimilarSongs = () => {
-		fetch(`${config.url}/rest/getSimilarSongs?id=${route.params.artist.id}&count=50&${config.query}`)
-			.then((res) => res.json())
+		getApi(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					const songs = json['subsonic-response'].similarSongs.song
+					const songs = json.similarSongs.song
 					playSong(config, sound, songs, 0)
-				} else {
-					console.log('getSimilarSongs:', json['subsonic-response']?.error)
-				}
 			})
+			.catch((error) => { })
 	}
 
 	React.useEffect(() => {
@@ -72,12 +61,12 @@ const Artist = ({ navigation, route }) => {
 			vertical={true}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
 			<BackButton />
-			{config.url && <Image
+			<Image
 				style={presStyles.cover}
 				source={{
-					uri: `${config.url}/rest/getCoverArt?id=${artist.coverArt}&${config.query}`,
+					uri: urlCover(config, artist.id),
 				}}
-			/>}
+			/>
 			<View>
 				<Text style={{ ...presStyles.title }}>{route.params.artist.name}</Text>
 				<Text style={presStyles.subTitle}>Artist</Text>

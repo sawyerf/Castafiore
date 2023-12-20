@@ -9,6 +9,7 @@ import SongsList from '../../components/SongsList';
 import HorizontalArtists from '../../components/HorizontalArtists';
 import HorizontalAlbums from '../../components/HorizontalAlbums';
 import mainStyles from '../../styles/main';
+import { getApi } from '../../utils/api';
 
 
 const Search = () => {
@@ -28,16 +29,12 @@ const Search = () => {
 	}, [query])
 
 	const getSearch = () => {
-		fetch(`${config.url}/rest/search2?query=${encodeURIComponent(query)}&${config.query}`)
-			.then((response) => response.json())
+		getApi(config, 'search2', `query=${encodeURIComponent(query)}`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					setResults(json['subsonic-response'].searchResult2)
-				} else {
-					setResults(undefined)
-					console.log('search2:', json['subsonic-response']?.error)
-				}
-
+				setResults(json.searchResult2)
+			})
+			.catch((error) => {
+				setResults(undefined)
 			})
 	}
 

@@ -4,20 +4,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
 import { SoundContext, playSong } from '../utils/playSong';
+import { urlCover } from '../utils/api';
 
 const SongItem = ({ song, isIndex, config }) => {
 	const [star, setStar] = React.useState(song?.starred ? true : false)
 
 	const onPressFavorited = () => {
-		fetch(`${config.url}/rest/${star ? 'unstar' : 'star'}?id=${song.id}&${config.query}`)
-			.then((response) => response.json())
+		getApi(config, star ? 'unstar' : 'star', `id=${song.id}`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
 					setStar(!star)
-				} else {
-					console.log('star:', json['subsonic-response']?.error)
-				}
 			})
+			.catch((error) => { })
 	}
 
 	return (
@@ -25,7 +22,7 @@ const SongItem = ({ song, isIndex, config }) => {
 			<Image
 				style={styles.albumCover}
 				source={{
-					uri: config?.url ? `${config.url}/rest/getCoverArt?id=${song.coverArt}&size=100&${config.query}` : null,
+					uri: urlCover(config, song.albumId, 300),
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>

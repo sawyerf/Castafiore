@@ -8,8 +8,9 @@ import theme from '../utils/theme';
 import mainStyles from '../styles/main';
 import presStyles from '../styles/pres';
 import { ConfigContext } from '../utils/config';
+import { urlCover } from '../utils/api';
 
-const PlayerBox = ({ navigation }) => {
+const PlayerBox = ({ navigation, state }) => {
 	const insets = useSafeAreaInsets();
 	const sound = React.useContext(SoundContext)
 	const config = React.useContext(ConfigContext)
@@ -33,19 +34,22 @@ const PlayerBox = ({ navigation }) => {
 				setTimeout(() => nextSong(config, sound), 500)
 			}
 		})
-		console.log('update sound')
 	}, [sound])
 
+	React.useEffect(() => {
+		setIsFullScreen(false)
+	}, [state.index])
+
 	const onPressFavorited = () => {
-		fetch(`${config.url}/rest/${sound.songInfo.starred ? 'unstar' : 'star'}?id=${sound.songInfo.id}&${config.query}`)
-			.then((response) => response.json())
+		getApi(config, sound.songInfo.starred ? 'unstar' : 'star', `id=${sound.songInfo.id}`)
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					sound.songInfo.starred = !sound.songInfo.starred
-				} else {
-					console.log('star:', json['subsonic-response']?.error)
-				}
+				sound.songInfo.starred = !sound.songInfo.starred
 			})
+			.catch((error) => { })
+	}
+
+	const secondToTime = (second) => {
+		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 	}
 
 	if (sound?.songInfo) {
@@ -70,7 +74,7 @@ const PlayerBox = ({ navigation }) => {
 						<Image
 							style={styles.boxPlayerImage}
 							source={{
-								uri: config?.url ? `${config.url}/rest/getCoverArt?id=${sound?.songInfo?.coverArt}&size=100&${config.query}` : null,
+								uri: urlCover(config, sound?.songInfo?.albumId, 100),
 							}}
 						/>
 					</View>
@@ -114,8 +118,8 @@ const PlayerBox = ({ navigation }) => {
 					width: '100%'
 				}}>
 					<Image
-						source={{ uri: `${config.url}/rest/getCoverArt?id=${sound?.songInfo?.coverArt}&${config.query}` }}
-						style={{ height: Dimensions.get('window').width * 0.80, width: Dimensions.get('window').width * 0.80, borderRadius: 10, marginTop: 100 }}
+						source={{ uri: urlCover(config, sound?.songInfo?.albumId) }}
+						style={styles.albumImage}
 					/>
 					<TouchableOpacity style={{
 						position: 'absolute',
@@ -158,8 +162,8 @@ const PlayerBox = ({ navigation }) => {
 						<View style={{ width: `${(timer.current / timer.total) * 100}%`, height: 1, backgroundColor: theme.primaryTouch }} />
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 10 }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{(timer.current / 60) | 1}:{timer.current % 60 | 1}</Text>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{(timer.total / 60) | 1}:{timer.total % 60 | 1}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.current)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.total)}</Text>
 					</View>
 				</View>
 			)
@@ -185,6 +189,14 @@ const styles = {
 	button: {
 		padding: 10,
 	},
+	albumImage: {
+		height: Dimensions.get('window').width * 0.80,
+		width: Dimensions.get('window').width * 0.80,
+		maxWidth: 350,
+		maxHeight: 350,
+		borderRadius: 10,
+		marginTop: 100,
+	}
 }
 
 export default PlayerBox;

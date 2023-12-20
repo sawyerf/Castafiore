@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
+import { urlCover } from '../utils/api';
 
 const HorizontalAlbums = ({ config, albums }) => {
 	const navigation = useNavigation();
@@ -19,7 +20,7 @@ const HorizontalAlbums = ({ config, albums }) => {
 						<Image
 							style={styles.albumCover}
 							source={{
-								uri: `${config.url}/rest/getCoverArt?id=${album.coverArt}&${config.query}`,
+								uri: urlCover(config, album.id),
 							}}
 						/>
 						<Text numberOfLines={1} style={styles.titleAlbum}>{album.name}</Text>

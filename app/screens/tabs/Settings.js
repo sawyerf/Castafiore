@@ -35,7 +35,6 @@ const Settings = ({ navigation }) => {
 					AsyncStorage.setItem('config.url', url)
 					AsyncStorage.setItem('config.user', username)
 					AsyncStorage.setItem('config.query', query)
-					// config.setConfig({ url, username, query })
 					setConfig({ url, username, query })
 					navigation.navigate('Home')
 				} else if (json && json['subsonic-response']?.error) {
@@ -110,7 +109,6 @@ const styles = {
 	},
 	loginBtn: {
 		width: "80%",
-		// backgroundColor: "#fb5b5a",
 		borderRadius: 25,
 		height: 50,
 		alignItems: "center",

@@ -8,6 +8,7 @@ import SongsList from '../../components/SongsList';
 import VerticalPlaylist from '../../components/VerticalPlaylist';
 import mainStyles from '../../styles/main';
 import { ConfigContext } from '../../utils/config';
+import { getApi } from '../../utils/api';
 
 
 const Playlists = ({ navigation }) => {
@@ -25,29 +26,21 @@ const Playlists = ({ navigation }) => {
 	};
 
 	const getFavorited = () => {
-		fetch(`${config.url}/rest/getStarred?${config.query}`)
-			.then((response) => response.json())
+		getApi(config, 'getStarred')
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					setFavorited(json['subsonic-response'].starred.song)
-				} else {
-					console.log('getStarred:', json['subsonic-response']?.error)
-				}
+				setFavorited(json.starred.song)
 				setRefreshing(false);
 			})
+			.catch((error) => { setRefreshing(false); })
 	}
 
 	const getPlaylists = () => {
-		fetch(`${config.url}/rest/getPlaylists?${config.query}`)
-			.then((response) => response.json())
+		getApi(config, 'getPlaylists')
 			.then((json) => {
-				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					setPlaylists(json['subsonic-response'].playlists.playlist)
-				} else {
-					console.log('getPlaylists:', json['subsonic-response']?.error)
-				}
+				setPlaylists(json.playlists.playlist)
 				setRefreshing(false);
 			})
+			.catch((error) => { setRefreshing(false); })
 	}
 
 	React.useEffect(() => {

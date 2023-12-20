@@ -19,7 +19,7 @@ export const playSong = async (config, sound, songs, index) => {
 		}
 	)
 	fetch('/lolipop/keepAppUp')
-		.catch((error) => console.log('error'))
+		.catch((error) => { })
 	sound.songList = songs
 }
 

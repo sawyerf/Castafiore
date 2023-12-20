@@ -66,7 +66,7 @@ const Playlists = ({ navigation }) => {
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
 			</TouchableOpacity>
-			<SongsList songs={favorited?.slice(0, 3)} config={config} />
+			<SongsList songs={favorited?.slice(0, 3)} config={config} listToPlay={favorited} />
 			<View style={styles.subTitleParent}>
 				<Text style={mainStyles.subTitle}><Icon name="heart" size={23} color={theme.primaryTouch} /> Playlists</Text>
 			</View>

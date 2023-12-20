@@ -1,6 +1,8 @@
 import { Audio } from 'expo-av';
 import React from 'react';
 import { getConfig } from './config';
+import { urlCover } from './api';
+import { Platform } from 'react-native';
 
 // TODO: Solve Unhandle Promise Rejection Warning
 export const SoundContext = React.createContext()
@@ -8,9 +10,17 @@ export const SoundContext = React.createContext()
 export const playSong = async (config, sound, songs, index) => {
 	sound.songInfo = songs[index]
 	sound.index = index
+	if (Platform.OS === 'web') {
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: songs[index].title,
+			artist: songs[index].artist,
+			album: songs[index].album,
+			artwork: [{ src: urlCover(config, songs[index].albumId) }],
+		})
+	}
 	await sound.unloadAsync()
 	await sound.loadAsync(
-		{ uri: `${config.url}/rest/download?id=${songs[index].id}&${config.query}` },
+		{ uri: `${config.url}/rest/stream?id=${songs[index].id}&${config.query}` },
 		{
 			shouldPlay: true,
 			staysActiveInBackground: true,

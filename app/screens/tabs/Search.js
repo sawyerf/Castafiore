@@ -10,23 +10,49 @@ import HorizontalArtists from '../../components/HorizontalArtists';
 import HorizontalAlbums from '../../components/HorizontalAlbums';
 import mainStyles from '../../styles/main';
 import { getApi } from '../../utils/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const Search = () => {
+const Search = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const [query, setQuery] = React.useState('');
 	const [results, setResults] = React.useState();
 	const [timeout, setTimeoutState] = React.useState(null);
+	const [history, setHistory] = React.useState([]);
+
+	React.useEffect(() => {
+		AsyncStorage.getItem('search.history')
+			.then((hist) => {
+				if (hist) setHistory(JSON.parse(hist))
+			})
+	}, [])
 
 	React.useEffect(() => {
 		if (query.length > 1) {
 			clearTimeout(timeout)
 			setTimeoutState(setTimeout(() => {
 				getSearch()
+				setTimeoutState(setTimeout(() => {
+					addHistory(query)
+				}, 10 * 1000))
 			}, 500))
 		}
 	}, [query])
+
+	const addHistory = async (query) => {
+		if (!query || !query.length || history.includes(query)) return
+		const hist = [query, ...history]
+		setHistory(hist)
+		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
+	}
+
+	const delItemHistory = async (index) => {
+		const hist = [...history]
+		hist.splice(index, 1)
+		setHistory(hist)
+		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
+	}
 
 	const getSearch = () => {
 		getApi(config, 'search2', `query=${encodeURIComponent(query)}`)
@@ -53,7 +79,7 @@ const Search = () => {
 						marginEnd: 10,
 						backgroundColor: theme.secondaryDark,
 					}}
-					placeholder="Server Url"
+					placeholder="Search"
 					placeholderTextColor={theme.secondaryLight}
 					value={query}
 					onChangeText={(query) => setQuery(query)}
@@ -61,7 +87,7 @@ const Search = () => {
 				{
 					query &&
 					<TouchableOpacity
-						onPress={() => { setQuery(''); setResults(undefined) }}
+						onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
 						style={{ justifyContent: 'center' }}>
 						<Text size={20} style={{ color: theme.primaryTouch }}>Clear</Text>
 					</TouchableOpacity>
@@ -70,10 +96,13 @@ const Search = () => {
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 80 }}>
 				{
-					!query.length && ['la feve', 'jul', 'welarue', 'isha'].map((previousSearch, index) => {
+					!query.length && history.map((previousSearch, index) => {
 						return (
 							<TouchableOpacity key={index} onPress={() => setQuery(previousSearch)} style={mainStyles.stdVerticalMargin}>
 								<Text style={{ color: theme.secondaryLight, fontSize: 17, marginBottom: 15, marginTop: 10 }}><Icon name="eye" size={17} color={theme.secondaryLight} />  {previousSearch}</Text>
+								<TouchableOpacity onPress={() => delItemHistory(index)} style={{ position: 'absolute', top: 0, right: 0, height: '100%',  justifyContent: 'center', paddingHorizontal: 10 }}>
+									<Icon name="times" size={14} color={theme.secondaryLight} />
+								</TouchableOpacity>
 								<View style={{ flex: 1, marginStart: 10, marginEnd: 10, backgroundColor: theme.secondaryDark, height: 2, borderRadius: 2 }} />
 							</TouchableOpacity>
 						)

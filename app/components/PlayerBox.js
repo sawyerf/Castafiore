@@ -24,6 +24,9 @@ const PlayerBox = ({ navigation, state }) => {
 	React.useEffect(() => {
 		sound.setOnPlaybackStatusUpdate((playbackStatus) => {
 			setIsPlaying(playbackStatus.isPlaying)
+			// if (Platform.OS === 'web') {
+			// 	navigator.mediaSession.playbackState = playbackStatus.isPlaying ? "playing" : "paused";
+			// }
 			if (playbackStatus.isLoaded) {
 				setTimer({
 					current: playbackStatus.positionMillis / 1000,
@@ -34,6 +37,27 @@ const PlayerBox = ({ navigation, state }) => {
 				setTimeout(() => nextSong(config, sound), 500)
 			}
 		})
+		if (Platform.OS === 'web') {
+			navigator.mediaSession.setActionHandler("pause", () => {
+				sound.pauseAsync()
+			});
+			navigator.mediaSession.setActionHandler("play", () => {
+				sound.playAsync()
+				fetch('/lolipop/keepAppUp')
+			});
+			navigator.mediaSession.setActionHandler("previoustrack", () => {
+				setTimeout(() => previousSong(config, sound), 500)
+			});
+			navigator.mediaSession.setActionHandler("nexttrack", () => {
+				setTimeout(() => nextSong(config, sound), 500)
+			});
+			navigator.mediaSession.setActionHandler("seekbackward", () => {
+				setTimeout(() => previousSong(config, sound), 500)
+			});
+			navigator.mediaSession.setActionHandler("seekforward", () => {
+				setTimeout(() => nextSong(config, sound), 500)
+			});
+		}
 	}, [sound])
 
 	React.useEffect(() => {

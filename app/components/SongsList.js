@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '../utils/theme';
 import { SoundContext, playSong } from '../utils/playSong';
-import { urlCover } from '../utils/api';
+import { urlCover, getApi } from '../utils/api';
 
 const SongItem = ({ song, isIndex, config }) => {
 	const [star, setStar] = React.useState(song?.starred ? true : false)
@@ -38,7 +38,7 @@ const SongItem = ({ song, isIndex, config }) => {
 	)
 }
 
-const SongsList = ({ config, songs, isIndex = false }) => {
+const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 	const sound = React.useContext(SoundContext)
 
 	return (
@@ -47,7 +47,7 @@ const SongsList = ({ config, songs, isIndex = false }) => {
 			paddingRight: 10,
 		}}>
 			{songs?.map((song, index) => (
-				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(config, sound, songs, index)}>
+				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(config, sound, listToPlay ? listToPlay : songs, index)}>
 					<SongItem song={song} index={index} key={index} config={config} isIndex={isIndex} />
 				</TouchableOpacity>
 			))}

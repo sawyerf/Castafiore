@@ -1,13 +1,14 @@
 import React from 'react';
-import { Text, View, Button, TextInput } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import md5 from 'md5';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import pkg from '../../../package.json';
+import pkg from '~/../package.json';
 
-import theme from '../../utils/theme';
-import mainStyles from '../../styles/main';
-import { ConfigContext, SetConfigContext } from '../../utils/config';
+import theme from '~/utils/theme';
+import mainStyles from '~/styles/main';
+import { ConfigContext, SetConfigContext } from '~/utils/config';
+import { getApi } from '~/utils/api';
 
 const Settings = ({ navigation }) => {
 	const [serverUrl, setServerUrl] = React.useState('');
@@ -28,31 +29,30 @@ const Settings = ({ navigation }) => {
 		setServerUrl(url)
 		const salt = Math.random().toString(36).substring(2, 15)
 		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=sublol&f=json`
-		fetch(`${url}/rest/ping.view?${query}`)
-			.then((res) => res.status == 200 ? res.json() : undefined)
+
+		getApi({ url, query }, 'ping.view')
 			.then((json) => {
-				if (json?.['subsonic-response']?.status == 'ok') {
+				if (json?.status == 'ok') {
 					AsyncStorage.setItem('config.url', url)
 					AsyncStorage.setItem('config.user', username)
 					AsyncStorage.setItem('config.query', query)
 					setConfig({ url, username, query })
 					navigation.navigate('Home')
-				} else if (json && json['subsonic-response']?.error) {
-					console.log('error message', json['subsonic-response'].error)
-					setError(json['subsonic-response'].error.message)
 				} else {
 					console.log('error', json)
 				}
 			})
 			.catch((error) => {
 				console.log('error', error)
+				if (error.isApiError) setError(error.message)
+				else setError('Failed to connect to server')
 			})
 	}
 
 	return (
 		<View style={{ ...mainStyles.mainContainer(insets), alignItems: 'center', justifyContent: 'center' }} >
 			<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20 }}>Castafiore {pkg.version}</Text>
-			<Text style={{ color: theme.primaryTouch }} color={theme.primaryLight}>{error}</Text>
+			<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
 			<View style={styles.inputView}>
 				<TextInput
 					style={styles.inputText}
@@ -81,12 +81,12 @@ const Settings = ({ navigation }) => {
 					onChangeText={(password) => setPassword(password)}
 				/>
 			</View>
-			<Button
+			<TouchableOpacity
 				style={styles.loginBtn}
-				title="Connect"
-				color={theme.primaryTouch}
 				onPress={connect}
-			/>
+			>
+				<Text style={{ color: theme.primaryTouch }}>Connect</Text>
+			</TouchableOpacity>
 		</View>
 	)
 }
@@ -109,12 +109,10 @@ const styles = {
 	},
 	loginBtn: {
 		width: "80%",
-		borderRadius: 25,
+		// borderRadius: 25,
 		height: 50,
 		alignItems: "center",
 		justifyContent: "center",
-		marginTop: 40,
-		marginBottom: 10
 	}
 }
 export default Settings;

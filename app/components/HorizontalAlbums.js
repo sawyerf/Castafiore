@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../utils/theme';
-import { urlCover } from '../utils/api';
+import theme from '~/utils/theme';
+import { urlCover } from '~/utils/api';
 
 const HorizontalAlbums = ({ config, albums }) => {
 	const navigation = useNavigation();

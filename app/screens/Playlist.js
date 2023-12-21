@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import theme from '../utils/theme';
-import SongsList from '../components/SongsList';
-import mainStyles from '../styles/main';
-import presStyles from '../styles/pres';
-import RandomButton from '../components/RandomButton';
-import { ConfigContext } from '../utils/config';
-import BackButton from '../components/BackButton';
-import { getApi, urlCover } from '../utils/api';
+import theme from '~/utils/theme';
+import SongsList from '~/components/SongsList';
+import mainStyles from '~/styles/main';
+import presStyles from '~/styles/pres';
+import RandomButton from '~/components/button/RandomButton';
+import { ConfigContext } from '~/utils/config';
+import BackButton from '~/components/button/BackButton';
+import { getApi, urlCover } from '~/utils/api';
 
 const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();

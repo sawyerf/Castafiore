@@ -1,14 +1,12 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SoundContext, playSong } from '../utils/playSong';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '../utils/theme';
-import { urlCover } from '../utils/api';
+import theme from '~/utils/theme';
+import { urlCover } from '~/utils/api';
 
 const HorizontalArtists = ({ config, artists }) => {
-	const sound = React.useContext(SoundContext)
 	const navigation = useNavigation();
 
 	return (

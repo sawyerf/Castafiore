@@ -1,17 +1,18 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../utils/theme';
-import HorizontalAlbums from '../components/HorizontalAlbums';
-import HorizontalArtists from '../components/HorizontalArtists';
-import mainStyles from '../styles/main';
-import presStyles from '../styles/pres';
-import { SoundContext, playSong } from '../utils/playSong';
-import { ConfigContext } from '../utils/config';
-import BackButton from '../components/BackButton';
-import { getApi, urlCover } from '../utils/api';
+import theme from '~/utils/theme';
+import HorizontalAlbums from '~/components/HorizontalAlbums';
+import HorizontalArtists from '~/components/HorizontalArtists';
+import mainStyles from '~/styles/main';
+import presStyles from '~/styles/pres';
+import { SoundContext, playSong } from '~/utils/playSong';
+import { ConfigContext } from '~/utils/config';
+import BackButton from '~/components/button/BackButton';
+import { getApi, urlCover } from '~/utils/api';
+import IconButton from '~/components/button/IconButton';
 
 const Artist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -23,7 +24,7 @@ const Artist = ({ navigation, route }) => {
 	const getArtistInfo = () => {
 		getApi(config, 'getArtistInfo', `id=${route.params.artist.id}`)
 			.then((json) => {
-					setArtistInfo(json.artistInfo)
+				setArtistInfo(json.artistInfo)
 			})
 			.catch((error) => { })
 	}
@@ -31,7 +32,7 @@ const Artist = ({ navigation, route }) => {
 	const getArtist = () => {
 		getApi(config, 'getArtist', `id=${route.params.artist.id}`)
 			.then((json) => {
-					setArtist(json.artist)
+				setArtist(json.artist)
 			})
 			.catch((error) => { })
 	}
@@ -39,8 +40,8 @@ const Artist = ({ navigation, route }) => {
 	const getSimilarSongs = () => {
 		getApi(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
 			.then((json) => {
-					const songs = json.similarSongs.song
-					playSong(config, sound, songs, 0)
+				const songs = json.similarSongs.song
+				playSong(config, sound, songs, 0)
 			})
 			.catch((error) => { })
 	}
@@ -70,9 +71,12 @@ const Artist = ({ navigation, route }) => {
 			<View>
 				<Text style={{ ...presStyles.title }}>{route.params.artist.name}</Text>
 				<Text style={presStyles.subTitle}>Artist</Text>
-				<TouchableOpacity style={{ ...presStyles.button }} onPress={getSimilarSongs} >
-					<Icon name="random" size={25} color={theme.primaryTouch} />
-				</TouchableOpacity>
+				<IconButton
+					style={presStyles.button}
+					icon="random"
+					size={25}
+					onPress={getSimilarSongs}
+				/>
 			</View>
 			<Text style={{ ...mainStyles.subTitle, marginStart: 20 }}>Albums</Text>
 			<HorizontalAlbums config={config} albums={artist.album} />

@@ -1,15 +1,17 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity, Platform, Dimensions, Touchable } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { SoundContext, nextSong, previousSong } from '../utils/playSong';
-import theme from '../utils/theme';
-import mainStyles from '../styles/main';
-import presStyles from '../styles/pres';
-import { ConfigContext } from '../utils/config';
-import { urlCover, getApi } from '../utils/api';
+import { SoundContext, nextSong, previousSong } from '~/utils/playSong';
+import theme from '~/utils/theme';
+import mainStyles from '~/styles/main';
+import presStyles from '~/styles/pres';
+import { ConfigContext } from '~/utils/config';
+import { urlCover, getApi } from '~/utils/api';
 import SongsList from './SongsList';
+import FavoritedButton from './button/FavoritedButton';
+import IconButton from './button/IconButton';
 
 const PlayerBox = ({ navigation, state }) => {
 	const insets = useSafeAreaInsets();
@@ -26,9 +28,6 @@ const PlayerBox = ({ navigation, state }) => {
 	React.useEffect(() => {
 		sound.setOnPlaybackStatusUpdate((playbackStatus) => {
 			setIsPlaying(playbackStatus.isPlaying)
-			// if (Platform.OS === 'web') {
-			// 	navigator.mediaSession.playbackState = playbackStatus.isPlaying ? "playing" : "paused";
-			// }
 			if (playbackStatus.isLoaded) {
 				setTimer({
 					current: playbackStatus.positionMillis / 1000,
@@ -70,14 +69,6 @@ const PlayerBox = ({ navigation, state }) => {
 		setIsQueue(false)
 	}, [isFullScreen, sound.songInfo])
 
-	const onPressFavorited = () => {
-		getApi(config, sound.songInfo.starred ? 'unstar' : 'star', `id=${sound.songInfo.id}`)
-			.then((json) => {
-				sound.songInfo.starred = !sound.songInfo.starred
-			})
-			.catch((error) => { })
-	}
-
 	const secondToTime = (second) => {
 		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 	}
@@ -114,19 +105,20 @@ const PlayerBox = ({ navigation, state }) => {
 						<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.artist ? sound.songInfo.artist : 'Artist'}</Text>
 					</View>
 					<View style={styles.boxPlayerButton}>
-						<TouchableOpacity
-							onPress={() => nextSong(config, sound)}
-							style={{ justifyContent: 'center', paddingHorizontal: 10 }}>
-							<Icon name="step-forward" size={23} color={theme.primaryTouch} />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => isPlaying ? sound.pauseAsync() : sound.playAsync()}
-							style={{ justifyContent: 'center', paddingHorizontal: 10 }}>
-							{
-								isPlaying
-									? <Icon name="pause" size={23} color={theme.primaryTouch} />
-									: <Icon name="play" size={23} color={theme.primaryTouch} />
-							}
-						</TouchableOpacity>
+						<IconButton
+							icon="step-forward"
+							size={23}
+							color={theme.primaryTouch}
+							style={{ paddingHorizontal: 10 }}
+							onPress={() => previousSong(config, sound)}
+						/>
+						<IconButton
+							icon={isPlaying ? 'pause' : 'play'}
+							size={23}
+							color={theme.primaryTouch}
+							style={{ paddingHorizontal: 10 }}
+							onPress={() => isPlaying ? sound.pauseAsync() : sound.playAsync()}
+						/>
 					</View>
 				</TouchableOpacity>
 			)
@@ -168,11 +160,7 @@ const PlayerBox = ({ navigation, state }) => {
 								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{sound.songInfo.title}</Text>
 								<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{sound.songInfo.artist} · {sound.songInfo.album}</Text>
 							</View>
-							<TouchableOpacity onPress={onPressFavorited} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }}>
-								{sound.songInfo.starred
-									? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
-									<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
-							</TouchableOpacity>
+							<FavoritedButton id={sound.songInfo.id} isFavorited={sound.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
 						</View>
 						<View style={{ width: '100%', height: 6, borderRadius: 3, backgroundColor: theme.primaryLight, marginTop: 30, overflow: 'hidden' }} >
 							<View style={{ width: `${(timer.current / timer.total) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
@@ -182,25 +170,36 @@ const PlayerBox = ({ navigation, state }) => {
 							<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.total)}</Text>
 						</View>
 						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
-							<TouchableOpacity style={styles.button} onPress={() => previousSong(config, sound)}>
-								<Icon name="step-backward" size={23} color={theme.primaryLight} />
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.button} onPress={() => isPlaying ? sound.pauseAsync() : sound.playAsync()}>
-								{
-									isPlaying
-										? <Icon name="pause" size={23} color={theme.primaryLight} />
-										: <Icon name="play" size={23} color={theme.primaryLight} />
-								}
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.button} onPress={() => nextSong(config, sound)}>
-								<Icon name="step-forward" size={23} color={theme.primaryLight} />
-							</TouchableOpacity>
+							<IconButton
+								icon="step-backward"
+								color={theme.primaryLight}
+								style={{ paddingHorizontal: 10 }}
+								onPress={() => previousSong(config, sound)}
+							/>
+							<IconButton
+								icon={isPlaying ? 'pause' : 'play'}
+								color={theme.primaryLight}
+								style={{ paddingHorizontal: 10 }}
+								onPress={() => isPlaying ? sound.pauseAsync() : sound.playAsync()}
+							/>
+							<IconButton
+								icon="step-forward"
+								color={theme.primaryLight}
+								style={{ paddingHorizontal: 10 }}
+								onPress={() => nextSong(config, sound)}
+							/>
 						</View>
 						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
-							<Icon name='bluetooth-b' size={19} color={theme.primaryTouch} />
-							<TouchableOpacity onPress={() => setIsQueue(!isQueue)}>
-								<Icon name='bars' size={19} color={theme.primaryTouch} />
-							</TouchableOpacity>
+							<IconButton
+								icon="bluetooth-b"
+								size={19}
+								onPress={() => {}}
+							/>
+							<IconButton
+								icon="bars"
+								size={19}
+								onPress={() => setIsQueue(!isQueue)}
+							/>
 						</View>
 					</View>
 				</View >

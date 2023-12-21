@@ -1,15 +1,15 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../utils/theme';
-import { ConfigContext } from '../utils/config';
-import SongsList from '../components/SongsList';
-import mainStyles from '../styles/main';
-import presStyles from '../styles/pres';
-import RandomButton from '../components/RandomButton';
-import BackButton from '../components/BackButton';
+import theme from '~/utils/theme';
+import { ConfigContext } from '~/utils/config';
+import SongsList from '~/components/SongsList';
+import mainStyles from '~/styles/main';
+import presStyles from '~/styles/pres';
+import RandomButton from '~/components/button/RandomButton';
+import BackButton from '~/components/button/BackButton';
 
 const Favorited = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -31,7 +31,7 @@ const Favorited = ({ navigation, route }) => {
 			</View>
 			<View>
 				<Text style={presStyles.title}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
-				<Text style={presStyles.subTitle}>{route.params.favorited.length} songs</Text>
+				<Text style={presStyles.subTitle}>{route.params.favorited?.length || 0} songs</Text>
 				<RandomButton songList={route.params.favorited} />
 			</View>
 			<SongsList songs={route.params.favorited} config={config} />

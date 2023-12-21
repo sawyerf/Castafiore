@@ -1,16 +1,14 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../utils/theme';
-import mainStyles from '../styles/main';
+import theme from '~/utils/theme';
+import mainStyles from '~/styles/main';
 import HorizontalAlbums from './HorizontalAlbums';
-import { getApi } from '../utils/api';
+import { getApi } from '~/utils/api';
 
-const HorizontalAlbumList = ({ config, title, type }) => {
+const HorizontalAlbumList = ({ config, title, type, refresh }) => {
 	const [albums, setAlbums] = React.useState();
-	const navigation = useNavigation();
 
 	const getAlbumList = async () => {
 		getApi(config, 'getAlbumList', `type=${type}`)
@@ -24,6 +22,11 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 		if (config.url) getAlbumList()
 	}, [config])
 
+	React.useEffect(() => {
+		if (refresh) getAlbumList()
+	}, [refresh])
+
+	if (!albums) return null;
 	return (
 		<View>
 			<View
@@ -36,11 +39,6 @@ const HorizontalAlbumList = ({ config, title, type }) => {
 					marginBottom: 10,
 				}}>
 				<Text style={{ ...mainStyles.subTitle, ...mainStyles.stdVerticalMargin }}>{title}</Text>
-				<TouchableOpacity
-					style={{ textDecoration: 'bold' }}
-					color={theme.secondaryTouch}>
-					<Icon name="chevron-right" size={20} color={theme.secondaryTouch} />
-				</TouchableOpacity>
 			</View>
 			<HorizontalAlbums config={config} albums={albums} />
 		</View>

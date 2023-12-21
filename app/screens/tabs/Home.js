@@ -1,14 +1,16 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import HorizontalAlbumList from '../../components/HorizontalAlbumList';
-import mainStyles from '../../styles/main';
-import theme from '../../utils/theme';
-import { SoundContext, playSong } from '../../utils/playSong';
-import { getConfig, ConfigContext } from '../../utils/config';
-import { getApi } from '../../utils/api';
+import HorizontalAlbumList from '~/components/HorizontalAlbumList';
+import mainStyles from '~/styles/main';
+import theme from '~/utils/theme';
+import { SoundContext, playSong } from '~/utils/playSong';
+import { ConfigContext } from '~/utils/config';
+import { getApi } from '~/utils/api';
+import { settings } from '~/utils/settings';
+import IconButton from '~/components/button/IconButton';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -69,13 +71,17 @@ const Home = ({ navigation }) => {
 					<Text style={mainStyles.subTitle}>
 						{statusRefresh.count}°
 					</Text> :
-					<TouchableOpacity onPress={refreshServer}>
-						<Icon name="refresh" size={30} color={theme.primaryLight} />
-					</TouchableOpacity>}
+					<IconButton
+						icon="refresh"
+						size={30}
+						color={theme.primaryLight}
+						style={{ paddingHorizontal: 10 }}
+						onPress={refreshServer}
+					/>}
 			</View>
-			{config?.url && <HorizontalAlbumList config={config} title={'Recently Added'} type={'newest'} />}
-			{config?.url && <HorizontalAlbumList config={config} title={'Most Played'} type={'frequent'} />}
-			{config?.url && <HorizontalAlbumList config={config} title={'Recently Played'} type={'recent'} />}
+			{config?.url && settings.homeOrder.map((value, index) =>
+				<HorizontalAlbumList key={index} config={config} refresh={refreshing} {...value} />
+			)}
 		</ScrollView>
 	);
 }

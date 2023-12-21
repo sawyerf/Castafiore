@@ -1,12 +1,11 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../utils/theme';
-import presStyles from '../styles/pres';
-import { SoundContext, playSong } from '../utils/playSong';
-import { ConfigContext } from '../utils/config';
+import theme from '~/utils/theme';
+import presStyles from '~/styles/pres';
+import { SoundContext, playSong } from '~/utils/playSong';
+import { ConfigContext } from '~/utils/config';
 
 const RandomButton = ({ songList }) => {
 	const sound = React.useContext(SoundContext)

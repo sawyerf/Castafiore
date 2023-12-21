@@ -1,10 +1,9 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import theme from '../utils/theme';
-import { SoundContext, playSong } from '../utils/playSong';
+import theme from '~/utils/theme';
 import PlayerBox from './PlayerBox';
 
 

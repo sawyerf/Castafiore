@@ -12,12 +12,12 @@ export const getApi = (config, path, query = '') => {
 					resolve(json['subsonic-response'])
 				} else {
 					console.error(`getApi[/rest/${path}]: ${JSON.stringify(json['subsonic-response']?.error)}`)
-					reject(json['subsonic-response']?.error)
+					reject({ ...json['subsonic-response']?.error, isApiError: true })
 				}
 			})
 			.catch((error) => {
 				console.error(`getApi[/rest/${path}]: ${error}`)
-				reject(error)
+				reject({ ...error, isApiError: false })
 			})
 	})
 }

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../../utils/theme';
-import SongsList from '../../components/SongsList';
-import VerticalPlaylist from '../../components/VerticalPlaylist';
-import mainStyles from '../../styles/main';
-import { ConfigContext } from '../../utils/config';
-import { getApi } from '../../utils/api';
+import theme from '~/utils/theme';
+import SongsList from '~/components/SongsList';
+import VerticalPlaylist from '~/components/VerticalPlaylist';
+import mainStyles from '~/styles/main';
+import { ConfigContext } from '~/utils/config';
+import { getApi } from '~/utils/api';
 
 
 const Playlists = ({ navigation }) => {

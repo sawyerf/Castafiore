@@ -1,16 +1,17 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-import theme from '../../utils/theme';
-import { ConfigContext, SetConfigContext } from '../../utils/config';
-import SongsList from '../../components/SongsList';
-import HorizontalArtists from '../../components/HorizontalArtists';
-import HorizontalAlbums from '../../components/HorizontalAlbums';
-import mainStyles from '../../styles/main';
-import { getApi } from '../../utils/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import theme from '~/utils/theme';
+import { ConfigContext } from '~/utils/config';
+import SongsList from '~/components/SongsList';
+import HorizontalArtists from '~/components/HorizontalArtists';
+import HorizontalAlbums from '~/components/HorizontalAlbums';
+import mainStyles from '~/styles/main';
+import { getApi } from '~/utils/api';
+import IconButton from '~/components/button/IconButton';
 
 
 const Search = ({ navigation }) => {
@@ -100,9 +101,13 @@ const Search = ({ navigation }) => {
 						return (
 							<TouchableOpacity key={index} onPress={() => setQuery(previousSearch)} style={mainStyles.stdVerticalMargin}>
 								<Text style={{ color: theme.secondaryLight, fontSize: 17, marginBottom: 15, marginTop: 10 }}><Icon name="eye" size={17} color={theme.secondaryLight} />  {previousSearch}</Text>
-								<TouchableOpacity onPress={() => delItemHistory(index)} style={{ position: 'absolute', top: 0, right: 0, height: '100%',  justifyContent: 'center', paddingHorizontal: 10 }}>
-									<Icon name="times" size={14} color={theme.secondaryLight} />
-								</TouchableOpacity>
+								<IconButton
+									icon="times"
+									size={14}
+									color={theme.secondaryLight}
+									style={{ position: 'absolute', top: 0, right: 0, height: '100%', justifyContent: 'center', paddingHorizontal: 10 }}
+									onPress={() => delItemHistory(index)}
+								/>
 								<View style={{ flex: 1, marginStart: 10, marginEnd: 10, backgroundColor: theme.secondaryDark, height: 2, borderRadius: 2 }} />
 							</TouchableOpacity>
 						)

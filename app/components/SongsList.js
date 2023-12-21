@@ -1,42 +1,11 @@
 import React from 'react';
-import { Text, View, Button, TextInput, Image, ScrollView, Touchable, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '../utils/theme';
-import { SoundContext, playSong } from '../utils/playSong';
-import { urlCover, getApi } from '../utils/api';
-
-const SongItem = ({ song, isIndex, config }) => {
-	const [star, setStar] = React.useState(song?.starred ? true : false)
-
-	const onPressFavorited = () => {
-		getApi(config, star ? 'unstar' : 'star', `id=${song.id}`)
-			.then((json) => {
-					setStar(!star)
-			})
-			.catch((error) => { })
-	}
-
-	return (
-		<>
-			<Image
-				style={styles.albumCover}
-				source={{
-					uri: urlCover(config, song.albumId, 300),
-				}}
-			/>
-			<View style={{ flex: 1, flexDirection: 'column' }}>
-				<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
-				<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
-			</View>
-			<TouchableOpacity onPress={() => onPressFavorited()} style={{ marginRight: 10, padding: 5, paddingStart: 10 }}>
-				{star
-					? <Icon name="heart" size={23} color={theme.primaryTouch} /> :
-					<Icon name="heart-o" size={23} color={theme.primaryTouch} />}
-			</TouchableOpacity>
-		</>
-	)
-}
+import theme from '~/utils/theme';
+import { SoundContext, playSong } from '~/utils/playSong';
+import { urlCover, getApi } from '~/utils/api';
+import FavoritedButton from './button/FavoritedButton';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 	const sound = React.useContext(SoundContext)
@@ -48,7 +17,17 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 		}}>
 			{songs?.map((song, index) => (
 				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(config, sound, listToPlay ? listToPlay : songs, index)}>
-					<SongItem song={song} index={index} key={index} config={config} isIndex={isIndex} />
+					<Image
+						style={styles.albumCover}
+						source={{
+							uri: urlCover(config, song.albumId, 300),
+						}}
+					/>
+					<View style={{ flex: 1, flexDirection: 'column' }}>
+						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
+						<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
+					</View>
+					<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ marginRight: 10, padding: 5, paddingStart: 10 }} />
 				</TouchableOpacity>
 			))}
 		</View>

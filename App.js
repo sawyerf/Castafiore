@@ -20,6 +20,7 @@ import TabBar from './app/components/TabBar';
 import theme from './app/utils/theme';
 import { SoundContext } from './app/utils/playSong';
 import { ConfigContext, SetConfigContext, getConfig } from './app/utils/config';
+import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -120,4 +121,7 @@ const App = () => {
     </SoundContext.Provider>
   );
 }
+
+serviceWorkerRegistration.register();
+
 export default App;

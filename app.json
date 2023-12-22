@@ -2,7 +2,7 @@
   "expo": {
     "name": "Castafiore",
     "slug": "Castafiore",
-    "version": "2023.12.21",
+    "version": "2023.12.22",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

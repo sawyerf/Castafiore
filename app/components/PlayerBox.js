@@ -35,7 +35,10 @@ const PlayerBox = ({ navigation, state }) => {
 				})
 			}
 			if (playbackStatus.didJustFinish) {
+				const id = sound.songInfo.id
 				setTimeout(() => nextSong(config, sound), 500)
+				getApi(config, 'scrobble', `id=${id}&submission=true`)
+					.catch((error) => { })
 			}
 		})
 		if (Platform.OS === 'web') {
@@ -193,7 +196,7 @@ const PlayerBox = ({ navigation, state }) => {
 							<IconButton
 								icon="bluetooth-b"
 								size={19}
-								onPress={() => {}}
+								onPress={() => { }}
 							/>
 							<IconButton
 								icon="bars"

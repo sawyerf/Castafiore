@@ -11,6 +11,7 @@ import { ConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
 import { settings } from '~/utils/settings';
 import IconButton from '~/components/button/IconButton';
+import { clearCache } from '~/services/serviceworkerRegistration';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -22,9 +23,6 @@ const Home = ({ navigation }) => {
 	const onRefresh = () => {
 		if (refreshing) return;
 		setRefreshing(true);
-		setTimeout(() => {
-			setRefreshing(false);
-		}, 1000)
 	};
 
 	const clickRandomSong = () => {
@@ -35,6 +33,15 @@ const Home = ({ navigation }) => {
 			.catch((error) => { })
 	}
 
+	React.useEffect(() => {
+		if (refreshing) {
+			clearCache()
+			setTimeout(() => {
+				setRefreshing(false)
+			}, 1000)
+		}
+	}, [refreshing])
+
 	const getStatusRefresh = () => {
 		getApi(config, 'getScanStatus')
 			.then((json) => {
@@ -44,6 +51,7 @@ const Home = ({ navigation }) => {
 					}, 1000)
 					setStatusRefresh(json.scanStatus)
 				} else {
+					setRefreshing(true)
 					setStatusRefresh()
 				}
 			})
@@ -51,6 +59,7 @@ const Home = ({ navigation }) => {
 	}
 
 	const refreshServer = () => {
+		setRefreshing(true)
 		getApi(config, 'startScan', 'fullScan=true')
 			.then((json) => {
 				getStatusRefresh()

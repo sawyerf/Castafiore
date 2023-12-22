@@ -1,7 +1,7 @@
 import { Audio } from 'expo-av';
 import React from 'react';
 import { getConfig } from './config';
-import { urlCover } from './api';
+import { getApi, urlCover } from './api';
 import { Platform } from 'react-native';
 
 // TODO: Solve Unhandle Promise Rejection Warning
@@ -28,8 +28,10 @@ export const playSong = async (config, sound, songs, index) => {
 			playsInSilentModeIOS: true,
 		}
 	)
-	fetch('/lolipop/keepAppUp')
+	getApi(config, 'scrobble', `id=${sound.songInfo.id}&submission=false`)
 		.catch((error) => { })
+	// fetch('/lolipop/keepAppUp')
+	// 	.catch((error) => { })
 	sound.songList = songs
 }
 

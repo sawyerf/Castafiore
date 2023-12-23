@@ -3,9 +3,20 @@ import React from 'react';
 import { getConfig } from './config';
 import { getApi, urlCover } from './api';
 import { Platform } from 'react-native';
+import { settings } from './settings';
 
-// TODO: Solve Unhandle Promise Rejection Warning
 export const SoundContext = React.createContext()
+
+const downloadNextSong = async (config, sound) => {
+	for (let i = -1; i < settings.cacheNextSong; i++) {
+		const index = (sound.index + sound.songList.length + i) % sound.songList.length
+		if (!sound.songList[index].isDownloaded) {
+			await fetch(`${config.url}/rest/stream?id=${sound.songList[index].id}&${config.query}`)
+				.then(_ => sound.songList[index].isDownloaded = true)
+				.catch(err => console.log('downloadNextSong:', err))
+		}
+	}
+}
 
 export const playSong = async (config, sound, songs, index) => {
 	sound.songInfo = songs[index]
@@ -19,20 +30,22 @@ export const playSong = async (config, sound, songs, index) => {
 		})
 	}
 	await sound.unloadAsync()
+	const blob = await fetch(`${config.url}/rest/stream?id=${songs[index].id}&${config.query}`)
+		.then((res) => res.blob())
+		.catch((error) => null)
 	await sound.loadAsync(
-		{ uri: `${config.url}/rest/stream?id=${songs[index].id}&${config.query}` },
+		{ uri: URL.createObjectURL(blob) },
 		{
 			shouldPlay: true,
 			staysActiveInBackground: true,
 			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 			playsInSilentModeIOS: true,
-		}
+		},
 	)
 	getApi(config, 'scrobble', `id=${sound.songInfo.id}&submission=false`)
 		.catch((error) => { })
-	// fetch('/lolipop/keepAppUp')
-	// 	.catch((error) => { })
 	sound.songList = songs
+	downloadNextSong(config, sound)
 }
 
 export const nextSong = async (config, sound) => {

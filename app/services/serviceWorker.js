@@ -11,7 +11,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
 registerRoute(
 	({ request, url }) => {
-		console.log('lol', url)
 		if (request.mode !== "navigate") {
 			return false;
 		}
@@ -62,6 +61,15 @@ registerRoute(
 	})
 );
 
+registerRoute(
+	({ url }) => {
+		return url.pathname.match(/\/rest\/stream$/)
+	},
+	new StaleWhileRevalidate({
+		cacheName: "song",
+	})
+);
+
 
 self.addEventListener("message", (event) => {
 	console.log('message', event)
@@ -70,20 +78,3 @@ self.addEventListener("message", (event) => {
 		self.skipWaiting();
 	}
 });
-
-self.addEventListener("fetch", (event) => {
-	const url = new URL(event.request.url);
-	console.log('fetch', url.href)
-
-})
-
-self.addEventListener('media', (event) => {
-	console.log('media', event.request.url)
-})
-
-self.addEventListener('onloadeddata', (event) => {
-	console.log('onloadeddata', event.request.url)
-})
-self.addEventListener('onloadstart', (event) => {
-	console.log('onloadstart', event.request.url)
-})

@@ -8,4 +8,5 @@ export const settings = {
 	],
 	// Future settings
 	endOfQueue: 'repeat', // stop, repeat, random, recomandation
+	cacheNextSong: 5,
 }

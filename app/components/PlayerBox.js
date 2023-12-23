@@ -113,7 +113,7 @@ const PlayerBox = ({ navigation, state }) => {
 							size={23}
 							color={theme.primaryTouch}
 							style={{ paddingHorizontal: 10 }}
-							onPress={() => previousSong(config, sound)}
+							onPress={() => nextSong(config, sound)}
 						/>
 						<IconButton
 							icon={isPlaying ? 'pause' : 'play'}
@@ -133,8 +133,8 @@ const PlayerBox = ({ navigation, state }) => {
 					alignItems: 'center',
 					position: 'absolute',
 					bottom: 0,
-					left: 0,
-					right: 0,
+					left: insets.left,
+					right: insets.right,
 					height: Dimensions.get('window').height,
 					width: '100%'
 				}}>

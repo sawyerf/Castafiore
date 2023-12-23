@@ -39,11 +39,11 @@ const Settings = ({ navigation }) => {
 					setConfig({ url, username, query })
 					navigation.navigate('Home')
 				} else {
-					console.log('error', json)
+					console.log('Connect api error:', json)
 				}
 			})
 			.catch((error) => {
-				console.log('error', error)
+				console.log('Connect error:', error)
 				if (error.isApiError) setError(error.message)
 				else setError('Failed to connect to server')
 			})

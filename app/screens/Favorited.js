@@ -29,9 +29,11 @@ const Favorited = ({ navigation, route }) => {
 			>
 				<Icon name="heart" size={100} color={theme.primaryTouch} />
 			</View>
-			<View>
-				<Text style={presStyles.title}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
-				<Text style={presStyles.subTitle}>{route.params.favorited?.length || 0} songs</Text>
+			<View style={presStyles.headerContainer}>
+				<View style={{ flex: 1 }}>
+					<Text style={presStyles.title}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
+					<Text style={presStyles.subTitle}>{route.params.favorited?.length || 0} songs</Text>
+				</View>
 				<RandomButton songList={route.params.favorited} />
 			</View>
 			<SongsList songs={route.params.favorited} config={config} />

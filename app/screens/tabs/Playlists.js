@@ -9,6 +9,7 @@ import VerticalPlaylist from '~/components/VerticalPlaylist';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
+import IconButton from '../../components/button/IconButton';
 
 
 const Playlists = ({ navigation }) => {
@@ -17,6 +18,8 @@ const Playlists = ({ navigation }) => {
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
+	const [newPlaylist, setNewPlaylist] = React.useState(null);
+	const [isPublic, setIsPublic] = React.useState(false);
 
 	const onRefresh = () => {
 		if (refreshing) return;
@@ -50,6 +53,17 @@ const Playlists = ({ navigation }) => {
 		}
 	}, [config])
 
+	const addPlaylist = () => {
+		if (!newPlaylist?.length) return
+		getApi(config, 'createPlaylist', `name=${newPlaylist}`)
+			.then((json) => {
+				setNewPlaylist(null)
+				getPlaylists()
+				setIsPublic(false)
+			})
+			.catch((error) => { })
+	}
+
 	return (
 		<ScrollView
 			vertical={true}
@@ -68,7 +82,47 @@ const Playlists = ({ navigation }) => {
 			</TouchableOpacity>
 			<SongsList songs={favorited?.slice(0, 3)} config={config} listToPlay={favorited} />
 			<View style={styles.subTitleParent}>
-				<Text style={mainStyles.subTitle}><Icon name="heart" size={23} color={theme.primaryTouch} /> Playlists</Text>
+				{
+					newPlaylist !== null ?
+						<>
+							<TextInput
+								style={{
+									height: 40,
+									borderColor: 'gray',
+									borderWidth: 1,
+									borderRadius: 6,
+									color: theme.primaryLight,
+									// marginEnd: 10,
+									flex: 1,
+									paddingHorizontal: 10
+								}}
+								onSubmitEditing={() => addPlaylist()}
+								autoFocus={true}
+								onChangeText={text => setNewPlaylist(text)}
+								value={newPlaylist}
+							/>
+							<IconButton
+								icon={isPublic ? 'globe' : 'lock'}
+								color={theme.primaryTouch}
+								onPress={() => setIsPublic(!isPublic)}
+								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20, flex: 'initial' }} />
+							<IconButton
+								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
+								size={20}
+								color={theme.secondaryLight}
+								style={{ padding: 10, flex: 'initial' }}
+								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
+						</> :
+						<>
+							<Text style={{ ...mainStyles.subTitle, flex: 1 }}><Icon name="heart" size={23} color={theme.primaryTouch} /> Playlists</Text>
+							<IconButton
+								icon="plus"
+								size={20}
+								color={theme.secondaryLight}
+								style={{ padding: 10, flex: 'initial' }}
+								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist('')} />
+						</>
+				}
 			</View>
 			<VerticalPlaylist playlists={playlists} config={config} />
 		</ScrollView>
@@ -79,7 +133,7 @@ const styles = {
 	subTitleParent: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center',
+		// alignItems: 'center',
 		marginTop: 20,
 		marginBottom: 20,
 		...mainStyles.stdVerticalMargin

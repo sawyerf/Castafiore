@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from '~/utils/theme';
@@ -15,14 +15,18 @@ const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
 	const [songs, setSongs] = React.useState([]);
 	const config = React.useContext(ConfigContext)
+	const [info, setInfo] = React.useState(null)
+	const [title, setTitle] = React.useState(null)
 
+	const getPlaylist = () => {
+		getApi(config, 'getPlaylist', `id=${route.params.playlist.id}`)
+			.then((json) => {
+				setInfo(json?.playlist)
+				setSongs(json?.playlist?.entry)
+			})
+	}
 	React.useEffect(() => {
-		if (config.url) {
-			getApi(config, 'getPlaylist', `id=${route.params.playlist.id}`)
-				.then((json) => {
-						setSongs(json?.playlist?.entry)
-				})
-		}
+		if (config.url) getPlaylist()
 	}, [config, route.params.playlist])
 
 	return (
@@ -40,9 +44,31 @@ const Playlist = ({ navigation, route }) => {
 					uri: urlCover(config, route.params.playlist.id),
 				}}
 			/>
-			<View>
-				<Text style={presStyles.title}>{route.params.playlist.name}</Text>
-				<Text style={presStyles.subTitle}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>
+			<View style={presStyles.headerContainer}>
+				<View style={{flex: 1}}>
+					{
+						title != null ?
+							<TextInput
+								style={presStyles.title}
+								value={title}
+								onChangeText={text => setTitle(text)}
+								autoFocus={true}
+								onSubmitEditing={() => {
+									getApi(config, 'updatePlaylist', `playlistId=${route.params.playlist.id}&name=${title}`)
+										.then((json) => {
+											setTitle(null)
+											getPlaylist()
+										})
+								}}
+								onBlur={() => setTitle(null)}
+							/>
+							:
+							<TouchableOpacity onLongPress={() => setTitle(info.name)} delayLongPress={200}>
+								<Text style={presStyles.title} numberOfLines={2}>{info?.name}</Text>
+							</TouchableOpacity>
+					}
+					<Text style={presStyles.subTitle}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>
+				</View>
 				<RandomButton songList={songs} />
 			</View>
 			<SongsList config={config} songs={songs} />

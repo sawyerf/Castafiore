@@ -1,3 +1,5 @@
+import { Platform } from "react-native"
+
 export const getApi = (config, path, query = '') => {
 	return new Promise((resolve, reject) => {
 		if (!config?.url || !config?.query) {
@@ -29,4 +31,14 @@ export const urlCover = (config, id, size = null) => {
 		return `${config.url}/rest/getCoverArt?id=${id}&${config.query}`
 	}
 	return `${config.url}/rest/getCoverArt?id=${id}&size=${size}&${config.query}`
+}
+
+export const urlStream = async (config, id) => {
+	if (Platform.OS === 'web') {
+		return await fetch(`${config.url}/rest/stream?id=${id}&${config.query}`)
+			.then((res) => res.blob())
+			.then(blob => URL.createObjectURL(blob))
+			.catch((_) => null)
+	}
+	return `${config.url}/rest/stream?id=${id}&${config.query}`
 }

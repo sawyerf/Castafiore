@@ -6,9 +6,13 @@ import theme from '~/utils/theme';
 import { SoundContext, playSong } from '~/utils/playSong';
 import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from './button/FavoritedButton';
+import OptionsPopup from './OptionsPopup';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 	const sound = React.useContext(SoundContext)
+	const [visible, setVisible] = React.useState(-1)
+	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
+	const [playlistList, setPlaylistList] = React.useState([])
 
 	return (
 		<View style={{
@@ -16,20 +20,66 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 			paddingRight: 10,
 		}}>
 			{songs?.map((song, index) => (
-				<TouchableOpacity style={styles.song} key={song.id} onPress={() => playSong(config, sound, listToPlay ? listToPlay : songs, index)}>
-					<Image
-						style={styles.albumCover}
-						source={{
-							uri: urlCover(config, song.albumId, 300),
-						}}
-					/>
-					<View style={{ flex: 1, flexDirection: 'column' }}>
-						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
-						<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
-					</View>
-					<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ marginRight: 10, padding: 5, paddingStart: 10 }} />
-				</TouchableOpacity>
-			))}
+				<View key={index}>
+					{
+						isIndex && multiCD && (index === 0 || songs[index - 1].discNumber !== song.discNumber) &&
+						<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 25, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
+							<Icon name="circle-o" size={23} color={theme.secondaryLight} />
+							<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {song.discNumber}</Text>
+						</View>
+					}
+					<TouchableOpacity style={styles.song} key={song.id}
+						onLongPress={() => setVisible(index)}
+						delayLongPress={200}
+						onPress={() => playSong(config, sound, listToPlay ? listToPlay : songs, index)}>
+						<Image
+							style={styles.albumCover}
+							source={{
+								uri: urlCover(config, song.albumId, 300),
+							}}
+						/>
+						<View style={{ flex: 1, flexDirection: 'column' }}>
+							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
+						</View>
+						<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ marginRight: 10, padding: 5, paddingStart: 10 }} />
+					</TouchableOpacity>
+					<OptionsPopup visible={visible === index} options={[
+						{
+							name: 'Add Playlist',
+							icon: 'plus',
+							onPress: () => {
+								getApi(config, 'getPlaylists')
+									.then((json) => {
+										setPlaylistList(json.playlists.playlist)
+									})
+									.catch((error) => { })
+							}
+						},
+						...playlistList?.map((playlist, index) => ({
+							name: playlist.name,
+							icon: 'angle-right',
+							onPress: () => {
+								getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${song.id}`)
+									.then((json) => {
+										setVisible(-1)
+										setPlaylistList([])
+									})
+									.catch((error) => { })
+							}
+						})),
+						{
+							name: 'close',
+							icon: 'close',
+							onPress: () => {
+								setVisible(-1)
+								setPlaylistList([])
+							}
+						}
+					]} />
+				</View>
+			)
+			)}
 		</View>
 	)
 }

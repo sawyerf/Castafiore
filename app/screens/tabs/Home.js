@@ -11,7 +11,7 @@ import { ConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
 import { settings } from '~/utils/settings';
 import IconButton from '~/components/button/IconButton';
-import { clearCache } from '~/services/serviceworkerRegistration';
+import { clearCache } from '~/services/serviceWorkerRegistration';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();

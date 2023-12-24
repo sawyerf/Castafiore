@@ -1,7 +1,7 @@
 import { Audio } from 'expo-av';
 import React from 'react';
 import { getConfig } from './config';
-import { getApi, urlCover } from './api';
+import { getApi, urlCover, urlStream } from './api';
 import { Platform } from 'react-native';
 import { settings } from './settings';
 
@@ -11,9 +11,10 @@ const downloadNextSong = async (config, sound) => {
 	for (let i = -1; i < settings.cacheNextSong; i++) {
 		const index = (sound.index + sound.songList.length + i) % sound.songList.length
 		if (!sound.songList[index].isDownloaded) {
-			await fetch(`${config.url}/rest/stream?id=${sound.songList[index].id}&${config.query}`)
-				.then(_ => sound.songList[index].isDownloaded = true)
-				.catch(err => console.log('downloadNextSong:', err))
+			await urlStream(config, sound.songList[index].id)
+				.then ((_) => {
+					sound.songList[index].isDownloaded = true
+				})
 		}
 	}
 }
@@ -30,11 +31,8 @@ export const playSong = async (config, sound, songs, index) => {
 		})
 	}
 	await sound.unloadAsync()
-	const blob = await fetch(`${config.url}/rest/stream?id=${songs[index].id}&${config.query}`)
-		.then((res) => res.blob())
-		.catch((error) => null)
 	await sound.loadAsync(
-		{ uri: URL.createObjectURL(blob) },
+		{ uri: await urlStream(config, songs[index].id) },
 		{
 			shouldPlay: true,
 			staysActiveInBackground: true,

@@ -21,7 +21,7 @@ const Album = ({ navigation, route }) => {
 		if (config.url) {
 			getApi(config, 'getAlbum', `id=${route.params.album.id}`)
 				.then((json) => {
-						setSongs(json?.album?.song)
+					setSongs(json?.album?.song)
 				})
 				.catch((error) => { })
 		}
@@ -42,13 +42,15 @@ const Album = ({ navigation, route }) => {
 					uri: urlCover(config, route.params.album.id),
 				}}
 			/>
-			<View>
-				<Text style={presStyles.title}>{route.params.album.name}</Text>
-				<TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}>
-					<Text style={presStyles.subTitle}>{route.params.album.artist}</Text>
-				</TouchableOpacity>
-				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ position: 'absolute', top: 0, right: 35 }} config={config} />
-				<RandomButton songList={songs} />
+			<View style={presStyles.headerContainer}>
+				<View style={{ flex: 1 }}>
+					<Text style={presStyles.title} numberOfLines={2}>{route.params.album.name}</Text>
+					<TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}>
+						<Text style={presStyles.subTitle}>{route.params.album.artist}</Text>
+					</TouchableOpacity>
+				</View>
+					<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 10}} config={config} />
+					<RandomButton songList={songs} />
 			</View>
 			<SongsList config={config} songs={songs} isIndex={true} />
 		</ScrollView>

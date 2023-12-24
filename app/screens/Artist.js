@@ -68,11 +68,13 @@ const Artist = ({ navigation, route }) => {
 					uri: urlCover(config, artist.id),
 				}}
 			/>
-			<View>
-				<Text style={{ ...presStyles.title }}>{route.params.artist.name}</Text>
-				<Text style={presStyles.subTitle}>Artist</Text>
+			<View style={presStyles.headerContainer}>
+				<View style={{ flex: 1 }}>
+					<Text style={{ ...presStyles.title }}>{route.params.artist.name}</Text>
+					<Text style={presStyles.subTitle}>Artist</Text>
+				</View>
 				<IconButton
-					style={presStyles.button}
+					style={{...presStyles.button, justifyContent: undefined}}
 					icon="random"
 					size={25}
 					onPress={getSimilarSongs}
@@ -80,13 +82,15 @@ const Artist = ({ navigation, route }) => {
 			</View>
 			<Text style={{ ...mainStyles.subTitle, marginStart: 20 }}>Albums</Text>
 			<HorizontalAlbums config={config} albums={artist.album} />
-			{artistInfo?.similarArtist?.length && (
-				<>
-					<Text style={{ ...mainStyles.subTitle, margin: 20 }}>Similar Artist</Text>
-					<HorizontalArtists config={config} artists={artistInfo.similarArtist} />
-				</>
-			)}
-		</ScrollView>
+			{
+				artistInfo?.similarArtist?.length && (
+					<>
+						<Text style={{ ...mainStyles.subTitle, margin: 20 }}>Similar Artist</Text>
+						<HorizontalArtists config={config} artists={artistInfo.similarArtist} />
+					</>
+				)
+			}
+		</ScrollView >
 	)
 }
 

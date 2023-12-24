@@ -85,8 +85,8 @@ const PlayerBox = ({ navigation, state }) => {
 					style={{
 						position: 'absolute',
 						bottom: (insets.bottom ? insets.bottom : 15) + 53,
-						left: 0,
-						right: 0,
+						left: insets.left,
+						right: insets.right,
 
 						flexDirection: 'row',
 						backgroundColor: theme.secondaryDark,
@@ -104,7 +104,7 @@ const PlayerBox = ({ navigation, state }) => {
 						/>
 					</View>
 					<View style={styles.boxPlayerText}>
-						<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.title ? sound.songInfo.title : 'Song title'}</Text>
+						<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.track ? `${sound?.songInfo?.track}. ` : null}{sound?.songInfo?.title ? sound.songInfo.title : 'Song title'}</Text>
 						<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.artist ? sound.songInfo.artist : 'Artist'}</Text>
 					</View>
 					<View style={styles.boxPlayerButton}>

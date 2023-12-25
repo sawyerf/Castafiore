@@ -1,16 +1,8 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity, Platform, Dimensions } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { SoundContext, nextSong, previousSong } from '~/utils/playSong';
 import theme from '~/utils/theme';
-import mainStyles from '~/styles/main';
-import presStyles from '~/styles/pres';
-import { ConfigContext } from '~/utils/config';
-import { urlCover, getApi } from '~/utils/api';
-import FavoritedButton from './button/FavoritedButton';
-import IconButton from './button/IconButton';
 
 const OptionsPopup = ({ visible, options }) => {
 	if (!visible) return null;

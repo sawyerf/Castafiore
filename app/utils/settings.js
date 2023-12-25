@@ -1,4 +1,3 @@
-
 export const settings = {
 	homeOrder: [
 		{ title: 'Favorited', type: 'starred' },

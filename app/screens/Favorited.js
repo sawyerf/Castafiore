@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 

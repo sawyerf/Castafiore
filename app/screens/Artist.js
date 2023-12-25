@@ -1,9 +1,7 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '~/utils/theme';
 import HorizontalAlbums from '~/components/HorizontalAlbums';
 import HorizontalArtists from '~/components/HorizontalArtists';
 import mainStyles from '~/styles/main';

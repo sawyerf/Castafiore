@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "export:web": "expo export:web"
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
@@ -16,7 +17,6 @@
     "@react-navigation/native-stack": "^6.9.17",
     "expo": "~49.0.15",
     "expo-av": "~13.4.1",
-    "expo-status-bar": "~1.6.0",
     "md5": "^2.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -24,13 +24,12 @@
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-vector-icons": "^10.0.2",
-    "react-native-web": "~0.19.6",
-    "expo-asset": "~8.10.1"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "babel-plugin-root-import": "^6.6.0",
-    "workbox-webpack-plugin": "^6.1.5",
+    "webpack-bundle-analyzer": "^4.10.1",
     "workbox-background-sync": "^6.1.5",
     "workbox-broadcast-update": "^6.1.5",
     "workbox-cacheable-response": "^6.1.5",
@@ -42,7 +41,8 @@
     "workbox-range-requests": "^6.1.5",
     "workbox-routing": "^6.1.5",
     "workbox-strategies": "^6.1.5",
-    "workbox-streams": "^6.1.5"
+    "workbox-streams": "^6.1.5",
+    "workbox-webpack-plugin": "^6.1.5"
   },
   "private": true
 }

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import theme from '~/utils/theme';

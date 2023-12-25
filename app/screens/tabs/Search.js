@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';

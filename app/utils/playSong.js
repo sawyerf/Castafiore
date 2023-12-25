@@ -1,8 +1,8 @@
 import { Audio } from 'expo-av';
 import React from 'react';
-import { getConfig } from './config';
-import { getApi, urlCover, urlStream } from './api';
 import { Platform } from 'react-native';
+
+import { getApi, urlCover, urlStream } from './api';
 import { settings } from './settings';
 
 export const SoundContext = React.createContext()

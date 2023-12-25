@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import HorizontalAlbumList from '~/components/HorizontalAlbumList';
 import mainStyles from '~/styles/main';
@@ -11,7 +10,6 @@ import { ConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
 import { settings } from '~/utils/settings';
 import IconButton from '~/components/button/IconButton';
-import { clearCache } from '~/services/serviceWorkerRegistration';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();

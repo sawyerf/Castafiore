@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -9,7 +9,7 @@ import VerticalPlaylist from '~/components/VerticalPlaylist';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
-import IconButton from '../../components/button/IconButton';
+import IconButton from '~/components/button/IconButton';
 
 
 const Playlists = ({ navigation }) => {

@@ -15,7 +15,7 @@ export const register = (config) => {
 		}
 
 		window.addEventListener("load", () => {
-			const swUrl = `/serviceWorker.js`;
+			const swUrl = `./serviceWorker.js`;
 
 			if (isLocalhost) {
 				checkValidServiceWorker(swUrl, config);

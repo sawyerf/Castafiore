@@ -47,7 +47,6 @@ const PlayerBox = ({ navigation, state }) => {
 			});
 			navigator.mediaSession.setActionHandler("play", () => {
 				sound.playAsync()
-				fetch('/lolipop/keepAppUp')
 			});
 			navigator.mediaSession.setActionHandler("previoustrack", () => {
 				setTimeout(() => previousSong(config, sound), 500)

@@ -38,7 +38,7 @@ export const urlStream = async (config, id) => {
 		return await fetch(`${config.url}/rest/stream?id=${id}&${config.query}`)
 			.then((res) => res.blob())
 			.then(blob => URL.createObjectURL(blob))
-			.catch((_) => null)
+			.catch((_) => `${config.url}/rest/stream?id=${id}&${config.query}`)
 	}
 	return `${config.url}/rest/stream?id=${id}&${config.query}`
 }

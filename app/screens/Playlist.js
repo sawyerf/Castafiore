@@ -24,7 +24,9 @@ const Playlist = ({ navigation, route }) => {
 				setInfo(json?.playlist)
 				setSongs(json?.playlist?.entry)
 			})
+			.catch(_ => { })
 	}
+
 	React.useEffect(() => {
 		if (config.url) getPlaylist()
 	}, [config, route.params.playlist])
@@ -45,7 +47,7 @@ const Playlist = ({ navigation, route }) => {
 				}}
 			/>
 			<View style={presStyles.headerContainer}>
-				<View style={{flex: 1}}>
+				<View style={{ flex: 1 }}>
 					{
 						title != null ?
 							<TextInput
@@ -59,6 +61,7 @@ const Playlist = ({ navigation, route }) => {
 											setTitle(null)
 											getPlaylist()
 										})
+										.catch(_ => { })
 								}}
 								onBlur={() => setTitle(null)}
 							/>

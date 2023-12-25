@@ -35,7 +35,7 @@ const Home = ({ navigation }) => {
 
 	React.useEffect(() => {
 		if (refreshing) {
-			clearCache()
+			// clearCache()
 			setTimeout(() => {
 				setRefreshing(false)
 			}, 1000)

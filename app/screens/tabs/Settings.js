@@ -9,6 +9,7 @@ import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import { ConfigContext, SetConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
+import { clearAllCaches } from '~/services/serviceWorkerRegistration';
 
 const Settings = ({ navigation }) => {
 	const [serverUrl, setServerUrl] = React.useState('');
@@ -86,6 +87,12 @@ const Settings = ({ navigation }) => {
 				onPress={connect}
 			>
 				<Text style={{ color: theme.primaryTouch }}>Connect</Text>
+			</TouchableOpacity>
+			<TouchableOpacity
+				onPress={clearAllCaches}
+				style={{ marginTop: 20 }}
+			>
+				<Text style={{ color: theme.primaryTouch }}>Clear All Cache</Text>
 			</TouchableOpacity>
 		</View>
 	)

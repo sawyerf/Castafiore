@@ -6,7 +6,7 @@ const isLocalhost = Boolean(
 	)
 );
 
-export function register(config) {
+export const register = (config) => {
 	const isEnvProduction = process.env.NODE_ENV === "production";
 	if (isEnvProduction && "serviceWorker" in navigator) {
 		const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
@@ -30,7 +30,7 @@ export function register(config) {
 	}
 }
 
-function registerValidSW(swUrl, config) {
+const registerValidSW = (swUrl, config) => {
 	navigator.serviceWorker
 		.register(swUrl)
 		.then((registration) => {
@@ -62,7 +62,7 @@ function registerValidSW(swUrl, config) {
 		});
 }
 
-function checkValidServiceWorker(swUrl, config) {
+const checkValidServiceWorker = (swUrl, config) => {
 	fetch(swUrl, {
 		headers: { "Service-Worker": "script" },
 	})
@@ -86,7 +86,7 @@ function checkValidServiceWorker(swUrl, config) {
 		});
 }
 
-export function unregister() {
+export const unregister = () => {
 	if ("serviceWorker" in navigator) {
 		navigator.serviceWorker.ready
 			.then((registration) => {
@@ -100,12 +100,18 @@ export function unregister() {
 
 export const clearCache = async () => {
 	caches.keys().then((names) => {
-		// ['coverArt', 'api'].forEach((key) => {
-		names.forEach((key) => {
-
+		['coverArt', 'api'].forEach((key) => {
 			if (names.includes(key)) {
 				caches.delete(key);
 			}
+		})
+	});
+}
+
+export const clearAllCaches = async () => {
+	caches.keys().then((names) => {
+		names.forEach((key) => {
+			caches.delete(key);
 		})
 	});
 }

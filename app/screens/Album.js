@@ -17,10 +17,17 @@ const Album = ({ navigation, route }) => {
 	const config = React.useContext(ConfigContext)
 
 	React.useEffect(() => {
-		if (config.url) {
+		if (config.query) {
 			getApi(config, 'getAlbum', `id=${route.params.album.id}`)
 				.then((json) => {
-					setSongs(json?.album?.song)
+					setSongs(json?.album?.song.sort((a, b) => {
+						// sort by discNumber and track
+						if (a.discNumber < b.discNumber) return -1;
+						if (a.discNumber > b.discNumber) return 1;
+						if (a.track < b.track) return -1;
+						if (a.track > b.track) return 1;
+						return 0;
+					}))
 				})
 				.catch((error) => { })
 		}

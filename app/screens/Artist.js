@@ -45,7 +45,7 @@ const Artist = ({ navigation, route }) => {
 	}
 
 	React.useEffect(() => {
-		if (config.url) {
+		if (config.query) {
 			getArtist()
 			getArtistInfo()
 		}

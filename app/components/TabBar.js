@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ConfigContext } from '~/utils/config';
 
 import theme from '~/utils/theme';
 import PlayerBox from './PlayerBox';
@@ -9,6 +10,13 @@ import PlayerBox from './PlayerBox';
 
 const TabBar = ({ state, descriptors, navigation }) => {
   const insets = useSafeAreaInsets();
+  const config = React.useContext(ConfigContext)
+
+  React.useEffect(() => {
+    if (config.query === null) {
+      navigation.navigate('Settings')
+    }
+  }, [config.query])
 
   return (
     <View>
@@ -46,6 +54,12 @@ const TabBar = ({ state, descriptors, navigation }) => {
             });
           };
 
+          const getColor = () => {
+            if (isFocused) return theme.primaryTouch
+            if (!config.query && route.name !== 'Settings') return theme.secondaryLight
+            return theme.primaryLight
+          }
+
           return (
             <TouchableOpacity
               accessibilityRole="button"
@@ -56,9 +70,10 @@ const TabBar = ({ state, descriptors, navigation }) => {
               onLongPress={onLongPress}
               style={{ flex: 1 }}
               key={index}
+              disabled={(!config.query && route.name !== 'Settings')}
             >
-              <Icon name={options.icon} size={20} color={isFocused ? theme.primaryTouch : theme.primaryLight} style={{ alignSelf: 'center', marginBottom: 5 }} />
-              <Text style={{ color: isFocused ? theme.primaryTouch : theme.primaryLight, textAlign: 'center' }}>
+              <Icon name={options.icon} size={20} color={getColor()} style={{ alignSelf: 'center', marginBottom: 5 }} />
+              <Text style={{ color: getColor(), textAlign: 'center' }}>
                 {options.title}
               </Text>
             </TouchableOpacity>

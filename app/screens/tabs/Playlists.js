@@ -47,7 +47,7 @@ const Playlists = ({ navigation }) => {
 	}
 
 	React.useEffect(() => {
-		if (config.url) {
+		if (config.query) {
 			getFavorited()
 			getPlaylists()
 		}

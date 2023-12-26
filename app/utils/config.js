@@ -2,10 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 
 export const getConfig = async () => {
-	const query = await AsyncStorage.getItem('config.query')
-	const url = await AsyncStorage.getItem('config.url')
-	const username = await AsyncStorage.getItem('config.user')
-	return { url, query, username }
+	const config = await AsyncStorage.getItem('config')
+	if (config === null) return {url: null, username: null, query: null}
+	return JSON.parse(config)
 }
 
 export const ConfigContext = React.createContext()

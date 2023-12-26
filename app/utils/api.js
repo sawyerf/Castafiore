@@ -25,7 +25,7 @@ export const getApi = (config, path, query = '') => {
 }
 
 export const urlCover = (config, id, size = null) => {
-	if (!config.url) return null
+	if (!config?.url || !config?.query) return null
 	if (!id) return null
 	if (!size) {
 		return `${config.url}/rest/getCoverArt?id=${id}&${config.query}`

@@ -27,7 +27,7 @@ const Playlist = ({ navigation, route }) => {
 	}
 
 	React.useEffect(() => {
-		if (config.url) getPlaylist()
+		if (config.query) getPlaylist()
 	}, [config, route.params.playlist])
 
 	return (

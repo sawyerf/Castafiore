@@ -1,0 +1,28 @@
+{
+  "name": "Castafiore",
+  "short_name": "Castafiore",
+  "description": "Mobile app for navidrome",
+  "lang": "en",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "start_url": "./index.html",
+  "icons": [
+    {
+      "src": "./pwa/apple-touch-icon/apple-touch-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "./favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "./favicon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ]
+}

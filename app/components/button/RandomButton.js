@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '~/utils/theme';
 import presStyles from '~/styles/pres';
-import { SoundContext, playSong } from '~/utils/playSong';
+import { SoundContext, playSong } from '~/utils/player';
 import { ConfigContext } from '~/utils/config';
 
 const RandomButton = ({ songList }) => {

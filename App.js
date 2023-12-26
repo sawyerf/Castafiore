@@ -18,7 +18,7 @@ import Playlist from './app/screens/Playlist';
 import TabBar from './app/components/TabBar';
 
 import theme from './app/utils/theme';
-import { SoundContext } from './app/utils/playSong';
+import { SoundContext } from './app/utils/player';
 import { ConfigContext, SetConfigContext, getConfig } from './app/utils/config';
 import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
 

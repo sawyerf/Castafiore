@@ -9,9 +9,7 @@ const OptionsPopup = ({ visible, options }) => {
 	return (
 		<View style={{
 			width: "100%",
-			// height: 100,
 			marginBottom: 10,
-			// backgroundColor: theme.primaryTouch,
 			backgroundColor: theme.primaryDark,
 			zIndex: 1,
 		}}>

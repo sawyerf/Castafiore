@@ -29,7 +29,7 @@ const Settings = ({ navigation }) => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
-		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=sublol&f=json`
+		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore&f=json`
 
 		getApi({ url: uri, query }, 'ping.view')
 			.then((json) => {
@@ -116,14 +116,13 @@ const styles = {
 		height: 50,
 		marginBottom: 20,
 		justifyContent: "center",
-		padding: 20,
+		paddingHorizontal: 20,
 		borderColor: theme.secondaryLight,
 		borderWidth: 1,
 		color: theme.primaryLight,
 	},
 	loginBtn: {
 		width: "80%",
-		// borderRadius: 25,
 		height: 50,
 		alignItems: "center",
 		justifyContent: "center",

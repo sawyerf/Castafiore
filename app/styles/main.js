@@ -10,6 +10,7 @@ export default {
 		paddingRight: insets.right,
 	}),
 	contentMainContainer: (insets) => ({
+		// add inset because for screen home for ios and android, the refresh change the height of the screen
 		paddingBottom: insets.bottom + 80
 	}),
 	mainTitle: { color: theme.primaryLight, fontSize: 30, fontWeight: 'bold', margin: 20, marginTop: 30 },

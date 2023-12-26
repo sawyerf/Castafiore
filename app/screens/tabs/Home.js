@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HorizontalAlbumList from '~/components/HorizontalAlbumList';
 import mainStyles from '~/styles/main';
 import theme from '~/utils/theme';
-import { SoundContext, playSong } from '~/utils/playSong';
+import { SoundContext, playSong } from '~/utils/player';
 import { ConfigContext } from '~/utils/config';
 import { getApi } from '~/utils/api';
 import { settings } from '~/utils/settings';
@@ -33,7 +33,6 @@ const Home = ({ navigation }) => {
 
 	React.useEffect(() => {
 		if (refreshing) {
-			// clearCache()
 			setTimeout(() => {
 				setRefreshing(false)
 			}, 1000)
@@ -68,10 +67,12 @@ const Home = ({ navigation }) => {
 	return (
 		<ScrollView vertical={true}
 			style={mainStyles.mainContainer(insets)}
-			refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}
+			// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
+		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
-				<TouchableOpacity style={styles.boxRandom} onPress={clickRandomSong}>
+				<TouchableOpacity style={styles.boxRandom}
+					onPress={clickRandomSong}>
 					<Text style={styles.textRandom}>Random Song</Text>
 				</TouchableOpacity>
 				{statusRefresh ?
@@ -83,7 +84,9 @@ const Home = ({ navigation }) => {
 						size={30}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
-						onPress={refreshServer}
+						onLongPress={refreshServer}
+						delayLongPress={200}
+						onPress={() => setRefreshing(true)}
 					/>}
 			</View>
 			{config?.url && settings.homeOrder.map((value, index) =>

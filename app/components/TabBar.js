@@ -11,6 +11,7 @@ import PlayerBox from './PlayerBox';
 const TabBar = ({ state, descriptors, navigation }) => {
   const insets = useSafeAreaInsets();
   const config = React.useContext(ConfigContext)
+  const [isFullScreen, setIsFullScreen] = React.useState(false)
 
   React.useEffect(() => {
     if (config.query === null) {
@@ -20,8 +21,8 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
   return (
     <View>
-      <PlayerBox navigation={navigation} state={state} />
-      <View style={{
+      <PlayerBox navigation={navigation} state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
+      {!isFullScreen && <View style={{
         flexDirection: 'row',
         backgroundColor: theme.secondaryDark,
         borderTopColor: theme.secondaryDark,
@@ -30,7 +31,8 @@ const TabBar = ({ state, descriptors, navigation }) => {
         paddingTop: 10,
         paddingLeft: insets.left,
         paddingRight: insets.right,
-      }}>
+      }}
+      >
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
@@ -79,7 +81,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
             </TouchableOpacity>
           );
         })}
-      </View>
+      </View> }
     </View>
   );
 }

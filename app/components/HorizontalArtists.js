@@ -11,7 +11,6 @@ const HorizontalArtists = ({ config, artists }) => {
 	return (
 		<ScrollView horizontal={true} style={{
 			flexDirection: 'row',
-			// alignItems: 'center',
 			paddingEnd: 10,
 			paddingStart: 10,
 		}}>

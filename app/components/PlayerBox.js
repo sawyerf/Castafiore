@@ -3,7 +3,7 @@ import { Text, View, Image, ScrollView, TouchableOpacity, Platform, Dimensions }
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { SoundContext, nextSong, previousSong } from '~/utils/playSong';
+import { SoundContext, nextSong, previousSong } from '~/utils/player';
 import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/utils/config';
@@ -12,7 +12,7 @@ import SongsList from './SongsList';
 import FavoritedButton from './button/FavoritedButton';
 import IconButton from './button/IconButton';
 
-const PlayerBox = ({ navigation, state }) => {
+const PlayerBox = ({ navigation, state, fullscreen }) => {
 	const insets = useSafeAreaInsets();
 	const sound = React.useContext(SoundContext)
 	const config = React.useContext(ConfigContext)
@@ -21,7 +21,6 @@ const PlayerBox = ({ navigation, state }) => {
 		current: 0,
 		total: 0,
 	})
-	const [isFullScreen, setIsFullScreen] = React.useState(false)
 	const [isQueue, setIsQueue] = React.useState(false)
 
 	React.useEffect(() => {
@@ -63,22 +62,22 @@ const PlayerBox = ({ navigation, state }) => {
 	}, [sound])
 
 	React.useEffect(() => {
-		setIsFullScreen(false)
+		fullscreen.set(false)
 	}, [state.index])
 
 	React.useEffect(() => {
 		setIsQueue(false)
-	}, [isFullScreen, sound.songInfo])
+	}, [fullscreen.value, sound.songInfo])
 
 	const secondToTime = (second) => {
 		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 	}
 
 	if (sound?.songInfo) {
-		if (!isFullScreen) {
+		if (!fullscreen.value) {
 			return (
 				<TouchableOpacity
-					onPress={() => setIsFullScreen(true)}
+					onPress={() => fullscreen.set(true)}
 					activeOpacity={1}
 					style={{
 						position: 'absolute',
@@ -134,6 +133,7 @@ const PlayerBox = ({ navigation, state }) => {
 					left: insets.left,
 					right: insets.right,
 					height: Dimensions.get('window').height,
+					paddingBottom: insets.bottom ? insets.bottom : 10,
 					width: '100%'
 				}}>
 					<TouchableOpacity style={{
@@ -142,57 +142,66 @@ const PlayerBox = ({ navigation, state }) => {
 						left: insets.left,
 						padding: 20,
 						zIndex: 2,
-					}} onPress={() => setIsFullScreen(false)}>
-						<Icon name="chevron-left" size={23} color={theme.primaryLight} />
+					}} onPress={() => fullscreen.set(false)}>
+						<Icon name="chevron-down" size={23} color={theme.primaryLight} />
 					</TouchableOpacity>
-					<View style={{ paddingHorizontal: 25, maxWidth: 500, width: '100%', alignItems: 'center', flexDirection: 'column' }}>
-						{!isQueue ?
-							<Image
-								source={{ uri: urlCover(config, sound?.songInfo?.albumId) }}
-								style={styles.albumImage}
-							/> :
-							<ScrollView style={{ ...styles.albumImage, width: '100%', aspectRatio: 100 / 90, }} showsVerticalScrollIndicator={false}>
-								<SongsList config={config} songs={sound.songList} />
-							</ScrollView>
-						}
+					<View style={{ paddingHorizontal: 25, maxWidth: 500, width: '100%', alignItems: 'center', flexDirection: 'column', flex: 1, paddingBottom: 43, paddingTop: 63 }}>
+						<View style={{ flex: 1, justifyContent: 'flex-end', width: '100%' }}>
+							{!isQueue ?
+								<Image
+									source={{ uri: urlCover(config, sound?.songInfo?.albumId) }}
+									style={styles.albumImage}
+								/> :
+								<ScrollView style={{ ...styles.albumImage, borderRadius: null }} showsVerticalScrollIndicator={false}>
+									<SongsList config={config} songs={sound.songList} isMargin={false} indexPlaying={sound.index} />
+								</ScrollView>
+							}
+						</View>
 
-						<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
+						<View style={{ flexDirection: 'row', marginTop: 20, width: '100%', flex: 'initial' }}>
 							<View style={{ flex: 1 }}>
 								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{sound.songInfo.title}</Text>
 								<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{sound.songInfo.artist} · {sound.songInfo.album}</Text>
 							</View>
 							<FavoritedButton id={sound.songInfo.id} isFavorited={sound.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
 						</View>
-						<View style={{ width: '100%', height: 6, borderRadius: 3, backgroundColor: theme.primaryLight, marginTop: 30, overflow: 'hidden' }} >
-							<View style={{ width: `${(timer.current / timer.total) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
+						<View style={{ width: '100%', height: 6, marginTop: 30, flex: 'initial' }} >
+							<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden', flex: 'initial' }} >
+								<View style={{ width: `${(timer.current / timer.total) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
+							</View>
+							<View style={{ position: 'absolute', width: 6, height: 12, borderRadius: 6, backgroundColor: theme.primaryTouch, left: `${(timer.current / timer.total - 0.01) * 100}%`, top: -3 }} />
 						</View>
-						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 10 }}>
+
+						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 10, flex: 'initial' }}>
 							<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.current)}</Text>
 							<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.total)}</Text>
 						</View>
-						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
+						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30, flex: 'inital' }}>
 							<IconButton
 								icon="step-backward"
+								size={30}
 								color={theme.primaryLight}
 								style={{ paddingHorizontal: 10 }}
 								onPress={() => previousSong(config, sound)}
 							/>
 							<IconButton
 								icon={isPlaying ? 'pause' : 'play'}
+								size={30}
 								color={theme.primaryLight}
 								style={{ paddingHorizontal: 10 }}
 								onPress={() => isPlaying ? sound.pauseAsync() : sound.playAsync()}
 							/>
 							<IconButton
 								icon="step-forward"
+								size={30}
 								color={theme.primaryLight}
 								style={{ paddingHorizontal: 10 }}
 								onPress={() => nextSong(config, sound)}
 							/>
 						</View>
-						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
+						<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginVertical: 30, flex: 'initial' }}>
 							<IconButton
-								icon="bluetooth-b"
+								icon="repeat"
 								size={19}
 								onPress={() => { }}
 							/>
@@ -228,12 +237,10 @@ const styles = {
 		padding: 10,
 	},
 	albumImage: {
-		// height: Dimensions.get('window').width * 0.80,
-		// maxWidth: 350,
-		width: '90%',
+		width: '100%',
+		maxWidth: '100%',
 		aspectRatio: 1,
 		borderRadius: 10,
-		marginTop: 100,
 	}
 }
 

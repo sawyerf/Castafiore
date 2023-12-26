@@ -6,7 +6,7 @@ import HorizontalAlbums from '~/components/HorizontalAlbums';
 import HorizontalArtists from '~/components/HorizontalArtists';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
-import { SoundContext, playSong } from '~/utils/playSong';
+import { SoundContext, playSong } from '~/utils/player';
 import { ConfigContext } from '~/utils/config';
 import BackButton from '~/components/button/BackButton';
 import { getApi, urlCover } from '~/utils/api';

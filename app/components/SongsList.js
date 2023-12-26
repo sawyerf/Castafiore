@@ -3,12 +3,12 @@ import { Text, View, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '~/utils/theme';
-import { SoundContext, playSong } from '~/utils/playSong';
+import { SoundContext, playSong } from '~/utils/player';
 import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from './button/FavoritedButton';
 import OptionsPopup from './OptionsPopup';
 
-const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
+const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null }) => {
 	const sound = React.useContext(SoundContext)
 	const [visible, setVisible] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
@@ -17,13 +17,13 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 	return (
 		<View style={{
 			flexDirection: 'column',
-			paddingRight: 10,
+			paddingHorizontal: isMargin ? 20 : 0,
 		}}>
 			{songs?.map((song, index) => (
 				<View key={index}>
 					{
 						isIndex && multiCD && (index === 0 || songs[index - 1].discNumber !== song.discNumber) &&
-						<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 25, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
+						<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 5, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
 							<Icon name="circle-o" size={23} color={theme.secondaryLight} />
 							<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {song.discNumber}</Text>
 						</View>
@@ -39,10 +39,10 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null }) => {
 							}}
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{song.artist}</Text>
+							<Text numberOfLines={1} style={{ color: indexPlaying === index ? theme.primaryTouch : theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}</Text>
+							<Text numberOfLines={1} style={{ color: indexPlaying === index ? theme.secondaryTouch : theme.secondaryLight }}>{song.artist}</Text>
 						</View>
-						<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ marginRight: 10, padding: 5, paddingStart: 10 }} />
+						<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ padding: 5, paddingStart: 10 }} />
 					</TouchableOpacity>
 					<OptionsPopup visible={visible === index} options={[
 						{
@@ -88,7 +88,6 @@ const styles = {
 	song: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginStart: 20,
 		marginBottom: 10,
 	},
 	albumCover: {

@@ -33,10 +33,19 @@ registerRoute(
 
 registerRoute(
 	({ url }) => {
-		return url.pathname.match(/\/rest\/(getAlbumList|getAlbum|favorited|getAlbum|getStarred|getPlaylists|getArtist|getPlaylist)$/)
+		return url.pathname.match(/\/rest\/(getAlbumList|getAlbum|favorited|getAlbum|getStarred|getPlaylists|getArtist|getPlaylist|getTopSongs|getArtistInfo|getRandomSongs|search2)$/)
 	},
 	new NetworkFirst({
 		cacheName: "api",
+	})
+);
+
+registerRoute(
+	({ url }) => {
+		return url.pathname.match(/\/rest\/getSimilarSongs$/)
+	},
+	new StaleWhileRevalidate({
+		cacheName: "apiLongResponse",
 	})
 );
 

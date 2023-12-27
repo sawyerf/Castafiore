@@ -24,4 +24,16 @@ export default {
 		marginStart: 20,
 		marginEnd: 20,
 	},
+	inputSetting: {
+		width: "90%",
+		backgroundColor: theme.secondaryDark,
+		borderRadius: 25,
+		height: 50,
+		marginBottom: 20,
+		justifyContent: "center",
+		paddingHorizontal: 20,
+		borderColor: theme.secondaryLight,
+		borderWidth: 1,
+		color: theme.primaryLight,
+	},
 }

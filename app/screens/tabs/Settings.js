@@ -1,15 +1,21 @@
-import React from 'react';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
 import md5 from 'md5';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import pkg from '~/../package.json';
+import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import theme from '~/utils/theme';
-import mainStyles from '~/styles/main';
 import { ConfigContext, SetConfigContext } from '~/utils/config';
-import { getApi } from '~/utils/api';
+import { SetSettingsContext } from '~/utils/settings';
 import { clearAllCaches, clearCache } from '~/services/serviceWorkerRegistration';
+import { defaultSettings } from '~/utils/settings';
+import { getApi } from '~/utils/api';
+import HomeOrder from '~/components/Settings/HomeOrder';
+import MaxCache from '~/components/Settings/MaxCache';
+import mainStyles from '~/styles/main';
+import presStyles from '~/styles/pres';
+import theme from '~/utils/theme';
 
 const Settings = ({ navigation }) => {
 	const [url, setUrl] = React.useState('');
@@ -19,6 +25,7 @@ const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const setConfig = React.useContext(SetConfigContext)
+	const setSettings = React.useContext(SetSettingsContext)
 
 	React.useEffect(() => {
 		if (config?.url?.length) setUrl(config.url)
@@ -57,34 +64,45 @@ const Settings = ({ navigation }) => {
 	}
 
 	return (
-		<View style={{ ...mainStyles.mainContainer(insets), alignItems: 'center', justifyContent: 'center' }} >
-			<View style={{ maxWidth: 500, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-				<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20 }}>Castafiore {pkg.version}</Text>
-				<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
-				<TextInput
-					style={styles.inputText}
-					placeholder="Server Url"
-					value={url}
-					placeholderTextColor={theme.primaryLight}
-					autoFocus={url.length == 0}
-					onChangeText={(url) => setUrl(url)}
-				/>
-				<TextInput
-					style={styles.inputText}
-					placeholder="Username"
-					placeholderTextColor={theme.primaryLight}
-					value={username}
-					onChangeText={(username) => setUsername(username)}
-				/>
-				<TextInput
-					style={styles.inputText}
-					placeholder="Password"
-					placeholderTextColor={theme.primaryLight}
-					secureTextEntry={true}
-					value={password}
-					onSubmitEditing={connect}
-					onChangeText={(password) => setPassword(password)}
-				/>
+		<ScrollView
+			style={{ ...mainStyles.mainContainer(insets) }}
+			contentContainerStyle={{
+				...mainStyles.contentMainContainer(insets),
+				maxWidth: 500,
+				width: '100%',
+				alignItems: 'center',
+				justifyContent: 'center',
+				paddingHorizontal: 20,
+				alignSelf: 'center',
+			}}
+		>
+			<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20, marginTop: 30 }}>Castafiore {pkg.version}</Text>
+			<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
+			<TextInput
+				style={mainStyles.inputSetting}
+				placeholder="Server Url"
+				value={url}
+				placeholderTextColor={theme.primaryLight}
+				autoFocus={url.length == 0}
+				onChangeText={(url) => setUrl(url)}
+			/>
+			<TextInput
+				style={mainStyles.inputSetting}
+				placeholder="Username"
+				placeholderTextColor={theme.primaryLight}
+				value={username}
+				onChangeText={(username) => setUsername(username)}
+			/>
+			<TextInput
+				style={mainStyles.inputSetting}
+				placeholder="Password"
+				placeholderTextColor={theme.primaryLight}
+				secureTextEntry={true}
+				value={password}
+				onSubmitEditing={connect}
+				onChangeText={(password) => setPassword(password)}
+			/>
+			<View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
 				<TouchableOpacity
 					style={styles.loginBtn}
 					onPress={connect}
@@ -93,36 +111,37 @@ const Settings = ({ navigation }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					onPress={disconnect}
-					style={{ marginTop: 10 }}
+					style={styles.loginBtn}
 				>
 					<Text style={{ color: theme.primaryTouch }}>Disconnect</Text>
 				</TouchableOpacity>
-				<TouchableOpacity
-					onPress={clearAllCaches}
-					style={{ marginTop: 20 }}
-				>
-					<Text style={{ color: theme.primaryTouch }}>Clear All Cache</Text>
-				</TouchableOpacity>
 			</View>
-		</View>
+			<TouchableOpacity
+				onPress={clearAllCaches}
+				style={{ marginTop: 20 }}
+			>
+				<Text style={{ color: theme.primaryTouch }}>Clear All Cache</Text>
+			</TouchableOpacity>
+			<TouchableOpacity
+				onPress={() => setSettings(defaultSettings)}
+				style={{ marginTop: 20 }}
+			>
+				<Text style={{ color: theme.primaryTouch }}>Reset Settings</Text>
+			</TouchableOpacity>
+			{config.query && (
+				<>
+					<MaxCache />
+					<HomeOrder />
+				</>
+			)}
+		</ScrollView>
 	)
 }
 
 const styles = {
-	inputText: {
-		width: "80%",
-		backgroundColor: theme.secondaryDark,
-		borderRadius: 25,
-		height: 50,
-		marginBottom: 20,
-		justifyContent: "center",
-		paddingHorizontal: 20,
-		borderColor: theme.secondaryLight,
-		borderWidth: 1,
-		color: theme.primaryLight,
-	},
 	loginBtn: {
-		width: "80%",
+		// width: "80%",
+		flex: 1,
 		height: 50,
 		alignItems: "center",
 		justifyContent: "center",

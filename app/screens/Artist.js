@@ -2,14 +2,15 @@ import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import HorizontalAlbums from '~/components/HorizontalAlbums';
-import HorizontalArtists from '~/components/HorizontalArtists';
+import { ConfigContext } from '~/utils/config';
+import { SoundContext, playSong } from '~/utils/player';
+import { getApi, urlCover } from '~/utils/api';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
-import { SoundContext, playSong } from '~/utils/player';
-import { ConfigContext } from '~/utils/config';
 import BackButton from '~/components/button/BackButton';
-import { getApi, urlCover } from '~/utils/api';
+import FavoritedButton from '~/components/button/FavoritedButton';
+import HorizontalAlbums from '~/components/HorizontalAlbums';
+import HorizontalArtists from '~/components/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
 
 const Artist = ({ navigation, route }) => {
@@ -44,6 +45,16 @@ const Artist = ({ navigation, route }) => {
 			.catch((error) => { })
 	}
 
+	const getTopSongs = () => {
+		getApi(config, 'getTopSongs', `artist=${encodeURIComponent(route.params.artist.name)}&count=50`)
+			.then((json) => {
+				const songs = json.topSongs?.song
+				if (!songs) return
+				playSong(config, sound, songs, 0)
+			})
+			.catch((error) => { })
+	}
+
 	React.useEffect(() => {
 		if (config.query) {
 			getArtist()
@@ -72,10 +83,23 @@ const Artist = ({ navigation, route }) => {
 					<Text style={presStyles.subTitle}>Artist</Text>
 				</View>
 				<IconButton
-					style={{...presStyles.button, justifyContent: undefined}}
+					style={{ ...presStyles.button, justifyContent: undefined }}
+					icon="arrow-up"
+					size={25}
+					onPress={getTopSongs}
+				/>
+				<IconButton
+					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 0, paddingEnd: 0 }}
 					icon="random"
 					size={25}
 					onPress={getSimilarSongs}
+				/>
+				<FavoritedButton
+					id={route.params.artist.id}
+					isFavorited={artist.starred}
+					style={{ ...presStyles.button}}
+					config={config}
+					size={25}
 				/>
 			</View>
 			<Text style={{ ...mainStyles.subTitle, marginStart: 20 }}>Albums</Text>

@@ -7,7 +7,7 @@ import presStyles from '~/styles/pres';
 import { SoundContext, playSong } from '~/utils/player';
 import { ConfigContext } from '~/utils/config';
 
-const RandomButton = ({ songList }) => {
+const RandomButton = ({ songList, size = 23 }) => {
 	const sound = React.useContext(SoundContext)
 	const config = React.useContext(ConfigContext)
 
@@ -38,7 +38,7 @@ const RandomButton = ({ songList }) => {
 
 	return (
 		<TouchableOpacity style={presStyles.button} onPress={shuffleSong}>
-			<Icon name="random" size={23} color={theme.primaryLight} />
+			<Icon name="random" size={size} color={theme.primaryLight} />
 		</TouchableOpacity>
 	);
 }

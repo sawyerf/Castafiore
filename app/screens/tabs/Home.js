@@ -2,19 +2,20 @@ import React from 'react';
 import { Text, View, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import HorizontalAlbumList from '~/components/HorizontalAlbumList';
+import { ConfigContext } from '~/utils/config';
+import { SettingsContext } from '~/utils/settings';
+import { SoundContext, playSong } from '~/utils/player';
+import { getApi } from '~/utils/api';
 import mainStyles from '~/styles/main';
 import theme from '~/utils/theme';
-import { SoundContext, playSong } from '~/utils/player';
-import { ConfigContext } from '~/utils/config';
-import { getApi } from '~/utils/api';
-import { settings } from '~/utils/settings';
+import HorizontalList from '~/components/HorizontalList';
 import IconButton from '~/components/button/IconButton';
 
 const Home = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const sound = React.useContext(SoundContext)
 	const config = React.useContext(ConfigContext)
+	const settings = React.useContext(SettingsContext)
 	const [statusRefresh, setStatusRefresh] = React.useState();
 	const [refreshing, setRefreshing] = React.useState(false);
 
@@ -89,8 +90,8 @@ const Home = ({ navigation }) => {
 						onPress={() => setRefreshing(true)}
 					/>}
 			</View>
-			{config?.url && settings.homeOrder.map((value, index) =>
-				<HorizontalAlbumList key={index} config={config} refresh={refreshing} {...value} />
+			{config?.url && settings?.homeOrder?.map((value, index) =>
+				<HorizontalList key={index} config={config} refresh={refreshing} {...value} />
 			)}
 		</ScrollView>
 	);

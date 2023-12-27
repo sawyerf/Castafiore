@@ -3,12 +3,15 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { getApi, urlCover, urlStream } from './api';
-import { settings } from './settings';
+import { getSettings } from './settings';
 
 export const SoundContext = React.createContext()
 
 const downloadNextSong = async (config, sound) => {
-	for (let i = -1; i < settings.cacheNextSong; i++) {
+	const settings = await getSettings()
+	const maxIndex = Math.min(settings.cacheNextSong, sound.songList.length)
+
+	for (let i = -1; i < maxIndex; i++) {
 		const index = (sound.index + sound.songList.length + i) % sound.songList.length
 		if (!sound.songList[index].isDownloaded) {
 			await urlStream(config, sound.songList[index].id)

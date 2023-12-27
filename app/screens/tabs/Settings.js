@@ -66,7 +66,7 @@ const Settings = ({ navigation }) => {
 					placeholder="Server Url"
 					value={url}
 					placeholderTextColor={theme.primaryLight}
-					autoFocus={true}
+					autoFocus={url.length == 0}
 					onChangeText={(url) => setUrl(url)}
 				/>
 				<TextInput

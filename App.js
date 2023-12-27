@@ -21,6 +21,7 @@ import theme from './app/utils/theme';
 import { SoundContext } from './app/utils/player';
 import { ConfigContext, SetConfigContext, getConfig } from './app/utils/config';
 import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
+import { Appearance } from 'react-native-web';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

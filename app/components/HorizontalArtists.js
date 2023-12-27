@@ -9,7 +9,7 @@ const HorizontalArtists = ({ config, artists }) => {
 	const navigation = useNavigation();
 
 	return (
-		<ScrollView horizontal={true} style={{
+		<ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
 			flexDirection: 'row',
 			paddingEnd: 10,
 			paddingStart: 10,

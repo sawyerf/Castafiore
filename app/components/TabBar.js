@@ -5,8 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/utils/config';
 
 import theme from '~/utils/theme';
-import PlayerBox from './PlayerBox';
-
+import Player from '~/components/player/Player';
 
 const TabBar = ({ state, descriptors, navigation }) => {
   const insets = useSafeAreaInsets();
@@ -21,7 +20,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
   return (
     <View>
-      <PlayerBox navigation={navigation} state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
+      <Player navigation={navigation} state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
       {!isFullScreen && <View style={{
         flexDirection: 'row',
         backgroundColor: theme.secondaryDark,

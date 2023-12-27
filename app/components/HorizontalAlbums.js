@@ -9,7 +9,7 @@ const HorizontalAlbums = ({ config, albums }) => {
 	const navigation = useNavigation();
 
 	return (
-		<ScrollView horizontal={true} style={styles.albumList}>
+		<ScrollView horizontal={true} style={styles.albumList} showsHorizontalScrollIndicator={false}>
 			{albums?.map((album) => {
 				return (
 					<TouchableOpacity

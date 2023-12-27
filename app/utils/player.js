@@ -57,3 +57,11 @@ export const previousSong = async (config, sound) => {
 		await playSong(config, sound, sound.songList, (sound.songList.length + sound.index - 1) % sound.songList.length)
 	}
 }
+
+export const pauseSong = async (sound) => {
+	await sound.pauseAsync()
+}
+
+export const resumeSong = async (sound) => {
+	await sound.playAsync()
+}

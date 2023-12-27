@@ -21,12 +21,19 @@ const Playlists = ({ navigation }) => {
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
 	const [isPublic, setIsPublic] = React.useState(false);
 
-	const onRefresh = () => {
-		if (refreshing) return;
-		setRefreshing(true);
-		getFavorited()
-		getPlaylists()
-	};
+	React.useEffect(() => {
+		if (config.query) {
+			getFavorited()
+			getPlaylists()
+		}
+	}, [config])
+
+	React.useEffect(() => {
+		if (refreshing) {
+			getFavorited()
+			getPlaylists()
+		}
+	}, [refreshing])
 
 	const getFavorited = () => {
 		getApi(config, 'getStarred')
@@ -46,13 +53,6 @@ const Playlists = ({ navigation }) => {
 			.catch((error) => { setRefreshing(false); })
 	}
 
-	React.useEffect(() => {
-		if (config.query) {
-			getFavorited()
-			getPlaylists()
-		}
-	}, [config])
-
 	const addPlaylist = () => {
 		if (!newPlaylist?.length) return
 		getApi(config, 'createPlaylist', `name=${newPlaylist}`)
@@ -71,11 +71,21 @@ const Playlists = ({ navigation }) => {
 				...mainStyles.mainContainer(insets),
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
-			refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
+		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
-			<Text style={mainStyles.mainTitle}>Your Playlists</Text>
+			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20 }}>
+				<Text style={mainStyles.mainTitle}>Your Playlists</Text>
+				<IconButton
+					icon="refresh"
+					size={30}
+					color={theme.primaryLight}
+					style={{ paddingHorizontal: 10, marginTop: 30, marginBottom: 20 }}
+					onPress={() => setRefreshing(true)}
+				/>
+			</View>
 			<TouchableOpacity style={styles.subTitleParent} onPress={() => navigation.navigate('Favorited', { favorited })}>
-				<Text style={mainStyles.subTitle}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
+				<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
+				<Text style={{ ...mainStyles.subTitle, flex: 1 }}>Favorited</Text>
 				<Text style={{ color: theme.secondaryLight, fontWeight: 'bold', fontSize: 15 }}>
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
@@ -114,7 +124,8 @@ const Playlists = ({ navigation }) => {
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
 						<>
-							<Text style={{ ...mainStyles.subTitle, flex: 1 }}><Icon name="heart" size={23} color={theme.primaryTouch} /> Playlists</Text>
+							<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
+							<Text style={{ ...mainStyles.subTitle, flex: 1 }}> Playlists</Text>
 							<IconButton
 								icon="plus"
 								size={20}
@@ -132,10 +143,10 @@ const Playlists = ({ navigation }) => {
 const styles = {
 	subTitleParent: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		// alignItems: 'center',
+		// justifyContent: 'space-between',
+		alignItems: 'center',
 		marginTop: 20,
-		marginBottom: 20,
+		marginBottom: 17,
 		...mainStyles.stdVerticalMargin
 	},
 }

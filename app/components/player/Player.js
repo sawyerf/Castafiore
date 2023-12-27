@@ -58,18 +58,9 @@ const PlayerBox = ({ navigation, state, fullscreen }) => {
 		fullscreen.set(false)
 	}, [state.index])
 
-	if (sound?.songInfo) {
-		if (fullscreen.value) {
-			return (
-				<FullScreenPlayer fullscreen={fullscreen} isPlaying={isPlaying} timer={timer} />
-			)
-		} else {
-			return (
-				<BoxPlayer isPlaying={isPlaying} fullscreen={fullscreen} />
-			)
-		}
-	}
-	return null;
+	if (!sound?.songInfo) return null
+	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} isPlaying={isPlaying} timer={timer} />
+	else return <BoxPlayer isPlaying={isPlaying} fullscreen={fullscreen} />
 }
 
 export default PlayerBox;

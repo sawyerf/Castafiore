@@ -2,7 +2,7 @@ import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate } from "workbox-strategies";
+import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 clientsClaim();
 
@@ -12,10 +12,12 @@ registerRoute(
 	({ url }) => {
 		return url.origin === self.location.origin && url.pathname.endsWith(".png")
 	},
-	new StaleWhileRevalidate({
+	new CacheFirst({
 		cacheName: "images",
 		plugins: [
-			new ExpirationPlugin({ maxEntries: 50 }),
+			new ExpirationPlugin({
+				maxAgeSeconds: 60 * 60 * 24 * 7,
+			}),
 		],
 	})
 );
@@ -33,7 +35,7 @@ registerRoute(
 	({ url }) => {
 		return url.pathname.match(/\/rest\/(getAlbumList|getAlbum|favorited|getAlbum|getStarred|getPlaylists|getArtist|getPlaylist)$/)
 	},
-	new StaleWhileRevalidate({
+	new NetworkFirst({
 		cacheName: "api",
 	})
 );
@@ -42,7 +44,7 @@ registerRoute(
 	({ url }) => {
 		return url.pathname.match(/\/rest\/stream$/)
 	},
-	new StaleWhileRevalidate({
+	new CacheFirst({
 		cacheName: "song",
 	})
 );

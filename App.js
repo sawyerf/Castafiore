@@ -26,6 +26,7 @@ import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistra
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const audio = new Audio.Sound();
 
 const HomeStack = () => {
   return (
@@ -107,7 +108,7 @@ const App = () => {
   }
 
   return (
-    <SoundContext.Provider value={new Audio.Sound()}>
+    <SoundContext.Provider value={audio}>
       <SetConfigContext.Provider value={setConfig}>
         <SetSettingsContext.Provider value={saveSettings}>
           <ConfigContext.Provider value={config}>

@@ -7,32 +7,9 @@ import { getSettings } from './settings';
 
 export const SoundContext = React.createContext()
 
-const downloadNextSong = async (config, sound) => {
-	const settings = await getSettings()
-	const maxIndex = Math.min(settings.cacheNextSong, sound.songList.length)
-
-	for (let i = -1; i < maxIndex; i++) {
-		const index = (sound.index + sound.songList.length + i) % sound.songList.length
-		if (!sound.songList[index].isDownloaded) {
-			await urlStream(config, sound.songList[index].id)
-				.then ((_) => {
-					sound.songList[index].isDownloaded = true
-				})
-		}
-	}
-}
-
 export const playSong = async (config, sound, songs, index) => {
 	sound.songInfo = songs[index]
 	sound.index = index
-	if (Platform.OS === 'web') {
-		navigator.mediaSession.metadata = new MediaMetadata({
-			title: songs[index].title,
-			artist: songs[index].artist,
-			album: songs[index].album,
-			artwork: [{ src: urlCover(config, songs[index].albumId) }],
-		})
-	}
 	await sound.unloadAsync()
 	await sound.loadAsync(
 		{ uri: await urlStream(config, songs[index].id) },
@@ -46,7 +23,6 @@ export const playSong = async (config, sound, songs, index) => {
 	getApi(config, 'scrobble', `id=${sound.songInfo.id}&submission=false`)
 		.catch((error) => { })
 	sound.songList = songs
-	downloadNextSong(config, sound)
 }
 
 export const nextSong = async (config, sound) => {

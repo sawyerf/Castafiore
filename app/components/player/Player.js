@@ -17,42 +17,44 @@ const PlayerBox = ({ navigation, state, fullscreen }) => {
 	})
 
 	React.useEffect(() => {
-		sound.setOnPlaybackStatusUpdate((playbackStatus) => {
-			setIsPlaying(playbackStatus.isPlaying)
-			if (playbackStatus.isLoaded) {
-				setTimer({
-					current: playbackStatus.positionMillis / 1000,
-					total: playbackStatus.durationMillis / 1000,
-				})
+		if (config?.query) {
+			sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+				setIsPlaying(playbackStatus.isPlaying)
+				if (playbackStatus.isLoaded) {
+					setTimer({
+						current: playbackStatus.positionMillis / 1000,
+						total: playbackStatus.durationMillis / 1000,
+					})
+				}
+				if (playbackStatus.didJustFinish) {
+					const id = sound.songInfo.id
+					setTimeout(nextSong(config, sound), 500)
+					getApi(config, 'scrobble', `id=${id}&submission=true`)
+						.catch((error) => { })
+				}
+			})
+			if (Platform.OS === 'web') {
+				navigator.mediaSession.setActionHandler("pause", () => {
+					pauseSong(sound)
+				});
+				navigator.mediaSession.setActionHandler("play", () => {
+					resumeSong(sound)
+				});
+				navigator.mediaSession.setActionHandler("previoustrack", () => {
+					previousSong(config, sound)
+				});
+				navigator.mediaSession.setActionHandler("nexttrack", () => {
+					nextSong(config, sound)
+				});
+				navigator.mediaSession.setActionHandler("seekbackward", () => {
+					previousSong(config, sound)
+				});
+				navigator.mediaSession.setActionHandler("seekforward", () => {
+					nextSong(config, sound)
+				});
 			}
-			if (playbackStatus.didJustFinish) {
-				const id = sound.songInfo.id
-				setTimeout(() => nextSong(config, sound), 500)
-				getApi(config, 'scrobble', `id=${id}&submission=true`)
-					.catch((error) => { })
-			}
-		})
-		if (Platform.OS === 'web') {
-			navigator.mediaSession.setActionHandler("pause", () => {
-				pauseSong(sound)
-			});
-			navigator.mediaSession.setActionHandler("play", () => {
-				resumeSong(sound)
-			});
-			navigator.mediaSession.setActionHandler("previoustrack", () => {
-				setTimeout(() => previousSong(config, sound), 500)
-			});
-			navigator.mediaSession.setActionHandler("nexttrack", () => {
-				setTimeout(() => nextSong(config, sound), 500)
-			});
-			navigator.mediaSession.setActionHandler("seekbackward", () => {
-				setTimeout(() => previousSong(config, sound), 500)
-			});
-			navigator.mediaSession.setActionHandler("seekforward", () => {
-				setTimeout(() => nextSong(config, sound), 500)
-			});
 		}
-	}, [sound])
+	}, [sound, config])
 
 	React.useEffect(() => {
 		fullscreen.set(false)

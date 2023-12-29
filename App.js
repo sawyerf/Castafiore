@@ -28,6 +28,14 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const audio = new Audio.Sound();
 
+// debug
+// window.addEventListener("unhandledrejection", (event) => {
+//   console.log(event.reason);
+//   fetch(`/reject?error=${event.reason}&message=${event.reason.message}&stack=${event.reason.stack}`, {
+//     mode: 'no-cors'
+//   })
+// });
+
 const HomeStack = () => {
   return (
     <Stack.Navigator

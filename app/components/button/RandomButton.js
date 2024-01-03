@@ -1,38 +1,26 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { SongContext } from '~/contexts/song';
 import theme from '~/utils/theme';
 import presStyles from '~/styles/pres';
-import { SoundContext, playSong } from '~/utils/player';
-import { ConfigContext } from '~/utils/config';
+import { playSong } from '~/utils/player';
+
+import { ConfigContext } from '~/contexts/config';
 
 const RandomButton = ({ songList, size = 23 }) => {
-	const sound = React.useContext(SoundContext)
+	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 
 	function shuffle(array) {
-		let currentIndex = array.length, randomIndex;
-
-		// While there remain elements to shuffle.
-		while (currentIndex > 0) {
-
-			// Pick a remaining element.
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex--;
-
-			// And swap it with the current element.
-			[array[currentIndex], array[randomIndex]] = [
-				array[randomIndex], array[currentIndex]];
-		}
-
-		return array;
+		return array.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
 	}
 
 	const shuffleSong = () => {
 		if (songList?.length) {
-			shuffle(songList)
-			playSong(config, sound, songList, 0)
+			playSong(config, song, songDispatch, shuffle(songList), 0)
 		}
 	}
 

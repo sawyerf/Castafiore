@@ -3,38 +3,59 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { getApi, urlCover, urlStream } from './api';
-import { getSettings } from './settings';
+import { getSettings } from '~/contexts/settings';
 
-export const SoundContext = React.createContext()
+export const handleAction = (config, song, songDispatch) => {
+	navigator.mediaSession.setActionHandler("pause", () => {
+		pauseSong(song.sound)
+	});
+	navigator.mediaSession.setActionHandler("play", () => {
+		pauseSong(song.sound)
+	});
+	navigator.mediaSession.setActionHandler("previoustrack", () => {
+		previousSong(config, song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("nexttrack", () => {
+		nextSong(config, song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("seekbackward", () => {
+		previousSong(config, song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("seekforward", () => {
+		nextSong(config, song, songDispatch)
+	});
+}
 
-const downloadNextSong = async (config, sound) => {
+const downloadNextSong = async (config, queue, currentIndex) => {
 	const settings = await getSettings()
-	const maxIndex = Math.min(settings.cacheNextSong, sound.songList.length)
+	const maxIndex = Math.min(settings.cacheNextSong, queue.length)
 
 	for (let i = -1; i < maxIndex; i++) {
-		const index = (sound.index + sound.songList.length + i) % sound.songList.length
-		if (!sound.songList[index].isDownloaded) {
-			await urlStream(config, sound.songList[index].id)
+		const index = (currentIndex + queue.length + i) % queue.length
+		if (!queue[index].isDownloaded) {
+			await urlStream(config, queue[index].id)
 				.then((_) => {
-					sound.songList[index].isDownloaded = true
+					queue[index].isDownloaded = true
 				})
 				.catch((_) => { })
 		}
 	}
 }
 
-export const playSong = async (config, sound, songs, index) => {
-	sound.songInfo = songs[index]
-	sound.index = index
-	navigator.mediaSession.metadata = new MediaMetadata({
-		title: songs[index].title,
-		artist: songs[index].artist,
-		album: songs[index].album,
-		artwork: [{ src: urlCover(config, songs[index].albumId) }],
-	})
-	await sound.unloadAsync()
-	await sound.loadAsync(
-		{ uri: await urlStream(config, songs[index].id)},
+export const unloadSong = async (sound) => {
+	if (!sound) return
+	if (sound._loaded) {
+		await sound.unloadAsync()
+	} else {
+		sound.setOnPlaybackStatusUpdate((status) => {
+			if (status.isLoaded) sound.unloadAsync()
+		})
+	}
+}
+
+const loadSong = async (config, song) => {
+	const { sound } = await Audio.Sound.createAsync(
+		{ uri: await urlStream(config, song.id) },
 		{
 			shouldPlay: true,
 			staysActiveInBackground: true,
@@ -42,26 +63,40 @@ export const playSong = async (config, sound, songs, index) => {
 			playsInSilentModeIOS: true,
 		},
 	)
-	getApi(config, 'scrobble', `id=${sound.songInfo.id}&submission=false`)
+	navigator.mediaSession.metadata = new MediaMetadata({
+		title: song.title,
+		artist: song.artist,
+		album: song.album,
+		artwork: [{ src: urlCover(config, song.albumId) }],
+	})
+	getApi(config, 'scrobble', `id=${song.id}&submission=false`)
 		.catch((error) => { })
-	sound.songList = songs
-	await downloadNextSong(config, sound)
+	return sound
 }
 
-export const nextSong = async (config, sound) => {
-	if (sound.songList) {
-		try {
-			await playSong(config, sound, sound.songList, (sound.index + 1) % sound.songList.length)
-		} catch (error) {
-			// debug
-			// fetch(`/paname?error=${error}&message=${error.message}&stack=${error.stack}&platform=${Platform.OS}`)
-		}
+export const playSong = async (config, song, songDispatch, queue, index) => {
+	unloadSong(song.sound)
+	const sound = await loadSong(config, queue[index])
+	songDispatch({ type: 'setSong', queue, index })
+	songDispatch({ type: 'setSound', sound })
+	downloadNextSong(config, queue, index)
+}
+
+export const nextSong = async (config, song, songDispatch) => {
+	if (song.queue) {
+		unloadSong(song.sound)
+		const sound = await loadSong(config, song.queue[(song.index + 1) % song.queue.length])
+		songDispatch({ type: 'next' })
+		songDispatch({ type: 'setSound', sound })
 	}
 }
 
-export const previousSong = async (config, sound) => {
-	if (sound.songList) {
-		await playSong(config, sound, sound.songList, (sound.songList.length + sound.index - 1) % sound.songList.length)
+export const previousSong = async (config, song, songDispatch) => {
+	if (song.queue) {
+		unloadSong(song.sound)
+		const sound = await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length])
+		songDispatch({ type: 'previous' })
+		songDispatch({ type: 'setSound', sound })
 	}
 }
 

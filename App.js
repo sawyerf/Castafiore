@@ -2,99 +2,33 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Audio } from 'expo-av';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Home from './app/screens/tabs/Home';
-import Playlists from './app/screens/tabs/Playlists';
-import Search from './app/screens/tabs/Search';
 import Settings from './app/screens/tabs/Settings';
-
-import Album from './app/screens/Album';
-import Artist from './app/screens/Artist';
-import Favorited from './app/screens/Favorited';
-import Playlist from './app/screens/Playlist';
-
 import TabBar from './app/components/TabBar';
+import { HomeStack, SearchStack, PlaylistsStack } from './app/screens/Stacks';
 
 import theme from './app/utils/theme';
-import { SoundContext } from './app/utils/player';
-import { ConfigContext, SetConfigContext, getConfig } from './app/utils/config';
-import { getSettings, SettingsContext, SetSettingsContext } from './app/utils/settings';
+import { ConfigContext, SetConfigContext, getConfig } from './app/contexts/config';
+import { getSettings, SettingsContext, SetSettingsContext } from './app/contexts/settings';
+import { SongContext, defaultSong, songReducer } from './app/contexts/song';
 import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-const audio = new Audio.Sound();
 
 // debug
 // window.addEventListener("unhandledrejection", (event) => {
 //   console.log(event.reason);
-//   fetch(`/reject?error=${event.reason}&message=${event.reason.message}&stack=${event.reason.stack}`, {
+//   fetch(`/lolipop/reject?error=${event.reason}&message=${event.reason.message}&stack=${event.reason.stack}`, {
 //     mode: 'no-cors'
 //   })
 // });
 
-const HomeStack = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: theme.secondaryDark,
-          borderTopColor: theme.secondaryDark,
-          tabBarActiveTintColor: theme.primaryTouch,
-        }
-      }}
-    >
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Album" component={Album} />
-      <Stack.Screen name="Artist" component={Artist} />
-    </Stack.Navigator>
-  )
-}
-
-const SearchStack = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: theme.secondaryDark,
-          borderTopColor: theme.secondaryDark,
-          tabBarActiveTintColor: theme.primaryTouch,
-        }
-      }}
-    >
-      <Stack.Screen name="Search" component={Search} />
-      <Stack.Screen name="Album" component={Album} />
-      <Stack.Screen name="Artist" component={Artist} />
-    </Stack.Navigator>
-  )
-}
-const PlaylistsStack = () => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: theme.secondaryDark,
-          borderTopColor: theme.secondaryDark,
-          tabBarActiveTintColor: theme.primaryTouch,
-        }
-      }}
-    >
-      <Stack.Screen name="Playlists" component={Playlists} />
-      <Stack.Screen name="Playlist" component={Playlist} />
-      <Stack.Screen name="Favorited" component={Favorited} />
-    </Stack.Navigator>
-  )
-}
-
 const App = () => {
   const [config, setConfig] = React.useState({});
   const [settings, setSettings] = React.useState({});
+  const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 
   React.useEffect(() => {
     getConfig()
@@ -116,9 +50,9 @@ const App = () => {
   }
 
   return (
-    <SoundContext.Provider value={audio}>
-      <SetConfigContext.Provider value={setConfig}>
-        <SetSettingsContext.Provider value={saveSettings}>
+    <SetConfigContext.Provider value={setConfig}>
+      <SetSettingsContext.Provider value={saveSettings}>
+        <SongContext.Provider value={[song, dispatch]}>
           <ConfigContext.Provider value={config}>
             <SettingsContext.Provider value={settings}>
               <SafeAreaProvider>
@@ -144,9 +78,9 @@ const App = () => {
               </SafeAreaProvider>
             </SettingsContext.Provider>
           </ConfigContext.Provider>
-        </SetSettingsContext.Provider>
-      </SetConfigContext.Provider>
-    </SoundContext.Provider>
+        </SongContext.Provider>
+      </SetSettingsContext.Provider>
+    </SetConfigContext.Provider>
   );
 }
 

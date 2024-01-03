@@ -1,14 +1,15 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import { SongContext } from '~/contexts/song';
+import { nextSong, handleAction } from '~/utils/player';
 
-import { SoundContext, nextSong, previousSong, pauseSong, resumeSong } from '~/utils/player';
-import { ConfigContext } from '~/utils/config';
+import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
 import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
 
-const PlayerBox = ({ navigation, state, fullscreen }) => {
-	const sound = React.useContext(SoundContext)
+const Player = ({ navigation, state, fullscreen }) => {
+	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const [isPlaying, setIsPlaying] = React.useState(false)
 	const [timer, setTimer] = React.useState({
@@ -17,8 +18,8 @@ const PlayerBox = ({ navigation, state, fullscreen }) => {
 	})
 
 	React.useEffect(() => {
-		if (config?.query) {
-			sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+		if (config?.query && song?.sound) {
+			song.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
 				setIsPlaying(playbackStatus.isPlaying)
 				if (playbackStatus.isLoaded) {
 					setTimer({
@@ -27,42 +28,26 @@ const PlayerBox = ({ navigation, state, fullscreen }) => {
 					})
 				}
 				if (playbackStatus.didJustFinish) {
-					const id = sound.songInfo.id
-					setTimeout(nextSong(config, sound), 500)
+					const id = song.songInfo.id
+					nextSong(config, song, songDispatch)
 					getApi(config, 'scrobble', `id=${id}&submission=true`)
 						.catch((error) => { })
 				}
+				if (playbackStatus.error) {
+					console.error('onPlaybackStatus error', playbackStatus.error)
+				}
 			})
-			if (Platform.OS === 'web') {
-				navigator.mediaSession.setActionHandler("pause", () => {
-					pauseSong(sound)
-				});
-				navigator.mediaSession.setActionHandler("play", () => {
-					resumeSong(sound)
-				});
-				navigator.mediaSession.setActionHandler("previoustrack", () => {
-					previousSong(config, sound)
-				});
-				navigator.mediaSession.setActionHandler("nexttrack", () => {
-					nextSong(config, sound)
-				});
-				navigator.mediaSession.setActionHandler("seekbackward", () => {
-					previousSong(config, sound)
-				});
-				navigator.mediaSession.setActionHandler("seekforward", () => {
-					nextSong(config, sound)
-				});
-			}
+			handleAction(config, song, songDispatch)
 		}
-	}, [sound, config])
+	}, [song.sound, config])
 
 	React.useEffect(() => {
 		fullscreen.set(false)
 	}, [state.index])
 
-	if (!sound?.songInfo) return null
+	if (!song?.songInfo) return null
 	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} isPlaying={isPlaying} timer={timer} />
 	else return <BoxPlayer isPlaying={isPlaying} fullscreen={fullscreen} />
 }
 
-export default PlayerBox;
+export default Player;

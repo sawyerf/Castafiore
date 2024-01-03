@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SongContext } from '~/contexts/song';
+import { ConfigContext } from '~/contexts/config';
+import { playSong } from '~/utils/player';
 
-import { ConfigContext } from '~/utils/config';
-import { SoundContext, playSong } from '~/utils/player';
 import { getApi, urlCover } from '~/utils/api';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -17,7 +18,7 @@ const Artist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
 	const [artist, setArtist] = React.useState([]);
 	const [artistInfo, setArtistInfo] = React.useState([]);
-	const sound = React.useContext(SoundContext)
+	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 
 	const getArtistInfo = () => {
@@ -40,7 +41,7 @@ const Artist = ({ navigation, route }) => {
 		getApi(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
 			.then((json) => {
 				const songs = json.similarSongs.song
-				playSong(config, sound, songs, 0)
+				playSong(config, song, songDispatch, songs, 0)
 			})
 			.catch((error) => { })
 	}
@@ -50,7 +51,7 @@ const Artist = ({ navigation, route }) => {
 			.then((json) => {
 				const songs = json.topSongs?.song
 				if (!songs) return
-				playSong(config, sound, songs, 0)
+				playSong(config, song, songDispatch, songs, 0)
 			})
 			.catch((error) => { })
 	}

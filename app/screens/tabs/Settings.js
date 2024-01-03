@@ -6,10 +6,10 @@ import pkg from '~/../package.json';
 import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ConfigContext, SetConfigContext } from '~/utils/config';
-import { SetSettingsContext } from '~/utils/settings';
+import { ConfigContext, SetConfigContext } from '~/contexts/config';
+import { SetSettingsContext } from '~/contexts/settings';
 import { clearAllCaches, clearCache } from '~/services/serviceWorkerRegistration';
-import { defaultSettings } from '~/utils/settings';
+import { defaultSettings } from '~/contexts/settings';
 import { getApi } from '~/utils/api';
 import HomeOrder from '~/components/Settings/HomeOrder';
 import MaxCache from '~/components/Settings/MaxCache';

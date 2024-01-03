@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import theme from '~/utils/theme';
-import { ConfigContext } from '~/utils/config';
+import { ConfigContext } from '~/contexts/config';
 import SongsList from '~/components/SongsList';
 import HorizontalArtists from '~/components/HorizontalArtists';
 import HorizontalAlbums from '~/components/HorizontalAlbums';

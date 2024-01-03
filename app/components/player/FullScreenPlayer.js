@@ -1,18 +1,19 @@
 import React from 'react';
 import { Text, View, Image, ScrollView, Dimensions, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SongContext } from '~/contexts/song';
+import { nextSong, previousSong, pauseSong, resumeSong } from '~/utils/player';
 
-import { SoundContext, nextSong, previousSong, pauseSong, resumeSong } from '~/utils/player';
 import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
-import { ConfigContext } from '~/utils/config';
+import { ConfigContext } from '~/contexts/config';
 import { urlCover, getApi } from '~/utils/api';
 import SongsList from '~/components/SongsList';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
 
 const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
-	const sound = React.useContext(SoundContext)
+	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const [isQueue, setIsQueue] = React.useState(false)
@@ -20,7 +21,7 @@ const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
 
 	React.useEffect(() => {
 		setIsQueue(false)
-	}, [sound.songInfo])
+	}, [song.songInfo])
 
 	const secondToTime = (second) => {
 		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
@@ -43,19 +44,19 @@ const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
 			<View style={styles.playerContainer}>
 				{!isQueue ?
 					<Image
-						source={{ uri: urlCover(config, sound?.songInfo?.albumId) }}
+						source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
 						style={styles.albumImage()}
 					/> :
 					<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
-						<SongsList config={config} songs={sound.songList} isMargin={false} indexPlaying={sound.index} />
+						<SongsList config={config} songs={song.queue} isMargin={false} indexPlaying={song.index} />
 					</ScrollView>
 				}
 				<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 					<View style={{ flex: 1 }}>
-						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{sound.songInfo.title}</Text>
-						<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{sound.songInfo.artist} · {sound.songInfo.album}</Text>
+						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+						<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 					</View>
-					<FavoritedButton id={sound.songInfo.id} isFavorited={sound.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
+					<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
 				</View>
 				<Pressable
 					style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
@@ -78,21 +79,21 @@ const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
 						size={30}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
-						onPress={() => previousSong(config, sound)}
+						onPress={() => previousSong(config, song, songDispatch)}
 					/>
 					<IconButton
 						icon={isPlaying ? 'pause' : 'play'}
 						size={30}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
-						onPress={() => isPlaying ? pauseSong(sound) : resumeSong(sound)}
+						onPress={() => isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 					/>
 					<IconButton
 						icon="step-forward"
 						size={30}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
-						onPress={() => nextSong(config, sound)}
+						onPress={() => nextSong(config, song, songDispatch)}
 					/>
 				</View>
 				<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>

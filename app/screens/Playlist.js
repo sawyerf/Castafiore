@@ -6,7 +6,7 @@ import SongsList from '~/components/SongsList';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
-import { ConfigContext } from '~/utils/config';
+import { ConfigContext } from '~/contexts/config';
 import BackButton from '~/components/button/BackButton';
 import { getApi, urlCover } from '~/utils/api';
 

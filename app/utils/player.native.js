@@ -1,18 +1,16 @@
 import { Audio } from 'expo-av';
-import React from 'react';
-import { Platform } from 'react-native';
 
 import { getApi, urlCover, urlStream } from './api';
-import { getSettings } from './settings';
 
-export const SoundContext = React.createContext()
+export const handleAction = (config, sound) => { }
 
-export const playSong = async (config, sound, songs, index) => {
-	sound.songInfo = songs[index]
-	sound.index = index
-	await sound.unloadAsync()
-	await sound.loadAsync(
-		{ uri: await urlStream(config, songs[index].id) },
+const unloadSong = async (sound) => {
+	if (sound) await sound.unloadAsync()
+}
+
+const loadSong = async (config, song) => {
+	const { sound } = await Audio.Sound.createAsync(
+		{ uri: await urlStream(config, song.id) },
 		{
 			shouldPlay: true,
 			staysActiveInBackground: true,
@@ -20,20 +18,33 @@ export const playSong = async (config, sound, songs, index) => {
 			playsInSilentModeIOS: true,
 		},
 	)
-	getApi(config, 'scrobble', `id=${sound.songInfo.id}&submission=false`)
+	getApi(config, 'scrobble', `id=${song.id}&submission=false`)
 		.catch((error) => { })
-	sound.songList = songs
+	return sound
 }
 
-export const nextSong = async (config, sound) => {
-	if (sound.songList) {
-		await playSong(config, sound, sound.songList, (sound.index + 1) % sound.songList.length)
+export const playSong = async (config, song, songDispatch, songs, index) => {
+	unloadSong(song.sound)
+	const sound = await loadSong(config, songs[index])
+	songDispatch({ type: 'setSong', queue: songs, index })
+	songDispatch({ type: 'setSound', sound })
+}
+
+export const nextSong = async (config, song, songDispatch) => {
+	if (song.queue) {
+		unloadSong(song.sound)
+		const sound = await loadSong(config, song.queue[(song.index + 1) % song.queue.length])
+		songDispatch({ type: 'previous' })
+		songDispatch({ type: 'setSound', sound })
 	}
 }
 
-export const previousSong = async (config, sound) => {
-	if (sound.songList) {
-		await playSong(config, sound, sound.songList, (sound.songList.length + sound.index - 1) % sound.songList.length)
+export const previousSong = async (config, song, songDispatch) => {
+	if (song.queue) {
+		unloadSong(song.sound)
+		const sound = await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length])
+		songDispatch({ type: 'next' })
+		songDispatch({ type: 'setSound', sound })
 	}
 }
 

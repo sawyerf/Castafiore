@@ -1,14 +1,15 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { SongContext } from '~/contexts/song';
 import theme from '~/utils/theme';
 import presStyles from '~/styles/pres';
-import { SoundContext, playSong } from '~/utils/player';
-import { ConfigContext } from '~/utils/config';
+import { playSong } from '~/utils/player';
+
+import { ConfigContext } from '~/contexts/config';
 
 const RandomButton = ({ songList, size = 23 }) => {
-	const sound = React.useContext(SoundContext)
+	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 
 	function shuffle(array) {
@@ -32,7 +33,7 @@ const RandomButton = ({ songList, size = 23 }) => {
 	const shuffleSong = () => {
 		if (songList?.length) {
 			shuffle(songList)
-			playSong(config, sound, songList, 0)
+			playSong(config, song, songDispatch, songList, 0)
 		}
 	}
 

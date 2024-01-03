@@ -1,15 +1,16 @@
 import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { SongContext } from '~/contexts/song';
 import theme from '~/utils/theme';
-import { SoundContext, playSong } from '~/utils/player';
+import { playSong } from '~/utils/player';
+
 import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from './button/FavoritedButton';
 import OptionsPopup from './OptionsPopup';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null }) => {
-	const sound = React.useContext(SoundContext)
+	const [songCon, songDispatch] = React.useContext(SongContext)
 	const [visible, setVisible] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
 	const [playlistList, setPlaylistList] = React.useState([])
@@ -31,7 +32,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 					<TouchableOpacity style={styles.song} key={song.id}
 						onLongPress={() => setVisible(index)}
 						delayLongPress={200}
-						onPress={() => playSong(config, sound, listToPlay ? listToPlay : songs, index)}>
+						onPress={() => playSong(config, songCon, songDispatch, listToPlay ? listToPlay : songs, index)}>
 						<Image
 							style={styles.albumCover}
 							source={{

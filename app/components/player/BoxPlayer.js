@@ -2,16 +2,17 @@ import React from 'react';
 import { Text, View, Image, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SongContext } from '~/contexts/song';
+import { nextSong, pauseSong, resumeSong } from '~/utils/player';
 
-import { SoundContext, nextSong, pauseSong, resumeSong } from '~/utils/player';
-import { ConfigContext } from '~/utils/config';
+import { ConfigContext } from '~/contexts/config';
 import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
 
 const BoxPlayer = ({ isPlaying, fullscreen }) => {
-	const sound = React.useContext(SoundContext)
+	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 
@@ -36,13 +37,13 @@ const BoxPlayer = ({ isPlaying, fullscreen }) => {
 				<Image
 					style={styles.boxPlayerImage}
 					source={{
-						uri: urlCover(config, sound?.songInfo?.albumId, 100),
+						uri: urlCover(config, song?.songInfo?.albumId, 100),
 					}}
 				/>
 			</View>
 			<View style={styles.boxPlayerText}>
-				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.track ? `${sound?.songInfo?.track}. ` : null}{sound?.songInfo?.title ? sound.songInfo.title : 'Song title'}</Text>
-				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>{sound?.songInfo?.artist ? sound.songInfo.artist : 'Artist'}</Text>
+				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 			</View>
 			<View style={styles.boxPlayerButton}>
 				<IconButton
@@ -50,14 +51,14 @@ const BoxPlayer = ({ isPlaying, fullscreen }) => {
 					size={23}
 					color={theme.primaryTouch}
 					style={{ paddingHorizontal: 10 }}
-					onPress={() => nextSong(config, sound)}
+					onPress={() => nextSong(config, song, songDispatch)}
 				/>
 				<IconButton
 					icon={isPlaying ? 'pause' : 'play'}
 					size={23}
 					color={theme.primaryTouch}
 					style={{ paddingHorizontal: 10 }}
-					onPress={() => isPlaying ? pauseSong(sound) : resumeSong(sound)}
+					onPress={() => isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 				/>
 			</View>
 		</TouchableOpacity>

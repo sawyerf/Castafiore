@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TextInput } from 'react-native'
 
-import { SettingsContext, SetSettingsContext } from '~/utils/settings'
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import presStyles from '~/styles/pres'
 import mainStyles from '~/styles/main'
 import theme from '~/utils/theme'

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ConfigContext } from '~/utils/config';
+import { ConfigContext } from '~/contexts/config';
 
 import theme from '~/utils/theme';
 import Player from '~/components/player/Player';

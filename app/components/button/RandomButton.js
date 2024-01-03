@@ -13,27 +13,14 @@ const RandomButton = ({ songList, size = 23 }) => {
 	const config = React.useContext(ConfigContext)
 
 	function shuffle(array) {
-		let currentIndex = array.length, randomIndex;
-
-		// While there remain elements to shuffle.
-		while (currentIndex > 0) {
-
-			// Pick a remaining element.
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex--;
-
-			// And swap it with the current element.
-			[array[currentIndex], array[randomIndex]] = [
-				array[randomIndex], array[currentIndex]];
-		}
-
-		return array;
+		return array.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
 	}
 
 	const shuffleSong = () => {
 		if (songList?.length) {
-			shuffle(songList)
-			playSong(config, song, songDispatch, songList, 0)
+			playSong(config, song, songDispatch, shuffle(songList), 0)
 		}
 	}
 

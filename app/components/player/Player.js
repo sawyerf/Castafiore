@@ -22,6 +22,7 @@ const Player = ({ navigation, state, fullscreen }) => {
 			song.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
 				setIsPlaying(playbackStatus.isPlaying)
 				if (playbackStatus.isLoaded) {
+					console.log(playbackStatus)
 					setTimer({
 						current: playbackStatus.positionMillis / 1000,
 						total: playbackStatus.durationMillis / 1000,
@@ -32,6 +33,9 @@ const Player = ({ navigation, state, fullscreen }) => {
 					nextSong(config, song, songDispatch)
 					getApi(config, 'scrobble', `id=${id}&submission=true`)
 						.catch((error) => { })
+				}
+				if (playbackStatus.error) {
+					console.error('onPlaybackStatus error', playbackStatus.error)
 				}
 			})
 			handleAction(config, song, songDispatch)

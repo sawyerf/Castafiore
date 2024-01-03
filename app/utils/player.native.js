@@ -4,7 +4,7 @@ import { getApi, urlCover, urlStream } from './api';
 
 export const handleAction = (config, sound) => { }
 
-const unloadSong = async (sound) => {
+export const unloadSong = async (sound) => {
 	if (sound) await sound.unloadAsync()
 }
 

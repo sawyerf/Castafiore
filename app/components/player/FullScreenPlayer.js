@@ -60,7 +60,7 @@ const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
 				</View>
 				<Pressable
 					style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-					onPressIn={({ nativeEvent }) => sound.setPositionAsync((nativeEvent.locationX / layoutBar.width) * timer.total * 1000)}
+					onPressIn={({ nativeEvent }) => song.sound.setPositionAsync((nativeEvent.locationX / layoutBar.width) * timer.total * 1000)}
 					onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
 				>
 					<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >

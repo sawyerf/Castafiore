@@ -22,7 +22,6 @@ const Player = ({ navigation, state, fullscreen }) => {
 			song.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
 				setIsPlaying(playbackStatus.isPlaying)
 				if (playbackStatus.isLoaded) {
-					console.log(playbackStatus)
 					setTimer({
 						current: playbackStatus.positionMillis / 1000,
 						total: playbackStatus.durationMillis / 1000,

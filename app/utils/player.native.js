@@ -5,7 +5,14 @@ import { getApi, urlCover, urlStream } from './api';
 export const handleAction = (config, sound) => { }
 
 export const unloadSong = async (sound) => {
-	if (sound) await sound.unloadAsync()
+	if (!sound) return
+	if (sound._loaded) {
+		await sound.unloadAsync()
+	} else {
+		sound.setOnPlaybackStatusUpdate((status) => {
+			if (status.isLoaded) sound.unloadAsync()
+		})
+	}
 }
 
 const loadSong = async (config, song) => {
@@ -23,10 +30,10 @@ const loadSong = async (config, song) => {
 	return sound
 }
 
-export const playSong = async (config, song, songDispatch, songs, index) => {
+export const playSong = async (config, song, songDispatch, queue, index) => {
 	unloadSong(song.sound)
-	const sound = await loadSong(config, songs[index])
-	songDispatch({ type: 'setSong', queue: songs, index })
+	const sound = await loadSong(config, queue[index])
+	songDispatch({ type: 'setSong', queue , index })
 	songDispatch({ type: 'setSound', sound })
 }
 

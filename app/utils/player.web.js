@@ -43,8 +43,14 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 }
 
 export const unloadSong = async (sound) => {
-	console.log('unloadSong', sound)
-	if (sound) await sound.unloadAsync()
+	if (!sound) return
+	if (sound._loaded) {
+		await sound.unloadAsync()
+	} else {
+		sound.setOnPlaybackStatusUpdate((status) => {
+			if (status.isLoaded) sound.unloadAsync()
+		})
+	}
 }
 
 const loadSong = async (config, song) => {

@@ -11,8 +11,9 @@ import { urlCover, getApi } from '~/utils/api';
 import SongsList from '~/components/SongsList';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
+import { setPosition } from '~/utils/player';
 
-const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
+const FullScreenPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
@@ -60,18 +61,18 @@ const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
 				</View>
 				<Pressable
 					style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-					onPressIn={({ nativeEvent }) => song.sound.setPositionAsync((nativeEvent.locationX / layoutBar.width) * timer.total * 1000)}
+					onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * song.duration)}
 					onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
 				>
 					<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
-						<View style={{ width: `${(timer.current / timer.total) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
+						<View style={{ width: `${(song.position / song.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
 					</View>
-					<View style={styles.bitognoBar(timer)} />
+					<View style={styles.bitognoBar(song)} />
 				</Pressable>
 
 				<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.current)}</Text>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(timer.total)}</Text>
+					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.position)}</Text>
+					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.duration)}</Text>
 				</View>
 				<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
 					<IconButton
@@ -82,11 +83,11 @@ const FullScreenPlayer = ({ fullscreen, isPlaying, timer }) => {
 						onPress={() => previousSong(config, song, songDispatch)}
 					/>
 					<IconButton
-						icon={isPlaying ? 'pause' : 'play'}
+						icon={song.isPlaying ? 'pause' : 'play'}
 						size={30}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
-						onPress={() => isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
+						onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 					/>
 					<IconButton
 						icon="step-forward"
@@ -147,13 +148,13 @@ const styles = {
 			borderRadius: 10,
 		}
 	},
-	bitognoBar: (timer) => ({
+	bitognoBar: (song) => ({
 		position: 'absolute',
 		width: 6,
 		height: 12,
 		borderRadius: 6,
 		backgroundColor: theme.primaryTouch,
-		left: `${(timer.current / timer.total - 0.01) * 100}%`, top: 7
+		left: `${(song.position / song.duration - 0.01) * 100}%`, top: 7
 	})
 }
 

@@ -11,7 +11,7 @@ import mainStyles from '~/styles/main';
 import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
 
-const BoxPlayer = ({ isPlaying, fullscreen }) => {
+const BoxPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
@@ -54,11 +54,11 @@ const BoxPlayer = ({ isPlaying, fullscreen }) => {
 					onPress={() => nextSong(config, song, songDispatch)}
 				/>
 				<IconButton
-					icon={isPlaying ? 'pause' : 'play'}
+					icon={song.isPlaying ? 'pause' : 'play'}
 					size={23}
 					color={theme.primaryTouch}
 					style={{ paddingHorizontal: 10 }}
-					onPress={() => isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
+					onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 				/>
 			</View>
 		</TouchableOpacity>

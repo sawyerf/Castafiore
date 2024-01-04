@@ -1,17 +1,12 @@
-import { Audio } from 'expo-av';
+// import { Audio } from 'expo-av';
 import React from 'react';
 import { Platform } from 'react-native';
 
 import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
+
 export const handleAction = (config, song, songDispatch) => {
-	navigator.mediaSession.setActionHandler("pause", () => {
-		pauseSong(song.sound)
-	});
-	navigator.mediaSession.setActionHandler("play", () => {
-		pauseSong(song.sound)
-	});
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
 		previousSong(config, song, songDispatch)
 	});
@@ -23,6 +18,15 @@ export const handleAction = (config, song, songDispatch) => {
 	});
 	navigator.mediaSession.setActionHandler("seekforward", () => {
 		nextSong(config, song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("pause", () => {
+		pauseSong(song.sound)
+	});
+	navigator.mediaSession.setActionHandler("play", () => {
+		resumeSong(song.sound)
+	});
+	navigator.mediaSession.setActionHandler("seekto", (details) => {
+		setPosition(song.sound, details.seekTime)
 	});
 }
 
@@ -42,27 +46,13 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 	}
 }
 
-export const unloadSong = async (sound) => {
-	if (!sound) return
-	if (sound._loaded) {
-		await sound.unloadAsync()
-	} else {
-		sound.setOnPlaybackStatusUpdate((status) => {
-			if (status.isLoaded) sound.unloadAsync()
-		})
-	}
-}
+export const unloadSong = async (sound) => { }
 
-const loadSong = async (config, song) => {
-	const { sound } = await Audio.Sound.createAsync(
-		{ uri: await urlStream(config, song.id) },
-		{
-			shouldPlay: true,
-			staysActiveInBackground: true,
-			interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-			playsInSilentModeIOS: true,
-		},
-	)
+const loadSong = async (config, sound, queue, index, songDispatch) => {
+	const song = queue[index]
+	sound.src = await urlStream(config, song.id)
+	// await sound.load()
+	// await sound.play()
 	navigator.mediaSession.metadata = new MediaMetadata({
 		title: song.title,
 		artist: song.artist,
@@ -71,39 +61,57 @@ const loadSong = async (config, song) => {
 	})
 	getApi(config, 'scrobble', `id=${song.id}&submission=false`)
 		.catch((error) => { })
-	return sound
 }
 
 export const playSong = async (config, song, songDispatch, queue, index) => {
-	unloadSong(song.sound)
-	const sound = await loadSong(config, queue[index])
+	let sound = song.sound
+	if (!sound) {
+		sound = new Audio()
+		sound.addEventListener('loadedmetadata', () => {
+			songDispatch({ type: 'setTime', position: 0, duration: sound.duration })
+			sound.play()
+		})
+		sound.addEventListener('timeupdate', () => {
+			songDispatch({ type: 'setTime', position: sound.currentTime, duration: sound.duration })
+		})
+		sound.addEventListener('play', () => {
+			songDispatch({ type: 'setPlaying', isPlaying: true })
+		})
+		sound.addEventListener('pause', () => {
+			songDispatch({ type: 'setPlaying', isPlaying: false })
+		})
+		songDispatch({ type: 'setSound', sound })
+	}
+
+	await loadSong(config, sound, queue, index, songDispatch)
 	songDispatch({ type: 'setSong', queue, index })
-	songDispatch({ type: 'setSound', sound })
 	downloadNextSong(config, queue, index)
 }
 
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		unloadSong(song.sound)
-		const sound = await loadSong(config, song.queue[(song.index + 1) % song.queue.length])
+		await loadSong(config, song.sound, song.queue, (song.index + 1) % song.queue.length, songDispatch)
 		songDispatch({ type: 'next' })
-		songDispatch({ type: 'setSound', sound })
 	}
 }
 
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		unloadSong(song.sound)
-		const sound = await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length])
+		await loadSong(config, song.sound, song.queue, (song.queue.length + song.index - 1) % song.queue.length, songDispatch)
 		songDispatch({ type: 'previous' })
-		songDispatch({ type: 'setSound', sound })
 	}
 }
 
 export const pauseSong = async (sound) => {
-	await sound.pauseAsync()
+	sound.pause()
 }
 
 export const resumeSong = async (sound) => {
-	await sound.playAsync()
+	sound.play()
+}
+
+export const setPosition = async (sound, position) => {
+	sound.currentTime = position
 }

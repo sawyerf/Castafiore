@@ -3,7 +3,7 @@ import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
-import SongsList from '~/components/SongsList';
+import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';

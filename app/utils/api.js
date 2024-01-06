@@ -6,7 +6,6 @@ export const getApi = (config, path, query = '') => {
 			reject('getApi: config.url or config.query is not defined')
 			return
 		}
-		// console.log(`getApi: /rest/${path}?${query}`)
 		fetch(`${config.url}/rest/${path}?${config.query}&${query}`)
 			.then((response) => response.json())
 			.then((json) => {

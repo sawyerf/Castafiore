@@ -8,6 +8,7 @@ import Search from '~/screens/tabs/Search';
 import Album from '~/screens/Album';
 import Artist from '~/screens/Artist';
 import Favorited from '~/screens/Favorited';
+import Genre from '~/screens/Genre';
 import Playlist from '~/screens/Playlist';
 
 import theme from '~/utils/theme';
@@ -29,6 +30,7 @@ export const HomeStack = () => {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Album" component={Album} />
       <Stack.Screen name="Artist" component={Artist} />
+			<Stack.Screen name="Genre" component={Genre} />
     </Stack.Navigator>
   )
 }

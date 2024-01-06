@@ -6,8 +6,8 @@ import theme from '~/utils/theme';
 import { playSong } from '~/utils/player';
 
 import { urlCover, getApi } from '~/utils/api';
-import FavoritedButton from './button/FavoritedButton';
-import OptionsPopup from './OptionsPopup';
+import FavoritedButton from '~/components/button/FavoritedButton';
+import OptionsPopup from '~/components/OptionsPopup';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)

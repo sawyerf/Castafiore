@@ -6,9 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import theme from '~/utils/theme';
 import { ConfigContext } from '~/contexts/config';
-import SongsList from '~/components/SongsList';
-import HorizontalArtists from '~/components/HorizontalArtists';
-import HorizontalAlbums from '~/components/HorizontalAlbums';
+import SongsList from '~/components/lists/SongsList';
+import HorizontalArtists from '~/components/lists/HorizontalArtists';
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import mainStyles from '~/styles/main';
 import { getApi } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';

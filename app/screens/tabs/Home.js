@@ -9,7 +9,7 @@ import { playSong } from '~/utils/player';
 import { getApi } from '~/utils/api';
 import mainStyles from '~/styles/main';
 import theme from '~/utils/theme';
-import HorizontalList from '~/components/HorizontalList';
+import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
 
 const Home = ({ navigation }) => {

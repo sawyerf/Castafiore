@@ -8,7 +8,7 @@ import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/contexts/config';
 import { urlCover, getApi } from '~/utils/api';
-import SongsList from '~/components/SongsList';
+import SongsList from '~/components/lists/SongsList';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
 import { setPosition } from '~/utils/player';

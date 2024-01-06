@@ -4,6 +4,7 @@ import { getApi, urlCover, urlStream } from './api';
 
 export const handleAction = (config, song, songDispatch) => {
 	song.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
+		// This function refresh to many time so it can cause performance issue
 		songDispatch({ type: 'setPlaying', isPlaying: playbackStatus.isPlaying })
 		if (playbackStatus.isLoaded) {
 			songDispatch({
@@ -28,15 +29,12 @@ export const unloadSong = async (sound) => {
 	if (!sound) return
 	if (sound._loaded) {
 		await sound.unloadAsync()
-	} else {
-		sound.setOnPlaybackStatusUpdate((status) => {
-			if (status.isLoaded) sound.unloadAsync()
-		})
 	}
 }
 
-const loadSong = async (config, song) => {
-	const { sound } = await Audio.Sound.createAsync(
+const loadSong = async (config, song, sound) => {
+	await unloadSong(sound)
+	await sound.loadAsync(
 		{ uri: await urlStream(config, song.id) },
 		{
 			shouldPlay: true,
@@ -47,31 +45,29 @@ const loadSong = async (config, song) => {
 	)
 	getApi(config, 'scrobble', `id=${song.id}&submission=false`)
 		.catch((error) => { })
-	return sound
 }
 
 export const playSong = async (config, song, songDispatch, queue, index) => {
-	unloadSong(song.sound)
-	const sound = await loadSong(config, queue[index])
+	let sound = song.sound
+	if (!sound) {
+		sound = new Audio.Sound()
+		songDispatch({ type: 'setSound', sound })
+	}
+	await loadSong(config, queue[index], sound)
 	songDispatch({ type: 'setSong', queue, index })
-	songDispatch({ type: 'setSound', sound })
 }
 
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong(song.sound)
-		const sound = await loadSong(config, song.queue[(song.index + 1) % song.queue.length])
+		await loadSong(config, song.queue[(song.index + 1) % song.queue.length], song.sound)
 		songDispatch({ type: 'previous' })
-		songDispatch({ type: 'setSound', sound })
 	}
 }
 
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong(song.sound)
-		const sound = await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length])
+		await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length], song.sound)
 		songDispatch({ type: 'next' })
-		songDispatch({ type: 'setSound', sound })
 	}
 }
 
@@ -83,6 +79,6 @@ export const resumeSong = async (sound) => {
 	await sound.playAsync()
 }
 
-export const setPostion = async (sound, position) => {
-	sound.setPositionAsync(position * 1000)
+export const setPosition = async (sound, position) => {
+	await sound.setPositionAsync(position * 1000)
 }

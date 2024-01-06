@@ -13,30 +13,25 @@ const Player = ({ navigation, state, fullscreen }) => {
 	const config = React.useContext(ConfigContext)
 
 	React.useEffect(() => {
-		if (config?.query && song?.sound) {
-			handleAction(config, song, songDispatch)
+		if (!song.sound) return
+		handleAction(config, song, songDispatch)
+		if (Platform.OS == 'web') {
+			song.sound.addEventListener('ended', endedHandler)
+			return () => {
+				song.sound.removeEventListener('ended', endedHandler)
+			}
 		}
-	}, [song.sound, config])
+	}, [song.sound, song.songInfo, song.index, song.queue])
+
+	React.useEffect(() => {
+		fullscreen.set(false)
+	}, [state.index])
 
 	const endedHandler = () => {
 		nextSong(config, song, songDispatch)
 		getApi(config, 'scrobble', `id=${song.songInfo.id}&submission=true`)
 			.catch((error) => { })
 	}
-
-	React.useEffect(() => {
-		if (Platform.OS == 'web' && song.sound) {
-			handleAction(config, song, songDispatch)
-			song.sound.addEventListener('ended', endedHandler)
-			return () => {
-				song.sound.removeEventListener('ended', endedHandler)
-			}
-		}
-	}, [song.songInfo, song.index, song.queue])
-
-	React.useEffect(() => {
-		fullscreen.set(false)
-	}, [state.index])
 
 	if (!song?.songInfo) return null
 	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} />

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import theme from '~/utils/theme';
 import { urlCover } from '~/utils/api';
-import OptionsPopup from './OptionsPopup';
+import OptionsPopup from '~/components/OptionsPopup';
 import { getApi } from '~/utils/api';
 
 const VerticalPlaylist = ({ config, playlists }) => {

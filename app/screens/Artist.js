@@ -10,8 +10,8 @@ import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import BackButton from '~/components/button/BackButton';
 import FavoritedButton from '~/components/button/FavoritedButton';
-import HorizontalAlbums from '~/components/HorizontalAlbums';
-import HorizontalArtists from '~/components/HorizontalArtists';
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
+import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
 
 const Artist = ({ navigation, route }) => {

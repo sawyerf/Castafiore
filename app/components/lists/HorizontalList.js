@@ -5,6 +5,7 @@ import { getApi } from '~/utils/api';
 import theme from '~/utils/theme';
 import HorizontalAlbums from './HorizontalAlbums';
 import HorizontalArtists from './HorizontalArtists';
+import HorizontalGenres from './HorizontalGenres';
 import mainStyles from '~/styles/main';
 
 const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
@@ -15,6 +16,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		if (!refresh) return
 		if (type === 'album') getAlbumList()
 		if (type === 'artist') getArtistList()
+		if (type === 'genre') getGenreList()
 	}, [refresh])
 
 	React.useEffect(() => {
@@ -22,8 +24,17 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		if (config.query) {
 			if (type === 'album') getAlbumList()
 			if (type === 'artist') getArtistList()
+			if (type === 'genre') getGenreList()
 		}
 	}, [config, type, query, enable])
+
+	const getGenreList = async () => {
+		getApi(config, 'getGenres', query)
+			.then((json) => {
+				setList(json?.genres?.genre)
+			})
+			.catch((error) => { })
+	}
 
 	const getAlbumList = async () => {
 		getApi(config, 'getAlbumList', query)
@@ -58,6 +69,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 			</View>
 			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
+			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
 		</View>
 	)
 }

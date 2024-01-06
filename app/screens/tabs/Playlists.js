@@ -4,8 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import theme from '~/utils/theme';
-import SongsList from '~/components/SongsList';
-import VerticalPlaylist from '~/components/VerticalPlaylist';
+import SongsList from '~/components/lists/SongsList';
+import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';

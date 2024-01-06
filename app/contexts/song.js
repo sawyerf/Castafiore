@@ -1,7 +1,5 @@
 import { Audio } from 'expo-av';
 import React from 'react';
-import { playSong, pauseSong, resumeSong } from '~/utils/player';
-import { unloadSong } from '~/utils/player';
 
 export const SoundContext = React.createContext(new Audio.Sound())
 export const SongContext = React.createContext()
@@ -9,7 +7,6 @@ export const SongContext = React.createContext()
 export const songReducer = (state, action) => {
 	switch (action.type) {
 		case 'setSound':
-			unloadSong(state.sound)
 			return {
 				...state,
 				sound: action.sound,
@@ -36,6 +33,7 @@ export const songReducer = (state, action) => {
 				songInfo: state.queue[previousIndex],
 			}
 		case 'setPlaying':
+			if (action.isPlaying === state.isPlaying) return state
 			return {
 				...state,
 				isPlaying: action.isPlaying,

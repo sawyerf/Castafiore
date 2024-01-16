@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Dimensions, Pressable } from 'react-native';
+import { Text, View, Image, ScrollView, Dimensions, Pressable, Modal } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { nextSong, previousSong, pauseSong, resumeSong } from '~/utils/player';
@@ -29,100 +29,99 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	}
 
 	return (
-		<View style={{
-			...mainStyles.mainContainer(insets),
-			...styles.mainContainer(insets),
-		}}>
-			<IconButton
+		<Modal>
+			<View
 				style={{
-					width: '100%',
-					paddingVertical: 20,
-					paddingHorizontal: 25,
+					...mainStyles.mainContainer(insets),
+					...styles.mainContainer(insets),
 				}}
-				icon="chevron-down"
-				color={theme.primaryLight}
-				onPress={() => fullscreen.set(false)} />
-			<View style={styles.playerContainer}>
-				{!isQueue ?
-					<Image
-						source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
-						style={styles.albumImage()}
-					/> :
-					<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
-						<SongsList config={config} songs={song.queue} isMargin={false} indexPlaying={song.index} />
-					</ScrollView>
-				}
-				<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
-					<View style={{ flex: 1 }}>
-						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
-						<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
+			>
+				<IconButton
+					style={{
+						width: '100%',
+						paddingVertical: 20,
+						paddingHorizontal: 25,
+					}}
+					icon="chevron-down"
+					color={theme.primaryLight}
+					onPress={() => fullscreen.set(false)} />
+				<View style={styles.playerContainer}>
+					{!isQueue ?
+						<Image
+							source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
+							style={styles.albumImage()}
+						/> :
+						<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
+							<SongsList config={config} songs={song.queue} isMargin={false} indexPlaying={song.index} />
+						</ScrollView>
+					}
+					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
+						<View style={{ flex: 1 }}>
+							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
+						</View>
+						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
 					</View>
-					<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
-				</View>
-				<Pressable
-					style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-					onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * song.duration)}
-					onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
-				>
-					<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
-						<View style={{ width: `${(song.position / song.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
-					</View>
-					<View style={styles.bitognoBar(song)} />
-				</Pressable>
+					<Pressable
+						style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
+						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * song.duration)}
+						onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
+					>
+						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
+							<View style={{ width: `${(song.position / song.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
+						</View>
+						<View style={styles.bitognoBar(song)} />
+					</Pressable>
 
-				<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.position)}</Text>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.duration)}</Text>
-				</View>
-				<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
-					<IconButton
-						icon="step-backward"
-						size={30}
-						color={theme.primaryLight}
-						style={{ paddingHorizontal: 10 }}
-						onPress={() => previousSong(config, song, songDispatch)}
-					/>
-					<IconButton
-						icon={song.isPlaying ? 'pause' : 'play'}
-						size={30}
-						color={theme.primaryLight}
-						style={{ paddingHorizontal: 10 }}
-						onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
-					/>
-					<IconButton
-						icon="step-forward"
-						size={30}
-						color={theme.primaryLight}
-						style={{ paddingHorizontal: 10 }}
-						onPress={() => nextSong(config, song, songDispatch)}
-					/>
-				</View>
-				<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
-					<IconButton
-						icon="repeat"
-						size={19}
-						onPress={() => { }}
-					/>
-					<IconButton
-						icon="bars"
-						size={19}
-						onPress={() => setIsQueue(!isQueue)}
-					/>
+					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.position)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.duration)}</Text>
+					</View>
+					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
+						<IconButton
+							icon="step-backward"
+							size={30}
+							color={theme.primaryLight}
+							style={{ paddingHorizontal: 10 }}
+							onPress={() => previousSong(config, song, songDispatch)}
+						/>
+						<IconButton
+							icon={song.isPlaying ? 'pause' : 'play'}
+							size={30}
+							color={theme.primaryLight}
+							style={{ paddingHorizontal: 10 }}
+							onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
+						/>
+						<IconButton
+							icon="step-forward"
+							size={30}
+							color={theme.primaryLight}
+							style={{ paddingHorizontal: 10 }}
+							onPress={() => nextSong(config, song, songDispatch)}
+						/>
+					</View>
+					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
+						<IconButton
+							icon="repeat"
+							size={19}
+							onPress={() => { }}
+						/>
+						<IconButton
+							icon="bars"
+							size={19}
+							onPress={() => setIsQueue(!isQueue)}
+						/>
+					</View>
 				</View>
 			</View>
-		</View >
+		</Modal >
 	)
 }
 
 const styles = {
 	mainContainer: (insets) => ({
-		position: 'absolute',
-		bottom: 0,
-		left: insets.left,
-		right: insets.right,
 		width: '100%',
-		height: Dimensions.get('window').height,
-		paddingBottom: insets.bottom ? insets.bottom : 10,
+		height: '100%',
 		backgroundColor: theme.primaryDark,
 		alignItems: 'center',
 	}),

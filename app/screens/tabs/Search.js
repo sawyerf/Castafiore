@@ -113,6 +113,14 @@ const Search = ({ navigation }) => {
 						)
 					})
 				}
+				{query.length && results && !results.artist && !results.album && !results.song ? (
+					<Text style={{
+						margin: 20,
+						color: theme.secondaryLight,
+						fontSize: 20,
+						textAlign: 'center',
+					}}>No results</Text>
+				) : null}
 				{query.length && results ? (
 					<View>
 						{

@@ -7,13 +7,15 @@ import { playSong } from '~/utils/player';
 
 import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
-import OptionsPopup from '~/components/OptionsPopup';
+import OptionsPopup from '~/components/popup/OptionsPopup';
+import InfoPopup from '~/components/popup/InfoPopup';
 
-const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null }) => {
+const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { } }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)
 	const [visible, setVisible] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
 	const [playlistList, setPlaylistList] = React.useState([])
+	const [songInfo, setSongInfo] = React.useState(null)
 
 	return (
 		<View style={{
@@ -45,42 +47,72 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						</View>
 						<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ padding: 5, paddingStart: 10 }} />
 					</TouchableOpacity>
-					<OptionsPopup visible={visible === index} options={[
-						{
-							name: 'Add Playlist',
-							icon: 'plus',
-							onPress: () => {
-								getApi(config, 'getPlaylists')
-									.then((json) => {
-										setPlaylistList(json.playlists.playlist)
-									})
-									.catch((error) => { })
+					<OptionsPopup visible={visible === index}
+						close={() => setVisible(-1)}
+						options={[
+							{
+								name: 'Add Playlist',
+								icon: 'plus',
+								onPress: () => {
+									getApi(config, 'getPlaylists')
+										.then((json) => {
+											setPlaylistList(json.playlists.playlist)
+										})
+										.catch((error) => { })
+								}
+							},
+							...playlistList?.map((playlist, index) => ({
+								name: playlist.name,
+								icon: 'angle-right',
+								onPress: () => {
+									getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${song.id}`)
+										.then((json) => {
+											setVisible(-1)
+											setPlaylistList([])
+											onUpdate()
+										})
+										.catch((error) => { })
+								}
+							})),
+							...(() => {
+								if (!idPlaylist) return []
+								return ([
+									{
+										name: 'Remove Playlist',
+										icon: 'minus',
+										onPress: () => {
+											getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${index}`)
+												.then((json) => {
+													setVisible(-1)
+													setPlaylistList([])
+													onUpdate()
+												})
+												.catch((error) => { })
+										}
+									}
+								])
+							})(),
+							, {
+								name: 'Info',
+								icon: 'info',
+								onPress: () => {
+									setVisible(-1)
+									setSongInfo(song)
+								}
+							},
+							{
+								name: 'Close',
+								icon: 'close',
+								onPress: () => {
+									setVisible(-1)
+									setPlaylistList([])
+								}
 							}
-						},
-						...playlistList?.map((playlist, index) => ({
-							name: playlist.name,
-							icon: 'angle-right',
-							onPress: () => {
-								getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${song.id}`)
-									.then((json) => {
-										setVisible(-1)
-										setPlaylistList([])
-									})
-									.catch((error) => { })
-							}
-						})),
-						{
-							name: 'close',
-							icon: 'close',
-							onPress: () => {
-								setVisible(-1)
-								setPlaylistList([])
-							}
-						}
-					]} />
+						]} />
 				</View>
 			)
 			)}
+			<InfoPopup songInfo={songInfo} close={() => setSongInfo(null)} />
 		</View>
 	)
 }

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import theme from '~/utils/theme';
 import { urlCover } from '~/utils/api';
-import OptionsPopup from '~/components/OptionsPopup';
+import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
 
 const VerticalPlaylist = ({ config, playlists }) => {
@@ -43,22 +43,25 @@ const VerticalPlaylist = ({ config, playlists }) => {
 									<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{(playlist.duration / 60) | 1} minutes</Text>
 								</View>
 							</TouchableOpacity>
-							<OptionsPopup visible={isOption === index} options={[
-								{
-									name: 'Delete Playlist',
-									icon: 'trash',
-									onPress: () => {
-										deletePlaylist(playlist.id)
+							<OptionsPopup
+								visible={isOption === index}
+								close={() => setIsOption(-1)}
+								options={[
+									{
+										name: 'Delete Playlist',
+										icon: 'trash',
+										onPress: () => {
+											deletePlaylist(playlist.id)
+										}
+									},
+									{
+										name: 'Close',
+										icon: 'times',
+										onPress: () => {
+											setIsOption(-1)
+										}
 									}
-								},
-								{
-									name: 'Close',
-									icon: 'times',
-									onPress: () => {
-										setIsOption(-1)
-									}
-								}
-							]}
+								]}
 							/>
 						</View>
 					)

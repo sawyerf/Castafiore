@@ -69,11 +69,13 @@ const Playlist = ({ navigation, route }) => {
 								<Text style={presStyles.title} numberOfLines={2}>{info?.name}</Text>
 							</TouchableOpacity>
 					}
-					<Text style={presStyles.subTitle}>{(route.params.playlist.duration / 60) | 1} minutes · {route.params.playlist.songCount} songs</Text>
+					<Text style={presStyles.subTitle}>{((info ? info.duration : route.params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : route.params.playlist.songCount} songs</Text>
 				</View>
 				<RandomButton songList={songs} />
 			</View>
-			<SongsList config={config} songs={songs} />
+			<SongsList config={config} songs={songs} idPlaylist={route.params.playlist.id} onUpdate={() => {
+				getPlaylist()
+			}} />
 		</ScrollView>
 	)
 }

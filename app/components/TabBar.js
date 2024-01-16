@@ -26,8 +26,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
         backgroundColor: theme.secondaryDark,
         borderTopColor: theme.secondaryDark,
         borderTopWidth: 1,
-        paddingBottom: insets.bottom ? insets.bottom : 10,
-        paddingTop: 10,
         paddingLeft: insets.left,
         paddingRight: insets.right,
       }}
@@ -69,7 +67,11 @@ const TabBar = ({ state, descriptors, navigation }) => {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={{ flex: 1 }}
+              style={{
+                flex: 1,
+                paddingBottom: insets.bottom ? insets.bottom : 10,
+                paddingTop: 10,
+              }}
               key={index}
               disabled={(!config.query && route.name !== 'Settings')}
             >
@@ -80,7 +82,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
             </TouchableOpacity>
           );
         })}
-      </View> }
+      </View>}
     </View>
   );
 }

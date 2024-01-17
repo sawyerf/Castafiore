@@ -17,9 +17,9 @@
 
 ## Support Feature
 - Customize Home page
+- Offline music
 - Song
 - Playlist
 - Search
 - Artist
-- Offline music
 - Radio

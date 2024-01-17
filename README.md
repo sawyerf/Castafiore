@@ -3,10 +3,23 @@
   <img alt="logo" src="https://github.com/sawyerf/Castafiore/assets/22857002/a6969f24-415a-497a-99ef-f2c9da432d27#gh-light-mode-only">
 </picture>
 
-
 <div align="center">
-<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/9427318a-79ad-4b60-876f-275df971d287" />
-<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/2a71c66e-260d-4dcd-9cdd-86b63eaf0ae1" />
-<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/06f5acf0-b5e1-4416-a82d-4a41d08e4ff0" />
-<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/8783a260-42f5-4e20-851f-46afb37878db" />
+<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/d97befb0-92f6-4d29-b1ef-f43fc96bbc41" />
+<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/7e43e4ff-433d-4150-a98f-99dec38769ad" />
+<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/5d3973a3-1f2e-4948-a167-b55162c2e725" />
+<img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/93058bc3-f593-4f83-b9f8-1fc278e1e7d5" />
+
 </div>
+
+</br>
+
+**Castafiore** is a music player that support Subsonic API. It support platform: Web (PWA), IOS and Android (but IOS and Android are not stable)
+
+## Support Feature
+- Customize Home page
+- Song
+- Playlist
+- Search
+- Artist
+- Offline music
+- Radio

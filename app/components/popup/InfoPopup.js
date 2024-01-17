@@ -36,6 +36,9 @@ const InfoPopup = ({ songInfo, close }) => {
 						maxWidth: 1000,
 						width: '90%',
 					}}
+					contentContainerStyle={{
+						padding: 20,
+					}}
 				>
 					<Text style={{ ...presStyles.title, marginBottom: 20 }}>Song Info</Text>
 					<IconButton icon="close" onPress={close} style={{
@@ -58,7 +61,7 @@ const InfoPopup = ({ songInfo, close }) => {
 									borderBottomColor: theme.primaryLight,
 								}}
 							>
-								<Text style={{ color: theme.secondaryLight, fontSize: 16, flex: 1 }}>{key}</Text>
+								<Text style={{ color: theme.primaryLight, fontSize: 16, flex: 1 }}>{key}</Text>
 								<Text style={{ color: theme.secondaryLight, fontSize: 16, flex: 2 }}>{songInfo[key].toString()}</Text>
 							</View>
 						))

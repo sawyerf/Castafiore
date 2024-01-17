@@ -60,14 +60,14 @@ export const playSong = async (config, song, songDispatch, queue, index) => {
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		await loadSong(config, song.queue[(song.index + 1) % song.queue.length], song.sound)
-		songDispatch({ type: 'previous' })
+		songDispatch({ type: 'next' })
 	}
 }
 
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length], song.sound)
-		songDispatch({ type: 'next' })
+		songDispatch({ type: 'prevous' })
 	}
 }
 

@@ -51,7 +51,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						close={() => setVisible(-1)}
 						options={[
 							{
-								name: 'Add Playlist',
+								name: 'Add to playlist',
 								icon: 'plus',
 								onPress: () => {
 									getApi(config, 'getPlaylists')
@@ -78,8 +78,8 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 								if (!idPlaylist) return []
 								return ([
 									{
-										name: 'Remove Playlist',
-										icon: 'minus',
+										name: 'Remove from playlist',
+										icon: 'trash-o',
 										onPress: () => {
 											getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${index}`)
 												.then((json) => {

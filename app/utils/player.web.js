@@ -36,7 +36,7 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
-		if (!queue[index].isDownloaded) {
+		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-z0-9]*$/)) {
 			await urlStream(config, queue[index].id)
 				.then((_) => {
 					queue[index].isDownloaded = true

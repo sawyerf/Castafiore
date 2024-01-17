@@ -7,6 +7,7 @@ import HorizontalAlbums from './HorizontalAlbums';
 import HorizontalArtists from './HorizontalArtists';
 import HorizontalGenres from './HorizontalGenres';
 import mainStyles from '~/styles/main';
+import RadioList from './RadioList';
 
 const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
@@ -17,6 +18,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		if (type === 'album') getAlbumList()
 		if (type === 'artist') getArtistList()
 		if (type === 'genre') getGenreList()
+		if (type === 'radio') getRadioList()
 	}, [refresh])
 
 	React.useEffect(() => {
@@ -25,6 +27,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 			if (type === 'album') getAlbumList()
 			if (type === 'artist') getArtistList()
 			if (type === 'genre') getGenreList()
+			if (type === 'radio') getRadioList()
 		}
 	}, [config, type, query, enable])
 
@@ -52,6 +55,14 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 			.catch((error) => { })
 	}
 
+	const getRadioList = async () => {
+		getApi(config, 'getInternetRadioStations')
+			.then((json) => {
+				setList(json.internetRadioStations.internetRadioStation)
+			})
+			.catch((error) => { })
+	}
+
 	if (!enable) return null
 	if (!list) return null
 	return (
@@ -70,6 +81,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
 			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
+			{type === 'radio' && <RadioList config={config} radios={list} />}
 		</View>
 	)
 }

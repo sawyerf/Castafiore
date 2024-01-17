@@ -33,6 +33,7 @@ export const urlCover = (config, id, size = null) => {
 }
 
 export const urlStream = async (config, id) => {
+	if (!id.match(/^[a-z0-9]*$/)) return id
 	if (Platform.OS === 'web') {
 		return await fetch(`${config.url}/rest/stream?id=${id}&${config.query}`)
 			.then((res) => res.blob())

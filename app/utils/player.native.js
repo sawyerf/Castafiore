@@ -2,6 +2,10 @@ import { Audio } from 'expo-av';
 
 import { getApi, urlCover, urlStream } from './api';
 
+export const initPlayer = async (songDispatch) => {
+	songDispatch({ type: 'setSound', sound: new Audio.Sound() })
+}
+
 export const handleAction = (config, song, songDispatch, setTime) => {
 	song.sound.setOnPlaybackStatusUpdate((playbackStatus) => {
 		// This function refresh to many time so it can cause performance issue
@@ -22,7 +26,7 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 			console.error('onPlaybackStatus error', playbackStatus.error)
 		}
 	})
-	return () => {}
+	return () => { }
 }
 
 export const unloadSong = async (sound) => {
@@ -48,12 +52,7 @@ const loadSong = async (config, song, sound) => {
 }
 
 export const playSong = async (config, song, songDispatch, queue, index) => {
-	let sound = song.sound
-	if (!sound) {
-		sound = new Audio.Sound()
-		songDispatch({ type: 'setSound', sound })
-	}
-	await loadSong(config, queue[index], sound)
+	await loadSong(config, queue[index], song.sound)
 	songDispatch({ type: 'setSong', queue, index })
 }
 

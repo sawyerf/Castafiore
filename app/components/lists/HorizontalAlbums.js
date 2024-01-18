@@ -4,17 +4,23 @@ import { useNavigation } from '@react-navigation/native';
 
 import theme from '~/utils/theme';
 import { urlCover } from '~/utils/api';
+import OptionsPopup from '~/components/popup/OptionsPopup';
+import InfoPopup from '~/components/popup/InfoPopup';
 
 const HorizontalAlbums = ({ config, albums }) => {
 	const navigation = useNavigation();
+	const [indexOptions, setIndexOptions] = React.useState(-1)
+	const [infoAlbum, setInfoAlbum] = React.useState(null)
 
 	return (
 		<ScrollView horizontal={true} style={styles.albumList} showsHorizontalScrollIndicator={false}>
-			{albums?.map((album) => {
+			{albums?.map((album, index) => {
 				return (
 					<TouchableOpacity
 						style={styles.album}
 						key={album.id}
+						onLongPress={() => setIndexOptions(index)}
+						delayLongPress={200}
 						onPress={() => navigation.navigate('Album', { album: album })}>
 						<Image
 							style={styles.albumCover}
@@ -27,6 +33,21 @@ const HorizontalAlbums = ({ config, albums }) => {
 					</TouchableOpacity >
 				)
 			})}
+			<InfoPopup info={infoAlbum} close={() => setInfoAlbum(null)} />
+			<OptionsPopup
+				visible={indexOptions >= 0}
+				close={() => { setIndexOptions(-1) }}
+				options={[
+					{
+						name: 'Info',
+						icon: 'info',
+						onPress: () => {
+							setIndexOptions(-1)
+							setInfoAlbum(albums[indexOptions])
+						}
+					}
+				]}
+			/>
 		</ScrollView>
 	)
 }

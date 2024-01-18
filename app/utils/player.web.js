@@ -6,6 +6,21 @@ import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
 
+export const initPlayer = async (songDispatch) => {
+	const sound = new Audio()
+	sound.addEventListener('loadedmetadata', () => {
+		songDispatch({ type: 'setTime', position: 0, duration: sound.duration })
+		sound.play()
+	})
+	sound.addEventListener('play', () => {
+		songDispatch({ type: 'setPlaying', isPlaying: true })
+	})
+	sound.addEventListener('pause', () => {
+		songDispatch({ type: 'setPlaying', isPlaying: false })
+	})
+	songDispatch({ type: 'setSound', sound })
+}
+
 export const handleAction = (config, song, songDispatch, setTime) => {
 	if (!song.sound) return
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
@@ -32,7 +47,6 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 
 	const timeUpdateHandler = () => {
 		if (!song.sound) return
-		console.log(song.sound.currentTime, song.sound.duration)
 		setTime({
 			position: song.sound.currentTime,
 			duration: song.sound.duration,
@@ -40,7 +54,6 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 
 	}
 	const endedHandler = () => {
-		console.log('ended')
 		nextSong(config, song, songDispatch)
 		getApi(config, 'scrobble', `id=${song.songInfo.id}&submission=true`)
 			.catch((error) => { })
@@ -88,26 +101,7 @@ const loadSong = async (config, sound, queue, index, songDispatch) => {
 }
 
 export const playSong = async (config, song, songDispatch, queue, index) => {
-	let sound = song.sound
-	if (!sound) {
-		sound = new Audio()
-		sound.addEventListener('loadedmetadata', () => {
-			songDispatch({ type: 'setTime', position: 0, duration: sound.duration })
-			sound.play()
-		})
-		// sound.addEventListener('timeupdate', () => {
-		// 	songDispatch({ type: 'setTime', position: sound.currentTime, duration: sound.duration })
-		// })
-		sound.addEventListener('play', () => {
-			songDispatch({ type: 'setPlaying', isPlaying: true })
-		})
-		sound.addEventListener('pause', () => {
-			songDispatch({ type: 'setPlaying', isPlaying: false })
-		})
-		songDispatch({ type: 'setSound', sound })
-	}
-
-	await loadSong(config, sound, queue, index, songDispatch)
+	await loadSong(config, song.sound, queue, index, songDispatch)
 	songDispatch({ type: 'setSong', queue, index })
 	downloadNextSong(config, queue, index)
 }

@@ -44,6 +44,12 @@ export const songReducer = (state, action) => {
 				position: action.position,
 				duration: action.duration,
 			}
+		case 'addQueue':
+			if (!state.sound || !state.songInfo || !state.queue.length || !action.queue.length) return state
+			return {
+				...state,
+				queue: [...state.queue, ...action.queue],
+			}
 		default:
 			console.error('Unknown action', action)
 			return state

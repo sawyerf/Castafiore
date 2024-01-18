@@ -50,14 +50,14 @@ const BoxPlayer = ({ fullscreen }) => {
 					icon="step-forward"
 					size={23}
 					color={theme.primaryTouch}
-					style={{ paddingHorizontal: 10 }}
+					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => nextSong(config, song, songDispatch)}
 				/>
 				<IconButton
 					icon={song.isPlaying ? 'pause' : 'play'}
 					size={23}
 					color={theme.primaryTouch}
-					style={{ paddingHorizontal: 10 }}
+					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 				/>
 			</View>

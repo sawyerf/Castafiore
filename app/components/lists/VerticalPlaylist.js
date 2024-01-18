@@ -53,13 +53,6 @@ const VerticalPlaylist = ({ config, playlists }) => {
 										onPress: () => {
 											deletePlaylist(playlist.id)
 										}
-									},
-									{
-										name: 'Close',
-										icon: 'times',
-										onPress: () => {
-											setIsOption(-1)
-										}
 									}
 								]}
 							/>

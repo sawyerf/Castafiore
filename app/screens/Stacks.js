@@ -69,6 +69,8 @@ export const PlaylistsStack = () => {
 			<Stack.Screen name="Playlists" component={Playlists} />
 			<Stack.Screen name="Playlist" component={Playlist} />
 			<Stack.Screen name="Favorited" component={Favorited} />
+      <Stack.Screen name="Album" component={Album} />
+      <Stack.Screen name="Artist" component={Artist} />
 		</Stack.Navigator>
 	)
 }

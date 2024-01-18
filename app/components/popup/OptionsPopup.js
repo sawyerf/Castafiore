@@ -24,7 +24,7 @@ const OptionsPopup = ({ visible, close, options }) => {
 	}, [visible])
 
 	const getSizeOptions = () => {
-		const lenghtOptions = options.filter(value => value).length
+		const lenghtOptions = options.filter(value => value).length + 1
 		return 53 * lenghtOptions + (insets.bottom ? insets.bottom : 20) + 10
 	}
 
@@ -72,28 +72,39 @@ const OptionsPopup = ({ visible, close, options }) => {
 						}]
 					}}
 				>
-					{options.map((option, index) => (
-						<TouchableOpacity
-							style={{
-								flexDirection: 'row',
-								alignItems: 'center',
-								paddingHorizontal: 25,
-								height: 53,
-								justifyContent: 'flex-start',
-								alignContent: 'center',
-							}}
-							key={index}
-							onPress={option.onPress}>
-							<Icon name={option.icon} size={20} color={theme.primaryLight} style={{
-								width: 25,
-								textAlign: 'center'
-							}} />
-							<Text
-								style={{ color: theme.primaryLight, fontSize: 20, marginStart: 10 }}
-								numberOfLines={1}
-							>{option.name}</Text>
-						</TouchableOpacity>
-					))}
+					{[
+						...options,
+						{
+							name: 'Cancel',
+							icon: 'close',
+							onPress: close
+						}
+					].map((option, index) => {
+						if (!option) return null
+						return (
+							<TouchableOpacity
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									paddingHorizontal: 25,
+									height: 53,
+									justifyContent: 'flex-start',
+									alignContent: 'center',
+								}}
+								key={index}
+								onPress={option.onPress}>
+								<Icon name={option.icon} size={20} color={theme.primaryLight} style={{
+									padding: 15 * (option.indent || 0),
+									width: 25,
+									textAlign: 'center'
+								}} />
+								<Text
+									style={{ color: theme.primaryLight, fontSize: 20, marginStart: 10 }}
+									numberOfLines={1}
+								>{option.name}</Text>
+							</TouchableOpacity>
+						)
+					})}
 				</Animated.View>
 			</ScrollView>
 		</Modal >

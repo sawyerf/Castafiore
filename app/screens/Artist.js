@@ -6,6 +6,7 @@ import { ConfigContext } from '~/contexts/config';
 import { playSong } from '~/utils/player';
 
 import { getApi, urlCover } from '~/utils/api';
+import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import BackButton from '~/components/button/BackButton';
@@ -19,6 +20,7 @@ const Artist = ({ navigation, route }) => {
 	const [artist, setArtist] = React.useState([]);
 	const [artistInfo, setArtistInfo] = React.useState([]);
 	const [song, songDispatch] = React.useContext(SongContext)
+	const allSongs = React.useRef([])
 	const config = React.useContext(ConfigContext)
 
 	const getArtistInfo = () => {
@@ -35,6 +37,21 @@ const Artist = ({ navigation, route }) => {
 				setArtist(json.artist)
 			})
 			.catch((error) => { })
+	}
+
+	const getRandomSongs = async () => {
+		if (!artist.album) return
+		if (!allSongs.current.length) {
+			const songsPending = artist.album.map(async album => {
+				return await getApi(config, 'getAlbum', `id=${album.id}`)
+					.then((json) => {
+						return json.album.song
+					})
+					.catch((error) => { })
+			})
+			allSongs.current = (await Promise.all(songsPending)).flat()
+		}
+		playSong(config, song, songDispatch, shuffle(allSongs.current), 0)
 	}
 
 	const getSimilarSongs = () => {
@@ -93,12 +110,12 @@ const Artist = ({ navigation, route }) => {
 					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 0, paddingEnd: 0 }}
 					icon="random"
 					size={25}
-					onPress={getSimilarSongs}
+					onPress={getRandomSongs}
 				/>
 				<FavoritedButton
 					id={route.params.artist.id}
 					isFavorited={artist.starred}
-					style={{ ...presStyles.button}}
+					style={{ ...presStyles.button }}
 					config={config}
 					size={25}
 				/>

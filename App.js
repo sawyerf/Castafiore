@@ -14,6 +14,7 @@ import { ConfigContext, SetConfigContext, getConfig } from './app/contexts/confi
 import { getSettings, SettingsContext, SetSettingsContext } from './app/contexts/settings';
 import { SongContext, defaultSong, songReducer } from './app/contexts/song';
 import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
+import { initPlayer } from '~/utils/player';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,7 @@ const App = () => {
   const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 
   React.useEffect(() => {
+    initPlayer(dispatch)
     getConfig()
       .then((config) => {
         setConfig(config)
@@ -56,7 +58,13 @@ const App = () => {
           <ConfigContext.Provider value={config}>
             <SettingsContext.Provider value={settings}>
               <SafeAreaProvider>
-                <NavigationContainer>
+                <NavigationContainer
+                  documentTitle={{
+                    formatter: (options, route) => {
+                      return `Castafiore`
+                    }
+                  }}
+                >
                   <Tab.Navigator
                     tabBar={(props) => <TabBar {...props} />}
                     screenOptions={{

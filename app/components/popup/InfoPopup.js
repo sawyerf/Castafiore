@@ -7,10 +7,24 @@ import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 
-const InfoPopup = ({ songInfo, close }) => {
+const InfoPopup = ({ info, close }) => {
 	const insets = useSafeAreaInsets();
 
-	if (!songInfo) return null;
+	const objectToString = (obj) => {
+		if (typeof obj === 'object') {
+			if (obj instanceof Array) {
+				return obj.map(value => objectToString(value)).join(', ')
+			} else {
+				return Object.keys(obj).map(key => `${key}: ${objectToString(obj[key])}`).join('\n')
+			}
+		} else if (typeof obj === 'boolean') {
+			return obj ? 'True' : 'False'
+		} else {
+			return obj
+		}
+	}
+
+	if (!info) return null;
 	return (
 		<Modal
 			onRequestClose={close}
@@ -25,6 +39,15 @@ const InfoPopup = ({ songInfo, close }) => {
 					alignItems: 'center',
 				}}
 			>
+				<TouchableOpacity
+					onPress={close}
+					style={{
+						width: '100%',
+						height: '100%',
+						position: 'absolute',
+						top: 0,
+					}}
+				/>
 				<ScrollView
 					style={{
 						marginTop: insets.top ? insets.top + 20 : 20,
@@ -52,7 +75,7 @@ const InfoPopup = ({ songInfo, close }) => {
 						}}
 					/>
 					{
-						Object.keys(songInfo).map((key, index) => (
+						Object.keys(info).map((key, index) => (
 							<View
 								key={index}
 								style={{
@@ -65,8 +88,8 @@ const InfoPopup = ({ songInfo, close }) => {
 									borderBottomColor: theme.primaryLight,
 								}}
 							>
-								<Text style={{ color: theme.primaryLight, fontSize: 16, flex: 1 }}>{key}</Text>
-								<Text style={{ color: theme.secondaryLight, fontSize: 16, flex: 2 }}>{songInfo[key].toString()}</Text>
+								<Text style={{ color: theme.primaryLight, fontSize: 14, flex: 1, minWidth: 100 }}>{key}</Text>
+								<Text style={{ color: theme.secondaryLight, fontSize: 14, flex: 5 }}>{objectToString(info[key])}</Text>
 							</View>
 						))
 					}

@@ -10,11 +10,10 @@ import { getApi } from '~/utils/api';
 
 
 const RadioList = ({ config, radios }) => {
-	// context
 	const [song, songDispatch] = React.useContext(SongContext)
 	const [optionRadio, setOptionRadio] = React.useState(null)
-	if (!radios) return null
 
+	if (!radios) return null
 	return (
 		<ScrollView
 			horizontal={true}
@@ -44,13 +43,6 @@ const RadioList = ({ config, radios }) => {
 									radios.splice(radios.indexOf(optionRadio), 1)
 								})
 								.catch((error) => { })
-						}
-					},
-					{
-						name: 'Close',
-						icon: 'close',
-						onPress: () => {
-							setOptionRadio(null)
 						}
 					}
 				]}

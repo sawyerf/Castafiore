@@ -4,18 +4,22 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext } from '~/contexts/song';
 import theme from '~/utils/theme';
 import { playSong } from '~/utils/player';
+import { useNavigation } from '@react-navigation/native';
 
 import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
+import ErrorPopup from '~/components/popup/ErrorPopup';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { } }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)
-	const [visible, setVisible] = React.useState(-1)
+	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
 	const [playlistList, setPlaylistList] = React.useState([])
 	const [songInfo, setSongInfo] = React.useState(null)
+	const [error, setError] = React.useState(null)
+	const navigation = useNavigation()
 
 	return (
 		<View style={{
@@ -32,7 +36,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						</View>
 					}
 					<TouchableOpacity style={styles.song} key={song.id}
-						onLongPress={() => setVisible(index)}
+						onLongPress={() => setIndexOptions(index)}
 						delayLongPress={200}
 						onPress={() => playSong(config, songCon, songDispatch, listToPlay ? listToPlay : songs, index)}>
 						<Image
@@ -47,72 +51,120 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						</View>
 						<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ padding: 5, paddingStart: 10 }} />
 					</TouchableOpacity>
-					<OptionsPopup visible={visible === index}
-						close={() => setVisible(-1)}
-						options={[
+				</View>
+			)
+			)}
+			{/* Popups */}
+			<ErrorPopup message={error} close={() => setError(null)} />
+			<InfoPopup info={songInfo} close={() => setSongInfo(null)} />
+			<OptionsPopup
+				visible={indexOptions >= 0}
+				close={() => {
+					setPlaylistList([])
+					setIndexOptions(-1)
+				}}
+				options={[
+					{
+						name: 'Play similar songs',
+						icon: 'play',
+						onPress: () => {
+							getApi(config, 'getSimilarSongs', `id=${songs[indexOptions].id}&count=50`)
+								.then((json) => {
+									if (!json.similarSongs?.song) {
+										setError('No similar songs found')
+										playSong(config, songCon, songDispatch, [songs[indexOptions]], 0)
+									} else {
+										playSong(config, songCon, songDispatch, json.similarSongs?.song, 0)
+									}
+								})
+								.catch((error) => { })
+							setIndexOptions(-1)
+						}
+					},
+					{
+						name: 'Add to queue',
+						icon: 'th-list',
+						onPress: () => {
+							if (songCon.queue) {
+								songDispatch({ type: 'addQueue', queue: [songs[indexOptions]] })
+							} else {
+								playSong(config, songCon, songDispatch, [songs[indexOptions]], 0)
+							}
+							setIndexOptions(-1)
+						}
+					},
+					{
+						name: 'Go to artist',
+						icon: 'user',
+						onPress: () => {
+							navigation.navigate('Artist', { artist: { id: songs[indexOptions].artistId, name: songs[indexOptions].artist } })
+							setIndexOptions(-1)
+						}
+					},
+					{
+						name: 'Go to album',
+						icon: 'folder-open',
+						onPress: () => {
+							navigation.navigate('Album', { album: { id: songs[indexOptions].albumId, name: songs[indexOptions].album, artist: songs[indexOptions].artist } })
+							setIndexOptions(-1)
+						}
+					},
+					{
+						name: 'Add to playlist',
+						icon: 'plus',
+						onPress: () => {
+							if (playlistList.length > 0) {
+								setPlaylistList([])
+								return
+							}
+							getApi(config, 'getPlaylists')
+								.then((json) => {
+									setPlaylistList(json.playlists.playlist)
+								})
+								.catch((error) => { })
+						}
+					},
+					...playlistList?.map((playlist, index) => ({
+						name: playlist.name,
+						icon: 'angle-right',
+						indent: 1,
+						onPress: () => {
+							getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${songs[indexOptions].id}`)
+								.then((json) => {
+									setIndexOptions(-1)
+									setPlaylistList([])
+									onUpdate()
+								})
+								.catch((error) => { })
+						}
+					})),
+					...(() => {
+						if (!idPlaylist) return []
+						return ([
 							{
-								name: 'Add to playlist',
-								icon: 'plus',
+								name: 'Remove from playlist',
+								icon: 'trash-o',
 								onPress: () => {
-									getApi(config, 'getPlaylists')
+									getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${indexOptions}`)
 										.then((json) => {
-											setPlaylistList(json.playlists.playlist)
-										})
-										.catch((error) => { })
-								}
-							},
-							...playlistList?.map((playlist, index) => ({
-								name: playlist.name,
-								icon: 'angle-right',
-								onPress: () => {
-									getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${song.id}`)
-										.then((json) => {
-											setVisible(-1)
+											setIndexOptions(-1)
 											setPlaylistList([])
 											onUpdate()
 										})
 										.catch((error) => { })
 								}
-							})),
-							...(() => {
-								if (!idPlaylist) return []
-								return ([
-									{
-										name: 'Remove from playlist',
-										icon: 'trash-o',
-										onPress: () => {
-											getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${index}`)
-												.then((json) => {
-													setVisible(-1)
-													setPlaylistList([])
-													onUpdate()
-												})
-												.catch((error) => { })
-										}
-									}
-								])
-							})(),
-							, {
-								name: 'Info',
-								icon: 'info',
-								onPress: () => {
-									setVisible(-1)
-									setSongInfo(song)
-								}
-							},
-							{
-								name: 'Close',
-								icon: 'close',
-								onPress: () => {
-									setVisible(-1)
-									setPlaylistList([])
-								}
 							}
-						]} />
-				</View>
-			)
-			)}
-			<InfoPopup songInfo={songInfo} close={() => setSongInfo(null)} />
+						])
+					})(),
+					{
+						name: 'Info',
+						icon: 'info',
+						onPress: () => {
+							setIndexOptions(-1)
+							setSongInfo(songs[indexOptions])
+						}
+					},
+				]} />
 		</View>
 	)
 }

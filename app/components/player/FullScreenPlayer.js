@@ -13,7 +13,7 @@ import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
 import { setPosition } from '~/utils/player';
 
-const FullScreenPlayer = ({ fullscreen }) => {
+const FullScreenPlayer = ({ fullscreen, time }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
@@ -64,18 +64,18 @@ const FullScreenPlayer = ({ fullscreen }) => {
 					</View>
 					<Pressable
 						style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * song.duration)}
+						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * time.duration)}
 						onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
 					>
 						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
-							<View style={{ width: `${(song.position / song.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
+							<View style={{ width: `${(time.position / time.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
 						</View>
-						<View style={styles.bitognoBar(song)} />
+						<View style={styles.bitognoBar(time)} />
 					</Pressable>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.position)}</Text>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(song.duration)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.position)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
 						<IconButton
@@ -147,13 +147,13 @@ const styles = {
 			borderRadius: 10,
 		}
 	},
-	bitognoBar: (song) => ({
+	bitognoBar: (time) => ({
 		position: 'absolute',
 		width: 6,
 		height: 12,
 		borderRadius: 6,
 		backgroundColor: theme.primaryTouch,
-		left: `${(song.position / song.duration - 0.01) * 100}%`, top: 7
+		left: `${(time.position / time.duration - 0.01) * 100}%`, top: 7
 	})
 }
 

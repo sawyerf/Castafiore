@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Modal, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButton from '~/components/button/IconButton';
@@ -14,6 +13,7 @@ const InfoPopup = ({ songInfo, close }) => {
 	if (!songInfo) return null;
 	return (
 		<Modal
+			onRequestClose={close}
 			transparent={true}
 			visible={true}>
 			<View
@@ -41,12 +41,16 @@ const InfoPopup = ({ songInfo, close }) => {
 					}}
 				>
 					<Text style={{ ...presStyles.title, marginBottom: 20 }}>Song Info</Text>
-					<IconButton icon="close" onPress={close} style={{
-						position: 'absolute',
-						top: 10,
-						end: 10,
-						padding: 10,
-					}} />
+					<IconButton
+						icon="close"
+						onPress={close}
+						style={{
+							position: 'absolute',
+							top: 10,
+							end: 10,
+							padding: 10,
+						}}
+					/>
 					{
 						Object.keys(songInfo).map((key, index) => (
 							<View

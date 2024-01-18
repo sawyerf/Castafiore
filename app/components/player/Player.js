@@ -11,30 +11,19 @@ import FullScreenPlayer from './FullScreenPlayer';
 const Player = ({ navigation, state, fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
+	const [time, setTime] = React.useState(null)
 
 	React.useEffect(() => {
 		if (!song.sound) return
-		handleAction(config, song, songDispatch)
-		if (Platform.OS == 'web') {
-			song.sound.addEventListener('ended', endedHandler)
-			return () => {
-				song.sound.removeEventListener('ended', endedHandler)
-			}
-		}
+		return handleAction(config, song, songDispatch, setTime)
 	}, [song.sound, song.songInfo, song.index, song.queue])
 
 	React.useEffect(() => {
 		fullscreen.set(false)
 	}, [state.index])
 
-	const endedHandler = () => {
-		nextSong(config, song, songDispatch)
-		getApi(config, 'scrobble', `id=${song.songInfo.id}&submission=true`)
-			.catch((error) => { })
-	}
-
 	if (!song?.songInfo) return null
-	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} />
+	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
 	else return <BoxPlayer fullscreen={fullscreen} />
 }
 

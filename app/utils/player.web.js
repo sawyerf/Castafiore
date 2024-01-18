@@ -6,7 +6,8 @@ import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
 
-export const handleAction = (config, song, songDispatch) => {
+export const handleAction = (config, song, songDispatch, setTime) => {
+	if (!song.sound) return
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
 		previousSong(config, song, songDispatch)
 	});
@@ -28,6 +29,29 @@ export const handleAction = (config, song, songDispatch) => {
 	navigator.mediaSession.setActionHandler("seekto", (details) => {
 		setPosition(song.sound, details.seekTime)
 	});
+
+	const timeUpdateHandler = () => {
+		if (!song.sound) return
+		console.log(song.sound.currentTime, song.sound.duration)
+		setTime({
+			position: song.sound.currentTime,
+			duration: song.sound.duration,
+		})
+
+	}
+	const endedHandler = () => {
+		console.log('ended')
+		nextSong(config, song, songDispatch)
+		getApi(config, 'scrobble', `id=${song.songInfo.id}&submission=true`)
+			.catch((error) => { })
+	}
+
+	song.sound.addEventListener('ended', endedHandler)
+	song.sound.addEventListener('timeupdate', timeUpdateHandler)
+	return () => {
+		song.sound.removeEventListener('timeupdate', timeUpdateHandler)
+		song.sound.removeEventListener('ended', endedHandler)
+	}
 }
 
 const downloadNextSong = async (config, queue, currentIndex) => {
@@ -71,9 +95,9 @@ export const playSong = async (config, song, songDispatch, queue, index) => {
 			songDispatch({ type: 'setTime', position: 0, duration: sound.duration })
 			sound.play()
 		})
-		sound.addEventListener('timeupdate', () => {
-			songDispatch({ type: 'setTime', position: sound.currentTime, duration: sound.duration })
-		})
+		// sound.addEventListener('timeupdate', () => {
+		// 	songDispatch({ type: 'setTime', position: sound.currentTime, duration: sound.duration })
+		// })
 		sound.addEventListener('play', () => {
 			songDispatch({ type: 'setPlaying', isPlaying: true })
 		})

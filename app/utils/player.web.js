@@ -110,6 +110,7 @@ const loadSong = async (config, sound, queue, index, songDispatch) => {
 export const playSong = async (config, song, songDispatch, queue, index) => {
 	await loadSong(config, song.sound, queue, index, songDispatch)
 	songDispatch({ type: 'setSong', queue, index })
+	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
 	downloadNextSong(config, queue, index)
 }
 

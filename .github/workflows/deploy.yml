@@ -36,6 +36,8 @@ jobs:
         run: npm ci
       - name: Export Project
         run: npm run export:web
+      - name: Copy icon.png
+        run: cp ./assets/icon.png ./web-build/pwa/icon.png
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

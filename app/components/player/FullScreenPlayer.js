@@ -104,11 +104,16 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 						<IconButton
 							icon="repeat"
 							size={19}
-							onPress={() => { }}
+							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
+							style={{ paddingVertical: 10, paddingEnd: 20 }}
+							onPress={() => {
+								songDispatch({ type: 'setActionEndOfSong', action: song.actionEndOfSong === 'repeat' ? 'next' : 'repeat' })
+							}}
 						/>
 						<IconButton
 							icon="bars"
 							size={19}
+							style={{ paddingVertical: 10, paddingStart: 20 }}
 							onPress={() => setIsQueue(!isQueue)}
 						/>
 					</View>

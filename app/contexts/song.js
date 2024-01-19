@@ -50,6 +50,12 @@ export const songReducer = (state, action) => {
 				...state,
 				queue: [...state.queue, ...action.queue],
 			}
+		case 'setActionEndOfSong':
+			if (['next', 'repeat'].indexOf(action.action) === -1) return state
+			return {
+				...state,
+				actionEndOfSong: action.action,
+			}
 		default:
 			console.error('Unknown action', action)
 			return state
@@ -62,6 +68,7 @@ export const defaultSong = {
 	queue: null,
 	index: 0,
 	isPlaying: false,
+	actionEndOfSong: 'next',
 	// Time
 	position: 0,
 	duration: 0,

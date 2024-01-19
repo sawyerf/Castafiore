@@ -18,7 +18,13 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 		}
 		if (playbackStatus.didJustFinish) {
 			const id = song.songInfo.id
-			nextSong(config, song, songDispatch)
+
+			if (song.actionEndOfSong === 'repeat') {
+				setPosition(song.sound, 0)
+				resumeSong(song.sound)
+			} else {
+				nextSong(config, song, songDispatch)
+			}
 			getApi(config, 'scrobble', `id=${id}&submission=true`)
 				.catch((error) => { })
 		}
@@ -54,6 +60,7 @@ const loadSong = async (config, song, sound) => {
 export const playSong = async (config, song, songDispatch, queue, index) => {
 	await loadSong(config, queue[index], song.sound)
 	songDispatch({ type: 'setSong', queue, index })
+	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
 }
 
 export const nextSong = async (config, song, songDispatch) => {
@@ -66,7 +73,7 @@ export const nextSong = async (config, song, songDispatch) => {
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		await loadSong(config, song.queue[(song.queue.length + song.index - 1) % song.queue.length], song.sound)
-		songDispatch({ type: 'prevous' })
+		songDispatch({ type: 'previous' })
 	}
 }
 

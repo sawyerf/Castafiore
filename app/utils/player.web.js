@@ -54,8 +54,15 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 
 	}
 	const endedHandler = () => {
-		nextSong(config, song, songDispatch)
-		getApi(config, 'scrobble', `id=${song.songInfo.id}&submission=true`)
+		const songId = song.songInfo.id
+
+		if (song.actionEndOfSong === 'repeat') {
+			setPosition(song.sound, 0)
+			resumeSong(song.sound)
+		} else {
+			nextSong(config, song, songDispatch)
+		}
+		getApi(config, 'scrobble', `id=${songId}&submission=true`)
 			.catch((error) => { })
 	}
 

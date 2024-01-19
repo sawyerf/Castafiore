@@ -14,7 +14,7 @@ import { ConfigContext, SetConfigContext, getConfig } from './app/contexts/confi
 import { getSettings, SettingsContext, SetSettingsContext } from './app/contexts/settings';
 import { SongContext, defaultSong, songReducer } from './app/contexts/song';
 import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
-import { initPlayer } from '~/utils/player';
+import { initPlayer, unloadSong } from '~/utils/player';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +32,7 @@ const App = () => {
   const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 
   React.useEffect(() => {
-    initPlayer(dispatch)
+    if (!song.sound) initPlayer(dispatch)
     getConfig()
       .then((config) => {
         setConfig(config)
@@ -52,6 +52,7 @@ const App = () => {
   }
 
   return (
+
     <SetConfigContext.Provider value={setConfig}>
       <SetSettingsContext.Provider value={saveSettings}>
         <SongContext.Provider value={[song, dispatch]}>

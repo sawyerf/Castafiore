@@ -16,7 +16,7 @@ const Player = ({ navigation, state, fullscreen }) => {
 	React.useEffect(() => {
 		if (!song.sound) return
 		return handleAction(config, song, songDispatch, setTime)
-	}, [song.sound, song.songInfo, song.index, song.queue])
+	}, [song.sound, song.songInfo, song.index, song.queue, song.actionEndOfSong])
 
 	React.useEffect(() => {
 		fullscreen.set(false)

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, RefreshControl, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, ScrollView, RefreshControl, TouchableOpacity, Platform, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
@@ -19,6 +19,11 @@ const Home = ({ navigation }) => {
 	const settings = React.useContext(SettingsContext)
 	const [statusRefresh, setStatusRefresh] = React.useState();
 	const [refreshing, setRefreshing] = React.useState(false);
+	const rotationValue = React.useRef(new Animated.Value(0)).current;
+	const rotation = rotationValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: ['0deg', '360deg']
+	})
 
 	const onRefresh = () => {
 		if (refreshing) return;
@@ -35,6 +40,12 @@ const Home = ({ navigation }) => {
 
 	React.useEffect(() => {
 		if (refreshing) {
+			rotationValue.setValue(0)
+			Animated.timing(rotationValue, {
+				toValue: 1,
+				duration: 1000,
+				useNativeDriver: true,
+			}).start()
 			setTimeout(() => {
 				setRefreshing(false)
 			}, 1000)
@@ -70,7 +81,7 @@ const Home = ({ navigation }) => {
 		<ScrollView vertical={true}
 			style={mainStyles.mainContainer(insets)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
-			// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
+		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
 				<TouchableOpacity style={styles.boxRandom}
@@ -81,15 +92,22 @@ const Home = ({ navigation }) => {
 					<Text style={mainStyles.subTitle}>
 						{statusRefresh.count}°
 					</Text> :
-					<IconButton
-						icon="refresh"
-						size={30}
-						color={theme.primaryLight}
-						style={{ paddingHorizontal: 10 }}
-						onLongPress={refreshServer}
-						delayLongPress={200}
-						onPress={() => setRefreshing(true)}
-					/>}
+					<Animated.View style={{
+						transform: [{
+							rotate: rotation
+						}]
+					}}>
+						<IconButton
+							icon="refresh"
+							size={30}
+							color={theme.primaryLight}
+							style={{ paddingHorizontal: 10 }}
+							onLongPress={refreshServer}
+							delayLongPress={200}
+							onPress={() => setRefreshing(true)}
+						/>
+					</Animated.View>
+				}
 			</View>
 			{config?.url && settings?.homeOrder?.map((value, index) =>
 				<HorizontalList key={index} config={config} refresh={refreshing} {...value} />

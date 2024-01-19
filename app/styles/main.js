@@ -14,7 +14,13 @@ export default {
 		// paddingBottom: insets.bottom + 80
 		paddingBottom: 80
 	}),
-	mainTitle: { color: theme.primaryLight, fontSize: 30, fontWeight: 'bold', margin: 20, marginTop: 30 },
+	mainTitle: {
+		color: theme.primaryLight,
+		fontSize: 30,
+		fontWeight: 'bold',
+		margin: 20,
+		marginTop: 30
+	},
 	subTitle: {
 		color: theme.primaryLight,
 		fontSize: 25,

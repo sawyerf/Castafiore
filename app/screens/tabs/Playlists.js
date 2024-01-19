@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, RefreshControl, Platform } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, RefreshControl, Platform, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -20,6 +20,11 @@ const Playlists = ({ navigation }) => {
 	const [refreshing, setRefreshing] = React.useState(false);
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
 	const [isPublic, setIsPublic] = React.useState(false);
+	const rotationValue = React.useRef(new Animated.Value(0)).current;
+	const rotation = rotationValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: ['0deg', '360deg']
+	})
 
 	React.useEffect(() => {
 		if (config.query) {
@@ -30,6 +35,12 @@ const Playlists = ({ navigation }) => {
 
 	React.useEffect(() => {
 		if (refreshing) {
+			rotationValue.setValue(0)
+			Animated.timing(rotationValue, {
+				toValue: 1,
+				duration: 1000,
+				useNativeDriver: true,
+			}).start()
 			getFavorited()
 			getPlaylists()
 		}
@@ -73,15 +84,17 @@ const Playlists = ({ navigation }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
-			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20 }}>
-				<Text style={mainStyles.mainTitle}>Your Playlists</Text>
-				<IconButton
-					icon="refresh"
-					size={30}
-					color={theme.primaryLight}
-					style={{ paddingHorizontal: 10, marginTop: 30, marginBottom: 20 }}
-					onPress={() => setRefreshing(true)}
-				/>
+			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
+				<Text style={{ ...mainStyles.mainTitle, marginBottom: 0, marginTop: 0 }}>Your Playlists</Text>
+				<Animated.View style={{ transform: [{ rotate: rotation }] }}>
+					<IconButton
+						icon="refresh"
+						size={30}
+						color={theme.primaryLight}
+						style={{ paddingHorizontal: 10 }}
+						onPress={() => setRefreshing(true)}
+					/>
+				</Animated.View>
 			</View>
 			<TouchableOpacity style={styles.subTitleParent} onPress={() => navigation.navigate('Favorited', { favorited })}>
 				<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
@@ -91,7 +104,7 @@ const Playlists = ({ navigation }) => {
 				</Text>
 			</TouchableOpacity>
 			<SongsList songs={favorited?.slice(0, 3)} config={config} listToPlay={favorited} />
-			<View style={styles.subTitleParent}>
+			<View style={{ ...styles.subTitleParent, marginTop: 10 }}>
 				{
 					newPlaylist !== null ?
 						<>
@@ -145,7 +158,7 @@ const styles = {
 		flexDirection: 'row',
 		// justifyContent: 'space-between',
 		alignItems: 'center',
-		marginTop: 20,
+		marginTop: 10,
 		marginBottom: 17,
 		...mainStyles.stdVerticalMargin
 	},

@@ -40,6 +40,7 @@ const ErrorPopup = ({ message, close }) => {
 			<Animated.View
 				style={{
 					margin: 10,
+					marginTop: insets.top ? insets.top + 10 : 10,
 					paddingVertical: 10,
 					paddingHorizontal: 20,
 					borderRadius: 20,

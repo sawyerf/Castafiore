@@ -24,6 +24,8 @@ export default {
 		// top: 0,
 		// right: 0,
 		padding: 20,
+		// justifyContent: 'center',
+		// alignItems: 'center',
 		flex: 'initial'
 	},
 	headerContainer: {

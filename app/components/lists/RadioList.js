@@ -8,10 +8,22 @@ import { playSong } from '~/utils/player';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
 
-
 const RadioList = ({ config, radios }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const [optionRadio, setOptionRadio] = React.useState(null)
+
+	const playRadio = (index) => {
+		playSong(config, song, songDispatch, radios.map(radio => ({
+			id: radio.streamUrl,
+			title: radio.name,
+			artist: radio.homePageUrl ? radio.homePageUrl : 'Radio',
+			albumId: radio.id,
+			starred: false,
+			discNumber: 1,
+			duration: 0,
+			albumArtist: radio.homePageUrl,
+		})), index)
+	}
 
 	if (!radios) return null
 	return (
@@ -29,24 +41,6 @@ const RadioList = ({ config, radios }) => {
 				flexWrap: 'wrap',
 			}}
 		>
-			<OptionsPopup
-				visible={optionRadio !== null}
-				close={() => { setOptionRadio(null) }}
-				options={[
-					{
-						name: 'Remove radio',
-						icon: 'trash-o',
-						onPress: () => {
-							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)
-								.then((json) => {
-									setOptionRadio(null)
-									radios.splice(radios.indexOf(optionRadio), 1)
-								})
-								.catch((error) => { })
-						}
-					}
-				]}
-			/>
 			{radios.map((radio, index) => {
 				const getUrlFavicon = (url) => {
 					if (!url) return null
@@ -58,21 +52,8 @@ const RadioList = ({ config, radios }) => {
 				return (
 					<TouchableOpacity
 						key={index}
-						onPress={() => {
-							playSong(config, song, songDispatch, radios.map(radio => ({
-								id: radio.streamUrl,
-								title: radio.name,
-								artist: radio.homePageUrl ? radio.homePageUrl : 'Radio',
-								albumId: radio.id,
-								starred: false,
-								discNumber: 1,
-								duration: 0,
-								albumArtist: radio.homePageUrl,
-							})), index)
-						}}
-						onLongPress={() => {
-							setOptionRadio(radio)
-						}}
+						onPress={() => playRadio(index)}
+						onLongPress={() => setOptionRadio(radio)}
 						delayLongPress={200}
 						style={{
 							height: 60,
@@ -84,7 +65,6 @@ const RadioList = ({ config, radios }) => {
 							backgroundColor: theme.secondaryDark,
 							flexDirection: 'row',
 							alignItems: 'center',
-							// all item start at left
 							justifyContent: 'flex-start',
 							borderRadius: 7,
 						}}
@@ -107,11 +87,7 @@ const RadioList = ({ config, radios }) => {
 								marginRight: 10,
 							}}
 						/>
-						<View
-							style={{
-								flexDirection: 'column',
-							}}
-						>
+						<View style={{ flexDirection: 'column' }} >
 							<Text
 								numberOfLines={1}
 								style={{
@@ -139,6 +115,24 @@ const RadioList = ({ config, radios }) => {
 					</TouchableOpacity>
 				)
 			})}
+			<OptionsPopup
+				visible={optionRadio !== null}
+				close={() => { setOptionRadio(null) }}
+				options={[
+					{
+						name: 'Remove radio',
+						icon: 'trash-o',
+						onPress: () => {
+							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)
+								.then((json) => {
+									setOptionRadio(null)
+									radios.splice(radios.indexOf(optionRadio), 1)
+								})
+								.catch((error) => { })
+						}
+					}
+				]}
+			/>
 		</ScrollView>
 	)
 }

@@ -101,13 +101,13 @@ const Artist = ({ navigation, route }) => {
 					<Text style={presStyles.subTitle}>Artist</Text>
 				</View>
 				<IconButton
-					style={{ ...presStyles.button, justifyContent: undefined }}
+					style={{ ...presStyles.button, justifyContent: undefined, paddingEnd: 7.5 }}
 					icon="arrow-up"
 					size={25}
 					onPress={getTopSongs}
 				/>
 				<IconButton
-					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 0, paddingEnd: 0 }}
+					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 7.5, paddingEnd: 7.5 }}
 					icon="random"
 					size={25}
 					onPress={getRandomSongs}
@@ -115,7 +115,7 @@ const Artist = ({ navigation, route }) => {
 				<FavoritedButton
 					id={route.params.artist.id}
 					isFavorited={artist.starred}
-					style={{ ...presStyles.button }}
+					style={{ ...presStyles.button, paddingStart: 7.5 }}
 					config={config}
 					size={25}
 				/>

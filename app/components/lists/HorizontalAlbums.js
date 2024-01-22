@@ -13,26 +13,33 @@ const HorizontalAlbums = ({ config, albums }) => {
 	const [infoAlbum, setInfoAlbum] = React.useState(null)
 
 	return (
-		<ScrollView horizontal={true} style={styles.albumList} showsHorizontalScrollIndicator={false}>
-			{albums?.map((album, index) => {
-				return (
-					<TouchableOpacity
-						style={styles.album}
-						key={album.id}
-						onLongPress={() => setIndexOptions(index)}
-						delayLongPress={200}
-						onPress={() => navigation.navigate('Album', { album: album })}>
-						<Image
-							style={styles.albumCover}
-							source={{
-								uri: urlCover(config, album.id),
-							}}
-						/>
-						<Text numberOfLines={1} style={styles.titleAlbum}>{album.name}</Text>
-						<Text numberOfLines={1} style={styles.artist}>{album.artist}</Text>
-					</TouchableOpacity >
-				)
-			})}
+		<ScrollView
+			horizontal={true}
+			style={{ width: '100%', }}
+			contentContainerStyle={{
+				paddingHorizontal: 20,
+				columnGap: 10,
+				// paddingBottom: 10,
+				// paddingEnd: 10,
+			}}
+		>
+			{albums?.map((album, index) => (
+				<TouchableOpacity
+					style={styles.album}
+					key={album.id}
+					onLongPress={() => setIndexOptions(index)}
+					delayLongPress={200}
+					onPress={() => navigation.navigate('Album', { album: album })}>
+					<Image
+						style={styles.albumCover}
+						source={{
+							uri: urlCover(config, album.id),
+						}}
+					/>
+					<Text numberOfLines={1} style={styles.titleAlbum}>{album.name}</Text>
+					<Text numberOfLines={1} style={styles.artist}>{album.artist}</Text>
+				</TouchableOpacity >
+			))}
 			<InfoPopup info={infoAlbum} close={() => setInfoAlbum(null)} />
 			<OptionsPopup
 				visible={indexOptions >= 0}
@@ -53,12 +60,8 @@ const HorizontalAlbums = ({ config, albums }) => {
 }
 
 const styles = {
-	albumList: {
-		width: '100%',
-		paddingLeft: 10,
-	},
 	album: {
-		margin: 10,
+		// marginEnd: 20,
 		width: 160,
 		height: 210,
 		alignItems: 'center',

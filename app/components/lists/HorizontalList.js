@@ -67,17 +67,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	if (!list) return null
 	return (
 		<View>
-			<View
-				style={{
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					paddingRight: 10,
-					marginTop: 20,
-					marginBottom: 10,
-				}}>
-				<Text style={{ ...mainStyles.subTitle, ...mainStyles.stdVerticalMargin }}>{title}</Text>
-			</View>
+			<Text style={mainStyles.titleSection}>{title}</Text>
 			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
 			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}

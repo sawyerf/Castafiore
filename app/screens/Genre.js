@@ -30,7 +30,7 @@ const Genre = ({ navigation, route }) => {
 	}, [config])
 
 	const getRandomSongs = () => {
-		getApi(config, 'getRandomSongs', `genre=${encodeURIComponent(route.params.genre.value)}&count=50`)
+		getApi(config, 'getRandomSongs', { genre: route.params.genre.value, count: 50 })
 			.then((json) => {
 				const songs = json.randomSongs?.song
 				if (!songs) return
@@ -40,7 +40,7 @@ const Genre = ({ navigation, route }) => {
 	}
 
 	const getAlbumsByGenre = () => {
-		getApi(config, 'getAlbumList', `type=byGenre&genre=${encodeURIComponent(route.params.genre.value)}`)
+		getApi(config, 'getAlbumList', { type: 'byGenre', genre: route.params.genre.value })
 			.then((json) => {
 				setAlbums(json?.albumList?.album)
 			})
@@ -48,7 +48,7 @@ const Genre = ({ navigation, route }) => {
 	}
 
 	const getSongs = () => {
-		getApi(config, 'getSongsByGenre', `genre=${encodeURIComponent(route.params.genre.value)}&count=50`)
+		getApi(config, 'getSongsByGenre', { genre: route.params.genre.value, count: 50 })
 			.then((json) => {
 				setSongs(json?.songsByGenre?.song)
 			})

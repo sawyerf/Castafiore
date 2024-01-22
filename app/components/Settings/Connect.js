@@ -68,8 +68,10 @@ const Connect = ({ navigation }) => {
 				style={mainStyles.inputSetting}
 				placeholder="Server Url"
 				value={url}
+				inputMode="url"
 				placeholderTextColor={theme.primaryLight}
 				autoFocus={false}
+				autoCorrect={false}
 				onChangeText={(url) => setUrl(url)}
 			/>
 			<TextInput
@@ -77,14 +79,18 @@ const Connect = ({ navigation }) => {
 				placeholder="Username"
 				placeholderTextColor={theme.primaryLight}
 				value={username}
+				autoCorrect={false}
+				autoComplete='username'
 				onChangeText={(username) => setUsername(username)}
 			/>
 			<TextInput
 				style={mainStyles.inputSetting}
 				placeholder="Password"
+				autoComplete='current-password'
 				placeholderTextColor={theme.primaryLight}
 				secureTextEntry={true}
 				value={password}
+				autoCorrect={false}
 				onSubmitEditing={connect}
 				onChangeText={(password) => setPassword(password)}
 			/>

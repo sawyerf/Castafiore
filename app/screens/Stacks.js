@@ -10,6 +10,7 @@ import Artist from '~/screens/Artist';
 import Favorited from '~/screens/Favorited';
 import Genre from '~/screens/Genre';
 import Playlist from '~/screens/Playlist';
+import UpdateRadio from '~/screens/UpdateRadio';
 
 import theme from '~/utils/theme';
 
@@ -31,6 +32,7 @@ export const HomeStack = () => {
       <Stack.Screen name="Album" component={Album} />
       <Stack.Screen name="Artist" component={Artist} />
 			<Stack.Screen name="Genre" component={Genre} />
+			<Stack.Screen name="UpdateRadio" component={UpdateRadio} />
     </Stack.Navigator>
   )
 }

@@ -10,6 +10,7 @@ import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
+import ImageError from '~/components/ImageError';
 
 const BoxPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
@@ -33,13 +34,14 @@ const BoxPlayer = ({ fullscreen }) => {
 				borderRadius: 10,
 			}}>
 			<View style={{ ...styles.boxPlayerImage, flex: Platform.OS === 'android' ? 0 : 'initial' }}>
-				<Icon name="music" size={23} color={theme.primaryLight} style={{ position: 'absolute', top: 9, left: 9 }} />
-				<Image
+				<ImageError
+					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
 					style={styles.boxPlayerImage}
-					source={{
-						uri: urlCover(config, song?.songInfo?.albumId, 100),
-					}}
-				/>
+				>
+					<View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+						<Icon name="music" size={23} color={theme.primaryLight} />
+					</View>
+				</ImageError>
 			</View>
 			<View style={styles.boxPlayerText}>
 				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>

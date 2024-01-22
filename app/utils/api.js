@@ -1,12 +1,22 @@
 import { Platform } from "react-native"
 
 export const getApi = (config, path, query = '') => {
+	let encodedQuery = ''
+	if (typeof query === 'string') {
+		encodedQuery = query
+	} else if (typeof query === 'object') {
+		encodedQuery = Object.keys(query).map((key) => `${key}=${encodeURIComponent(query[key])}`).join('&')
+	} else {
+		console.error('getApi: query is not a string or an object')
+		return
+	}
+
 	return new Promise((resolve, reject) => {
 		if (!config?.url || !config?.query) {
 			reject('getApi: config.url or config.query is not defined')
 			return
 		}
-		fetch(`${config.url}/rest/${path}?${config.query}&${query}`)
+		fetch(`${config.url}/rest/${path}?${config.query}&${encodedQuery}`)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {

@@ -64,7 +64,7 @@ const Artist = ({ navigation, route }) => {
 	}
 
 	const getTopSongs = () => {
-		getApi(config, 'getTopSongs', `artist=${encodeURIComponent(route.params.artist.name)}&count=50`)
+		getApi(config, 'getTopSongs', { artist: route.params.artist.name, count: 50 })
 			.then((json) => {
 				const songs = json.topSongs?.song
 				if (!songs) return
@@ -120,12 +120,12 @@ const Artist = ({ navigation, route }) => {
 					size={25}
 				/>
 			</View>
-			<Text style={{ ...mainStyles.subTitle, marginStart: 20 }}>Albums</Text>
+			<Text style={{...mainStyles.titleSection, marginTop: 0}}>Albums</Text>
 			<HorizontalAlbums config={config} albums={artist.album} />
 			{
 				artistInfo?.similarArtist?.length && (
 					<>
-						<Text style={{ ...mainStyles.subTitle, margin: 20 }}>Similar Artist</Text>
+						<Text style={mainStyles.titleSection}>Similar Artist</Text>
 						<HorizontalArtists config={config} artists={artistInfo.similarArtist} />
 					</>
 				)

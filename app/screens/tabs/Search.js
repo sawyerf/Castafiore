@@ -56,7 +56,7 @@ const Search = ({ navigation }) => {
 	}
 
 	const getSearch = () => {
-		getApi(config, 'search2', `query=${encodeURIComponent(query)}`)
+		getApi(config, 'search2', { query })
 			.then((json) => {
 				setResults(json.searchResult2)
 			})
@@ -97,21 +97,19 @@ const Search = ({ navigation }) => {
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 80 }}>
 				{
-					!query.length && history.map((previousSearch, index) => {
-						return (
-							<TouchableOpacity key={index} onPress={() => setQuery(previousSearch)} style={mainStyles.stdVerticalMargin}>
-								<Text style={{ color: theme.secondaryLight, fontSize: 17, marginBottom: 15, marginTop: 10 }}><Icon name="eye" size={17} color={theme.secondaryLight} />  {previousSearch}</Text>
-								<IconButton
-									icon="times"
-									size={14}
-									color={theme.secondaryLight}
-									style={{ position: 'absolute', top: 0, right: 0, height: '100%', justifyContent: 'center', paddingHorizontal: 10 }}
-									onPress={() => delItemHistory(index)}
-								/>
-								<View style={{ flex: 1, marginStart: 10, marginEnd: 10, backgroundColor: theme.secondaryDark, height: 2, borderRadius: 2 }} />
-							</TouchableOpacity>
-						)
-					})
+					!query.length && history.map((previousSearch, index) => (
+						<TouchableOpacity key={index} onPress={() => setQuery(previousSearch)} style={mainStyles.stdVerticalMargin}>
+							<Text style={{ color: theme.secondaryLight, fontSize: 17, marginBottom: 15, marginTop: 10 }}><Icon name="eye" size={17} color={theme.secondaryLight} />  {previousSearch}</Text>
+							<IconButton
+								icon="times"
+								size={14}
+								color={theme.secondaryLight}
+								style={{ position: 'absolute', top: 0, right: 0, height: '100%', justifyContent: 'center', paddingHorizontal: 10 }}
+								onPress={() => delItemHistory(index)}
+							/>
+							<View style={{ flex: 1, marginStart: 10, marginEnd: 10, backgroundColor: theme.secondaryDark, height: 2, borderRadius: 2 }} />
+						</TouchableOpacity>
+					))
 				}
 				{query.length && results && !results.artist && !results.album && !results.song ? (
 					<Text style={{
@@ -126,21 +124,21 @@ const Search = ({ navigation }) => {
 						{
 							results.artist &&
 							<>
-								<Text style={{ ...mainStyles.subTitle, margin: 20 }}>Artists</Text>
+								<Text style={mainStyles.titleSection}>Artists</Text>
 								<HorizontalArtists artists={results.artist} config={config} />
 							</>
 						}
 						{
 							results.album &&
 							<>
-								<Text style={{ ...mainStyles.subTitle, margin: 20, marginBottom: 10 }}>Albums</Text>
+								<Text style={mainStyles.titleSection}>Albums</Text>
 								<HorizontalAlbums albums={results.album} config={config} />
 							</>
 						}
 						{
 							results.song &&
 							<>
-								<Text style={{ ...mainStyles.subTitle, margin: 20 }}>Songs</Text>
+								<Text style={mainStyles.titleSection}>Songs</Text>
 								<SongsList songs={results.song} config={config} />
 							</>
 						}

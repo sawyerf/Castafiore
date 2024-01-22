@@ -9,24 +9,26 @@ const HorizontalArtists = ({ config, artists }) => {
 	const navigation = useNavigation();
 
 	return (
-		<ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{
-			flexDirection: 'row',
-			paddingEnd: 10,
-			paddingStart: 10,
-		}}>
-			{artists?.map((artist) => {
-				return (
-					<TouchableOpacity style={styles.artist} key={artist.id} onPress={() => navigation.navigate('Artist', {artist})} >
-						<Image
-							style={styles.artistCover}
-							source={{
-								uri: urlCover(config, artist.id),
-							}}
-						/>
-						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2, width: 100, textAlign: 'center' }}>{artist.name}</Text>
-					</TouchableOpacity>
-				)
-			})}
+		<ScrollView
+			horizontal={true}
+			style={{ width: '100%', }}
+			contentContainerStyle={{
+				paddingStart: 20,
+				paddingEnd: 20,
+				columnGap: 10,
+			}}
+		>
+			{artists?.map((artist) => (
+				<TouchableOpacity style={styles.artist} key={artist.id} onPress={() => navigation.navigate('Artist', { artist })} >
+					<Image
+						style={styles.artistCover}
+						source={{
+							uri: urlCover(config, artist.id),
+						}}
+					/>
+					<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2, width: 100, textAlign: 'center' }}>{artist.name}</Text>
+				</TouchableOpacity>
+			))}
 		</ScrollView>
 	)
 }
@@ -35,7 +37,6 @@ const styles = {
 	artist: {
 		flexDirection: 'collumn',
 		alignItems: 'center',
-		marginStart: 10,
 	},
 	artistCover: {
 		height: 100,

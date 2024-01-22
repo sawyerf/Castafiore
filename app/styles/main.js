@@ -26,6 +26,14 @@ export default {
 		fontSize: 25,
 		fontWeight: 'bold',
 	},
+	titleSection: {
+		color: theme.primaryLight,
+		fontSize: 25,
+		fontWeight: 'bold',
+		margin: 20,
+		marginTop: 25,
+		marginBottom: 10
+	},
 	stdVerticalMargin: {
 		marginStart: 20,
 		marginEnd: 20,
@@ -42,4 +50,11 @@ export default {
 		borderWidth: 1,
 		color: theme.primaryLight,
 	},
+	button: {
+		// width: "80%",
+		flex: 1,
+		height: 50,
+		alignItems: "center",
+		justifyContent: "center",
+	}
 }

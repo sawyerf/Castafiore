@@ -1,16 +1,19 @@
 import React from 'react'
-import { ScrollView, View, Text, Image, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, Image, TouchableOpacity, Linking } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
 import theme from '~/utils/theme'
 import { SongContext } from '~/contexts/song';
 import { playSong } from '~/utils/player';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
+import ImageError from '../ImageError';
 
 const RadioList = ({ config, radios }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const [optionRadio, setOptionRadio] = React.useState(null)
+	const navigation = useNavigation()
 
 	const playRadio = (index) => {
 		playSong(config, song, songDispatch, radios.map(radio => ({
@@ -32,20 +35,23 @@ const RadioList = ({ config, radios }) => {
 			vertical={false}
 			style={{
 				width: '100%',
-				height: 70 * 2,
 			}}
 			contentContainerStyle={{
-				height: '100%',
+				height: 60 * 2 + 10,
 				paddingStart: 20,
+				paddingEnd: 20,
 				flexDirection: 'column',
 				flexWrap: 'wrap',
+				columnGap: 10,
+				rowGap: 10,
 			}}
 		>
 			{radios.map((radio, index) => {
 				const getUrlFavicon = (url) => {
 					if (!url) return null
-					const reg = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im')
-					const origin = url.match(reg)[0]
+					const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'))
+					if (!regex) return null
+					const origin = regex[0]
 					return origin + '/favicon.ico'
 				}
 
@@ -55,38 +61,25 @@ const RadioList = ({ config, radios }) => {
 						onPress={() => playRadio(index)}
 						onLongPress={() => setOptionRadio(radio)}
 						delayLongPress={200}
-						style={{
-							height: 60,
-							minWidth: 200,
-							marginEnd: 10,
-							marginBottom: 10,
-							padding: 10,
-							paddingEnd: 20,
-							backgroundColor: theme.secondaryDark,
-							flexDirection: 'row',
-							alignItems: 'center',
-							justifyContent: 'flex-start',
-							borderRadius: 7,
-						}}
+						style={styles.cardRadio}
 					>
-						<Icon
-							name="feed"
-							size={32}
-							color={theme.primaryLight}
-							style={{
-								position: 'absolute',
-								left: 20,
-							}}
-						/>
-						<Image
+						<ImageError
 							source={{ uri: getUrlFavicon(radio.homePageUrl) }}
-							style={{
-								height: '100%',
-								aspectRatio: 1,
-								borderRadius: 3,
-								marginRight: 10,
-							}}
-						/>
+							style={styles.image} >
+							<View
+								style={{
+									...styles.image,
+									alignItems: 'center',
+									justifyContent: 'center',
+								}} >
+								<Icon
+									name="feed"
+									size={32}
+									style={{ marginTop: 2 }}
+									color={theme.primaryLight}
+								/>
+							</View>
+						</ImageError>
 						<View style={{ flexDirection: 'column' }} >
 							<Text
 								numberOfLines={1}
@@ -104,7 +97,7 @@ const RadioList = ({ config, radios }) => {
 								numberOfLines={1}
 								style={{
 									color: theme.secondaryLight,
-									maxWidth: 300,
+									maxWidth: 275,
 									fontSize: 16,
 									overflow: 'hidden',
 								}}
@@ -115,10 +108,51 @@ const RadioList = ({ config, radios }) => {
 					</TouchableOpacity>
 				)
 			})}
+			<TouchableOpacity
+				onPress={() => navigation.navigate('UpdateRadio')}
+				delayLongPress={200}
+				style={styles.cardRadio}
+			>
+				<View
+					style={{
+						...styles.image,
+						alignItems: 'center',
+						justifyContent: 'center',
+					}} >
+					<Icon name="plus" size={32} color={theme.primaryLight} />
+				</View>
+				<Text
+					numberOfLines={1}
+					style={{
+						color: theme.primaryLight,
+						fontSize: 16,
+						fontWeight: 'bold',
+						overflow: 'hidden',
+					}}
+				>
+					Add radio
+				</Text>
+			</TouchableOpacity>
 			<OptionsPopup
 				visible={optionRadio !== null}
 				close={() => { setOptionRadio(null) }}
 				options={[
+					{
+						name: 'Open home page',
+						icon: 'home',
+						onPress: () => {
+							setOptionRadio(null)
+							Linking.openURL(optionRadio.homePageUrl)
+						}
+					},
+					{
+						name: 'Edit radio',
+						icon: 'pencil',
+						onPress: () => {
+							setOptionRadio(null)
+							navigation.navigate('UpdateRadio', { id: optionRadio.id, name: optionRadio.name, streamUrl: optionRadio.streamUrl, homePageUrl: optionRadio.homePageUrl })
+						}
+					},
 					{
 						name: 'Remove radio',
 						icon: 'trash-o',
@@ -135,6 +169,28 @@ const RadioList = ({ config, radios }) => {
 			/>
 		</ScrollView>
 	)
+}
+
+const styles = {
+	cardRadio: {
+		height: 60,
+		minWidth: 200,
+		// marginEnd: 10,
+		// marginBottom: 10,
+		padding: 10,
+		paddingEnd: 20,
+		backgroundColor: theme.secondaryDark,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'flex-start',
+		borderRadius: 7,
+	},
+	image: {
+		height: '100%',
+		aspectRatio: 1,
+		marginRight: 10,
+		borderRadius: 3,
+	},
 }
 
 export default RadioList;

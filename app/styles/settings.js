@@ -4,7 +4,7 @@ import mainStyles from '~/styles/main'
 export default {
 	titleContainer: {
 		width: '100%',
-		sizeFont: 12,
+		fontSize: 12,
 		textTransform: 'uppercase',
 		fontWeight: 'bold',
 		color: theme.secondaryLight,

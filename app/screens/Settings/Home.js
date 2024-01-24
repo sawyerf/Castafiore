@@ -11,20 +11,24 @@ import presStyles from '~/styles/pres';
 import IconButton from '~/components/button/IconButton';
 import Header from '~/components/Header';
 import HomeOrder from '~/components/Settings/HomeOrder';
-import settings from '../../styles/settings';
+import settingStyles from '~/styles/settings';
 
 const HomeSettings = ({ }) => {
 	const insets = useSafeAreaInsets()
 
 	return (
-		<View style={mainStyles.mainContainer(insets)}>
+		<ScrollView style={mainStyles.mainContainer(insets)}>
 			<Header title="Home" />
 			<View
-				style={settings.contentMainContainer(insets)}
+				style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}
 			>
-				<HomeOrder />
+				<Text style={settingStyles.titleContainer}> Home Page</Text >
+				<View style={{ ...settingStyles.optionsContainer, marginBottom: 5 }}>
+					<HomeOrder />
+				</View>
+				<Text style={settingStyles.description}>	{'Select what you want to see on the home page'}</Text >
 			</View>
-		</View>
+		</ScrollView>
 	)
 }
 

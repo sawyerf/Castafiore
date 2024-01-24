@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import presStyles from '~/styles/pres'
 import mainStyles from '~/styles/main'
-import settingsStyle from '~/styles/settings'
+import settingStyles from '~/styles/settings'
 import theme from '~/utils/theme'
 import Header from '~/components/Header'
 import OptionInput from '~/components/Settings/OptionInput'
@@ -29,9 +29,9 @@ const CacheSettings = () => {
 	return (
 		<View style={{ ...mainStyles.mainContainer(insets), flexDirection: 'column', alignItems: 'center', width: '100%' }}>
 			<Header title="Cache" />
-			<View style={{...settingsStyle.contentMainContainer(insets), marginTop: 30}}>
-				<Text style={settingsStyle.titleContainer}>Auto Cache</Text >
-				<View style={{...settingsStyle.optionsContainer, marginBottom: 5}}>
+			<View style={{...settingStyles.contentMainContainer(insets), marginTop: 30}}>
+				<Text style={settingStyles.titleContainer}>Auto Cache</Text >
+				<View style={{...settingStyles.optionsContainer, marginBottom: 5}}>
 					<OptionInput
 						title="Cache next song"
 						value={cacheNextSong}
@@ -40,7 +40,7 @@ const CacheSettings = () => {
 						isLast={true}
 					/>
 				</View>
-				<Text style={{ color: theme.secondaryLight, fontSize: 13, marginStart: 5, width: '100%', textAlign: 'left' }}>{'Auto download upcoming songs (default: 5)'}</Text >
+				<Text style={settingStyles.description}>{'Auto download upcoming songs (default: 5)'}</Text >
 			</View>
 		</View>
 	)

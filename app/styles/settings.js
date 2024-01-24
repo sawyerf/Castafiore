@@ -20,6 +20,13 @@ export default {
 		borderRadius: 10,
 		marginBottom: 30,
 	},
+	description: {
+		color: theme.secondaryLight,
+		fontSize: 13,
+		marginStart: 5,
+		width: '100%',
+		textAlign: 'left'
+	},
 	contentMainContainer: insets => ({
 		...mainStyles.contentMainContainer(insets),
 		maxWidth: 800,
@@ -38,4 +45,5 @@ export default {
 		borderBottomWidth: isLast ? 0 : .5,
 		flexDirection: 'row',
 	}),
+
 }

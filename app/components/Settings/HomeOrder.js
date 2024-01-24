@@ -8,6 +8,7 @@ import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import theme from '~/utils/theme';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
+import settingStyles from '~/styles/settings';
 import IconButton from '~/components/button/IconButton';
 
 const HomeOrder = ({ }) => {
@@ -38,23 +39,11 @@ const HomeOrder = ({ }) => {
 	}
 	return (
 		<>
-			<Text style={{ ...presStyles.title, fontSize: 20, marginBottom: 20 }}> Home Page</Text >
 			{
 				settings.homeOrder.map((value, index) => (
 					<TouchableOpacity
 						key={index}
-						style={{
-							flexDirection: 'row',
-							paddingVertical: 11,
-							paddingStart: 20,
-							paddingEnd: 14,
-							marginBottom: 10,
-							backgroundColor: theme.secondaryDark,
-							justifyContent: 'center',
-							alignItems: 'center',
-							borderRadius: 10,
-							width: '100%',
-						}}
+						style={settingStyles.optionItem(index == settings.homeOrder.length - 1)}
 						onPress={onPressHomeOrder(index)}
 					>
 						<Icon
@@ -65,17 +54,17 @@ const HomeOrder = ({ }) => {
 						/>
 						<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryLight, flex: 1 }}>{value.title}</Text>
 						<IconButton
-							icon="chevron-up"
-							size={25}
+							icon="angle-up"
+							size={30}
 							color={theme.primaryLight}
-							style={{ paddingHorizontal: 5 }}
+							style={{ paddingHorizontal: 7 }}
 							onPress={moveTop(index)}
 						/>
 						<IconButton
-							icon="chevron-down"
-							size={25}
+							icon="angle-down"
+							size={30}
 							color={theme.primaryLight}
-							style={{ paddingHorizontal: 5 }}
+							style={{ paddingHorizontal: 7 }}
 							onPress={moveBottom(index)}
 						/>
 					</TouchableOpacity>

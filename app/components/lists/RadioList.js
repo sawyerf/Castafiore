@@ -8,7 +8,7 @@ import { SongContext } from '~/contexts/song';
 import { playSong } from '~/utils/player';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
-import ImageError from '../ImageError';
+import ImageError from '~/components/ImageError';
 
 const RadioList = ({ config, radios }) => {
 	const [song, songDispatch] = React.useContext(SongContext)

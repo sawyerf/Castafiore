@@ -8,7 +8,7 @@ import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { SetSettingsContext, defaultSettings } from '~/contexts/settings';
 import mainStyles from '~/styles/main';
 import theme from '~/utils/theme';
-import settingsStyle from '~/styles/settings';
+import settingStyles from '~/styles/settings';
 import ButtonMenu from '~/components/Settings/ButtonMenu';
 
 const Settings = ({ navigation }) => {
@@ -19,11 +19,11 @@ const Settings = ({ navigation }) => {
 	return (
 		<ScrollView
 			style={{ ...mainStyles.mainContainer(insets) }}
-			contentContainerStyle={settingsStyle.contentMainContainer(insets)}
+			contentContainerStyle={settingStyles.contentMainContainer(insets)}
 		>
 			<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20, marginTop: 30 }}>Castafiore {pkg.version}</Text>
 			{/* sub menu */}
-			<View style={settingsStyle.optionsContainer} >
+			<View style={settingStyles.optionsContainer} >
 				<ButtonMenu
 					title="Connect"
 					endText={config.query ? (config.name?.length ? config.name : 'Connected') : 'Not connected'}
@@ -33,7 +33,7 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
-			<View style={settingsStyle.optionsContainer} >
+			<View style={settingStyles.optionsContainer} >
 				<ButtonMenu
 					title="Home"
 					icon="home"
@@ -47,7 +47,7 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
-			<View style={settingsStyle.optionsContainer} >
+			<View style={settingStyles.optionsContainer} >
 				<ButtonMenu
 					title="Reset Settings"
 					icon="undo"

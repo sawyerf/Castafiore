@@ -1,6 +1,6 @@
 import React from 'react';
 import pkg from '~/../package.json';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -16,13 +16,43 @@ const Settings = ({ navigation }) => {
 	const config = React.useContext(ConfigContext)
 	const setSettings = React.useContext(SetSettingsContext)
 
+	const tuktuktuk = () => {
+		if (Platform.OS === 'web') {
+			const sound = new Audio()
+			sound.src = 'https://sawyerf.github.io/tuktuktuk.mp3'
+			sound.addEventListener('loadedmetadata', () => {
+				sound.play()
+			})
+			sound.addEventListener('ended', () => {
+				sound.src = ''
+			})
+		}
+	}
+
 	return (
 		<ScrollView
-			style={{ ...mainStyles.mainContainer(insets) }}
-			contentContainerStyle={settingStyles.contentMainContainer(insets)}
+			style={mainStyles.mainContainer(insets)}
+			contentContainerStyle={{ ...settingStyles.contentMainContainer(insets), paddingTop: 40 }}
 		>
-			<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20, marginTop: 30 }}>Castafiore {pkg.version}</Text>
-			{/* sub menu */}
+			<View style={settingStyles.optionsContainer} >
+				<TouchableOpacity
+					onPress={tuktuktuk}
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						width: '100%',
+						paddingVertical: 10,
+					}}>
+					<Image
+						source={require('~/../assets/icon.png')}
+						style={{ width: 50, height: 50, borderRadius: 10, marginEnd: 10 }}
+					/>
+					<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+						<Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
+						<Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
+					</View>
+				</TouchableOpacity>
+			</View>
 			<View style={settingStyles.optionsContainer} >
 				<ButtonMenu
 					title="Connect"

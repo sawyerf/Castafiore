@@ -14,7 +14,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
   React.useEffect(() => {
     if (config.query === null) {
-      navigation.navigate('Settings')
+      navigation.navigate('SettingsStack')
     }
   }, [config.query])
 

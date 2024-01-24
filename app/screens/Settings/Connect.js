@@ -45,10 +45,11 @@ const Connect = ({ navigation }) => {
 		getApi({ url: uri, query }, 'ping.view')
 			.then((json) => {
 				if (json?.status == 'ok') {
-					AsyncStorage.setItem('config', JSON.stringify({ url: uri, username, query }))
-					setConfig({ name, url: uri, username, query })
+					const conf = { name, url: uri, username, query }
+					AsyncStorage.setItem('config', JSON.stringify(conf))
+					setConfig(conf)
 					setError('')
-					setSettings({ ...settings, servers: [...settings.servers, { name, url: uri, username, query }] })
+					setSettings({ ...settings, servers: [...settings.servers, conf] })
 					navigation.navigate('Home')
 				} else {
 					console.log('Connect api error:', json)

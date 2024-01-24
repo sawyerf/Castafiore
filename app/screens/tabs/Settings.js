@@ -2,16 +2,14 @@ import React from 'react';
 import pkg from '~/../package.json';
 import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
-import { SetSettingsContext } from '~/contexts/settings';
-import { clearAllCaches, clearCache } from '~/services/serviceWorkerRegistration';
-import { defaultSettings } from '~/contexts/settings';
-import HomeOrder from '~/components/Settings/HomeOrder';
-import MaxCache from '~/components/Settings/MaxCache';
+import { SetSettingsContext, defaultSettings } from '~/contexts/settings';
 import mainStyles from '~/styles/main';
 import theme from '~/utils/theme';
-import Connect from '~/components/Settings/Connect';
+import settingsStyle from '~/styles/settings';
+import ButtonMenu from '~/components/Settings/ButtonMenu';
 
 const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -21,36 +19,42 @@ const Settings = ({ navigation }) => {
 	return (
 		<ScrollView
 			style={{ ...mainStyles.mainContainer(insets) }}
-			contentContainerStyle={{
-				...mainStyles.contentMainContainer(insets),
-				maxWidth: 500,
-				width: '100%',
-				alignItems: 'center',
-				justifyContent: 'center',
-				paddingHorizontal: 20,
-				alignSelf: 'center',
-			}}
+			contentContainerStyle={settingsStyle.contentMainContainer(insets)}
 		>
 			<Text style={{ color: theme.secondaryLight, fontSize: 13, marginBottom: 20, marginTop: 30 }}>Castafiore {pkg.version}</Text>
-			<Connect navigation={navigation} />
-			<TouchableOpacity
-				onPress={clearAllCaches}
-				style={{ marginTop: 20 }}
-			>
-				<Text style={{ color: theme.primaryTouch }}>Clear All Cache</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={() => setSettings(defaultSettings)}
-				style={{ marginTop: 20 }}
-			>
-				<Text style={{ color: theme.primaryTouch }}>Reset Settings</Text>
-			</TouchableOpacity>
-			{config.query && (
-				<>
-					<MaxCache />
-					<HomeOrder />
-				</>
-			)}
+			{/* sub menu */}
+			<View style={settingsStyle.optionsContainer} >
+				<ButtonMenu
+					title="Connect"
+					endText={config.query ? (config.name?.length ? config.name : 'Connected') : 'Not connected'}
+					icon="server"
+					onPress={() => navigation.navigate('Connect')}
+					isLast={true}
+				/>
+			</View>
+
+			<View style={settingsStyle.optionsContainer} >
+				<ButtonMenu
+					title="Home"
+					icon="home"
+					onPress={() => navigation.navigate('Settings/Home')}
+				/>
+				<ButtonMenu
+					title="Cache"
+					icon="database"
+					onPress={() => navigation.navigate('Settings/Cache')}
+					isLast={true}
+				/>
+			</View>
+
+			<View style={settingsStyle.optionsContainer} >
+				<ButtonMenu
+					title="Reset Settings"
+					icon="undo"
+					onPress={() => setSettings(defaultSettings)}
+					isLast={true}
+				/>
+			</View>
 		</ScrollView>
 	)
 }

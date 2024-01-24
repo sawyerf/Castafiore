@@ -1,5 +1,6 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import md5 from 'md5';
 
 export const defaultSettings = {
 	homeOrder: [
@@ -12,6 +13,14 @@ export const defaultSettings = {
 		{ icon: 'play', title: 'Recently Played', type: 'album', query: 'type=recent', enable: true },
 		{ icon: 'random', title: 'Random', type: 'album', query: 'type=random', enable: false },
 		{ icon: 'arrow-up', title: 'Highest', type: 'album', query: 'type=highest', enable: false },
+	],
+	servers: [
+		{
+			name: 'Demo',
+			url: 'https://demo.navidrome.org',
+			username: 'demo',
+			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore&f=json`
+		}
 	],
 	// Future settings
 	endOfQueue: 'repeat', type: 'album', // stop, repeat, random, recomandation

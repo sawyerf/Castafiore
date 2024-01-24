@@ -5,15 +5,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Settings from './app/screens/tabs/Settings';
-import TabBar from './app/components/TabBar';
-import { HomeStack, SearchStack, PlaylistsStack } from './app/screens/Stacks';
+import TabBar from '~/components/TabBar';
+import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
 
-import theme from './app/utils/theme';
-import { ConfigContext, SetConfigContext, getConfig } from './app/contexts/config';
-import { getSettings, SettingsContext, SetSettingsContext } from './app/contexts/settings';
-import { SongContext, defaultSong, songReducer } from './app/contexts/song';
-import * as serviceWorkerRegistration from './app/services/serviceWorkerRegistration';
+import theme from '~/utils/theme';
+import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
+import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { SongContext, defaultSong, songReducer } from '~/contexts/song';
+import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 import { initPlayer, unloadSong } from '~/utils/player';
 
 const Tab = createBottomTabNavigator();
@@ -81,7 +80,7 @@ const App = () => {
                     {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
                     <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
                     <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
-                    <Tab.Screen name="Settings" options={{ title: 'Settings', icon: "gear" }} component={Settings} />
+                    <Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
                   </Tab.Navigator>
                 </NavigationContainer>
               </SafeAreaProvider>

@@ -2,12 +2,14 @@ import React from 'react';
 import { Text, View, TextInput, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 
 const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, inputMode = undefined, isLast = false }) => {
+  const theme = React.useContext(ThemeContext)
+
 	return (
-		<View style={settingStyles.optionItem(isLast)} >
+		<View style={settingStyles.optionItem(theme, isLast)} >
 			<Text
 				numberOfLines={1}
 				style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, fontWeight: '400' }}>{title}</Text>

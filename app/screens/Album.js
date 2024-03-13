@@ -10,11 +10,13 @@ import RandomButton from '~/components/button/RandomButton';
 import BackButton from '~/components/button/BackButton';
 import { getApi, urlCover } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
+import { ThemeContext } from '~/contexts/theme';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
 	const [songs, setSongs] = React.useState([]);
 	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (config.query) {
@@ -37,7 +39,7 @@ const Album = ({ navigation, route }) => {
 		<ScrollView
 			vertical={true}
 			style={{
-				...mainStyles.mainContainer(insets),
+				...mainStyles.mainContainer(insets, theme),
 				paddingTop: 0,
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
@@ -50,9 +52,9 @@ const Album = ({ navigation, route }) => {
 			/>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title} numberOfLines={2}>{route.params.album.name}</Text>
+					<Text style={presStyles.title(theme)} numberOfLines={2}>{route.params.album.name}</Text>
 					<TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}>
-						<Text style={presStyles.subTitle}>{route.params.album.artist}</Text>
+						<Text style={presStyles.subTitle(theme)}>{route.params.album.artist}</Text>
 					</TouchableOpacity>
 				</View>
 					<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 0}} config={config} size={25} />

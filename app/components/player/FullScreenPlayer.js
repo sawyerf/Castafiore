@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { nextSong, previousSong, pauseSong, resumeSong } from '~/utils/player';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/contexts/config';
 import { urlCover, getApi } from '~/utils/api';
@@ -19,6 +19,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 	const insets = useSafeAreaInsets();
 	const [isQueue, setIsQueue] = React.useState(false)
 	const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
+  const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		setIsQueue(false)
@@ -32,8 +33,8 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 		<Modal>
 			<View
 				style={{
-					...mainStyles.mainContainer(insets),
-					...styles.mainContainer(insets),
+					...mainStyles.mainContainer(insets, theme),
+					...styles.mainContainer(insets, theme),
 				}}
 			>
 				<IconButton
@@ -70,7 +71,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
 							<View style={{ width: `${(time.position / time.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
 						</View>
-						<View style={styles.bitognoBar(time)} />
+						<View style={styles.bitognoBar(time, theme)} />
 					</Pressable>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
@@ -124,7 +125,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 }
 
 const styles = {
-	mainContainer: (insets) => ({
+	mainContainer: (insets, theme) => ({
 		width: '100%',
 		height: '100%',
 		backgroundColor: theme.primaryDark,
@@ -152,7 +153,7 @@ const styles = {
 			borderRadius: 10,
 		}
 	},
-	bitognoBar: (time) => ({
+	bitognoBar: (time, theme) => ({
 		position: 'absolute',
 		width: 6,
 		height: 12,

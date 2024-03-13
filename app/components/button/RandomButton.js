@@ -2,13 +2,14 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext } from '~/contexts/song';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import presStyles from '~/styles/pres';
 import { playSong } from '~/utils/player';
 
 import { ConfigContext } from '~/contexts/config';
 
 const RandomButton = ({ songList, size = 23 }) => {
+  const theme = React.useContext(ThemeContext)
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 

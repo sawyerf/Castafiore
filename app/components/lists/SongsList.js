@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext } from '~/contexts/song';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
 import { useNavigation } from '@react-navigation/native';
 
@@ -20,6 +20,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 	const [songInfo, setSongInfo] = React.useState(null)
 	const [error, setError] = React.useState(null)
 	const navigation = useNavigation()
+  const theme = React.useContext(ThemeContext)
 
 	return (
 		<View style={{

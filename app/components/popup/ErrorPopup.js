@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, Modal, ScrollView, Animated } from 'react
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButton from '~/components/button/IconButton';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 
@@ -11,7 +11,7 @@ const ErrorPopup = ({ message, close }) => {
 	const insets = useSafeAreaInsets();
 	const [visible, setVisible] = React.useState(false);
 	const slide = React.useRef(new Animated.Value(-200)).current;
-
+  const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (message) {

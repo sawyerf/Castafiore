@@ -2,12 +2,13 @@ import React from 'react';
 import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
 
 const HorizontalAlbums = ({ config, albums }) => {
+	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const [infoAlbum, setInfoAlbum] = React.useState(null)
@@ -19,8 +20,6 @@ const HorizontalAlbums = ({ config, albums }) => {
 			contentContainerStyle={{
 				paddingHorizontal: 20,
 				columnGap: 10,
-				// paddingBottom: 10,
-				// paddingEnd: 10,
 			}}
 		>
 			{albums?.map((album, index) => (
@@ -36,8 +35,8 @@ const HorizontalAlbums = ({ config, albums }) => {
 							uri: urlCover(config, album.id),
 						}}
 					/>
-					<Text numberOfLines={1} style={styles.titleAlbum}>{album.name}</Text>
-					<Text numberOfLines={1} style={styles.artist}>{album.artist}</Text>
+					<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{album.name}</Text>
+					<Text numberOfLines={1} style={{ ...styles.artist(theme) }}>{album.artist}</Text>
 				</TouchableOpacity >
 			))}
 			<InfoPopup info={infoAlbum} close={() => setInfoAlbum(null)} />
@@ -71,18 +70,18 @@ const styles = {
 		height: 160,
 		marginBottom: 6,
 	},
-	titleAlbum: {
+	titleAlbum: (theme) => ({
 		color: theme.primaryLight,
 		fontSize: 14,
 		width: 160,
 		marginBottom: 3,
 		marginTop: 3,
-	},
-	artist: {
+	}),
+	artist: theme => ({
 		color: theme.secondaryLight,
 		fontSize: 14,
 		width: 160,
-	},
+	}),
 }
 
 export default HorizontalAlbums;

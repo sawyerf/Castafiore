@@ -4,10 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 
 const BackButton = () => {
 	const navigation = useNavigation();
+  const theme = React.useContext(ThemeContext)
 	const insets = useSafeAreaInsets();
 
 	return (

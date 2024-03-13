@@ -1,7 +1,5 @@
-import theme from '~/utils/theme';
-
 export default {
-	mainContainer: (insets) => ({
+	mainContainer: (insets, theme) => ({
 		flex: 1,
 		backgroundColor: theme.primaryDark,
 		paddingTop: insets.top,
@@ -14,31 +12,31 @@ export default {
 		// paddingBottom: insets.bottom + 80
 		paddingBottom: 80
 	}),
-	mainTitle: {
+	mainTitle: theme => ({
 		color: theme.primaryLight,
 		fontSize: 30,
 		fontWeight: 'bold',
 		margin: 20,
 		marginTop: 30
-	},
-	subTitle: {
+	}),
+	subTitle: theme => ({
 		color: theme.primaryLight,
 		fontSize: 25,
 		fontWeight: 'bold',
-	},
-	titleSection: {
+	}),
+	titleSection: theme => ({
 		color: theme.primaryLight,
 		fontSize: 25,
 		fontWeight: 'bold',
 		margin: 20,
 		marginTop: 25,
 		marginBottom: 10
-	},
+	}),
 	stdVerticalMargin: {
 		marginStart: 20,
 		marginEnd: 20,
 	},
-	inputSetting: {
+	inputSetting: theme => ({
 		width: "90%",
 		backgroundColor: theme.secondaryDark,
 		borderRadius: 25,
@@ -49,7 +47,7 @@ export default {
 		borderColor: theme.secondaryLight,
 		borderWidth: 1,
 		color: theme.primaryLight,
-	},
+	}),
 	button: {
 		// width: "80%",
 		flex: 1,

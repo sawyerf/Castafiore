@@ -7,6 +7,7 @@ import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import { ConfigContext } from '~/contexts/config';
+import { ThemeContext } from '~/contexts/theme';
 import BackButton from '~/components/button/BackButton';
 import { getApi, urlCover } from '~/utils/api';
 
@@ -14,6 +15,7 @@ const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
 	const [songs, setSongs] = React.useState([]);
 	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
 	const [info, setInfo] = React.useState(null)
 	const [title, setTitle] = React.useState(null)
 
@@ -34,7 +36,7 @@ const Playlist = ({ navigation, route }) => {
 		<ScrollView
 			vertical={true}
 			style={{
-				...mainStyles.mainContainer(insets),
+				...mainStyles.mainContainer(insets, theme),
 				paddingTop: 0,
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
@@ -50,7 +52,7 @@ const Playlist = ({ navigation, route }) => {
 					{
 						title != null ?
 							<TextInput
-								style={presStyles.title}
+								style={presStyles.title(theme)}
 								value={title}
 								onChangeText={text => setTitle(text)}
 								autoFocus={true}
@@ -66,10 +68,10 @@ const Playlist = ({ navigation, route }) => {
 							/>
 							:
 							<TouchableOpacity onLongPress={() => setTitle(info.name)} delayLongPress={200}>
-								<Text style={presStyles.title} numberOfLines={2}>{info?.name}</Text>
+								<Text style={presStyles.title(theme)} numberOfLines={2}>{info?.name}</Text>
 							</TouchableOpacity>
 					}
-					<Text style={presStyles.subTitle}>{((info ? info.duration : route.params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : route.params.playlist.songCount} songs</Text>
+					<Text style={presStyles.subTitle(theme)}>{((info ? info.duration : route.params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : route.params.playlist.songCount} songs</Text>
 				</View>
 				<RandomButton songList={songs} />
 			</View>

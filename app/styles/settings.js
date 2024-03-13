@@ -1,8 +1,7 @@
-import theme from '~/utils/theme'
 import mainStyles from '~/styles/main'
 
 export default {
-	titleContainer: {
+	titleContainer: theme => ({
 		width: '100%',
 		fontSize: 12,
 		textTransform: 'uppercase',
@@ -10,8 +9,8 @@ export default {
 		color: theme.secondaryLight,
 		marginBottom: 5,
 		marginStart: 10,
-	},
-	optionsContainer: {
+	}),
+	optionsContainer: theme => ({
 		flexDirection: 'column',
 		width: '100%',
 		paddingVertical: 1,
@@ -19,14 +18,14 @@ export default {
 		backgroundColor: theme.secondaryDark,
 		borderRadius: 10,
 		marginBottom: 30,
-	},
-	description: {
+	}),
+	description: theme => ({
 		color: theme.secondaryLight,
 		fontSize: 13,
 		marginStart: 5,
 		width: '100%',
 		textAlign: 'left'
-	},
+	}),
 	contentMainContainer: insets => ({
 		...mainStyles.contentMainContainer(insets),
 		maxWidth: 800,
@@ -36,7 +35,7 @@ export default {
 		paddingHorizontal: 20,
 		alignSelf: 'center',
 	}),
-	optionItem: isLast => ({
+	optionItem: (theme, isLast) => ({
 		width: '100%',
 		height: 50,
 		paddingEnd: 5,

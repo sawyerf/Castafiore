@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { ConfigContext } from '~/contexts/config';
 import SongsList from '~/components/lists/SongsList';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
@@ -17,6 +17,7 @@ import IconButton from '~/components/button/IconButton';
 const Search = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
+  const theme = React.useContext(ThemeContext)
 	const [query, setQuery] = React.useState('');
 	const [results, setResults] = React.useState();
 	const [timeout, setTimeoutState] = React.useState(null);
@@ -66,8 +67,8 @@ const Search = ({ navigation }) => {
 	}
 
 	return (
-		<View style={mainStyles.mainContainer(insets)} >
-			<Text style={mainStyles.mainTitle}>Search</Text>
+		<View style={mainStyles.mainContainer(insets, theme)} >
+			<Text style={mainStyles.mainTitle(theme)}>Search</Text>
 			<View style={{ marginBottom: 20, ...mainStyles.stdVerticalMargin, flexDirection: 'row' }}>
 				<TextInput
 					style={{
@@ -124,21 +125,21 @@ const Search = ({ navigation }) => {
 						{
 							results.artist &&
 							<>
-								<Text style={mainStyles.titleSection}>Artists</Text>
+								<Text style={mainStyles.titleSection(theme)}>Artists</Text>
 								<HorizontalArtists artists={results.artist} config={config} />
 							</>
 						}
 						{
 							results.album &&
 							<>
-								<Text style={mainStyles.titleSection}>Albums</Text>
+								<Text style={mainStyles.titleSection(theme)}>Albums</Text>
 								<HorizontalAlbums albums={results.album} config={config} />
 							</>
 						}
 						{
 							results.song &&
 							<>
-								<Text style={mainStyles.titleSection}>Songs</Text>
+								<Text style={mainStyles.titleSection(theme)}>Songs</Text>
 								<SongsList songs={results.song} config={config} />
 							</>
 						}

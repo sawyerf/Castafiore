@@ -15,12 +15,15 @@ import UpdateRadio from '~/screens/UpdateRadio';
 import Connect from '~/screens/Settings/Connect';
 import HomeSettings from '~/screens/Settings/Home';
 import CacheSettings from '~/screens/Settings/Cache';
+import ThemeSettings from '~/screens/Settings/Theme';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 
 const Stack = createNativeStackNavigator();
 
 export const HomeStack = () => {
+  const theme = React.useContext(ThemeContext)
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -42,6 +45,8 @@ export const HomeStack = () => {
 }
 
 export const SearchStack = () => {
+  const theme = React.useContext(ThemeContext)
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -61,6 +66,8 @@ export const SearchStack = () => {
 }
 
 export const PlaylistsStack = () => {
+  const theme = React.useContext(ThemeContext)
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -82,6 +89,8 @@ export const PlaylistsStack = () => {
 }
 
 export const SettingsStack = () => {
+  const theme = React.useContext(ThemeContext)
+
 	return (
 		<Stack.Navigator
 			screenOptions={{
@@ -97,6 +106,7 @@ export const SettingsStack = () => {
 			<Stack.Screen name="Connect" component={Connect} />
 			<Stack.Screen name="Settings/Home" component={HomeSettings} />
 			<Stack.Screen name="Settings/Cache" component={CacheSettings} />
+			<Stack.Screen name="Settings/Theme" component={ThemeSettings} />
 		</Stack.Navigator>
 	)
 }

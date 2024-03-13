@@ -5,7 +5,7 @@ import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-nativ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import settingStyles from '~/styles/settings';
@@ -14,6 +14,7 @@ import IconButton from '~/components/button/IconButton';
 const HomeOrder = ({ }) => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
+  const theme = React.useContext(ThemeContext)
 
 	const moveTop = (index) => () => {
 		if (index == 0) return
@@ -43,7 +44,7 @@ const HomeOrder = ({ }) => {
 				settings.homeOrder.map((value, index) => (
 					<TouchableOpacity
 						key={index}
-						style={settingStyles.optionItem(index == settings.homeOrder.length - 1)}
+						style={settingStyles.optionItem(theme, index == settings.homeOrder.length - 1)}
 						onPress={onPressHomeOrder(index)}
 					>
 						<Icon

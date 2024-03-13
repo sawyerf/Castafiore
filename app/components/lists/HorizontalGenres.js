@@ -2,10 +2,11 @@ import React from 'react';
 import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 
 const HorizontalGenres = ({ config, genres }) => {
 	const navigation = useNavigation();
+  const theme = React.useContext(ThemeContext)
 
 	return (
 		<ScrollView
@@ -15,10 +16,10 @@ const HorizontalGenres = ({ config, genres }) => {
 			showsHorizontalScrollIndicator={false}>
 			{genres?.map((genre) => (
 				<TouchableOpacity
-					style={styles.genreBox}
+					style={styles.genreBox(theme)}
 					key={genre?.value}
 					onPress={() => navigation.navigate('Genre', { genre })}>
-					<Text numberOfLines={1} style={styles.genreText}>{genre.value}</Text>
+					<Text numberOfLines={1} style={styles.genreText(theme)}>{genre.value}</Text>
 				</TouchableOpacity >
 			))}
 		</ScrollView>
@@ -39,18 +40,18 @@ const styles = {
 		columnGap: 10,
 		rowGap: 10,
 	},
-	genreBox: {
+	genreBox: theme => ({
 		height: 55,
 		paddingHorizontal: 40,
 		backgroundColor: theme.primaryTouch,
 		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	genreText: {
+	}),
+	genreText: theme => ({
 		color: theme.primaryLight,
 		fontSize: 20,
 		fontWeight: 'bold',
-	},
+	}),
 }
 
 export default HorizontalGenres;

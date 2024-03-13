@@ -3,12 +3,13 @@ import { Text, View, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButton from '~/components/button/IconButton';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 
 const InfoPopup = ({ info, close }) => {
 	const insets = useSafeAreaInsets();
+  const theme = React.useContext(ThemeContext)
 
 	const objectToString = (obj) => {
 		if (typeof obj === 'object') {
@@ -63,7 +64,7 @@ const InfoPopup = ({ info, close }) => {
 						padding: 20,
 					}}
 				>
-					<Text style={{ ...presStyles.title, marginBottom: 20 }}>Song Info</Text>
+					<Text style={{ ...presStyles.title(theme), marginBottom: 20 }}>Song Info</Text>
 					<IconButton
 						icon="close"
 						onPress={close}

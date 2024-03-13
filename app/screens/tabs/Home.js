@@ -8,7 +8,7 @@ import { SettingsContext } from '~/contexts/settings';
 import { playSong } from '~/utils/player';
 import { getApi } from '~/utils/api';
 import mainStyles from '~/styles/main';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
 
@@ -17,6 +17,7 @@ const Home = ({ navigation }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
+  const theme = React.useContext(ThemeContext)
 	const [statusRefresh, setStatusRefresh] = React.useState();
 	const [refreshing, setRefreshing] = React.useState(false);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
@@ -79,17 +80,17 @@ const Home = ({ navigation }) => {
 
 	return (
 		<ScrollView vertical={true}
-			style={mainStyles.mainContainer(insets)}
+			style={mainStyles.mainContainer(insets, theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
-				<TouchableOpacity style={styles.boxRandom}
+				<TouchableOpacity style={styles.boxRandom(theme)}
 					onPress={clickRandomSong}>
-					<Text style={styles.textRandom}>Random Song</Text>
+					<Text style={styles.textRandom(theme)}>Random Song</Text>
 				</TouchableOpacity>
 				{statusRefresh ?
-					<Text style={mainStyles.subTitle}>
+					<Text style={mainStyles.subTitle(theme)}>
 						{statusRefresh.count}°
 					</Text> :
 					<Animated.View style={{
@@ -117,19 +118,19 @@ const Home = ({ navigation }) => {
 }
 
 const styles = {
-	boxRandom: {
+	boxRandom: theme => ({
 		backgroundColor: theme.secondaryTouch,
 		alignItems: 'center',
 		padding: 7,
 		paddingHorizontal: 15,
 		justifyContent: 'center',
 		borderRadius: 50,
-	},
-	textRandom: {
+	}),
+	textRandom: theme => ({
 		fontSize: 18,
 		color: theme.primaryLight,
 		fontWeight: 'bold',
-	}
+	}),
 }
 
 export default Home;

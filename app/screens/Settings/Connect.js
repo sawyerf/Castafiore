@@ -10,7 +10,7 @@ import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { clearAllCaches, clearCache } from '~/services/serviceWorkerRegistration';
 import { getApi } from '~/utils/api';
 import mainStyles from '~/styles/main';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import Header from '~/components/Header';
 import settingStyles from '~/styles/settings';
 import OptionInput from '~/components/Settings/OptionInput';
@@ -27,6 +27,7 @@ const Connect = ({ navigation }) => {
 	const setConfig = React.useContext(SetConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
+  const theme = React.useContext(ThemeContext)
 	const [serverOption, setServerOption] = React.useState(null)
 
 	React.useEffect(() => {
@@ -68,7 +69,7 @@ const Connect = ({ navigation }) => {
 	}
 
 	return (
-		<ScrollView style={mainStyles.mainContainer(insets)} >
+		<ScrollView style={mainStyles.mainContainer(insets, theme)} >
 			<Header title="Connect" />
 			<View style={settingStyles.contentMainContainer(insets)}>
 				<View
@@ -82,9 +83,9 @@ const Connect = ({ navigation }) => {
 				>
 					<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
 				</View>
-				<View style={settingStyles.optionsContainer}>
+				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
-						style={mainStyles.inputSetting}
+						style={mainStyles.inputSetting(theme)}
 						title="Name"
 						placeholder="Name"
 						value={name}
@@ -92,7 +93,7 @@ const Connect = ({ navigation }) => {
 						onChangeText={name => setName(name)}
 					/>
 					<OptionInput
-						style={mainStyles.inputSetting}
+						style={mainStyles.inputSetting(theme)}
 						title="Url"
 						placeholder="Server Url"
 						value={url}
@@ -101,7 +102,7 @@ const Connect = ({ navigation }) => {
 						onChangeText={url => setUrl(url)}
 					/>
 					<OptionInput
-						style={mainStyles.inputSetting}
+						style={mainStyles.inputSetting(theme)}
 						title="Username"
 						placeholder="Username"
 						value={username}
@@ -110,7 +111,7 @@ const Connect = ({ navigation }) => {
 						onChangeText={username => setUsername(username)}
 					/>
 					<OptionInput
-						style={mainStyles.inputSetting}
+						style={mainStyles.inputSetting(theme)}
 						title="Password"
 						placeholder="Password"
 						value={password}
@@ -130,11 +131,11 @@ const Connect = ({ navigation }) => {
 					</TouchableOpacity>
 				</View>
 
-				<Text style={settingStyles.titleContainer}>List of servers</Text>
-				<View style={settingStyles.optionsContainer}>
+				<Text style={settingStyles.titleContainer(theme)}>List of servers</Text>
+				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						settings?.servers?.map((server, index) => (
-							<TouchableOpacity style={settingStyles.optionItem(true)} key={index}
+							<TouchableOpacity style={settingStyles.optionItem(theme, true)} key={index}
 								delayLongPress={200}
 								onLongPress={() => setServerOption({ ...server, index })}
 								onPress={() => {

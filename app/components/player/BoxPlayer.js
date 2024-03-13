@@ -6,7 +6,7 @@ import { SongContext } from '~/contexts/song';
 import { nextSong, pauseSong, resumeSong } from '~/utils/player';
 
 import { ConfigContext } from '~/contexts/config';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
@@ -16,6 +16,7 @@ const BoxPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
+  const theme = React.useContext(ThemeContext)
 
 	return (
 		<TouchableOpacity
@@ -28,7 +29,7 @@ const BoxPlayer = ({ fullscreen }) => {
 				right: insets.right,
 
 				flexDirection: 'row',
-				backgroundColor: theme.secondaryDark,
+				backgroundColor: theme.playerBackground,
 				padding: 10,
 				margin: 10,
 				borderRadius: 10,
@@ -39,26 +40,26 @@ const BoxPlayer = ({ fullscreen }) => {
 					style={styles.boxPlayerImage}
 				>
 					<View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
-						<Icon name="music" size={23} color={theme.primaryLight} />
+						<Icon name="music" size={23} color={theme.playerPrimaryText} />
 					</View>
 				</ImageError>
 			</View>
 			<View style={styles.boxPlayerText}>
-				<Text style={{ color: theme.primaryLight, flex: 1 }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
-				<Text style={{ color: theme.secondaryLight, flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
+				<Text style={{ color: theme.playerPrimaryText, flex: 1, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+				<Text style={{ color: theme.playerSecondaryText, flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 			</View>
 			<View style={styles.boxPlayerButton}>
 				<IconButton
 					icon="step-forward"
 					size={23}
-					color={theme.primaryTouch}
+					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => nextSong(config, song, songDispatch)}
 				/>
 				<IconButton
 					icon={song.isPlaying ? 'pause' : 'play'}
 					size={23}
-					color={theme.primaryTouch}
+					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 				/>

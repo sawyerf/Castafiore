@@ -7,13 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { SetSettingsContext, defaultSettings } from '~/contexts/settings';
 import mainStyles from '~/styles/main';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 import ButtonMenu from '~/components/Settings/ButtonMenu';
 
 const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
+  const theme = React.useContext(ThemeContext)
 	const setSettings = React.useContext(SetSettingsContext)
 
 	const tuktuktuk = () => {
@@ -31,10 +32,10 @@ const Settings = ({ navigation }) => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets)}
+			style={mainStyles.mainContainer(insets, theme)}
 			contentContainerStyle={{ ...settingStyles.contentMainContainer(insets), paddingTop: 40 }}
 		>
-			<View style={settingStyles.optionsContainer} >
+			<View style={settingStyles.optionsContainer(theme)} >
 				<TouchableOpacity
 					onPress={tuktuktuk}
 					style={{
@@ -53,7 +54,7 @@ const Settings = ({ navigation }) => {
 					</View>
 				</TouchableOpacity>
 			</View>
-			<View style={settingStyles.optionsContainer} >
+			<View style={settingStyles.optionsContainer(theme)} >
 				<ButtonMenu
 					title="Connect"
 					endText={config.query ? (config.name?.length ? config.name : 'Connected') : 'Not connected'}
@@ -63,11 +64,16 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
-			<View style={settingStyles.optionsContainer} >
+			<View style={settingStyles.optionsContainer(theme)} >
 				<ButtonMenu
 					title="Home"
 					icon="home"
 					onPress={() => navigation.navigate('Settings/Home')}
+				/>
+				<ButtonMenu
+					title="Theme"
+					icon="tint"
+					onPress={() => navigation.navigate('Settings/Theme')}
 				/>
 				<ButtonMenu
 					title="Cache"
@@ -77,7 +83,7 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
-			<View style={settingStyles.optionsContainer} >
+			<View style={settingStyles.optionsContainer(theme)} >
 				<ButtonMenu
 					title="Reset Settings"
 					icon="undo"

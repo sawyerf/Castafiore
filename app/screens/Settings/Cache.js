@@ -6,14 +6,15 @@ import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import presStyles from '~/styles/pres'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
-import theme from '~/utils/theme'
 import Header from '~/components/Header'
 import OptionInput from '~/components/Settings/OptionInput'
+import { ThemeContext } from '~/contexts/theme'
 
 const CacheSettings = () => {
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
+	const theme = React.useContext(ThemeContext)
 	const [cacheNextSong, setCacheNextSong] = React.useState(settings.cacheNextSong.toString())
 
 	React.useEffect(() => {
@@ -27,11 +28,11 @@ const CacheSettings = () => {
 	}, [cacheNextSong])
 
 	return (
-		<View style={{ ...mainStyles.mainContainer(insets), flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+		<View style={{ ...mainStyles.mainContainer(insets, theme), flexDirection: 'column', alignItems: 'center', width: '100%' }}>
 			<Header title="Cache" />
 			<View style={{...settingStyles.contentMainContainer(insets), marginTop: 30}}>
-				<Text style={settingStyles.titleContainer}>Auto Cache</Text >
-				<View style={{...settingStyles.optionsContainer, marginBottom: 5}}>
+				<Text style={settingStyles.titleContainer(theme)}>Auto Cache</Text >
+				<View style={{...settingStyles.optionsContainer(theme), marginBottom: 5}}>
 					<OptionInput
 						title="Cache next song"
 						value={cacheNextSong}
@@ -40,7 +41,7 @@ const CacheSettings = () => {
 						isLast={true}
 					/>
 				</View>
-				<Text style={settingStyles.description}>{'Auto download upcoming songs (default: 5)'}</Text >
+				<Text style={settingStyles.description(theme)}>{'Auto download upcoming songs (default: 5)'}</Text >
 			</View>
 		</View>
 	)

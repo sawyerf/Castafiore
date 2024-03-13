@@ -3,12 +3,13 @@ import { Text, View, TouchableOpacity, Modal, Dimensions, ScrollView, Animated }
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 
 const OptionsPopup = ({ visible, close, options }) => {
 	const insets = useSafeAreaInsets();
 	const [paddingTop, setPaddingTop] = React.useState(0)
 	const slide = React.useRef(new Animated.Value(0)).current
+  const theme = React.useContext(ThemeContext)
 
 	useEffect(() => {
 		// slide options from bottom

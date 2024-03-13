@@ -3,7 +3,7 @@ import { Text, View, TextInput, ScrollView, TouchableOpacity, RefreshControl, Pl
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 import mainStyles from '~/styles/main';
@@ -15,6 +15,7 @@ import IconButton from '~/components/button/IconButton';
 const Playlists = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
+  const theme = React.useContext(ThemeContext)
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
@@ -79,13 +80,13 @@ const Playlists = ({ navigation }) => {
 		<ScrollView
 			vertical={true}
 			style={{
-				...mainStyles.mainContainer(insets),
+				...mainStyles.mainContainer(insets, theme),
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
-				<Text style={{ ...mainStyles.mainTitle, marginBottom: 0, marginTop: 0 }}>Your Playlists</Text>
+				<Text style={{ ...mainStyles.mainTitle(theme), marginBottom: 0, marginTop: 0 }}>Your Playlists</Text>
 				<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 					<IconButton
 						icon="refresh"
@@ -98,7 +99,7 @@ const Playlists = ({ navigation }) => {
 			</View>
 			<TouchableOpacity style={styles.subTitleParent} onPress={() => navigation.navigate('Favorited', { favorited })}>
 				<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
-				<Text style={{ ...mainStyles.subTitle, flex: 1 }}>Favorited</Text>
+				<Text style={{ ...mainStyles.subTitle(theme), flex: 1 }}>Favorited</Text>
 				<Text style={{ color: theme.secondaryLight, fontWeight: 'bold', fontSize: 15 }}>
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
@@ -138,7 +139,7 @@ const Playlists = ({ navigation }) => {
 						</> :
 						<>
 							<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
-							<Text style={{ ...mainStyles.subTitle, flex: 1 }}> Playlists</Text>
+							<Text style={{ ...mainStyles.subTitle(theme), flex: 1 }}> Playlists</Text>
 							<IconButton
 								icon="plus"
 								size={20}

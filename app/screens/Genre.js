@@ -9,7 +9,7 @@ import IconButton from '~/components/button/IconButton';
 import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { getApi } from '~/utils/api';
@@ -21,6 +21,7 @@ const Genre = ({ navigation, route }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const [albums, setAlbums] = React.useState([]);
 	const [songs, setSongs] = React.useState([]);
+  const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (config.query) {
@@ -59,7 +60,7 @@ const Genre = ({ navigation, route }) => {
 		<ScrollView
 			vertical={true}
 			style={{
-				...mainStyles.mainContainer(insets),
+				...mainStyles.mainContainer(insets, theme),
 				paddingTop: 0,
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
@@ -71,8 +72,8 @@ const Genre = ({ navigation, route }) => {
 			</View>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title}><Icon name="heart" size={23} color={theme.primaryTouch} /> {route.params.genre.value}</Text>
-					<Text style={presStyles.subTitle}>{route.params.genre?.albumCount || 0} albums · {route.params.genre?.songCount || 0} songs </Text>
+					<Text style={presStyles.title(theme)}><Icon name="heart" size={23} color={theme.primaryTouch} /> {route.params.genre.value}</Text>
+					<Text style={presStyles.subTitle(theme)}>{route.params.genre?.albumCount || 0} albums · {route.params.genre?.songCount || 0} songs </Text>
 				</View>
 				<IconButton
 					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 20, paddingEnd: 20 }}
@@ -81,20 +82,20 @@ const Genre = ({ navigation, route }) => {
 					onPress={getRandomSongs}
 				/>
 			</View>
-			<Text style={{ ...mainStyles.subTitle, ...mainStyles.stdVerticalMargin }}>Albums</Text>
+			<Text style={{ ...mainStyles.subTitle(theme), ...mainStyles.stdVerticalMargin }}>Albums</Text>
 			<HorizontalAlbums config={config} albums={albums} />
-			<Text style={{ ...mainStyles.subTitle, ...mainStyles.stdVerticalMargin, marginBottom: 14, marginTop: 20 }}>Songs</Text>
+			<Text style={{ ...mainStyles.subTitle(theme), ...mainStyles.stdVerticalMargin, marginBottom: 14, marginTop: 20 }}>Songs</Text>
 			<SongsList config={config} songs={songs} />
 		</ScrollView>
 	)
 }
 
 const styles = {
-	title: {
+	title: theme => ({
 		color: theme.primaryLight,
 		fontSize: 50,
 		fontWeight: 'bold',
-	},
+	}),
 	cover: {
 		width: "100%",
 		height: 300,

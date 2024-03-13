@@ -1,12 +1,14 @@
+import React from 'react'
 import { View, Text, TextInput } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import IconButton from '~/components/button/IconButton'
-import theme from '~/utils/theme'
 import presStyles from '~/styles/pres'
+import { ThemeContext } from '~/contexts/theme'
 
 const Header = ({ title }) => {
 	const navigation = useNavigation()
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<View
@@ -21,7 +23,7 @@ const Header = ({ title }) => {
 				style={{ padding: 20, alignItems: 'center' }}
 				onPress={() => navigation.goBack()}
 			/>
-			<Text style={{ ...presStyles.title, marginStart: 0, width: undefined }}>{title}</Text>
+			<Text style={{ ...presStyles.title(theme), marginStart: 0, width: undefined }}>{title}</Text>
 		</View>
 	)
 }

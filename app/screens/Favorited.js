@@ -3,7 +3,7 @@ import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { ConfigContext } from '~/contexts/config';
 import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
@@ -14,12 +14,13 @@ import BackButton from '~/components/button/BackButton';
 const Favorited = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
+  const theme = React.useContext(ThemeContext)
 
 	return (
 		<ScrollView
 			vertical={true}
 			style={{
-				...mainStyles.mainContainer(insets),
+				...mainStyles.mainContainer(insets, theme),
 				paddingTop: 0,
 			}}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
@@ -31,8 +32,8 @@ const Favorited = ({ navigation, route }) => {
 			</View>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
-					<Text style={presStyles.subTitle}>{route.params.favorited?.length || 0} songs</Text>
+					<Text style={presStyles.title(theme)}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
+					<Text style={presStyles.subTitle(theme)}>{route.params.favorited?.length || 0} songs</Text>
 				</View>
 				<RandomButton songList={route.params.favorited} />
 			</View>

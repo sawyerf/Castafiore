@@ -9,9 +9,10 @@ import RandomButton from '~/components/button/RandomButton';
 import { ConfigContext } from '~/contexts/config';
 import IconButton from '~/components/button/IconButton';
 import { getApi, urlCover } from '~/utils/api';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 
 const UpdateRadio = ({ navigation, route }) => {
+  const theme = React.useContext(ThemeContext)
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const [name, setName] = React.useState('');
@@ -49,7 +50,7 @@ const UpdateRadio = ({ navigation, route }) => {
 	}
 
 	return (
-		<View style={mainStyles.mainContainer(insets)} >
+		<View style={mainStyles.mainContainer(insets, theme)} >
 			<View
 				style={{
 					flexDirection: 'row',
@@ -62,7 +63,7 @@ const UpdateRadio = ({ navigation, route }) => {
 					style={{ padding: 20, alignItems: 'center' }}
 					onPress={() => navigation.goBack()}
 				/>
-				<Text style={{ ...presStyles.title, marginStart: 0, width: undefined }}>Update Radio</Text>
+				<Text style={{ ...presStyles.title(theme), marginStart: 0, width: undefined }}>Update Radio</Text>
 			</View>
 			<View style={{
 				maxWidth: 500,
@@ -78,7 +79,7 @@ const UpdateRadio = ({ navigation, route }) => {
 				<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
 				{/* {name && <Text style={styles.textInput} >Name</Text>} */}
 				<TextInput
-					style={mainStyles.inputSetting}
+					style={mainStyles.inputSetting(theme)}
 					placeholder="Name"
 					placeholderTextColor="#888"
 					value={name}
@@ -88,7 +89,7 @@ const UpdateRadio = ({ navigation, route }) => {
 				/>
 				{/* {streamUrl && <Text style={styles.textInput} >Url Stream</Text>} */}
 				<TextInput
-					style={mainStyles.inputSetting}
+					style={mainStyles.inputSetting(theme)}
 					placeholder="URL Stream"
 					placeholderTextColor="#888"
 					value={streamUrl}
@@ -98,7 +99,7 @@ const UpdateRadio = ({ navigation, route }) => {
 				/>
 				{/* {homePageUrl && <Text style={styles.textInput} >Url Home page</Text>} */}
 				<TextInput
-					style={mainStyles.inputSetting}
+					style={mainStyles.inputSetting(theme)}
 					placeholder="URL Home page"
 					placeholderTextColor="#888"
 					value={homePageUrl}
@@ -122,7 +123,7 @@ const UpdateRadio = ({ navigation, route }) => {
 }
 
 const styles = {
-	textInput: {
+	textInput: theme => ({
 		color: theme.secondaryLight,
 		fontSize: 20,
 		width: '90%',
@@ -130,6 +131,6 @@ const styles = {
 		marginStart: 35,
 		fontWeight: 'bold',
 		textAlign: 'left',
-	}
+	})
 }
 export default UpdateRadio;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { getApi } from '~/utils/api';
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import HorizontalAlbums from './HorizontalAlbums';
 import HorizontalArtists from './HorizontalArtists';
 import HorizontalGenres from './HorizontalGenres';
@@ -11,6 +11,7 @@ import RadioList from './RadioList';
 
 const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
+  const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (!enable) return
@@ -67,43 +68,13 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	if (!list) return null
 	return (
 		<View>
-			<Text style={mainStyles.titleSection}>{title}</Text>
+			<Text style={mainStyles.titleSection(theme)}>{title}</Text>
 			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
 			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
 			{type === 'radio' && <RadioList config={config} radios={list} />}
 		</View>
 	)
-}
-
-const styles = {
-	albumList: {
-		width: '100%',
-		paddingLeft: 10,
-	},
-	album: {
-		margin: 10,
-		width: 160,
-		height: 210,
-		alignItems: 'center',
-	},
-	albumCover: {
-		width: 160,
-		height: 160,
-		marginBottom: 6,
-	},
-	titleAlbum: {
-		color: theme.primaryLight,
-		fontSize: 14,
-		width: 160,
-		marginBottom: 3,
-		marginTop: 3,
-	},
-	artist: {
-		color: theme.secondaryLight,
-		fontSize: 14,
-		width: 160,
-	},
 }
 
 export default HorizontalList;

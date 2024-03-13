@@ -2,11 +2,12 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { getApi } from '~/utils/api';
 
 const FavoritedButton = ({ id, isFavorited = false, style = {}, config, size=23 }) => {
 	const [favorited, setFavorited] = React.useState(isFavorited)
+  const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		setFavorited(isFavorited)

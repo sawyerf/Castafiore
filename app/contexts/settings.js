@@ -25,6 +25,7 @@ export const defaultSettings = {
 	// Future settings
 	endOfQueue: 'repeat', type: 'album', // stop, repeat, random, recomandation
 	cacheNextSong: 5,
+	theme: 'castafiore',
 }
 
 export const getSettings = async () => {

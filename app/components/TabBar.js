@@ -4,12 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/contexts/config';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import Player from '~/components/player/Player';
 
 const TabBar = ({ state, descriptors, navigation }) => {
   const insets = useSafeAreaInsets();
   const config = React.useContext(ConfigContext)
+  const theme = React.useContext(ThemeContext)
   const [isFullScreen, setIsFullScreen] = React.useState(false)
 
   React.useEffect(() => {
@@ -87,6 +88,4 @@ const TabBar = ({ state, descriptors, navigation }) => {
   );
 }
 
-const styles = {
-}
 export default TabBar;

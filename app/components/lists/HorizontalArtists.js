@@ -2,10 +2,11 @@ import React from 'react';
 import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 
 const HorizontalArtists = ({ config, artists }) => {
+  const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 
 	return (

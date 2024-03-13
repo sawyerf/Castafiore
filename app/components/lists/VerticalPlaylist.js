@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '~/utils/theme';
+import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
@@ -11,6 +11,7 @@ const VerticalPlaylist = ({ config, playlists }) => {
 	const navigation = useNavigation();
 	const [indexOption, setIndexOption] = React.useState(-1);
 	const [deletePlaylists, setDeletePlaylists] = React.useState([])
+  const theme = React.useContext(ThemeContext)
 
 	const deletePlaylist = (id) => {
 		getApi(config, 'deletePlaylist', `id=${id}`)

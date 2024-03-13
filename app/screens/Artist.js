@@ -3,6 +3,7 @@ import { Text, View, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
+import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
 
 import { getApi, urlCover } from '~/utils/api';
@@ -22,6 +23,7 @@ const Artist = ({ navigation, route }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const allSongs = React.useRef([])
 	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
 
 	const getArtistInfo = () => {
 		getApi(config, 'getArtistInfo', `id=${route.params.artist.id}`)
@@ -83,7 +85,7 @@ const Artist = ({ navigation, route }) => {
 	return (
 		<ScrollView
 			style={{
-				...mainStyles.mainContainer(insets),
+				...mainStyles.mainContainer(insets, theme),
 				paddingTop: 0,
 			}}
 			vertical={true}
@@ -97,8 +99,8 @@ const Artist = ({ navigation, route }) => {
 			/>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={{ ...presStyles.title }}>{route.params.artist.name}</Text>
-					<Text style={presStyles.subTitle}>Artist</Text>
+					<Text style={{ ...presStyles.title(theme) }}>{route.params.artist.name}</Text>
+					<Text style={presStyles.subTitle(theme)}>Artist</Text>
 				</View>
 				<IconButton
 					style={{ ...presStyles.button, justifyContent: undefined, paddingEnd: 7.5 }}
@@ -120,12 +122,12 @@ const Artist = ({ navigation, route }) => {
 					size={25}
 				/>
 			</View>
-			<Text style={{...mainStyles.titleSection, marginTop: 0}}>Albums</Text>
+			<Text style={{...mainStyles.titleSection(theme), marginTop: 0}}>Albums</Text>
 			<HorizontalAlbums config={config} albums={artist.album} />
 			{
 				artistInfo?.similarArtist?.length && (
 					<>
-						<Text style={mainStyles.titleSection}>Similar Artist</Text>
+						<Text style={mainStyles.titleSection(theme)}>Similar Artist</Text>
 						<HorizontalArtists config={config} artists={artistInfo.similarArtist} />
 					</>
 				)

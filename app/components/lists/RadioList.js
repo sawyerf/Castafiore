@@ -3,7 +3,7 @@ import { ScrollView, View, Text, Image, TouchableOpacity, Linking } from 'react-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-import theme from '~/utils/theme'
+import { ThemeContext } from '~/contexts/theme'
 import { SongContext } from '~/contexts/song';
 import { playSong } from '~/utils/player';
 import OptionsPopup from '~/components/popup/OptionsPopup';
@@ -14,6 +14,7 @@ const RadioList = ({ config, radios }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const [optionRadio, setOptionRadio] = React.useState(null)
 	const navigation = useNavigation()
+	const theme = React.useContext(ThemeContext)
 
 	const playRadio = (index) => {
 		playSong(config, song, songDispatch, radios.map(radio => ({
@@ -61,7 +62,7 @@ const RadioList = ({ config, radios }) => {
 						onPress={() => playRadio(index)}
 						onLongPress={() => setOptionRadio(radio)}
 						delayLongPress={200}
-						style={styles.cardRadio}
+						style={styles.cardRadio(theme)}
 					>
 						<ImageError
 							source={{ uri: getUrlFavicon(radio.homePageUrl) }}
@@ -172,7 +173,7 @@ const RadioList = ({ config, radios }) => {
 }
 
 const styles = {
-	cardRadio: {
+	cardRadio: theme => ({
 		height: 60,
 		minWidth: 200,
 		// marginEnd: 10,
@@ -184,7 +185,7 @@ const styles = {
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		borderRadius: 7,
-	},
+	}),
 	image: {
 		height: '100%',
 		aspectRatio: 1,

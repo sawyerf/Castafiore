@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TabBar from '~/components/TabBar';
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
 
-import theme from '~/utils/theme';
+import { ThemeContext, getTheme } from '~/contexts/theme';
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { SongContext, defaultSong, songReducer } from '~/contexts/song';
@@ -29,6 +29,7 @@ const App = () => {
   const [config, setConfig] = React.useState({});
   const [settings, setSettings] = React.useState({});
   const [song, dispatch] = React.useReducer(songReducer, defaultSong)
+  const [theme, setTheme] = React.useState(getTheme())
 
   React.useEffect(() => {
     if (!song.sound) initPlayer(dispatch)
@@ -42,6 +43,10 @@ const App = () => {
       })
   }, [])
 
+  React.useEffect(() => {
+    setTheme(getTheme(settings))
+  }, [settings.theme])
+
   const saveSettings = (settings) => {
     setSettings(settings)
     AsyncStorage.setItem('settings', JSON.stringify(settings))
@@ -51,39 +56,40 @@ const App = () => {
   }
 
   return (
-
     <SetConfigContext.Provider value={setConfig}>
       <SetSettingsContext.Provider value={saveSettings}>
         <SongContext.Provider value={[song, dispatch]}>
           <ConfigContext.Provider value={config}>
             <SettingsContext.Provider value={settings}>
-              <SafeAreaProvider>
-                <NavigationContainer
-                  documentTitle={{
-                    formatter: (options, route) => {
-                      return `Castafiore`
-                    }
-                  }}
-                >
-                  <Tab.Navigator
-                    tabBar={(props) => <TabBar {...props} />}
-                    screenOptions={{
-                      headerShown: false,
-                      tabBarStyle: {
-                        backgroundColor: theme.secondaryDark,
-                        borderTopColor: theme.secondaryDark,
-                        tabBarActiveTintColor: theme.primaryTouch,
+              <ThemeContext.Provider value={theme}>
+                <SafeAreaProvider>
+                  <NavigationContainer
+                    documentTitle={{
+                      formatter: (options, route) => {
+                        return `Castafiore`
                       }
                     }}
                   >
-                    <Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
-                    {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
-                    <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
-                    <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
-                    <Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
-                  </Tab.Navigator>
-                </NavigationContainer>
-              </SafeAreaProvider>
+                    <Tab.Navigator
+                      tabBar={(props) => <TabBar {...props} />}
+                      screenOptions={{
+                        headerShown: false,
+                        tabBarStyle: {
+                          backgroundColor: theme.secondaryDark,
+                          borderTopColor: theme.secondaryDark,
+                          tabBarActiveTintColor: theme.primaryTouch,
+                        }
+                      }}
+                    >
+                      <Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
+                      {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
+                      <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
+                      <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
+                      <Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
+                    </Tab.Navigator>
+                  </NavigationContainer>
+                </SafeAreaProvider>
+              </ThemeContext.Provider>
             </SettingsContext.Provider>
           </ConfigContext.Provider>
         </SongContext.Provider>

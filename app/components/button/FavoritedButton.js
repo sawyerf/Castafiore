@@ -10,7 +10,7 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, config, size=23 
 
 	React.useEffect(() => {
 		setFavorited(isFavorited)
-	}, [isFavorited])
+	}, [id, isFavorited])
 
 	const onPressFavorited = () => {
 		getApi(config, favorited ? 'unstar' : 'star', `id=${id}`)

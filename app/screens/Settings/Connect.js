@@ -36,6 +36,12 @@ const Connect = ({ navigation }) => {
 		if (config?.username?.length) setUsername(config.username)
 	}, [config])
 
+
+	const upConfig = (conf) => {
+		AsyncStorage.setItem('config', JSON.stringify(conf))
+		setConfig(conf)
+	}
+
 	const connect = () => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
@@ -46,8 +52,7 @@ const Connect = ({ navigation }) => {
 			.then((json) => {
 				if (json?.status == 'ok') {
 					const conf = { name, url: uri, username, query }
-					AsyncStorage.setItem('config', JSON.stringify(conf))
-					setConfig(conf)
+					upConfig(conf)
 					setError('')
 					setSettings({ ...settings, servers: [...settings.servers, conf] })
 					navigation.navigate('Home')
@@ -133,7 +138,7 @@ const Connect = ({ navigation }) => {
 								delayLongPress={200}
 								onLongPress={() => setServerOption({ ...server, index })}
 								onPress={() => {
-									setConfig({ name: server.name, url: server.url, username: server.username, query: server.query })
+									upConfig({ name: server.name, url: server.url, username: server.username, query: server.query })
 									setPassword('')
 								}}>
 								<Icon name="server" size={20} color={theme.secondaryLight} style={{ marginEnd: 10 }} />

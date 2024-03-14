@@ -14,6 +14,7 @@ export const defaultSettings = {
 		{ icon: 'random', title: 'Random', type: 'album', query: 'type=random', enable: false },
 		{ icon: 'arrow-up', title: 'Highest', type: 'album', query: 'type=highest', enable: false },
 	],
+	sizeOfList: 10,
 	servers: [
 		{
 			name: 'Demo',
@@ -26,6 +27,7 @@ export const defaultSettings = {
 	endOfQueue: 'repeat', type: 'album', // stop, repeat, random, recomandation
 	cacheNextSong: 5,
 	theme: 'castafiore',
+	scrollHelper: false,
 }
 
 export const getSettings = async () => {

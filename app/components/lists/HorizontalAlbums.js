@@ -6,6 +6,7 @@ import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
+import CustomScroll from '~/components/lists/CustomScroll';
 
 const HorizontalAlbums = ({ config, albums }) => {
 	const theme = React.useContext(ThemeContext)
@@ -14,14 +15,7 @@ const HorizontalAlbums = ({ config, albums }) => {
 	const [infoAlbum, setInfoAlbum] = React.useState(null)
 
 	return (
-		<ScrollView
-			horizontal={true}
-			style={{ width: '100%', }}
-			contentContainerStyle={{
-				paddingHorizontal: 20,
-				columnGap: 10,
-			}}
-		>
+		<CustomScroll>
 			{albums?.map((album, index) => (
 				<TouchableOpacity
 					style={styles.album}
@@ -54,7 +48,7 @@ const HorizontalAlbums = ({ config, albums }) => {
 					}
 				]}
 			/>
-		</ScrollView>
+		</CustomScroll>
 	)
 }
 

@@ -9,6 +9,7 @@ import { playSong } from '~/utils/player';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
 import ImageError from '~/components/ImageError';
+import CustomScroll from '~/components/lists/CustomScroll';
 
 const RadioList = ({ config, radios }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
@@ -31,12 +32,7 @@ const RadioList = ({ config, radios }) => {
 
 	if (!radios) return null
 	return (
-		<ScrollView
-			horizontal={true}
-			vertical={false}
-			style={{
-				width: '100%',
-			}}
+		<CustomScroll
 			contentContainerStyle={{
 				height: 60 * 2 + 10,
 				paddingStart: 20,
@@ -168,7 +164,7 @@ const RadioList = ({ config, radios }) => {
 					}
 				]}
 			/>
-		</ScrollView>
+		</CustomScroll>
 	)
 }
 

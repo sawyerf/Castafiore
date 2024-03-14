@@ -3,17 +3,17 @@ import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
+import CustomScroll from '~/components/lists/CustomScroll';
 
 const HorizontalGenres = ({ config, genres }) => {
 	const navigation = useNavigation();
   const theme = React.useContext(ThemeContext)
 
 	return (
-		<ScrollView
-			horizontal={true}
+		<CustomScroll
 			style={styles.genreList}
 			contentContainerStyle={styles.scrollContainer}
-			showsHorizontalScrollIndicator={false}>
+			>
 			{genres?.map((genre) => (
 				<TouchableOpacity
 					style={styles.genreBox(theme)}
@@ -22,7 +22,7 @@ const HorizontalGenres = ({ config, genres }) => {
 					<Text numberOfLines={1} style={styles.genreText(theme)}>{genre.value}</Text>
 				</TouchableOpacity >
 			))}
-		</ScrollView>
+		</CustomScroll>
 	)
 }
 

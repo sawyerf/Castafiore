@@ -7,7 +7,7 @@ import presStyles from '~/styles/pres'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
 import Header from '~/components/Header'
-import OptionInput from '~/components/Settings/OptionInput'
+import OptionInput from '~/components/settings/OptionInput'
 import { ThemeContext } from '~/contexts/theme'
 
 const CacheSettings = () => {

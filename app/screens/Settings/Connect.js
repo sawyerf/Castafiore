@@ -13,7 +13,7 @@ import mainStyles from '~/styles/main';
 import { ThemeContext } from '~/contexts/theme';
 import Header from '~/components/Header';
 import settingStyles from '~/styles/settings';
-import OptionInput from '~/components/Settings/OptionInput';
+import OptionInput from '~/components/settings/OptionInput';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 
 const Connect = ({ navigation }) => {

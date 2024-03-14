@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 
 import { getApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
+import { SettingsContext } from '~/contexts/settings';
 import HorizontalAlbums from './HorizontalAlbums';
 import HorizontalArtists from './HorizontalArtists';
 import HorizontalGenres from './HorizontalGenres';
@@ -12,6 +13,7 @@ import RadioList from './RadioList';
 const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
   const theme = React.useContext(ThemeContext)
+	const settings = React.useContext(SettingsContext)
 
 	React.useEffect(() => {
 		if (!enable) return
@@ -41,7 +43,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	}
 
 	const getAlbumList = async () => {
-		getApi(config, 'getAlbumList', query)
+		getApi(config, 'getAlbumList', query + '&size=' + settings.sizeOfList)
 			.then((json) => {
 				setList(json?.albumList?.album)
 			})

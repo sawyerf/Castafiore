@@ -9,7 +9,7 @@ import { SetSettingsContext, defaultSettings } from '~/contexts/settings';
 import mainStyles from '~/styles/main';
 import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
-import ButtonMenu from '~/components/Settings/ButtonMenu';
+import ButtonMenu from '~/components/settings/ButtonMenu';
 
 const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();

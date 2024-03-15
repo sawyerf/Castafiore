@@ -128,7 +128,7 @@ const styles = {
 	}),
 	textRandom: theme => ({
 		fontSize: 18,
-		color: theme.primaryLight,
+		color: theme.innerTouch,
 		fontWeight: 'bold',
 	}),
 }

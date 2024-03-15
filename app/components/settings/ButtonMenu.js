@@ -33,7 +33,7 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 				<Icon
 					name={icon}
 					size={18}
-					color={theme.primaryLight}
+					color={theme.innerTouch}
 				/></View>
 			<Text
 				numberOfLines={1}

@@ -35,7 +35,7 @@ const Theme = ({ navigation }) => {
 								onPress={() => {
 									setSettings({ ...settings, theme: themeName })
 								}}>
-								<Icon name="server" size={20} color={theme.secondaryLight} style={{ marginEnd: 10 }} />
+								<Icon name="tint" size={20} color={themes[themeName].primaryTouch} style={{ marginEnd: 10 }} />
 								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
 									{themeName}
 								</Text>

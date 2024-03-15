@@ -22,6 +22,7 @@ export const themes = {
 		// Use for button
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
+		innerTouch: '#f5f5dc',
 
 		// Color of the player
 		playerBackground: '#1e1e1e',
@@ -36,6 +37,7 @@ export const themes = {
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#a238ff',
 		secondaryTouch: '#a238ff',
+		innerTouch: '#FFFFFF',
 
 		playerBackground: '#155faa',
 		playerPrimaryText: 'white',
@@ -49,6 +51,7 @@ export const themes = {
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#1DB954',
 		secondaryTouch: '#1ED760',
+		innerTouch: '#FFFFFF',
 
 		playerBackground: '#191414',
 		playerPrimaryText: '#FFFFFF',
@@ -62,24 +65,12 @@ export const themes = {
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#FF2D55',
 		secondaryTouch: '#FF375F',
+		innerTouch: '#FFFFFF',
 
 		playerBackground: '#1C1C1E',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#B3B3B3',
 		playerButton: '#FF2D55'
-	},
-	soundCloud: {
-		primaryDark: '#FFFFFF',
-		secondaryDark: '#f2f2f2',
-		primaryLight: '#000000',
-		secondaryLight: '##f2f2f2',
-		primaryTouch: '#FF7700',
-		secondaryTouch: '#FF8800',
-
-		playerBackground: '#FF7700',
-		playerPrimaryText: '#FFFFFF',
-		playerSecondaryText: '#f3e3d6',
-		playerButton: 'white'
 	},
 	reddit: {
 		primaryDark: '#1A1A1B',
@@ -88,11 +79,26 @@ export const themes = {
 		secondaryLight: '#D7DADC',
 		primaryTouch: '#FF4500',
 		secondaryTouch: '#ff4500',
+		innerTouch: '#FFFFFF',
 
 		playerBackground: '#141415',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#D7DADC',
 		playerButton: '#FF4500'
+	},
+	soundCloud: {
+		primaryDark: '#FFFFFF',
+		secondaryDark: '#f2f2f2',
+		primaryLight: '#000000',
+		secondaryLight: '##f2f2f2',
+		primaryTouch: '#FF7700',
+		secondaryTouch: '#FF8800',
+		innerTouch: '#FFFFFF',
+
+		playerBackground: '#FF7700',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#f3e3d6',
+		playerButton: 'white'
 	},
 	lightMode: {
 		primaryDark: '#f6f6ef',
@@ -101,6 +107,7 @@ export const themes = {
 		secondaryLight: '#1e1e1e',
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
+		innerTouch: '#f6f6ef',
 
 		playerBackground: '#eaeae1',
 		playerPrimaryText: '#121212',

@@ -54,7 +54,7 @@ const CustomScroll = ({ children, style = { width: '100%' }, contentContainerSty
       </View>}
       <ScrollView
         ref={refScroll}
-        onScroll={(event) => { refPosition.current = event.nativeEvent.contentOffset.x; console.log(refPosition.current) }}
+        onScroll={(event) => { refPosition.current = event.nativeEvent.contentOffset.x }}
         horizontal={true}
         style={style}
         contentContainerStyle={contentContainerStyle}

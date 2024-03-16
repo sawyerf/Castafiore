@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { getApi } from '~/utils/api';
+import { getApi, getCachedApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 import HorizontalAlbums from './HorizontalAlbums';
@@ -12,58 +12,49 @@ import RadioList from './RadioList';
 
 const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
 
 	React.useEffect(() => {
 		if (!enable) return
 		if (!refresh) return
-		if (type === 'album') getAlbumList()
-		if (type === 'artist') getArtistList()
-		if (type === 'genre') getGenreList()
-		if (type === 'radio') getRadioList()
+		getList()
 	}, [refresh])
 
 	React.useEffect(() => {
 		if (!enable) return
 		if (config.query) {
-			if (type === 'album') getAlbumList()
-			if (type === 'artist') getArtistList()
-			if (type === 'genre') getGenreList()
-			if (type === 'radio') getRadioList()
+			getList()
 		}
 	}, [config, type, query, enable])
 
-	const getGenreList = async () => {
-		getApi(config, 'getGenres', query)
-			.then((json) => {
-				setList(json?.genres?.genre)
-			})
-			.catch((error) => { })
+	const getPath = () => {
+		if (type === 'album') return 'getAlbumList'
+		if (type === 'artist') return 'getStarred'
+		if (type === 'genre') return 'getGenres'
+		if (type === 'radio') return 'getInternetRadioStations'
 	}
 
-	const getAlbumList = async () => {
-		getApi(config, 'getAlbumList', query + '&size=' + settings.sizeOfList)
-			.then((json) => {
-				setList(json?.albumList?.album)
-			})
-			.catch((error) => { })
-	}
+	const getList = async () => {
+		const path = getPath()
+		let nquery = query ? query : ''
 
-	const getArtistList = async () => {
-		getApi(config, 'getStarred', query)
-			.then((json) => {
-				setList(json?.starred?.artist)
-			})
-			.catch((error) => { })
-	}
+		if (type == 'album') nquery += '&size=' + settings.sizeOfList
+		const set = (json) => {
+			if (type == 'album') return setList(json?.albumList?.album)
+			if (type == 'artist') return setList(json?.starred?.artist)
+			if (type == 'genre') return setList(json?.genres?.genre)
+			if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
+		}
 
-	const getRadioList = async () => {
-		getApi(config, 'getInternetRadioStations')
-			.then((json) => {
-				setList(json.internetRadioStations.internetRadioStation)
-			})
+		if (!list) await getCachedApi(config, path, nquery)
+			.then((json) => set(json))
 			.catch((error) => { })
+
+		await getApi(config, path, nquery, true)
+			.then((json) => set(json))
+			.catch((error) => { })
+
 	}
 
 	if (!enable) return null

@@ -11,6 +11,7 @@ import BackButton from '~/components/button/BackButton';
 import { getApi, urlCover } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import { ThemeContext } from '~/contexts/theme';
+import { getCachedApi } from '../utils/api';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -19,18 +20,23 @@ const Album = ({ navigation, route }) => {
 	const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
+		const set = (json) => {
+			setSongs(json?.album?.song.sort((a, b) => {
+				// sort by discNumber and track
+				if (a.discNumber < b.discNumber) return -1;
+				if (a.discNumber > b.discNumber) return 1;
+				if (a.track < b.track) return -1;
+				if (a.track > b.track) return 1;
+				return 0;
+			}))
+		}
+
 		if (config.query) {
+			if (songs.length == 0) getCachedApi(config, 'getAlbum', `id=${route.params.album.id}`, true)
+				.then((json) => set(json))
+				.catch((error) => { })
 			getApi(config, 'getAlbum', `id=${route.params.album.id}`)
-				.then((json) => {
-					setSongs(json?.album?.song.sort((a, b) => {
-						// sort by discNumber and track
-						if (a.discNumber < b.discNumber) return -1;
-						if (a.discNumber > b.discNumber) return 1;
-						if (a.track < b.track) return -1;
-						if (a.track > b.track) return 1;
-						return 0;
-					}))
-				})
+				.then((json) => set(json))
 				.catch((error) => { })
 		}
 	}, [config, route.params.album])
@@ -57,8 +63,8 @@ const Album = ({ navigation, route }) => {
 						<Text style={presStyles.subTitle(theme)}>{route.params.album.artist}</Text>
 					</TouchableOpacity>
 				</View>
-					<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 0}} config={config} size={25} />
-					<RandomButton songList={songs} size={25} />
+				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 0 }} config={config} size={25} />
+				<RandomButton songList={songs} size={25} />
 			</View>
 			<SongsList config={config} songs={songs} isIndex={true} />
 		</ScrollView>

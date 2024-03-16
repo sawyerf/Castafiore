@@ -1,6 +1,7 @@
 import { Platform } from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export const getApi = (config, path, query = '') => {
+export const getApi = (config, path, query = '', isCache = false) => {
 	let encodedQuery = ''
 	if (typeof query === 'string') {
 		encodedQuery = query
@@ -16,10 +17,12 @@ export const getApi = (config, path, query = '') => {
 			reject('getApi: config.url or config.query is not defined')
 			return
 		}
-		fetch(`${config.url}/rest/${path}?${config.query}&${encodedQuery}`)
+		const url = `${config.url}/rest/${path}?${config.query}&${encodedQuery}`
+		fetch(url)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
+					if (isCache) AsyncStorage.setItem(url, JSON.stringify(json['subsonic-response']))
 					resolve(json['subsonic-response'])
 				} else {
 					console.error(`getApi[/rest/${path}]: ${JSON.stringify(json['subsonic-response']?.error)}`)
@@ -31,6 +34,19 @@ export const getApi = (config, path, query = '') => {
 				reject({ ...error, isApiError: false })
 			})
 	})
+}
+
+// Cache api request for mobile and long get NetworkFirst (service worker)
+export const getCachedApi = async (config, path, query = '') => {
+	if (!config?.url || !config?.query) {
+		console.error('getCachedApi: config.url or config.query is not defined')
+		return
+	}
+	const key = `${config.url}/rest/${path}?${config.query}&${query}`
+	console.log('getCachedApi', key)
+	const cached = await AsyncStorage.getItem(key)
+	if (cached) return JSON.parse(cached)
+	return null
 }
 
 export const urlCover = (config, id, size = null) => {

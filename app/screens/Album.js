@@ -32,10 +32,10 @@ const Album = ({ navigation, route }) => {
 		}
 
 		if (config.query) {
-			if (songs.length == 0) getCachedApi(config, 'getAlbum', `id=${route.params.album.id}`, true)
+			if (songs.length == 0) getCachedApi(config, 'getAlbum', `id=${route.params.album.id}`)
 				.then((json) => set(json))
 				.catch((error) => { })
-			getApi(config, 'getAlbum', `id=${route.params.album.id}`)
+			getApi(config, 'getAlbum', `id=${route.params.album.id}`, true)
 				.then((json) => set(json))
 				.catch((error) => { })
 		}

@@ -43,7 +43,6 @@ export const getCachedApi = async (config, path, query = '') => {
 		return
 	}
 	const key = `${config.url}/rest/${path}?${config.query}&${query}`
-	console.log('getCachedApi', key)
 	const cached = await AsyncStorage.getItem(key)
 	if (cached) return JSON.parse(cached)
 	return null

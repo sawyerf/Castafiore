@@ -8,14 +8,14 @@ import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
+import { getCachedAndApi } from '~/utils/api';
 
 
 const Playlists = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
 	const [refreshing, setRefreshing] = React.useState(false);
@@ -48,32 +48,26 @@ const Playlists = ({ navigation }) => {
 	}, [refreshing])
 
 	const getFavorited = () => {
-		getApi(config, 'getStarred')
-			.then((json) => {
-				setFavorited(json.starred.song)
-				setRefreshing(false);
-			})
-			.catch((error) => { setRefreshing(false); })
+		getCachedAndApi(config, 'getStarred', null, (json) => {
+			setFavorited(json.starred.song)
+			setRefreshing(false);
+		})
 	}
 
 	const getPlaylists = () => {
-		getApi(config, 'getPlaylists')
-			.then((json) => {
-				setPlaylists(json.playlists.playlist)
-				setRefreshing(false);
-			})
-			.catch((error) => { setRefreshing(false); })
+		getCachedAndApi(config, 'getPlaylists', null, (json) => {
+			setPlaylists(json.playlists.playlist)
+			setRefreshing(false);
+		})
 	}
 
 	const addPlaylist = () => {
 		if (!newPlaylist?.length) return
-		getApi(config, 'createPlaylist', `name=${newPlaylist}`)
-			.then((json) => {
-				setNewPlaylist(null)
-				getPlaylists()
-				setIsPublic(false)
-			})
-			.catch((error) => { })
+		getCachedAndApi(config, 'createPlaylist', `name=${newPlaylist}`, (json) => {
+			setNewPlaylist(null)
+			getPlaylists()
+			setIsPublic(false)
+		})
 	}
 
 	return (

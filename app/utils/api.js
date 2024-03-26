@@ -1,23 +1,28 @@
 import { Platform } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-export const getApi = (config, path, query = '', isCache = false) => {
+const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''
 	if (typeof query === 'string') {
 		encodedQuery = query
+	} else if (query === null || query === undefined) {
+		encodedQuery = ''
 	} else if (typeof query === 'object') {
 		encodedQuery = Object.keys(query).map((key) => `${key}=${encodeURIComponent(query[key])}`).join('&')
 	} else {
 		console.error('getApi: query is not a string or an object')
-		return
+		return ''
 	}
+	return `${config.url}/rest/${path}?${config.query}&${encodedQuery}`
+}
 
+export const getApi = (config, path, query = '', isCache = false) => {
 	return new Promise((resolve, reject) => {
 		if (!config?.url || !config?.query) {
 			reject('getApi: config.url or config.query is not defined')
 			return
 		}
-		const url = `${config.url}/rest/${path}?${config.query}&${encodedQuery}`
+		const url = getUrl(config, path, query)
 		fetch(url)
 			.then((response) => response.json())
 			.then((json) => {
@@ -36,16 +41,20 @@ export const getApi = (config, path, query = '', isCache = false) => {
 	})
 }
 
-// Cache api request for mobile and long get NetworkFirst (service worker)
-export const getCachedApi = async (config, path, query = '') => {
+export const getCachedAndApi = async (config, path, query = '', setData = (json) => { }) => {
 	if (!config?.url || !config?.query) {
 		console.error('getCachedApi: config.url or config.query is not defined')
 		return
 	}
-	const key = `${config.url}/rest/${path}?${config.query}&${query}`
+
+	const key = getUrl(config, path, query)
 	const cached = await AsyncStorage.getItem(key)
-	if (cached) return JSON.parse(cached)
-	return null
+	if (cached) setData(JSON.parse(cached))
+	getApi(config, path, query, true)
+		.then((json) => {
+			setData(json)
+		})
+		.catch((error) => { })
 }
 
 export const urlCover = (config, id, size = null) => {

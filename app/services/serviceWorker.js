@@ -33,8 +33,7 @@ registerRoute(
 
 registerRoute(
 	({ url }) => {
-		// TODO: change list because I also cache in localStorage
-		return url.pathname.match(/\/rest\/(getAlbumList|getAlbum|favorited|getAlbum|getStarred|getPlaylists|getArtist|getPlaylist|getTopSongs|getArtistInfo|getRandomSongs|search2)$/)
+		return url.pathname.match(/\/rest\/(getAlbum|getAlbum|getPlaylists|getTopSongs|getRandomSongs|search2)$/)
 	},
 	new NetworkFirst({
 		cacheName: "api",

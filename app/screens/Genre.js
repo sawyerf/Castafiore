@@ -14,6 +14,7 @@ import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { getApi } from '~/utils/api';
 import { playSong } from '~/utils/player';
+import { getCachedAndApi } from '~/utils/api';
 
 const Genre = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -21,7 +22,7 @@ const Genre = ({ navigation, route }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const [albums, setAlbums] = React.useState([]);
 	const [songs, setSongs] = React.useState([]);
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (config.query) {
@@ -41,19 +42,15 @@ const Genre = ({ navigation, route }) => {
 	}
 
 	const getAlbumsByGenre = () => {
-		getApi(config, 'getAlbumList', { type: 'byGenre', genre: route.params.genre.value })
-			.then((json) => {
-				setAlbums(json?.albumList?.album)
-			})
-			.catch((error) => { })
+		getCachedAndApi(config, 'getAlbumList', { type: 'byGenre', genre: route.params.genre.value }, (json) => {
+			setAlbums(json?.albumList?.album)
+		})
 	}
 
 	const getSongs = () => {
-		getApi(config, 'getSongsByGenre', { genre: route.params.genre.value, count: 50 })
-			.then((json) => {
-				setSongs(json?.songsByGenre?.song)
-			})
-			.catch((error) => { })
+		getCachedAndApi(config, 'getSongsByGenre', { genre: route.params.genre.value, count: 50 }, (json) => {
+			setSongs(json?.songsByGenre?.song)
+		})
 	}
 
 	return (

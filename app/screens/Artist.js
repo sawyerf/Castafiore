@@ -6,7 +6,7 @@ import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
 
-import { getApi, urlCover } from '~/utils/api';
+import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -26,19 +26,15 @@ const Artist = ({ navigation, route }) => {
 	const theme = React.useContext(ThemeContext)
 
 	const getArtistInfo = () => {
-		getApi(config, 'getArtistInfo', `id=${route.params.artist.id}`)
-			.then((json) => {
-				setArtistInfo(json.artistInfo)
-			})
-			.catch((error) => { })
+		getCachedAndApi(config, 'getArtistInfo', `id=${route.params.artist.id}`, (json) => {
+			setArtistInfo(json.artistInfo)
+		})
 	}
 
 	const getArtist = () => {
-		getApi(config, 'getArtist', `id=${route.params.artist.id}`)
-			.then((json) => {
-				setArtist(json.artist)
-			})
-			.catch((error) => { })
+		getCachedAndApi(config, 'getArtist', `id=${route.params.artist.id}`, (json) => {
+			setArtist(json.artist)
+		})
 	}
 
 	const getRandomSongs = async () => {
@@ -122,7 +118,7 @@ const Artist = ({ navigation, route }) => {
 					size={25}
 				/>
 			</View>
-			<Text style={{...mainStyles.titleSection(theme), marginTop: 0}}>Albums</Text>
+			<Text style={{ ...mainStyles.titleSection(theme), marginTop: 0 }}>Albums</Text>
 			<HorizontalAlbums config={config} albums={artist.album} />
 			{
 				artistInfo?.similarArtist?.length && (

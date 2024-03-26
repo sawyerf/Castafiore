@@ -9,7 +9,7 @@ import RandomButton from '~/components/button/RandomButton';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import BackButton from '~/components/button/BackButton';
-import { getApi, urlCover } from '~/utils/api';
+import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
 
 const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -20,12 +20,10 @@ const Playlist = ({ navigation, route }) => {
 	const [title, setTitle] = React.useState(null)
 
 	const getPlaylist = () => {
-		getApi(config, 'getPlaylist', `id=${route.params.playlist.id}`)
-			.then((json) => {
-				setInfo(json?.playlist)
-				setSongs(json?.playlist?.entry)
-			})
-			.catch(_ => { })
+		getCachedAndApi(config, 'getPlaylist', `id=${route.params.playlist.id}`, (json) => {
+			setInfo(json?.playlist)
+			setSongs(json?.playlist?.entry)
+		})
 	}
 
 	React.useEffect(() => {

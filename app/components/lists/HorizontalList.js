@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { getApi, getCachedApi } from '~/utils/api';
+import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 import HorizontalAlbums from './HorizontalAlbums';
@@ -40,21 +40,13 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		let nquery = query ? query : ''
 
 		if (type == 'album') nquery += '&size=' + settings.sizeOfList
-		const set = (json) => {
+
+		getCachedAndApi(config, path, nquery, (json) => {
 			if (type == 'album') return setList(json?.albumList?.album)
 			if (type == 'artist') return setList(json?.starred?.artist)
 			if (type == 'genre') return setList(json?.genres?.genre)
 			if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
-		}
-
-		if (!list) await getCachedApi(config, path, nquery)
-			.then((json) => set(json))
-			.catch((error) => { })
-
-		await getApi(config, path, nquery, true)
-			.then((json) => set(json))
-			.catch((error) => { })
-
+		})
 	}
 
 	if (!enable) return null

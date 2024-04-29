@@ -1,6 +1,6 @@
 {
   "name": "castafiore",
-  "version": "2024.03.26",
+  "version": "2024.04.29",
   "main": "node_modules/expo/AppEntry.js",
   "homepage": ".",
   "scripts": {

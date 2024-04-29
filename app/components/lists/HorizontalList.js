@@ -7,6 +7,7 @@ import { SettingsContext } from '~/contexts/settings';
 import HorizontalAlbums from './HorizontalAlbums';
 import HorizontalArtists from './HorizontalArtists';
 import HorizontalGenres from './HorizontalGenres';
+import HorizontalLBStat from './HorizontalLBStat';
 import mainStyles from '~/styles/main';
 import RadioList from './RadioList';
 
@@ -33,6 +34,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		if (type === 'artist') return 'getStarred'
 		if (type === 'genre') return 'getGenres'
 		if (type === 'radio') return 'getInternetRadioStations'
+		return type
 	}
 
 	const getList = async () => {
@@ -40,13 +42,19 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		let nquery = query ? query : ''
 
 		if (type == 'album') nquery += '&size=' + settings.sizeOfList
-
-		getCachedAndApi(config, path, nquery, (json) => {
-			if (type == 'album') return setList(json?.albumList?.album)
-			if (type == 'artist') return setList(json?.starred?.artist)
-			if (type == 'genre') return setList(json?.genres?.genre)
-			if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
-		})
+		if (type == 'listenbrainz') {
+			fetch(`https://api.listenbrainz.org/1/stats/user/${settings.listenBrainzUser}/listening-activity?range=week`, { mode: 'cors' })
+				.then(response => response.json())
+				.then(data => setList(data.payload.listening_activity))
+				.catch(error => console.error(error))
+		} else {
+			getCachedAndApi(config, path, nquery, (json) => {
+				if (type == 'album') return setList(json?.albumList?.album)
+				if (type == 'artist') return setList(json?.starred?.artist)
+				if (type == 'genre') return setList(json?.genres?.genre)
+				if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
+			})
+		}
 	}
 
 	if (!enable) return null
@@ -58,6 +66,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
 			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
 			{type === 'radio' && <RadioList config={config} radios={list} />}
+			{type === 'listenbrainz' && <HorizontalLBStat config={config} stats={list} /> }
 		</View>
 	)
 }

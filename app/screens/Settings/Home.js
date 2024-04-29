@@ -21,6 +21,7 @@ const HomeSettings = ({ }) => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const [sizeOfList, setSizeOfList] = React.useState(settings.sizeOfList.toString())
+	const [LBUser, setLBUser] = React.useState(settings.listenBrainzUser)
 
 	React.useEffect(() => {
 		setSizeOfList(settings.sizeOfList.toString())
@@ -31,6 +32,11 @@ const HomeSettings = ({ }) => {
 		const number = parseInt(sizeOfList)
 		if (number != settings.sizeOfList) setSettings({ ...settings, sizeOfList: number })
 	}, [sizeOfList])
+
+	React.useEffect(() => {
+		// if (LBUser === '') return
+		if (LBUser != settings.listenBrainzUser) setSettings({ ...settings, listenBrainzUser: LBUser })
+	}, [LBUser])
 
 	return (
 		<ScrollView style={mainStyles.mainContainer(insets, theme)}>
@@ -63,6 +69,16 @@ const HomeSettings = ({ }) => {
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>	{'It\'s recommanded to activate scroll helper on desktop'}</Text >
+
+				<View style={{ ...settingStyles.optionsContainer(theme), marginTop: 15 }}>
+					<OptionInput
+						title="ListenBrainz User"
+						value={LBUser}
+						onChangeText={(text) => setLBUser(text)}
+						placeholder="user"
+						isLast={true}
+					/>
+				</View>
 			</View>
 		</ScrollView>
 	)

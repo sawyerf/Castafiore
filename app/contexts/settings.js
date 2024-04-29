@@ -4,6 +4,7 @@ import md5 from 'md5';
 
 export const defaultSettings = {
 	homeOrder: [
+		{ icon: 'bar-chart', title: 'Week Activity', type: 'listenbrainz', query: '', enable: false },
 		{ icon: 'user', title: 'Favorited Artist', type: 'artist', query: '', enable: true },
 		{ icon: 'flask', title: 'Genre', type: 'genre', query: '', enable: false },
 		{ icon: 'feed', title: 'Radio', type: 'radio', query: '', enable: false },
@@ -14,6 +15,7 @@ export const defaultSettings = {
 		{ icon: 'random', title: 'Random', type: 'album', query: 'type=random', enable: false },
 		{ icon: 'arrow-up', title: 'Highest', type: 'album', query: 'type=highest', enable: false },
 	],
+	listenBrainzUser: '',
 	sizeOfList: 10,
 	servers: [
 		{

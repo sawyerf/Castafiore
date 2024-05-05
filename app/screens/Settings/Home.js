@@ -74,7 +74,7 @@ const HomeSettings = ({ }) => {
 					<OptionInput
 						title="ListenBrainz User"
 						value={LBUser}
-						onChangeText={(text) => setLBUser(text)}
+						onChangeText={(text) => setLBUser(text) }
 						placeholder="user"
 						isLast={true}
 					/>

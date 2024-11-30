@@ -32,3 +32,20 @@
 - Search
 - Artist
 - Radio
+
+## Build locally
+If you want to build the web version, you can run the following command:
+```bash
+npm i
+npm run export:web
+```
+It will generate a folder `web-build` that you can deploy to your server.
+
+## Development
+If you want to run the app in development mode, you can run the following command:
+```bash
+npm i
+npm run web
+# or
+npm start
+```

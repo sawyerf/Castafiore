@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
@@ -11,6 +11,7 @@ import FavoritedButton from '~/components/button/FavoritedButton';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
 import ErrorPopup from '~/components/popup/ErrorPopup';
+import { urlStream } from '~/utils/api';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { } }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)
@@ -20,7 +21,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 	const [songInfo, setSongInfo] = React.useState(null)
 	const [error, setError] = React.useState(null)
 	const navigation = useNavigation()
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<View style={{
@@ -156,6 +157,28 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 								}
 							}
 						])
+					})(),
+					...(() => {
+						if (Platform.OS != 'web') return []
+						return ([{
+							name: 'Download',
+							icon: 'download',
+							onPress: async () => {
+								setIndexOptions(-1)
+								fetch(await urlStream(config, songs[indexOptions].id))
+									.then((res) => res.blob())
+									.then((data) => {
+										const a = document.createElement('a');
+										a.download = `${songs[indexOptions].artist} - ${songs[indexOptions].title}.mp3`;
+										a.href = URL.createObjectURL(data);
+										a.addEventListener('click', (e) => {
+											setTimeout(() => URL.revokeObjectURL(a.href), 1 * 1000);
+										});
+										a.click();
+									})
+									.catch((error) => { })
+							}
+						}])
 					})(),
 					{
 						name: 'Info',

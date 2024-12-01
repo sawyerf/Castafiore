@@ -17,6 +17,9 @@ export const defaultSettings = {
 	],
 	listenBrainzUser: '',
 	sizeOfList: 10,
+	orderPlaylist: 'title',
+	pinPlaylist: [],
+	previewFavorited: 3,
 	servers: [
 		{
 			name: 'Demo',

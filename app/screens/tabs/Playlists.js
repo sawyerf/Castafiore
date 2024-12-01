@@ -3,6 +3,7 @@ import { Text, View, TextInput, ScrollView, TouchableOpacity, RefreshControl, Pl
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
@@ -22,6 +23,7 @@ const Playlists = ({ navigation }) => {
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
 	const [isPublic, setIsPublic] = React.useState(false);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
+	const settings = React.useContext(SettingsContext)
 	const rotation = rotationValue.interpolate({
 		inputRange: [0, 1],
 		outputRange: ['0deg', '360deg']
@@ -47,6 +49,28 @@ const Playlists = ({ navigation }) => {
 		}
 	}, [refreshing])
 
+	React.useEffect(() => {
+		setPlaylists([...playlists].sort(sortPlaylist))
+	}, [settings])
+
+	const sortPlaylist = (a, b) => {
+		if (settings.pinPlaylist.includes(a.id) && !settings.pinPlaylist.includes(b.id)) {
+			return -1
+		} else if (!settings.pinPlaylist.includes(a.id) && settings.pinPlaylist.includes(b.id)) {
+			return 1
+		} else if (settings.pinPlaylist.includes(a.id) && settings.pinPlaylist.includes(b.id)) {
+			return settings.pinPlaylist.indexOf(a.id) - settings.pinPlaylist.indexOf(b.id)
+		} else if (settings.orderPlaylist === 'title') {
+			return a.name.localeCompare(b.name)
+		} else if (settings.orderPlaylist === 'changed') {
+			return b.changed.localeCompare(a.changed)
+		} else if (settings.orderPlaylist === 'newest') {
+			return b.created.localeCompare(a.created)
+		} else if (settings.orderPlaylist === 'oldest') {
+			return a.created.localeCompare(b.created)
+		}
+	}
+
 	const getFavorited = () => {
 		getCachedAndApi(config, 'getStarred', null, (json) => {
 			setFavorited(json.starred.song)
@@ -56,7 +80,7 @@ const Playlists = ({ navigation }) => {
 
 	const getPlaylists = () => {
 		getCachedAndApi(config, 'getPlaylists', null, (json) => {
-			setPlaylists(json.playlists.playlist)
+			setPlaylists([...json.playlists.playlist].sort(sortPlaylist))
 			setRefreshing(false);
 		})
 	}
@@ -98,7 +122,7 @@ const Playlists = ({ navigation }) => {
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
 			</TouchableOpacity>
-			<SongsList songs={favorited?.slice(0, 3)} config={config} listToPlay={favorited} />
+			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} config={config} listToPlay={favorited} />
 			<View style={{ ...styles.subTitleParent, marginTop: 10 }}>
 				{
 					newPlaylist !== null ?

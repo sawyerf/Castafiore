@@ -121,11 +121,22 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 								if (index < lyrics.length - 2 && time.position >= lyrics[index + 2]?.time) return null
 								const isCurrent = time.position >= lyric.time && (lyrics.length == index + 1 || time.position < lyrics[index + 1]?.time)
 								return (
-									<Text
-										key={index}
-										style={{ color: isCurrent ? theme.primaryLight : theme.secondaryLight, fontSize: 23, textAlign: 'center' }}>
-										{lyric.text.length ? lyric.text : '...'}
-									</Text>)
+									<View style={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+										minHeight: ((time.position > lyric.time && !isCurrent) || !index) ? 62 : 0,
+									}}>
+										<Text
+											key={index}
+											style={{
+												color: isCurrent ? theme.primaryLight : theme.secondaryLight,
+												fontSize: 23,
+												textAlign: 'center',
+											}}>
+											{lyric.text.length ? lyric.text : '...'}
+										</Text>
+									</View>
+								)
 							})}
 						</ScrollView>
 					}

@@ -49,6 +49,10 @@ const Connect = ({ navigation }) => {
 		const salt = Math.random().toString(36).substring(2, 15)
 		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore&f=json`
 
+		if (uri.startsWith('http://')) {
+			setError('Only https is allowed')
+			return
+		}
 		getApi({ url: uri, query }, 'ping.view')
 			.then((json) => {
 				if (json?.status == 'ok') {

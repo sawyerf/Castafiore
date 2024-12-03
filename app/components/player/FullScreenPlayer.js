@@ -38,9 +38,24 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 	}
 
-	const getLyrics = async () => {
-		if (isPreview == preview.LYRICS) return setIsPreview(preview.COVER)
-		if (lyrics.length > 0) setIsPreview(preview.LYRICS)
+
+	const getNavidromeLyrics = () => {
+		getApi(config, 'getLyricsBySongId', { id: song.songInfo.id })
+			.then(res => {
+				const ly = res.lyricsList?.structuredLyrics[0]?.line?.map(ly => ({ time: ly.start / 1000, text: ly.value.length ? ly.value : '...' }))
+				if (ly.length == 0) { // not found
+					return getLrcLibLyrics()
+				}
+				ly.sort((a, b) => a.time - b.time)
+				setLyrics(ly)
+				setIsPreview(preview.LYRICS)
+			})
+			.catch(() => { // not found
+				getLrcLibLyrics()
+			})
+	}
+
+	const getLrcLibLyrics = () => {
 		const params = {
 			track_name: song.songInfo.title,
 			artist_name: song.songInfo.artist,
@@ -60,6 +75,12 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 				setIsPreview(preview.LYRICS)
 				setLyrics([{ time: 0, text: 'No lyrics found' }])
 			})
+	}
+
+	const getLyrics = async () => {
+		if (isPreview == preview.LYRICS) return setIsPreview(preview.COVER)
+		if (lyrics.length > 0) return setIsPreview(preview.LYRICS)
+		getNavidromeLyrics()
 	}
 
 	return (

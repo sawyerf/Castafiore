@@ -60,7 +60,7 @@ registerRoute(
 
 registerRoute(
 	({ url }) => {
-		return url.hostname === "lrclib.net"
+		return url.hostname === "lrclib.net" || url.pathname.match(/\/rest\/getLyricsBySongId$/)
 	},
 	new NetworkFirst({
 		cacheName: "lyrics",

@@ -58,6 +58,15 @@ registerRoute(
 	})
 );
 
+registerRoute(
+	({ url }) => {
+		return url.hostname === "lrclib.net"
+	},
+	new NetworkFirst({
+		cacheName: "lyrics",
+	})
+)
+
 self.addEventListener("message", event => {
 	if (event.data && event.data.type === "SKIP_WAITING") {
 		self.skipWaiting();

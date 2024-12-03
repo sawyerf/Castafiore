@@ -12,21 +12,54 @@ import SongsList from '~/components/lists/SongsList';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
 import { setPosition } from '~/utils/player';
+import { parseLrc } from '~/utils/lrc';
+
+const preview = {
+	COVER: 0,
+	QUEUE: 1,
+	LYRICS: 2
+}
 
 const FullScreenPlayer = ({ fullscreen, time }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
-	const [isQueue, setIsQueue] = React.useState(false)
+	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
+	const [lyrics, setLyrics] = React.useState([])
 
 	React.useEffect(() => {
-		setIsQueue(false)
+		setIsPreview(preview.COVER)
+		setLyrics([])
 	}, [song.songInfo])
 
 	const secondToTime = (second) => {
 		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
+	}
+
+	const getLyrics = async () => {
+		if (isPreview == preview.LYRICS) return setIsPreview(preview.COVER)
+		if (lyrics.length > 0) setIsPreview(preview.LYRICS)
+		const params = {
+			track_name: song.songInfo.title,
+			artist_name: song.songInfo.artist,
+			album_name: song.songInfo.album,
+			duration: song.songInfo.duration
+		}
+		fetch('https://lrclib.net/api/get?' + Object.keys(params).map((key) => `${key}=${encodeURIComponent(params[key])}`).join('&'), {
+			headers: { 'Lrclib-Client': 'Castafiore' }
+		})
+			.then(res => res.json())
+			.then(res => {
+				const ly = parseLrc(res.syncedLyrics)
+				setLyrics(ly)
+				setIsPreview(preview.LYRICS)
+			})
+			.catch(() => {
+				setIsPreview(preview.LYRICS)
+				setLyrics([{ time: 0, text: 'No lyrics found' }])
+			})
 	}
 
 	return (
@@ -47,13 +80,32 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 					color={theme.primaryLight}
 					onPress={() => fullscreen.set(false)} />
 				<View style={styles.playerContainer}>
-					{!isQueue ?
+					{
+						isPreview == preview.COVER &&
 						<Image
 							source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
 							style={styles.albumImage()}
-						/> :
+						/>
+					}
+					{
+						isPreview == preview.QUEUE &&
 						<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
 							<SongsList config={config} songs={song.queue} isMargin={false} indexPlaying={song.index} />
+						</ScrollView>
+					}
+					{
+						isPreview == preview.LYRICS &&
+						<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
+							{lyrics.map((lyric, index) => {
+								if (index < lyrics.length - 2 && time.position >= lyrics[index + 2]?.time) return null
+								const isCurrent = time.position >= lyric.time && (lyrics.length == index + 1 || time.position < lyrics[index + 1]?.time)
+								return (
+									<Text
+										key={index}
+										style={{ color: isCurrent ? theme.primaryLight : theme.secondaryLight, fontSize: 23, textAlign: 'center' }}>
+										{lyric.text.length ? lyric.text : '...'}
+									</Text>)
+							})}
 						</ScrollView>
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
@@ -112,10 +164,18 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 							}}
 						/>
 						<IconButton
+							icon="comment-o"
+							size={19}
+							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryLight}
+							style={{ paddingVertical: 10 }}
+							onPress={() => getLyrics()}
+						/>
+						<IconButton
 							icon="bars"
 							size={19}
+							color={isPreview == preview.QUEUE ? theme.primaryTouch : theme.secondaryLight}
 							style={{ paddingVertical: 10, paddingStart: 20 }}
-							onPress={() => setIsQueue(!isQueue)}
+							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
 					</View>
 				</View>

@@ -3,7 +3,7 @@ import { Text, View, Image, TouchableOpacity, Platform, Pressable } from 'react-
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext } from '~/contexts/song';
-import { nextSong, pauseSong, resumeSong, previousSong } from '~/utils/player';
+import { nextSong, pauseSong, resumeSong, previousSong, setPosition } from '~/utils/player';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
@@ -18,6 +18,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
+	const [layoutBarTime, setLayoutBarTime] = React.useState({ width: 0, height: 0 })
 
 	const secondToTime = (second) => {
 		if (!second) return '00:00'
@@ -98,11 +99,15 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.position)}</Text>
-					<View style={{ flex: 1, height: 6 }} >
+					<Pressable
+						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBarTime.width) * time.duration)}
+						onPressOut={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBarTime.width) * time.duration)}
+						onLayout={({ nativeEvent }) => setLayoutBarTime({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
+					 style={{ flex: 1, height: 6 }} >
 						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
 							<View style={{ width: `${(time.position / time.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
 						</View>
-					</View>
+					</Pressable>
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
 				</View>
 			</View>

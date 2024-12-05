@@ -25,8 +25,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
 
   const BottomTab = () => (
     <View>
-      <Player navigation={navigation} state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
-      {!isFullScreen && <View style={{
+      <View style={{
         flexDirection: 'row',
         backgroundColor: theme.secondaryDark,
         borderTopColor: theme.secondaryDark,
@@ -87,7 +86,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
             </TouchableOpacity>
           );
         })}
-      </View>}
+      </View>
     </View>
   )
 

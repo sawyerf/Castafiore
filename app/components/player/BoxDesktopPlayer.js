@@ -40,8 +40,6 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 				paddingLeft: 15,
 				borderTopWidth: 1,
 				borderTopColor: theme.tertiaryDark,
-				// margin: 10,
-				// borderRadius: 10,
 			}}>
 			<View style={{ flexDirection: 'row', flex: 1 }}>
 				<View style={{ ...styles.boxPlayerImage, flex: Platform.OS === 'android' ? 0 : 'initial' }}>
@@ -103,7 +101,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
 				</View>
 			</View>
-			<View style={{ flex: 1 }}> </View>
+			<View style={{ flex: 1 }} />
 		</TouchableOpacity>
 	)
 }

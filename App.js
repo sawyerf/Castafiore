@@ -74,6 +74,7 @@ const App = () => {
                       tabBar={(props) => <TabBar {...props} />}
                       screenOptions={{
                         headerShown: false,
+                        tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
                         tabBarStyle: {
                           backgroundColor: theme.secondaryDark,
                           borderTopColor: theme.secondaryDark,

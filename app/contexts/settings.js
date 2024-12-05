@@ -20,6 +20,7 @@ export const defaultSettings = {
 	orderPlaylist: 'title',
 	pinPlaylist: [],
 	previewFavorited: 3,
+	isDesktop: true,
 	servers: [
 		{
 			name: 'Demo',

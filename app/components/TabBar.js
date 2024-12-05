@@ -24,70 +24,70 @@ const TabBar = ({ state, descriptors, navigation }) => {
   }, [config.query])
 
   const BottomTab = () => (
-    <View style={{
-      flexDirection: 'row',
-      backgroundColor: theme.secondaryDark,
-      borderTopColor: theme.secondaryDark,
-      borderTopWidth: 1,
-      height: '100%',
-      width: 250,
-      paddingLeft: insets.left,
-      paddingRight: insets.right,
-    }}
-    >
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
+    <View>
+      <Player navigation={navigation} state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
+      {!isFullScreen && <View style={{
+        flexDirection: 'row',
+        backgroundColor: theme.secondaryDark,
+        borderTopColor: theme.secondaryDark,
+        borderTopWidth: 1,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+      >
+        {state.routes.map((route, index) => {
+          const { options } = descriptors[route.key];
+          const isFocused = state.index === index;
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
 
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params);
+            }
+          };
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: 'tabLongPress',
+              target: route.key,
+            });
+          };
+
+          const getColor = () => {
+            if (isFocused) return theme.primaryTouch
+            if (!config.query && route.name !== 'Settings') return theme.secondaryLight
+            return theme.primaryLight
           }
-        };
 
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        const getColor = () => {
-          if (isFocused) return theme.primaryTouch
-          if (!config.query && route.name !== 'Settings') return theme.secondaryLight
-          return theme.primaryLight
-        }
-
-        return (
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              width: 100,
-              paddingBottom: insets.bottom ? insets.bottom : 10,
-              paddingTop: 10,
-              backgroundColor: isFocused ? theme.secondaryLight : theme.secondaryDark,
-            }}
-            key={index}
-            disabled={(!config.query && route.name !== 'Settings')}
-          >
-            <Icon name={options.icon} size={20} color={getColor()} style={{ alignSelf: 'center', marginBottom: 5 }} />
-            <Text style={{ color: getColor(), textAlign: 'center' }}>
-              {options.title}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
+          return (
+            <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={{
+                flex: 1,
+                paddingBottom: insets.bottom ? insets.bottom : 10,
+                paddingTop: 10,
+              }}
+              key={index}
+              disabled={(!config.query && route.name !== 'Settings')}
+            >
+              <Icon name={options.icon} size={20} color={getColor()} style={{ alignSelf: 'center', marginBottom: 5 }} />
+              <Text style={{ color: getColor(), textAlign: 'center' }}>
+                {options.title}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>}
     </View>
   )
 
@@ -101,25 +101,27 @@ const TabBar = ({ state, descriptors, navigation }) => {
       width: 250,
       paddingLeft: insets.left,
       paddingRight: insets.right,
+      borderEndWidth: 1,
+      borderEndColor: theme.tertiaryDark,
     }}
     >
-			<View style={{marginHorizontal: 10, marginTop: 15, marginBottom: 15}} >
-				<TouchableOpacity
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						width: '100%',
-					}}>
-					<Image
-						source={require('~/../assets/icon.png')}
-						style={{ width: 50, height: 50, borderRadius: 10, marginEnd: 10 }}
-					/>
-					<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
-						<Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
-					</View>
-				</TouchableOpacity>
-			</View>
+      <View style={{ marginHorizontal: 10, marginTop: 15, marginBottom: 15 }} >
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+          }}>
+          <Image
+            source={require('~/../assets/icon.png')}
+            style={{ width: 50, height: 50, borderRadius: 10, marginEnd: 10 }}
+          />
+          <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
+            <Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
+            <Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -159,7 +161,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
             onLongPress={onLongPress}
             style={{
               flexDirection: 'row',
-              paddingBottom: insets.bottom ? insets.bottom : 10,
               alignItems: 'center',
               backgroundColor: isFocused ? theme.primaryDark : undefined,
               marginHorizontal: 10,
@@ -178,7 +179,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
           </TouchableOpacity>
         );
       })}
-
     </View>
   )
 

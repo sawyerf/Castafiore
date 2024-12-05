@@ -5,17 +5,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
-import { SetSettingsContext, defaultSettings } from '~/contexts/settings';
+import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
 import mainStyles from '~/styles/main';
 import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 import ButtonMenu from '~/components/settings/ButtonMenu';
+import ButtonSwitch from '~/components/settings/ButtonSwitch';
 
 const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 	const setSettings = React.useContext(SetSettingsContext)
+	const setting = React.useContext(SettingsContext)
 
 	const tuktuktuk = () => {
 		if (Platform.OS === 'web') {
@@ -35,7 +37,7 @@ const Settings = ({ navigation }) => {
 			style={mainStyles.mainContainer(insets, theme)}
 			contentContainerStyle={{ ...settingStyles.contentMainContainer(insets), paddingTop: 40 }}
 		>
-			<View style={settingStyles.optionsContainer(theme)} >
+			<View style={settingStyles.optionsContainer(theme)}>
 				<TouchableOpacity
 					onPress={tuktuktuk}
 					style={{
@@ -54,7 +56,7 @@ const Settings = ({ navigation }) => {
 					</View>
 				</TouchableOpacity>
 			</View>
-			<View style={settingStyles.optionsContainer(theme)} >
+			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
 					title="Connect"
 					endText={config.query ? (config.name?.length ? config.name : 'Connected') : 'Not connected'}
@@ -64,7 +66,16 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
-			<View style={settingStyles.optionsContainer(theme)} >
+			<View style={settingStyles.optionsContainer(theme)}>
+				<ButtonSwitch
+					title="Desktop"
+					icon="desktop"
+					value={setting.isDesktop}
+					onPress={(value) => setSettings({ ...setting, isDesktop: !setting.isDesktop })}
+					isLast={true} />
+			</View>
+
+			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
 					title="Home"
 					icon="home"
@@ -88,7 +99,7 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
-			<View style={settingStyles.optionsContainer(theme)} >
+			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
 					title="Reset Settings"
 					icon="undo"

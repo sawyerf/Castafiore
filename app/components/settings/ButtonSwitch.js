@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
 
-const ButtonSwitch = ({ title, value, onPress, isLast = false }) => {
+const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -21,6 +21,21 @@ const ButtonSwitch = ({ title, value, onPress, isLast = false }) => {
 			onPress={onPress}
 			activeOpacity={1}
 		>
+			{icon && <View
+				style={{
+					height: '60%',
+					aspectRatio: 1,
+					marginRight: 15,
+					backgroundColor: theme.primaryTouch,
+					borderRadius: 5,
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}>
+				<Icon
+					name={icon}
+					size={18}
+					color={theme.innerTouch}
+				/></View> }
 			<Text
 				numberOfLines={1}
 				style={{ color: theme.primaryLight, fontSize: 16, marginEnd: 10, flex: 1 }}>{title}</Text>

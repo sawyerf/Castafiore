@@ -28,7 +28,7 @@ const Player = ({ navigation, state, fullscreen }) => {
 	if (!song?.songInfo) return null
 	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
 	else {
-		if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song} />
+		if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song}/>
 		return <BoxPlayer fullscreen={fullscreen} />
 	}
 }

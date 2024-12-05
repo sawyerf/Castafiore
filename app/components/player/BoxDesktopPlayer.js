@@ -17,16 +17,21 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
+	const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
 
 	const secondToTime = (second) => {
 		if (!second) return '00:00'
 		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 	}
 
+	const setVolume = (vol) => {
+		if (vol < 0) vol = 0
+		if (vol > 1) vol = 1
+		song.sound.volume = vol
+	}
+
 	return (
-		<TouchableOpacity
-			onPress={() => fullscreen.set(true)}
-			activeOpacity={1}
+		<View
 			style={{
 				position: 'absolute',
 				bottom: 0,
@@ -52,7 +57,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 						</View>
 					</ImageError>
 				</View>
-				<View style={{ flex: 1, justifyContent: 'center', gap: 4 }}>
+				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
 					<Text style={{ color: theme.playerPrimaryText, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
 					<Text style={{ color: theme.playerSecondaryText, }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
@@ -101,8 +106,44 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
 				</View>
 			</View>
-			<View style={{ flex: 1 }} />
-		</TouchableOpacity>
+			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
+				{
+					song?.sound?.volume ?
+						<IconButton
+							icon="volume-up"
+							size={17}
+							color={theme.primaryLight}
+							style={{ width: 27 }}
+							onPress={() => song.sound.volume = 0}
+						/>
+						: <IconButton
+							icon="volume-off"
+							size={17}
+							style={{ width: 27 }}
+							color={theme.primaryLight}
+							onPress={() => song.sound.volume = 1}
+						/>
+				}
+				<Pressable
+					style={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
+					onPressIn={({ nativeEvent }) => setVolume(nativeEvent.locationX / layoutBar.width)}
+					onPressOut={({ nativeEvent }) => setVolume(nativeEvent.locationX / layoutBar.width)}
+					onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
+				>
+					<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
+						<View style={{ width: `${song.sound.volume * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
+					</View>
+					<View style={styles.bitognoBar(song.sound.volume, theme)} />
+				</Pressable>
+			<IconButton
+				icon="expand"
+				size={17}
+				style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
+				color={theme.primaryLight}
+				onPress={() => fullscreen.set(true)}
+			/>
+			</View>
+		</View>
 	)
 }
 
@@ -119,6 +160,14 @@ const styles = {
 		flex: Platform.OS === 'android' ? 0 : 'initial',
 		flexDirection: 'row',
 	},
+	bitognoBar: (vol, theme) => ({
+		position: 'absolute',
+		width: 12,
+		height: 12,
+		borderRadius: 6,
+		backgroundColor: theme.primaryTouch,
+		left: `calc(${vol * 100}% - 6px)`, top: 7
+	})
 }
 
 export default BoxDesktopPlayer;

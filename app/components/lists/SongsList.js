@@ -39,6 +39,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 					}
 					<TouchableOpacity style={styles.song} key={song.id}
 						onLongPress={() => setIndexOptions(index)}
+						onContextMenu={() => setIndexOptions(index)}
 						delayLongPress={200}
 						onPress={() => playSong(config, songCon, songDispatch, listToPlay ? listToPlay : songs, index)}>
 						<Image

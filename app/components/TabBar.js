@@ -171,8 +171,8 @@ const TabBar = ({ state, descriptors, navigation }) => {
             key={index}
             disabled={(!config.query && route.name !== 'Settings')}
           >
-            <Icon name={options.icon} size={27} color={getColor()} style={{ marginRight: 10 }} />
-            <Text style={{ color: getColor(), textAlign: 'left', fontSize: 20, fontWeight: '600' }}>
+            <Icon name={options.icon} size={26} color={getColor()} style={{ marginRight: 10 }} />
+            <Text style={{ color: getColor(), textAlign: 'left', fontSize: 20, fontWeight: '550' }}>
               {options.title}
             </Text>
           </TouchableOpacity>

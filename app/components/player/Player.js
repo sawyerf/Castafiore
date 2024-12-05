@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, View, Text } from 'react-native';
 import { SongContext } from '~/contexts/song';
-import { nextSong, handleAction } from '~/utils/player';
+import { nextSong, handleAction, pauseSong, resumeSong, previousSong } from '~/utils/player';
 
 import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
@@ -25,10 +25,25 @@ const Player = ({ navigation, state, fullscreen }) => {
 		fullscreen.set(false)
 	}, [state.index])
 
+	React.useEffect(() => {
+		addEventListener('keydown', onKeyEvent)
+		return () => removeEventListener('keydown', onKeyEvent)
+	}, [song])
+
+	const onKeyEvent = (e) => {
+		if (e.code === 'Space') {
+			if (song.sound) {
+				if (song.isPlaying) pauseSong(song.sound)
+				else resumeSong(song.sound)
+			}
+		} else if (e.code === 'ArrowRight') nextSong(config, song, songDispatch)
+		else if (e.code === 'ArrowLeft') previousSong(config, song, songDispatch)
+	}
+
 	if (!song?.songInfo) return null
 	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
 	else {
-		if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song}/>
+		if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song} />
 		return <BoxPlayer fullscreen={fullscreen} />
 	}
 }

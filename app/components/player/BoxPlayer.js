@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, View, Image, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { SongContext } from '~/contexts/song';
 import { nextSong, pauseSong, resumeSong } from '~/utils/player';
-
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
 import { urlCover } from '~/utils/api';
+import mainStyles from '~/styles/main';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 

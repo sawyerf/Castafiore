@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
-import mainStyles from '~/styles/main';
 import { ThemeContext } from '~/contexts/theme';
+import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
 import ButtonMenu from '~/components/settings/ButtonMenu';
 import ButtonSwitch from '~/components/settings/ButtonSwitch';

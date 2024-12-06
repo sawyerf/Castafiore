@@ -1,11 +1,9 @@
 import React from 'react';
-import { Platform, View, Text } from 'react-native';
-import { SongContext } from '~/contexts/song';
-import { nextSong, handleAction, pauseSong, resumeSong, previousSong } from '~/utils/player';
 
-import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
+import { SettingsContext } from '~/contexts/settings';
+import { SongContext } from '~/contexts/song';
+import { nextSong, handleAction, pauseSong, resumeSong, previousSong, setVolume } from '~/utils/player';
 import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
 import BoxDesktopPlayer from './BoxDesktopPlayer';
@@ -38,14 +36,14 @@ const Player = ({ navigation, state, fullscreen }) => {
 			}
 		} else if (e.code === 'ArrowRight') nextSong(config, song, songDispatch)
 		else if (e.code === 'ArrowLeft') previousSong(config, song, songDispatch)
+		else if (e.code === 'ArrowUp') setVolume(song.sound, song.sound.volume + 0.1)
+		else if (e.code === 'ArrowDown') setVolume(song.sound, song.sound.volume - 0.1)
 	}
 
 	if (!song?.songInfo) return null
-	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
-	else {
-		if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song} />
-		return <BoxPlayer fullscreen={fullscreen} />
-	}
+	else if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
+	else if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song} />
+	else return <BoxPlayer fullscreen={fullscreen} />
 }
 
 export default Player;

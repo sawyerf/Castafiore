@@ -139,3 +139,14 @@ export const resumeSong = async (sound) => {
 export const setPosition = async (sound, position) => {
 	sound.currentTime = position
 }
+
+export const setVolume = async (sound, volume) => {
+	if (volume > 1) volume = 1
+	if (volume < 0) volume = 0
+	if (sound) sound.volume = volume
+}
+
+export const secondToTime = (second) => {
+	if (!second) return '00:00'
+	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
+}

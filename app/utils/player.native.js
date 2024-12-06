@@ -88,3 +88,11 @@ export const resumeSong = async (sound) => {
 export const setPosition = async (sound, position) => {
 	await sound.setPositionAsync(position * 1000)
 }
+
+export const setVolume = async (sound, volume) => {
+}
+
+export const secondToTime = (second) => {
+	if (!second) return '00:00'
+	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
+}

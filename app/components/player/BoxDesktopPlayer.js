@@ -1,35 +1,21 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, Platform, Pressable } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SongContext } from '~/contexts/song';
-import { nextSong, pauseSong, resumeSong, previousSong, setPosition } from '~/utils/player';
 
 import { ConfigContext } from '~/contexts/config';
+import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
+import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume } from '~/utils/player';
 import { urlCover } from '~/utils/api';
+import mainStyles from '~/styles/main';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
+import SlideBar from '~/components/button/SlideBar';
 
 const BoxDesktopPlayer = ({ fullscreen, time }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
-	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
-	const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
-	const [layoutBarTime, setLayoutBarTime] = React.useState({ width: 0, height: 0 })
-
-	const secondToTime = (second) => {
-		if (!second) return '00:00'
-		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
-	}
-
-	const setVolume = (vol) => {
-		if (vol < 0) vol = 0
-		if (vol > 1) vol = 1
-		song.sound.volume = vol
-	}
 
 	return (
 		<View
@@ -99,15 +85,13 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.position)}</Text>
-					<Pressable
-						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBarTime.width) * time.duration)}
-						onPressOut={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBarTime.width) * time.duration)}
-						onLayout={({ nativeEvent }) => setLayoutBarTime({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
-					 style={{ flex: 1, height: 6 }} >
-						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
-							<View style={{ width: `${(time.position / time.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
-						</View>
-					</Pressable>
+					<SlideBar
+						progress={time.position / time.duration}
+						onPress={(progress) => setPosition(song.sound, progress * time.duration)}
+						stylePress={{ flex: 1, height: 6 }}
+						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
+						styleProgress={{ backgroundColor: theme.primaryTouch }}
+					/>
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
 				</View>
 			</View>
@@ -129,24 +113,21 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 							onPress={() => song.sound.volume = 1}
 						/>
 				}
-				<Pressable
-					style={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
-					onPressIn={({ nativeEvent }) => setVolume(nativeEvent.locationX / layoutBar.width)}
-					onPressOut={({ nativeEvent }) => setVolume(nativeEvent.locationX / layoutBar.width)}
-					onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
-				>
-					<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
-						<View style={{ width: `${song.sound.volume * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
-					</View>
-					<View style={styles.bitognoBar(song.sound.volume, theme)} />
-				</Pressable>
-			<IconButton
-				icon="expand"
-				size={17}
-				style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
-				color={theme.primaryLight}
-				onPress={() => fullscreen.set(true)}
-			/>
+				<SlideBar
+					progress={song.sound.volume}
+					onPress={(progress) => setVolume(song.sound ,progress)}
+					stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
+					styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
+					styleProgress={{ backgroundColor: theme.primaryTouch }}
+					isBitogno={true}
+				/>
+				<IconButton
+					icon="expand"
+					size={17}
+					style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
+					color={theme.primaryLight}
+					onPress={() => fullscreen.set(true)}
+				/>
 			</View>
 		</View>
 	)
@@ -159,20 +140,6 @@ const styles = {
 		marginRight: 10,
 		borderRadius: 4,
 	},
-	boxPlayerText: {
-	},
-	boxPlayerButton: {
-		flex: Platform.OS === 'android' ? 0 : 'initial',
-		flexDirection: 'row',
-	},
-	bitognoBar: (vol, theme) => ({
-		position: 'absolute',
-		width: 12,
-		height: 12,
-		borderRadius: 6,
-		backgroundColor: theme.primaryTouch,
-		left: `calc(${vol * 100}% - 6px)`, top: 7
-	})
 }
 
 export default BoxDesktopPlayer;

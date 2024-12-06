@@ -1,18 +1,19 @@
 import React from 'react';
 import { Text, View, Image, ScrollView, Dimensions, Pressable, Modal } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SongContext } from '~/contexts/song';
-import { nextSong, previousSong, pauseSong, resumeSong } from '~/utils/player';
 
-import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
 import { ConfigContext } from '~/contexts/config';
+import { SongContext } from '~/contexts/song';
+import { ThemeContext } from '~/contexts/theme';
+import { nextSong, previousSong, pauseSong, resumeSong, secondToTime } from '~/utils/player';
+import { parseLrc } from '~/utils/lrc';
+import { setPosition } from '~/utils/player';
 import { urlCover, getApi } from '~/utils/api';
-import SongsList from '~/components/lists/SongsList';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
-import { setPosition } from '~/utils/player';
-import { parseLrc } from '~/utils/lrc';
+import SlideBar from '~/components/button/SlideBar';
+import SongsList from '~/components/lists/SongsList';
+import mainStyles from '~/styles/main';
 
 const preview = {
 	COVER: 0,
@@ -21,23 +22,17 @@ const preview = {
 }
 
 const FullScreenPlayer = ({ fullscreen, time }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
-	const insets = useSafeAreaInsets();
-	const [isPreview, setIsPreview] = React.useState(preview.COVER)
-	const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
 	const theme = React.useContext(ThemeContext)
+	const [song, songDispatch] = React.useContext(SongContext)
+	const insets = useSafeAreaInsets();
 	const [lyrics, setLyrics] = React.useState([])
+	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 
 	React.useEffect(() => {
 		setIsPreview(preview.COVER)
 		setLyrics([])
 	}, [song.songInfo])
-
-	const secondToTime = (second) => {
-		return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
-	}
-
 
 	const getNavidromeLyrics = () => {
 		getApi(config, 'getLyricsBySongId', { id: song.songInfo.id })
@@ -147,18 +142,14 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ flex: 'initial', padding: 20, paddingEnd: 0 }} />
 					</View>
-					<Pressable
-						style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * time.duration)}
-						onPressOut={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * time.duration)}
-						pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}
-						onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
-					>
-						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
-							<View style={{ width: `${(time.position / time.duration) * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }} />
-						</View>
-						<View style={styles.bitognoBar(time, theme)} />
-					</Pressable>
+					<SlideBar
+						progress={time.position / time.duration}
+						onPress={(progress) => setPosition(song.sound, progress * time.duration)}
+						stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
+						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
+						styleProgress={{ backgroundColor: theme.primaryTouch }}
+						isBitogno={true}
+					/>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
 						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.position)}</Text>
@@ -247,14 +238,6 @@ const styles = {
 			borderRadius: 10,
 		}
 	},
-	bitognoBar: (time, theme) => ({
-		position: 'absolute',
-		width: 6,
-		height: 12,
-		borderRadius: 6,
-		backgroundColor: theme.primaryTouch,
-		left: `calc(${(time.position / time.duration) * 100}% - 3px)`, top: 7
-	})
 }
 
 export default FullScreenPlayer;

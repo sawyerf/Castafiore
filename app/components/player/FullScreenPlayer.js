@@ -150,6 +150,8 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 					<Pressable
 						style={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
 						onPressIn={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * time.duration)}
+						onPressOut={({ nativeEvent }) => setPosition(song.sound, (nativeEvent.locationX / layoutBar.width) * time.duration)}
+						pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}
 						onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
 					>
 						<View style={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }} >
@@ -251,7 +253,7 @@ const styles = {
 		height: 12,
 		borderRadius: 6,
 		backgroundColor: theme.primaryTouch,
-		left: `${(time.position / time.duration - 0.01) * 100}%`, top: 7
+		left: `calc(${(time.position / time.duration) * 100}% - 3px)`, top: 7
 	})
 }
 

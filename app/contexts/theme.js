@@ -16,6 +16,7 @@ export const themes = {
 		// Use for background
 		primaryDark: '#121212',
 		secondaryDark: '#1e1e1e',
+		tertiaryDark: '#2e2e2e',
 		// Use for text
 		primaryLight: '#f5f5dc',
 		secondaryLight: 'gray',
@@ -33,6 +34,7 @@ export const themes = {
 	deezer: {
 		primaryDark: '#000000',
 		secondaryDark: '#191414',
+		tertiaryDark: '#2e2e2e',
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#a238ff',
@@ -47,6 +49,7 @@ export const themes = {
 	spotify: {
 		primaryDark: '#000000',
 		secondaryDark: '#191414',
+		tertiaryDark: '#2e2e2e',
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#1DB954',
@@ -61,6 +64,7 @@ export const themes = {
 	appleMusic: {
 		primaryDark: '#000000',
 		secondaryDark: '#1C1C1E',
+		tertiaryDark: '#2e2e2e',
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#FF2D55',
@@ -75,6 +79,7 @@ export const themes = {
 	reddit: {
 		primaryDark: '#1A1A1B',
 		secondaryDark: '#141415',
+		tertiaryDark: '#2e2e2e',
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#D7DADC',
 		primaryTouch: '#FF4500',
@@ -89,6 +94,7 @@ export const themes = {
 	soundCloud: {
 		primaryDark: '#FFFFFF',
 		secondaryDark: '#f2f2f2',
+		tertiaryDark: '#f3f3f3',
 		primaryLight: '#000000',
 		secondaryLight: '##f2f2f2',
 		primaryTouch: '#FF7700',
@@ -103,6 +109,7 @@ export const themes = {
 	lightMode: {
 		primaryDark: '#f6f6ef',
 		secondaryDark: '#eaeae1',
+		tertiaryDark: '#dcdcd4',
 		primaryLight: '#121212',
 		secondaryLight: '#1e1e1e',
 		primaryTouch: '#cd1921',

@@ -1,16 +1,19 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 import { SongContext } from '~/contexts/song';
-import { nextSong, handleAction } from '~/utils/player';
+import { nextSong, handleAction, pauseSong, resumeSong, previousSong } from '~/utils/player';
 
+import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
 import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
+import BoxDesktopPlayer from './BoxDesktopPlayer';
 
 const Player = ({ navigation, state, fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
+	const settings = React.useContext(SettingsContext)
 	const [time, setTime] = React.useState(null)
 
 	React.useEffect(() => {
@@ -22,9 +25,27 @@ const Player = ({ navigation, state, fullscreen }) => {
 		fullscreen.set(false)
 	}, [state.index])
 
+	React.useEffect(() => {
+		addEventListener('keydown', onKeyEvent)
+		return () => removeEventListener('keydown', onKeyEvent)
+	}, [song])
+
+	const onKeyEvent = (e) => {
+		if (e.code === 'Space') {
+			if (song.sound) {
+				if (song.isPlaying) pauseSong(song.sound)
+				else resumeSong(song.sound)
+			}
+		} else if (e.code === 'ArrowRight') nextSong(config, song, songDispatch)
+		else if (e.code === 'ArrowLeft') previousSong(config, song, songDispatch)
+	}
+
 	if (!song?.songInfo) return null
 	if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
-	else return <BoxPlayer fullscreen={fullscreen} />
+	else {
+		if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song} />
+		return <BoxPlayer fullscreen={fullscreen} />
+	}
 }
 
 export default Player;

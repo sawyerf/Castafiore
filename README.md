@@ -1,3 +1,5 @@
+<img style="height: 1em; margin-right: 5px;" src="https://static.vecteezy.com/system/resources/previews/009/102/039/large_2x/attention-sign-or-warning-caution-exclamation-sign-danger-yellow-triangle-stock-illustration-free-vector.jpg" /> **iOS PWA is stable only in 2024.12.03** <img style="height: 1em; margin-right: 5px;" src="https://static.vecteezy.com/system/resources/previews/009/102/039/large_2x/attention-sign-or-warning-caution-exclamation-sign-danger-yellow-triangle-stock-illustration-free-vector.jpg" />
+
 <a href="https://sawyerf.github.io/Castafiore/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/sawyerf/Castafiore/assets/22857002/ad3f2f95-92d8-4b09-83fe-d0d9a4dd61e1#gh-dark-mode-only">

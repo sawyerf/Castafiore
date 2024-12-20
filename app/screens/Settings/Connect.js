@@ -60,7 +60,7 @@ const Connect = ({ navigation }) => {
 					upConfig(conf)
 					setError('')
 					setSettings({ ...settings, servers: [...settings.servers, conf] })
-					navigation.navigate('Home')
+					navigation.navigate('HomeStack')
 				} else {
 					console.log('Connect api error:', json)
 				}

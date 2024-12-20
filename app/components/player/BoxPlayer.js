@@ -8,7 +8,6 @@ import { nextSong, pauseSong, resumeSong } from '~/utils/player';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
-import mainStyles from '~/styles/main';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 
@@ -36,7 +35,7 @@ const BoxPlayer = ({ fullscreen }) => {
 			}}>
 			<View style={{ ...styles.boxPlayerImage, flex: Platform.OS === 'android' ? 0 : 'initial' }}>
 				<ImageError
-					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
+					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100) }}
 					style={styles.boxPlayerImage}
 				>
 					<View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>

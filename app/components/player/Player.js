@@ -8,7 +8,7 @@ import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
 import BoxDesktopPlayer from './BoxDesktopPlayer';
 
-const Player = ({ navigation, state, fullscreen }) => {
+const Player = ({ state, fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
@@ -26,7 +26,7 @@ const Player = ({ navigation, state, fullscreen }) => {
 	React.useEffect(() => {
 		addEventListener('keydown', onKeyEvent)
 		return () => removeEventListener('keydown', onKeyEvent)
-	}, [song])
+	}, [song.sound, song.isPlaying, song.songInfo, song.index, song.queue, song.actionEndOfSong])
 
 	const onKeyEvent = (e) => {
 		if (e.code === 'Space') {
@@ -43,7 +43,7 @@ const Player = ({ navigation, state, fullscreen }) => {
 	if (!song?.songInfo) return null
 	else if (fullscreen.value) return <FullScreenPlayer fullscreen={fullscreen} time={time ? time : song} />
 	else if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} time={time ? time : song} />
-	else return <BoxPlayer fullscreen={fullscreen} />
+	return <BoxPlayer fullscreen={fullscreen} />
 }
 
 export default Player;

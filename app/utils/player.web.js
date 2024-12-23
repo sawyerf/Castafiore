@@ -1,16 +1,27 @@
-// import { Audio } from 'expo-av';
 import React from 'react';
 import { Platform } from 'react-native';
 
 import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
+export const audio = () => {
+	return document.getElementById('audio')
+}
 
 export const initPlayer = async (songDispatch) => {
-	const sound = new Audio()
+	const sound = audio()
+	songDispatch({ type: 'init' })
 	sound.addEventListener('loadedmetadata', () => {
-		songDispatch({ type: 'setTime', position: 0, duration: sound.duration })
-		sound.play()
+		console.log('loadedmetadata')
+		audio().play()
+	})
+	sound.addEventListener('loadeddata', () => {
+		console.log('loadeddata')
+		audio().play()
+	})
+	sound.addEventListener('canplay', () => {
+		console.log('canplay')
+		audio().play()
 	})
 	sound.addEventListener('play', () => {
 		songDispatch({ type: 'setPlaying', isPlaying: true })
@@ -18,11 +29,18 @@ export const initPlayer = async (songDispatch) => {
 	sound.addEventListener('pause', () => {
 		songDispatch({ type: 'setPlaying', isPlaying: false })
 	})
-	songDispatch({ type: 'setSound', sound })
+	navigator.mediaSession.setActionHandler("pause", () => {
+		pauseSong()
+	});
+	navigator.mediaSession.setActionHandler("play", () => {
+		resumeSong()
+	});
+	navigator.mediaSession.setActionHandler("seekto", (details) => {
+		setPosition(details.seekTime)
+	});
 }
 
 export const handleAction = (config, song, songDispatch, setTime) => {
-	if (!song.sound) return
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
 		previousSong(config, song, songDispatch)
 	});
@@ -35,31 +53,20 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 	navigator.mediaSession.setActionHandler("seekforward", () => {
 		nextSong(config, song, songDispatch)
 	});
-	navigator.mediaSession.setActionHandler("pause", () => {
-		pauseSong(song.sound)
-	});
-	navigator.mediaSession.setActionHandler("play", () => {
-		resumeSong(song.sound)
-	});
-	navigator.mediaSession.setActionHandler("seekto", (details) => {
-		setPosition(song.sound, details.seekTime)
-	});
 
 	const timeUpdateHandler = () => {
-		if (!song.sound) return
 		setTime({
-			position: song.sound.currentTime,
-			duration: song.sound.duration,
+			position: audio().currentTime,
+			duration: audio().duration,
 		})
-
 	}
 
 	const endedHandler = () => {
 		const songId = song.songInfo.id
 
 		if (song.actionEndOfSong === 'repeat') {
-			setPosition(song.sound, 0)
-			resumeSong(song.sound)
+			setPosition(0)
+			resumeSong()
 		} else {
 			nextSong(config, song, songDispatch)
 		}
@@ -67,11 +74,12 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 			.catch((error) => { })
 	}
 
-	song.sound.addEventListener('ended', endedHandler)
-	song.sound.addEventListener('timeupdate', timeUpdateHandler)
+	const sound = audio()
+	sound.addEventListener('ended', endedHandler)
+	sound.addEventListener('timeupdate', timeUpdateHandler)
 	return () => {
-		song.sound.removeEventListener('timeupdate', timeUpdateHandler)
-		song.sound.removeEventListener('ended', endedHandler)
+		sound.removeEventListener('timeupdate', timeUpdateHandler)
+		sound.removeEventListener('ended', endedHandler)
 	}
 }
 
@@ -89,11 +97,17 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 	}
 }
 
-export const unloadSong = async (sound) => { }
+export const unloadSong = async () => { }
 
-const loadSong = async (config, sound, queue, index) => {
+const loadSong = async (config, queue, index) => {
 	const song = queue[index]
+	const sound = audio()
+
 	sound.src = urlStream(config, song.id)
+	sound.play()
+		.catch((error) => {
+			console.error(error)
+		})
 	navigator.mediaSession.metadata = new MediaMetadata({
 		title: song.title,
 		artist: song.artist,
@@ -104,8 +118,8 @@ const loadSong = async (config, sound, queue, index) => {
 		.catch((error) => { })
 }
 
-export const playSong = async (config, song, songDispatch, queue, index) => {
-	await loadSong(config, song.sound, queue, index)
+export const playSong = async (config, songDispatch, queue, index) => {
+	await loadSong(config, queue, index)
 	songDispatch({ type: 'setSong', queue, index })
 	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
 	downloadNextSong(config, queue, index)
@@ -113,38 +127,44 @@ export const playSong = async (config, song, songDispatch, queue, index) => {
 
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong(song.sound)
-		await loadSong(config, song.sound, song.queue, (song.index + 1) % song.queue.length)
+		unloadSong()
+		await loadSong(config, song.queue, (song.index + 1) % song.queue.length)
 		songDispatch({ type: 'next' })
 	}
 }
 
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong(song.sound)
-		await loadSong(config, song.sound, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		unloadSong()
+		await loadSong(config, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
 		songDispatch({ type: 'previous' })
 	}
 }
 
-export const pauseSong = async (sound) => {
-	sound.pause()
+export const pauseSong = async () => {
+	audio().pause()
 }
 
-export const resumeSong = async (sound) => {
-	sound.play()
+export const resumeSong = async () => {
+	audio().play()
 }
 
-export const setPosition = async (sound, position) => {
+export const setPosition = async (position) => {
+	const sound = audio()
+
 	if (position > sound.duration) position = sound.duration
 	if (position < 0) position = 0
 	sound.currentTime = position
 }
 
-export const setVolume = async (sound, volume) => {
+export const setVolume = async (volume) => {
 	if (volume > 1) volume = 1
 	if (volume < 0) volume = 0
-	if (sound) sound.volume = volume
+	audio().volume = volume
+}
+
+export const getVolume = () => {
+	return audio().volume
 }
 
 export const secondToTime = (second) => {

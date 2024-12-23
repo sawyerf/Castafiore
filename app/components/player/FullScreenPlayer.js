@@ -144,7 +144,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 					</View>
 					<SlideBar
 						progress={time.position / time.duration}
-						onPress={(progress) => setPosition(song.sound, progress * time.duration)}
+						onPress={(progress) => setPosition(progress * time.duration)}
 						stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
@@ -168,7 +168,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 							size={30}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
-							onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
+							onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
 						/>
 						<IconButton
 							icon="step-forward"

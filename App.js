@@ -32,7 +32,7 @@ const App = () => {
   const [theme, setTheme] = React.useState(getTheme())
 
   React.useEffect(() => {
-    if (!song.sound) initPlayer(dispatch)
+    if (!song.isInit) initPlayer(dispatch)
     getConfig()
       .then((config) => {
         setConfig(config)

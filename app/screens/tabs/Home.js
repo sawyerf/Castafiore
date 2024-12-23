@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
 	const clickRandomSong = () => {
 		getApi(config, 'getRandomSongs', `count=50`)
 			.then((json) => {
-				playSong(config, song, songDispatch, json.randomSongs.song, 0)
+				playSong(config, songDispatch, json.randomSongs.song, 0)
 			})
 			.catch((error) => { })
 	}

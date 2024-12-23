@@ -1,15 +1,13 @@
-import { Audio } from 'expo-av';
 import React from 'react';
 
-export const SoundContext = React.createContext(new Audio.Sound())
 export const SongContext = React.createContext()
 
 export const songReducer = (state, action) => {
 	switch (action.type) {
-		case 'setSound':
+		case 'init':
 			return {
 				...state,
-				sound: action.sound,
+				isInit: true,
 			}
 		case 'setSong':
 			return {
@@ -37,12 +35,6 @@ export const songReducer = (state, action) => {
 			return {
 				...state,
 				isPlaying: action.isPlaying,
-			}
-		case 'setTime':
-			return {
-				...state,
-				position: action.position,
-				duration: action.duration,
 			}
 		case 'addQueue':
 			if (!state.sound || !state.songInfo || !state.queue.length || !action.queue.length) return state

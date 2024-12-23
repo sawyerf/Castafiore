@@ -20,7 +20,7 @@ const RandomButton = ({ songList, size = 23 }) => {
 
 	const shuffleSong = () => {
 		if (songList?.length) {
-			playSong(config, song, songDispatch, shuffle(songList), 0)
+			playSong(config, songDispatch, shuffle(songList), 0)
 		}
 	}
 

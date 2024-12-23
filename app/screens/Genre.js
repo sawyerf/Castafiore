@@ -36,7 +36,7 @@ const Genre = ({ navigation, route }) => {
 			.then((json) => {
 				const songs = json.randomSongs?.song
 				if (!songs) return
-				playSong(config, song, songDispatch, songs, 0)
+				playSong(config, songDispatch, songs, 0)
 			})
 			.catch((error) => { })
 	}

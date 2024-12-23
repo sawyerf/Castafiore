@@ -59,7 +59,7 @@ const BoxPlayer = ({ fullscreen }) => {
 					size={23}
 					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
-					onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
+					onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
 				/>
 			</View>
 		</Pressable>

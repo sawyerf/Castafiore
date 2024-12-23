@@ -49,14 +49,14 @@ const Artist = ({ navigation, route }) => {
 			})
 			allSongs.current = (await Promise.all(songsPending)).flat()
 		}
-		playSong(config, song, songDispatch, shuffle(allSongs.current), 0)
+		playSong(config, songDispatch, shuffle(allSongs.current), 0)
 	}
 
 	const getSimilarSongs = () => {
 		getApi(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
 			.then((json) => {
 				const songs = json.similarSongs.song
-				playSong(config, song, songDispatch, songs, 0)
+				playSong(config, songDispatch, songs, 0)
 			})
 			.catch((error) => { })
 	}
@@ -66,7 +66,7 @@ const Artist = ({ navigation, route }) => {
 			.then((json) => {
 				const songs = json.topSongs?.song
 				if (!songs) return
-				playSong(config, song, songDispatch, songs, 0)
+				playSong(config, songDispatch, songs, 0)
 			})
 			.catch((error) => { })
 	}

@@ -18,7 +18,7 @@ const RadioList = ({ config, radios }) => {
 	const theme = React.useContext(ThemeContext)
 
 	const playRadio = (index) => {
-		playSong(config, song, songDispatch, radios.map(radio => ({
+		playSong(config, songDispatch, radios.map(radio => ({
 			id: radio.streamUrl,
 			title: radio.name,
 			artist: radio.homePageUrl ? radio.homePageUrl : 'Radio',

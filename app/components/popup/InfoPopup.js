@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { Text, View, Pressable, Modal, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButton from '~/components/button/IconButton';
@@ -40,7 +40,7 @@ const InfoPopup = ({ info, close }) => {
 					alignItems: 'center',
 				}}
 			>
-				<TouchableOpacity
+				<Pressable
 					onPress={close}
 					style={{
 						width: '100%',

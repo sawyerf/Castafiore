@@ -35,7 +35,9 @@ const VerticalPlaylist = ({ config, playlists }) => {
 				playlists?.map((playlist, index) => {
 					if (deletePlaylists.includes(playlist.id)) return null
 					return (
-						<TouchableOpacity style={styles.favoritedSong} key={playlist.id}
+						<TouchableOpacity
+							style={styles.favoritedSong}
+							key={playlist.id}
 							onLongPress={() => setIndexOption(index)}
 							delayLongPress={200}
 							onPress={() => navigation.navigate('Playlist', { playlist: playlist })}>

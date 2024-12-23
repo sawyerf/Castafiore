@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View, TouchableOpacity, Modal, Dimensions, ScrollView, Animated } from 'react-native';
+import { Text, View, TouchableOpacity, Modal, Dimensions, ScrollView, Animated, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -54,7 +54,7 @@ const OptionsPopup = ({ visible, close, options }) => {
 					backgroundColor: 'rgba(0,0,0,0.5)',
 				}}
 			>
-				<TouchableOpacity
+				<Pressable
 					onPress={close}
 					style={{
 						height: paddingTop,

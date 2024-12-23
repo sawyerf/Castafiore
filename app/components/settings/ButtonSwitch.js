@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -8,7 +8,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<TouchableOpacity
+		<Pressable
 			style={{
 				width: '100%',
 				height: 50,
@@ -19,7 +19,6 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 				flexDirection: 'row',
 			}}
 			onPress={onPress}
-			activeOpacity={1}
 		>
 			{icon && <View
 				style={{
@@ -59,7 +58,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 					}}
 				/>
 			</View>
-		</TouchableOpacity>
+		</Pressable>
 	)
 }
 

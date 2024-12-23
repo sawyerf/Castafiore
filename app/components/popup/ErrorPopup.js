@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
+import { Text, View, Modal, ScrollView, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import IconButton from '~/components/button/IconButton';
 import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';

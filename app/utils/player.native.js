@@ -45,7 +45,7 @@ export const unloadSong = async (sound) => {
 const loadSong = async (config, song, sound) => {
 	await unloadSong(sound)
 	await sound.loadAsync(
-		{ uri: await urlStream(config, song.id) },
+		{ uri: urlStream(config, song.id) },
 		{
 			shouldPlay: true,
 			staysActiveInBackground: true,

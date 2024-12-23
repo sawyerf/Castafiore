@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import IconButton from '~/components/button/IconButton';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';

@@ -37,7 +37,9 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 							<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {song.discNumber}</Text>
 						</View>
 					}
-					<TouchableOpacity style={styles.song} key={song.id}
+					<TouchableOpacity
+						style={styles.song}
+						key={song.id}
 						onLongPress={() => setIndexOptions(index)}
 						onContextMenu={() => setIndexOptions(index)}
 						delayLongPress={200}
@@ -166,7 +168,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 							icon: 'download',
 							onPress: async () => {
 								setIndexOptions(-1)
-								fetch(await urlStream(config, songs[indexOptions].id))
+								fetch(urlStream(config, songs[indexOptions].id))
 									.then((res) => res.blob())
 									.then((data) => {
 										const a = document.createElement('a');

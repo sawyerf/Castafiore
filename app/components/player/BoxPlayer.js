@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, Platform, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -18,9 +18,8 @@ const BoxPlayer = ({ fullscreen }) => {
   const theme = React.useContext(ThemeContext)
 
 	return (
-		<TouchableOpacity
+		<Pressable
 			onPress={() => fullscreen.set(true)}
-			activeOpacity={1}
 			style={{
 				position: 'absolute',
 				bottom: (insets.bottom ? insets.bottom : 15) + 53,
@@ -63,7 +62,7 @@ const BoxPlayer = ({ fullscreen }) => {
 					onPress={() => song.isPlaying ? pauseSong(song.sound) : resumeSong(song.sound)}
 				/>
 			</View>
-		</TouchableOpacity>
+		</Pressable>
 	)
 }
 

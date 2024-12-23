@@ -1,12 +1,11 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import presStyles from '~/styles/pres';
 import { playSong } from '~/utils/player';
 
 import { ConfigContext } from '~/contexts/config';
+import IconButton from './IconButton';
 
 const RandomButton = ({ songList, size = 23 }) => {
   const theme = React.useContext(ThemeContext)
@@ -26,9 +25,13 @@ const RandomButton = ({ songList, size = 23 }) => {
 	}
 
 	return (
-		<TouchableOpacity style={presStyles.button} onPress={shuffleSong}>
-			<Icon name="random" size={size} color={theme.primaryLight} />
-		</TouchableOpacity>
+		<IconButton
+			style={presStyles.button}
+			onPress={shuffleSong}
+			icon="random"
+			size={size}
+			color={theme.primaryLight}
+		/>
 	);
 }
 

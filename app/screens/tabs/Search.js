@@ -85,6 +85,7 @@ const Search = ({ navigation }) => {
 					placeholderTextColor={theme.secondaryLight}
 					value={query}
 					onChangeText={(query) => setQuery(query)}
+					autoFocus={true}
 				/>
 				{
 					query &&

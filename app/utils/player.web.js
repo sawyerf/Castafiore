@@ -53,6 +53,7 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 		})
 
 	}
+
 	const endedHandler = () => {
 		const songId = song.songInfo.id
 
@@ -81,7 +82,7 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
 		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-z0-9]*$/)) {
-			await fetch(await urlStream(config, queue[index].id))
+			await fetch(urlStream(config, queue[index].id))
 				.then((_) => { queue[index].isDownloaded = true })
 				.catch((_) => { })
 		}
@@ -90,11 +91,9 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 
 export const unloadSong = async (sound) => { }
 
-const loadSong = async (config, sound, queue, index, songDispatch) => {
+const loadSong = async (config, sound, queue, index) => {
 	const song = queue[index]
-	sound.src = await urlStream(config, song.id)
-	// await sound.load()
-	// await sound.play()
+	sound.src = urlStream(config, song.id)
 	navigator.mediaSession.metadata = new MediaMetadata({
 		title: song.title,
 		artist: song.artist,
@@ -106,7 +105,7 @@ const loadSong = async (config, sound, queue, index, songDispatch) => {
 }
 
 export const playSong = async (config, song, songDispatch, queue, index) => {
-	await loadSong(config, song.sound, queue, index, songDispatch)
+	await loadSong(config, song.sound, queue, index)
 	songDispatch({ type: 'setSong', queue, index })
 	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
 	downloadNextSong(config, queue, index)
@@ -115,7 +114,7 @@ export const playSong = async (config, song, songDispatch, queue, index) => {
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		unloadSong(song.sound)
-		await loadSong(config, song.sound, song.queue, (song.index + 1) % song.queue.length, songDispatch)
+		await loadSong(config, song.sound, song.queue, (song.index + 1) % song.queue.length)
 		songDispatch({ type: 'next' })
 	}
 }
@@ -123,7 +122,7 @@ export const nextSong = async (config, song, songDispatch) => {
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		unloadSong(song.sound)
-		await loadSong(config, song.sound, song.queue, (song.queue.length + song.index - 1) % song.queue.length, songDispatch)
+		await loadSong(config, song.sound, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
 		songDispatch({ type: 'previous' })
 	}
 }
@@ -137,6 +136,8 @@ export const resumeSong = async (sound) => {
 }
 
 export const setPosition = async (sound, position) => {
+	if (position > sound.duration) position = sound.duration
+	if (position < 0) position = 0
 	sound.currentTime = position
 }
 

@@ -7,20 +7,20 @@ import CustomScroll from '~/components/lists/CustomScroll';
 
 const HorizontalGenres = ({ config, genres }) => {
 	const navigation = useNavigation();
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<CustomScroll
 			style={styles.genreList}
 			contentContainerStyle={styles.scrollContainer}
-			>
+		>
 			{genres?.map((genre) => (
 				<TouchableOpacity
 					style={styles.genreBox(theme)}
 					key={genre?.value}
 					onPress={() => navigation.navigate('Genre', { genre })}>
 					<Text numberOfLines={1} style={styles.genreText(theme)}>{genre.value}</Text>
-				</TouchableOpacity >
+				</TouchableOpacity>
 			))}
 		</CustomScroll>
 	)

@@ -9,10 +9,9 @@ import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { initPlayer } from '~/utils/player';
+import { initPlayer, initService } from '~/utils/player';
 import { SongContext, defaultSong, songReducer } from '~/contexts/song';
 import { ThemeContext, getTheme } from '~/contexts/theme';
-import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,8 +42,9 @@ const App = () => {
   }, [])
 
   React.useEffect(() => {
-    window.config = config
+    if (window) window.config = config
   }, [config])
+
   React.useEffect(() => {
     setTheme(getTheme(settings))
   }, [settings.theme])
@@ -101,6 +101,6 @@ const App = () => {
   );
 }
 
-serviceWorkerRegistration.register();
+initService()
 
 export default App;

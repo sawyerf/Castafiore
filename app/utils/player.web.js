@@ -1,8 +1,14 @@
+import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
+
 import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
-export const audio = () => {
+const audio = () => {
 	return document.getElementById('audio')
+}
+
+export const initService = async () => {
+	serviceWorkerRegistration.register();
 }
 
 export const initPlayer = async (songDispatch) => {

@@ -7,12 +7,11 @@ const newSong = (state, action) => {
 		...state,
 		...action,
 	}
-	window.song = song
+	if (window) window.song = song
 	return song
 }
 
 export const songReducer = (state, action) => {
-	window.index = (window.index || 0) + 1
 	switch (action.type) {
 		case 'init':
 			return newSong(state, {

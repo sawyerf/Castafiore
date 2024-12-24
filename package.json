@@ -1,6 +1,6 @@
 {
   "name": "castafiore",
-  "version": "2024.12.06",
+  "version": "2024.12.24",
   "main": "node_modules/expo/AppEntry.js",
   "homepage": ".",
   "scripts": {
@@ -22,7 +22,8 @@
     "react-dom": "18.2.0",
     "react-native": "0.72.10",
     "react-native-safe-area-context": "4.6.3",
-    "react-native-screens": "^4.3.0",
+    "react-native-screens": "^4.4.0",
+    "react-native-track-player": "^4.1.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.6"
   },

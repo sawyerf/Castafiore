@@ -1,16 +1,16 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { Animated, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ConfigContext } from '~/contexts/config';
-import { getCachedAndApi } from '~/utils/api';
-import { SettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
 import IconButton from '~/components/button/IconButton';
-import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
+import { ConfigContext } from '~/contexts/config';
+import { SettingsContext } from '~/contexts/settings';
+import { ThemeContext } from '~/contexts/theme';
+import mainStyles from '~/styles/main';
+import { getCachedAndApi } from '~/utils/api';
 
 
 const Playlists = ({ navigation }) => {
@@ -97,11 +97,8 @@ const Playlists = ({ navigation }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-			}}
+			style={mainStyles.mainContainer(insets, theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
-		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
 				<Text style={{ ...mainStyles.mainTitle(theme), marginBottom: 0, marginTop: 0 }}>Your Playlists</Text>
@@ -123,6 +120,7 @@ const Playlists = ({ navigation }) => {
 				</Text>
 			</TouchableOpacity>
 			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} config={config} listToPlay={favorited} />
+
 			<View style={{ ...styles.subTitleParent, marginTop: 10 }}>
 				{
 					newPlaylist !== null ?
@@ -147,12 +145,12 @@ const Playlists = ({ navigation }) => {
 								icon={isPublic ? 'globe' : 'lock'}
 								color={theme.primaryTouch}
 								onPress={() => setIsPublic(!isPublic)}
-								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20, flex: 'initial' }} />
+								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20, /* flex: 'initial' */ }} />
 							<IconButton
 								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
 								size={20}
 								color={theme.secondaryLight}
-								style={{ padding: 10, flex: 'initial' }}
+								style={{ padding: 10, /*flex: 'initial'*/ }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
 						<>
@@ -162,7 +160,7 @@ const Playlists = ({ navigation }) => {
 								icon="plus"
 								size={20}
 								color={theme.secondaryLight}
-								style={{ padding: 10, flex: 'initial' }}
+								style={{ padding: 10, /* flex: 'initial' */ }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist('')} />
 						</>
 				}

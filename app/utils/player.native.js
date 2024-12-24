@@ -1,4 +1,5 @@
 import TrackPlayer from "react-native-track-player"
+import { getApi, urlCover, urlStream } from './api';
 
 export const initService = async () => {
   TrackPlayer.registerPlaybackService(() => require('../services/service'));
@@ -28,11 +29,18 @@ export const resumeSong = async () => {
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
-  await TrackPlayer.reset()
-  await TrackPlayer.add(queue)
+  await TrackPlayer.setQueue(queue.map((track) => {
+    return {
+      ...track,
+      url: urlStream(config, track.id),
+      atwork: urlCover(config, track.albumId)
+    }
+  }))
   await TrackPlayer.skip(index)
+  await TrackPlayer.play()
   songDispatch({ type: 'setSong', queue, index })
   songDispatch({ type: 'setActionEndOfSong', action: 'next' })
+  songDispatch({ type: 'setPlaying', isPlaying: true })
 }
 
 export const secondToTime = (second) => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Pressable } from 'react-native'
+import { View, Pressable, Platform } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 
@@ -45,7 +45,8 @@ const styles = {
     height: sizeBitogno,
     borderRadius: sizeBitogno / 2,
     backgroundColor: theme.primaryTouch,
-    left: `calc(${vol * 100}% - ${sizeBitogno / 2}px)`, top: 7
+    left: Platform.OS === 'web' ? `calc(${vol * 100}% - ${sizeBitogno / 2}px)` : vol * 99 + '%', // TODO: fix calc native
+    top: 7
   })
 }
 

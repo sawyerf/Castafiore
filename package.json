@@ -5,7 +5,8 @@
   "homepage": ".",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
+    "build-dev": "eas build --platform android --profile development --local",
+    "android": "expo start --android --dev-client",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "export:web": "expo export:web"
@@ -25,7 +26,8 @@
     "react-native-screens": "^4.4.0",
     "react-native-track-player": "^4.1.1",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-dev-client": "~2.4.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

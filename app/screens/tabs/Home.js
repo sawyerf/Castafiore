@@ -82,7 +82,6 @@ const Home = () => {
 		<ScrollView vertical={true}
 			style={mainStyles.mainContainer(insets, theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
-		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
 				<TouchableOpacity style={styles.boxRandom(theme)}

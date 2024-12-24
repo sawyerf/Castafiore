@@ -1,6 +1,6 @@
 import React from 'react';
 import pkg from '~/../package.json';
-import { Text, View, Image, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';

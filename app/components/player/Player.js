@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { ConfigContext } from '~/contexts/config';
 import { SettingsContext } from '~/contexts/settings';
 import { SongContext } from '~/contexts/song';
-import { nextSong, handleAction, pauseSong, resumeSong, previousSong, setVolume, getVolume, updateTime } from '~/utils/player';
+import { updateTime } from '~/utils/player';
 import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
 import BoxDesktopPlayer from './BoxDesktopPlayer';

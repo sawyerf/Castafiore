@@ -2,14 +2,14 @@ import React from 'react';
 import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import SongsList from '~/components/lists/SongsList';
+import { ConfigContext } from '~/contexts/config';
+import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
+import { ThemeContext } from '~/contexts/theme';
+import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import BackButton from '~/components/button/BackButton';
-import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
+import SongsList from '~/components/lists/SongsList';
 
 const Playlist = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();

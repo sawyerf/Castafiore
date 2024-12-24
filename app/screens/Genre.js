@@ -3,20 +3,20 @@ import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { ConfigContext } from '~/contexts/config';
+import { getApi } from '~/utils/api';
+import { getCachedAndApi } from '~/utils/api';
+import { playSong } from '~/utils/player';
+import { SongContext } from '~/contexts/song';
+import { ThemeContext } from '~/contexts/theme';
 import BackButton from '~/components/button/BackButton';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import IconButton from '~/components/button/IconButton';
-import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
-import { ThemeContext } from '~/contexts/theme';
-import { ConfigContext } from '~/contexts/config';
-import { SongContext } from '~/contexts/song';
-import { getApi } from '~/utils/api';
-import { playSong } from '~/utils/player';
-import { getCachedAndApi } from '~/utils/api';
+import SongsList from '~/components/lists/SongsList';
 
-const Genre = ({ navigation, route }) => {
+const Genre = ({ route }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const [song, songDispatch] = React.useContext(SongContext)

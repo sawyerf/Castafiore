@@ -1,20 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import md5 from 'md5';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { clearAllCaches, clearCache } from '~/services/serviceWorkerRegistration';
 import { getApi } from '~/utils/api';
-import mainStyles from '~/styles/main';
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import Header from '~/components/Header';
-import settingStyles from '~/styles/settings';
+import mainStyles from '~/styles/main';
 import OptionInput from '~/components/settings/OptionInput';
 import OptionsPopup from '~/components/popup/OptionsPopup';
+import settingStyles from '~/styles/settings';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()

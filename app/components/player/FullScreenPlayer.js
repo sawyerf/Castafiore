@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Dimensions, Pressable, Modal } from 'react-native';
+import { Text, View, Image, ScrollView, Dimensions, Modal } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';

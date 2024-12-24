@@ -1,13 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import presStyles from '~/styles/pres';
 import settingStyles from '~/styles/settings';
 import IconButton from '~/components/button/IconButton';
 

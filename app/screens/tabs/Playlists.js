@@ -1,16 +1,16 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, RefreshControl, Platform, Animated } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { ConfigContext } from '~/contexts/config';
+import { getCachedAndApi } from '~/utils/api';
 import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
+import IconButton from '~/components/button/IconButton';
+import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
-import mainStyles from '~/styles/main';
-import { ConfigContext } from '~/contexts/config';
-import IconButton from '~/components/button/IconButton';
-import { getCachedAndApi } from '~/utils/api';
 
 
 const Playlists = ({ navigation }) => {

@@ -1,19 +1,18 @@
+import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import TabBar from '~/components/TabBar';
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
 
-import { ThemeContext, getTheme } from '~/contexts/theme';
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { initPlayer } from '~/utils/player';
 import { SongContext, defaultSong, songReducer } from '~/contexts/song';
+import { ThemeContext, getTheme } from '~/contexts/theme';
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
-import { initPlayer, unloadSong } from '~/utils/player';
 
 const Tab = createBottomTabNavigator();
 

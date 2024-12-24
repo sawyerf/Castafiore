@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text, View, Modal, ScrollView, Animated } from 'react-native';
+import { Text, Modal, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 
 const ErrorPopup = ({ message, close }) => {

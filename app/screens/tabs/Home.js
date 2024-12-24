@@ -1,18 +1,18 @@
 import React from 'react';
-import { Text, View, ScrollView, RefreshControl, TouchableOpacity, Platform, Animated } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 
-import { SettingsContext } from '~/contexts/settings';
-import { playSong } from '~/utils/player';
 import { getApi } from '~/utils/api';
-import mainStyles from '~/styles/main';
+import { playSong } from '~/utils/player';
+import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
+import mainStyles from '~/styles/main';
 
-const Home = ({ navigation }) => {
+const Home = () => {
 	const insets = useSafeAreaInsets();
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)

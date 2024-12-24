@@ -1,5 +1,5 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '~/screens/tabs/Home';
 import Playlists from '~/screens/tabs/Playlists';

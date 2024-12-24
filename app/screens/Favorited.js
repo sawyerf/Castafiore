@@ -11,7 +11,7 @@ import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import BackButton from '~/components/button/BackButton';
 
-const Favorited = ({ navigation, route }) => {
+const Favorited = ({ route }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
   const theme = React.useContext(ThemeContext)

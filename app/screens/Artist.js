@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
-
 import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
@@ -16,7 +16,7 @@ import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
 
-const Artist = ({ navigation, route }) => {
+const Artist = ({ route }) => {
 	const insets = useSafeAreaInsets();
 	const [artist, setArtist] = React.useState([]);
 	const [artistInfo, setArtistInfo] = React.useState([]);

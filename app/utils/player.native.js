@@ -11,3 +11,5 @@ export const secondToTime = (second) => { }
 export const setPosition = async (position) => { }
 export const setVolume = async (volume) => { }
 export const unloadSong = async () => { }
+export const tuktuktuk = () => { }
+export const updateVolume = (setVolume) => { }

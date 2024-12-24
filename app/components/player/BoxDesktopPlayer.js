@@ -5,18 +5,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { audio, nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume } from '~/utils/player';
+import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume } from '~/utils/player';
 import { urlCover } from '~/utils/api';
 import mainStyles from '~/styles/main';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import SlideBar from '~/components/button/SlideBar';
-import { getVolume } from '../../utils/player.web';
+import { getVolume, updateVolume } from '../../utils/player.web';
 
 const BoxDesktopPlayer = ({ fullscreen, time }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
+	const [volume, setVol] = React.useState(getVolume())
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
+
+	React.useEffect(() => {
+		return updateVolume(setVol)
+	}, [])
 
 	return (
 		<View
@@ -98,7 +103,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 			</View>
 			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
 				{
-					getVolume() ?
+					volume ?
 						<IconButton
 							icon="volume-up"
 							size={17}
@@ -115,7 +120,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 						/>
 				}
 				<SlideBar
-					progress={getVolume()}
+					progress={volume}
 					onPress={(progress) => setVolume(progress)}
 					stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
 					styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}

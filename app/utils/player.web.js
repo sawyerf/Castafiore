@@ -12,15 +12,9 @@ export const initPlayer = async (songDispatch) => {
 	const sound = audio()
 	songDispatch({ type: 'init' })
 	sound.addEventListener('loadedmetadata', () => {
-		console.log('loadedmetadata')
 		audio().play()
 	})
 	sound.addEventListener('loadeddata', () => {
-		console.log('loadeddata')
-		audio().play()
-	})
-	sound.addEventListener('canplay', () => {
-		console.log('canplay')
 		audio().play()
 	})
 	sound.addEventListener('play', () => {
@@ -29,6 +23,7 @@ export const initPlayer = async (songDispatch) => {
 	sound.addEventListener('pause', () => {
 		songDispatch({ type: 'setPlaying', isPlaying: false })
 	})
+
 	navigator.mediaSession.setActionHandler("pause", () => {
 		pauseSong()
 	});
@@ -74,12 +69,20 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 			.catch((error) => { })
 	}
 
+	const playThroughtHandler = () => {
+		downloadNextSong(config, song.queue, song.index)
+	}
+
 	const sound = audio()
-	sound.addEventListener('ended', endedHandler)
 	sound.addEventListener('timeupdate', timeUpdateHandler)
+	sound.addEventListener('durationchange', timeUpdateHandler)
+	sound.addEventListener('ended', endedHandler)
+	sound.addEventListener('canplaythrough', playThroughtHandler)
 	return () => {
 		sound.removeEventListener('timeupdate', timeUpdateHandler)
+		sound.removeEventListener('durationchange', timeUpdateHandler)
 		sound.removeEventListener('ended', endedHandler)
+		sound.removeEventListener('canplaythrough', playThroughtHandler)
 	}
 }
 
@@ -122,7 +125,6 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	await loadSong(config, queue, index)
 	songDispatch({ type: 'setSong', queue, index })
 	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
-	downloadNextSong(config, queue, index)
 }
 
 export const nextSong = async (config, song, songDispatch) => {
@@ -153,7 +155,7 @@ export const setPosition = async (position) => {
 	const sound = audio()
 
 	if (position > sound.duration) position = sound.duration
-	if (position < 0) position = 0
+	if (!sound.duration || position < 0) position = 0
 	sound.currentTime = position
 }
 
@@ -167,7 +169,31 @@ export const getVolume = () => {
 	return audio().volume
 }
 
+export const updateVolume = (setVolume) => {
+	const sound = audio()
+
+	const volumeChangeHandler = () => {
+		setVolume(sound.volume)
+	}
+
+	sound.addEventListener('volumechange', volumeChangeHandler)
+	return () => {
+		sound.removeEventListener('volumechange', volumeChangeHandler)
+	}
+}
+
 export const secondToTime = (second) => {
 	if (!second) return '00:00'
 	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
+}
+
+export const tuktuktuk = () => {
+	const sound = new Audio()
+	sound.src = 'https://sawyerf.github.io/tuktuktuk.mp3'
+	sound.addEventListener('loadedmetadata', () => {
+		sound.play()
+	})
+	sound.addEventListener('ended', () => {
+		sound.src = ''
+	})
 }

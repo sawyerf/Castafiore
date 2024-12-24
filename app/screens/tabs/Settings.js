@@ -2,10 +2,10 @@ import React from 'react';
 import pkg from '~/../package.json';
 import { Text, View, Image, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ConfigContext, SetConfigContext } from '~/contexts/config';
+import { ConfigContext } from '~/contexts/config';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
+import { tuktuktuk } from '~/utils/player';
 import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
@@ -18,19 +18,6 @@ const Settings = ({ navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const setting = React.useContext(SettingsContext)
-
-	const tuktuktuk = () => {
-		if (Platform.OS === 'web') {
-			const sound = new Audio()
-			sound.src = 'https://sawyerf.github.io/tuktuktuk.mp3'
-			sound.addEventListener('loadedmetadata', () => {
-				sound.play()
-			})
-			sound.addEventListener('ended', () => {
-				sound.src = ''
-			})
-		}
-	}
 
 	return (
 		<ScrollView

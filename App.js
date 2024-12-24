@@ -44,6 +44,9 @@ const App = () => {
   }, [])
 
   React.useEffect(() => {
+    window.config = config
+  }, [config])
+  React.useEffect(() => {
     setTheme(getTheme(settings))
   }, [settings.theme])
 

@@ -1,6 +1,5 @@
 export const audio = () => { }
 export const getVolume = () => { }
-export const handleAction = (config, song, songDispatch, setTime) => { }
 export const initPlayer = async (songDispatch) => { }
 export const nextSong = async (config, song, songDispatch) => { }
 export const pauseSong = async () => { }
@@ -13,3 +12,4 @@ export const setVolume = async (volume) => { }
 export const unloadSong = async () => { }
 export const tuktuktuk = () => { }
 export const updateVolume = (setVolume) => { }
+export const updateTime = (setTime) => { }

@@ -1,6 +1,3 @@
-import React from 'react';
-import { Platform } from 'react-native';
-
 import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
@@ -23,6 +20,21 @@ export const initPlayer = async (songDispatch) => {
 	sound.addEventListener('pause', () => {
 		songDispatch({ type: 'setPlaying', isPlaying: false })
 	})
+	sound.addEventListener('ended', () => {
+		const songId = song.songInfo.id
+
+		if (window.song.actionEndOfSong === 'repeat') {
+			setPosition(0)
+			resumeSong()
+		} else {
+			nextSong(window.config, window.song, songDispatch)
+		}
+		getApi(window.config, 'scrobble', `id=${songId}&submission=true`)
+			.catch((error) => { })
+	})
+	sound.addEventListener('canplaythrough', () => {
+		downloadNextSong(window.config, window.song.queue, window.song.index)
+	})
 
 	navigator.mediaSession.setActionHandler("pause", () => {
 		pauseSong()
@@ -33,22 +45,32 @@ export const initPlayer = async (songDispatch) => {
 	navigator.mediaSession.setActionHandler("seekto", (details) => {
 		setPosition(details.seekTime)
 	});
-}
-
-export const handleAction = (config, song, songDispatch, setTime) => {
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
-		previousSong(config, song, songDispatch)
+		previousSong(window.config, window.song, songDispatch)
 	});
 	navigator.mediaSession.setActionHandler("nexttrack", () => {
-		nextSong(config, song, songDispatch)
+		nextSong(window.config, window.song, songDispatch)
 	});
 	navigator.mediaSession.setActionHandler("seekbackward", () => {
-		previousSong(config, song, songDispatch)
+		previousSong(window.config, window.song, songDispatch)
 	});
 	navigator.mediaSession.setActionHandler("seekforward", () => {
-		nextSong(config, song, songDispatch)
+		nextSong(window.config, window.song, songDispatch)
 	});
 
+	addEventListener('keydown', (e) => {
+		if (e.code === 'Space') {
+			if (window.song.isPlaying) pauseSong()
+			else resumeSong()
+		} else if (e.code === 'ArrowRight') nextSong(window.config, window.song, songDispatch)
+		else if (e.code === 'ArrowLeft') previousSong(window.config, window.song, songDispatch)
+		else if (e.code === 'ArrowUp') setVolume(getVolume() + 0.1)
+		else if (e.code === 'ArrowDown') setVolume(getVolume() - 0.1)
+	})
+}
+
+export const updateTime = (setTime) => {
+	const sound = audio()
 	const timeUpdateHandler = () => {
 		setTime({
 			position: audio().currentTime,
@@ -56,33 +78,11 @@ export const handleAction = (config, song, songDispatch, setTime) => {
 		})
 	}
 
-	const endedHandler = () => {
-		const songId = song.songInfo.id
-
-		if (song.actionEndOfSong === 'repeat') {
-			setPosition(0)
-			resumeSong()
-		} else {
-			nextSong(config, song, songDispatch)
-		}
-		getApi(config, 'scrobble', `id=${songId}&submission=true`)
-			.catch((error) => { })
-	}
-
-	const playThroughtHandler = () => {
-		downloadNextSong(config, song.queue, song.index)
-	}
-
-	const sound = audio()
 	sound.addEventListener('timeupdate', timeUpdateHandler)
 	sound.addEventListener('durationchange', timeUpdateHandler)
-	sound.addEventListener('ended', endedHandler)
-	sound.addEventListener('canplaythrough', playThroughtHandler)
 	return () => {
 		sound.removeEventListener('timeupdate', timeUpdateHandler)
 		sound.removeEventListener('durationchange', timeUpdateHandler)
-		sound.removeEventListener('ended', endedHandler)
-		sound.removeEventListener('canplaythrough', playThroughtHandler)
 	}
 }
 

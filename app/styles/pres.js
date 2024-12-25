@@ -18,18 +18,11 @@ export default {
 		marginStart: 20,
 	}),
 	button: {
-		// position: 'absolute',
-		// top: 0,
-		// right: 0,
 		padding: 20,
-		// justifyContent: 'center',
-		// alignItems: 'center',
-		flex: 'initial'
+		justifyContent: 'start',
 	},
 	headerContainer: {
 		flexDirection: 'row',
-		// alignItems: 'center',
-		// justifyContent: 'space-between',
 		width: '100%',
 		maxWidth: '100%',
 	},

@@ -3,7 +3,7 @@
     "name": "Castafiore",
     "slug": "Castafiore",
     "description": "Mobile app for navidrome",
-    "version": "2024.12.06",
+    "version": "2024.12.25",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,9 +19,15 @@
       }
     },
     "android": {
+      "package": "com.sawyerf.castafiore",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/foreground-icon.png",
+        "backgroundColor": "#660000"
+      },
+      "splash": {
+        "image": "./assets/foreground-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#660000"
       }
     },
     "web": {
@@ -29,6 +35,11 @@
       "startUrl": "./index.html",
       "backgroundColor": "#121212",
       "theme_color": "#121212"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "98d27f72-714e-415c-99f9-30f3f78d68e2"
+      }
     }
   }
 }

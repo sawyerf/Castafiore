@@ -4,8 +4,8 @@ import { ConfigContext } from '~/contexts/config';
 import { SettingsContext } from '~/contexts/settings';
 
 import Player from '~/components/player/Player';
-import BottomBar from '~/components/Bar/BottomBar';
-import SideBar from '~/components/Bar/SideBar';
+import BottomBar from '~/components/bar/BottomBar';
+import SideBar from '~/components/bar/SideBar';
 
 const TabBar = ({ state, descriptors, navigation }) => {
   const config = React.useContext(ConfigContext)

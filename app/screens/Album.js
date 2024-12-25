@@ -3,15 +3,15 @@ import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
-import SongsList from '~/components/lists/SongsList';
+import { getCachedAndApi } from '~/utils/api';
+import { ThemeContext } from '~/contexts/theme';
+import { urlCover } from '~/utils/api';
+import BackButton from '~/components/button/BackButton';
+import FavoritedButton from '~/components/button/FavoritedButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
-import BackButton from '~/components/button/BackButton';
-import { getApi, urlCover } from '~/utils/api';
-import FavoritedButton from '~/components/button/FavoritedButton';
-import { ThemeContext } from '~/contexts/theme';
-import { getCachedAndApi } from '~/utils/api';
+import SongsList from '~/components/lists/SongsList';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();

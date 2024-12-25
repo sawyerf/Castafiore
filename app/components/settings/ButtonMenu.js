@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
 
 const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<TouchableOpacity

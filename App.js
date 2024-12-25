@@ -1,19 +1,18 @@
+import React from 'react';
+import { StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import TabBar from '~/components/TabBar';
+import TabBar from '~/components/bar/TabBar';
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
 
-import { ThemeContext, getTheme } from '~/contexts/theme';
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { initPlayer, initService } from '~/utils/player';
 import { SongContext, defaultSong, songReducer } from '~/contexts/song';
-import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
-import { initPlayer, unloadSong } from '~/utils/player';
+import { ThemeContext, getTheme } from '~/contexts/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +31,7 @@ const App = () => {
   const [theme, setTheme] = React.useState(getTheme())
 
   React.useEffect(() => {
-    if (!song.sound) initPlayer(dispatch)
+    if (!song.isInit) initPlayer(dispatch)
     getConfig()
       .then((config) => {
         setConfig(config)
@@ -42,6 +41,10 @@ const App = () => {
         setSettings(settings)
       })
   }, [])
+
+  React.useEffect(() => {
+    if (window) window.config = config
+  }, [config])
 
   React.useEffect(() => {
     setTheme(getTheme(settings))
@@ -70,6 +73,11 @@ const App = () => {
                       }
                     }}
                   >
+                    <StatusBar
+                      backgroundColor={'rgba(0, 0, 0, 0)'}
+                      translucent={true}
+                      barStyle={'light-content'}
+                    />
                     <Tab.Navigator
                       tabBar={(props) => <TabBar {...props} />}
                       screenOptions={{
@@ -99,6 +107,6 @@ const App = () => {
   );
 }
 
-serviceWorkerRegistration.register();
+initService()
 
 export default App;

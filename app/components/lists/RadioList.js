@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text, Image, TouchableOpacity, Linking } from 'react-native'
+import { View, Text, TouchableOpacity, Linking } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,7 +18,7 @@ const RadioList = ({ config, radios }) => {
 	const theme = React.useContext(ThemeContext)
 
 	const playRadio = (index) => {
-		playSong(config, song, songDispatch, radios.map(radio => ({
+		playSong(config, songDispatch, radios.map(radio => ({
 			id: radio.streamUrl,
 			title: radio.name,
 			artist: radio.homePageUrl ? radio.homePageUrl : 'Radio',
@@ -172,8 +172,6 @@ const styles = {
 	cardRadio: theme => ({
 		height: 60,
 		minWidth: 200,
-		// marginEnd: 10,
-		// marginBottom: 10,
 		padding: 10,
 		paddingEnd: 20,
 		backgroundColor: theme.secondaryDark,

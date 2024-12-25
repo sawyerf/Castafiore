@@ -1,14 +1,12 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
-import RandomButton from '~/components/button/RandomButton';
 import { ConfigContext } from '~/contexts/config';
 import IconButton from '~/components/button/IconButton';
-import { getApi, urlCover } from '~/utils/api';
+import { getApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 
 const UpdateRadio = ({ navigation, route }) => {

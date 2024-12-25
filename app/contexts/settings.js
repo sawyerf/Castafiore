@@ -26,7 +26,7 @@ export const defaultSettings = {
 			name: 'Demo',
 			url: 'https://demo.navidrome.org',
 			username: 'demo',
-			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore&f=json`
+			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
 		}
 	],
 	// Future settings

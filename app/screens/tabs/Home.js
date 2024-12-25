@@ -1,18 +1,18 @@
 import React from 'react';
-import { Text, View, ScrollView, RefreshControl, TouchableOpacity, Platform, Animated } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 
-import { SettingsContext } from '~/contexts/settings';
-import { playSong } from '~/utils/player';
 import { getApi } from '~/utils/api';
-import mainStyles from '~/styles/main';
+import { playSong } from '~/utils/player';
+import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
+import mainStyles from '~/styles/main';
 
-const Home = ({ navigation }) => {
+const Home = () => {
 	const insets = useSafeAreaInsets();
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
 	const clickRandomSong = () => {
 		getApi(config, 'getRandomSongs', `count=50`)
 			.then((json) => {
-				playSong(config, song, songDispatch, json.randomSongs.song, 0)
+				playSong(config, songDispatch, json.randomSongs.song, 0)
 			})
 			.catch((error) => { })
 	}
@@ -82,7 +82,6 @@ const Home = ({ navigation }) => {
 		<ScrollView vertical={true}
 			style={mainStyles.mainContainer(insets, theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
-		// refreshControl={(Platform.OS === 'ios' || Platform.OS === 'android') ? <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.primaryLight} /> : null}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
 				<TouchableOpacity style={styles.boxRandom(theme)}

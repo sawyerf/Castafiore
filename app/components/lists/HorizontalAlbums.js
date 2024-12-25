@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -54,7 +54,6 @@ const HorizontalAlbums = ({ config, albums }) => {
 
 const styles = {
 	album: {
-		// marginEnd: 20,
 		width: 160,
 		height: 210,
 		alignItems: 'center',

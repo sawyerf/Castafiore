@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 
 export const getTheme = (settings = undefined) => {
@@ -96,7 +95,7 @@ export const themes = {
 		secondaryDark: '#f2f2f2',
 		tertiaryDark: '#f3f3f3',
 		primaryLight: '#000000',
-		secondaryLight: '##f2f2f2',
+		secondaryLight: '#f2f2f2',
 		primaryTouch: '#FF7700',
 		secondaryTouch: '#FF8800',
 		innerTouch: '#FFFFFF',

@@ -4,14 +4,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { ThemeContext } from '~/contexts/theme';
 import { ConfigContext } from '~/contexts/config';
-import SongsList from '~/components/lists/SongsList';
-import HorizontalArtists from '~/components/lists/HorizontalArtists';
-import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
-import mainStyles from '~/styles/main';
 import { getApi } from '~/utils/api';
+import { ThemeContext } from '~/contexts/theme';
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
+import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
+import mainStyles from '~/styles/main';
+import SongsList from '~/components/lists/SongsList';
 
 
 const Search = ({ navigation }) => {

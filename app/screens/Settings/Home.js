@@ -4,14 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import presStyles from '~/styles/pres';
-import IconButton from '~/components/button/IconButton';
+import ButtonSwitch from '~/components/settings/ButtonSwitch';
 import Header from '~/components/Header';
 import HomeOrder from '~/components/settings/HomeOrder';
-import settingStyles from '~/styles/settings';
-import ButtonSwitch from '~/components/settings/ButtonSwitch';
 import OptionInput from '~/components/settings/OptionInput';
+import mainStyles from '~/styles/main';
+import settingStyles from '~/styles/settings';
 
 const HomeSettings = ({ }) => {
 	const insets = useSafeAreaInsets()

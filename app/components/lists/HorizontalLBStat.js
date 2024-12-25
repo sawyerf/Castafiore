@@ -1,20 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
-import HorizontalAlbums from './HorizontalAlbums';
-import HorizontalArtists from './HorizontalArtists';
-import HorizontalGenres from './HorizontalGenres';
-import mainStyles from '~/styles/main';
-import RadioList from './RadioList';
 import CustomScroll from '~/components/lists/CustomScroll';
 
 
-const HorizontalLBStat = ({ config, stats }) => {
+const HorizontalLBStat = ({ stats }) => {
   const theme = React.useContext(ThemeContext)
-  const settings = React.useContext(SettingsContext)
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const [maxCount, setMaxCount] = React.useState(0)
 

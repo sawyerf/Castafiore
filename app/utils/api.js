@@ -1,4 +1,3 @@
-import { Platform } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const getUrl = (config, path, query = '') => {
@@ -13,7 +12,7 @@ const getUrl = (config, path, query = '') => {
 		console.error('getApi: query is not a string or an object')
 		return ''
 	}
-	return `${config.url}/rest/${path}?${config.query}&${encodedQuery}`
+	return `${config.url}/rest/${path}?${config.query}&f=json&${encodedQuery}`
 }
 
 export const getApi = (config, path, query = '', isCache = false) => {
@@ -58,6 +57,7 @@ export const getCachedAndApi = async (config, path, query = '', setData = (json)
 }
 
 export const urlCover = (config, id, size = null) => {
+	if (id === 'tuktuktuk') return 'https://github.com/sawyerf/Castafiore/blob/main/assets/icon.png?raw=true'
 	if (!config?.url || !config?.query) return null
 	if (!id) return null
 	if (!size) {

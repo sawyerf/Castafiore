@@ -1,9 +1,8 @@
 import React from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
-import presStyles from '~/styles/pres'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
 import Header from '~/components/Header'

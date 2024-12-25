@@ -1,20 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import md5 from 'md5';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { clearAllCaches, clearCache } from '~/services/serviceWorkerRegistration';
 import { getApi } from '~/utils/api';
-import mainStyles from '~/styles/main';
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import Header from '~/components/Header';
-import settingStyles from '~/styles/settings';
+import mainStyles from '~/styles/main';
 import OptionInput from '~/components/settings/OptionInput';
 import OptionsPopup from '~/components/popup/OptionsPopup';
+import settingStyles from '~/styles/settings';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()
@@ -47,7 +46,7 @@ const Connect = ({ navigation }) => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
-		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore&f=json`
+		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
 
 		if (uri.startsWith('http://')) {
 			setError('Only https is allowed')
@@ -110,19 +109,21 @@ const Connect = ({ navigation }) => {
 						title="Username"
 						placeholder="Username"
 						value={username}
-						inputMode="url"
+						inputMode="text"
 						placeholderTextColor={theme.primaryLight}
 						onChangeText={username => setUsername(username)}
+						autoComplete="username"
 					/>
 					<OptionInput
 						style={mainStyles.inputSetting(theme)}
 						title="Password"
 						placeholder="Password"
 						value={password}
-						inputMode="url"
+						inputMode="text"
 						placeholderTextColor={theme.primaryLight}
 						onChangeText={password => setPassword(password)}
 						isPassword={true}
+						autoComplete="current-password"
 						isLast={true}
 					/>
 				</View>
@@ -177,7 +178,6 @@ const Connect = ({ navigation }) => {
 
 const styles = {
 	loginBtn: {
-		// width: "80%",
 		width: '100%',
 		height: 50,
 		alignItems: "center",

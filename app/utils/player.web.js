@@ -1,16 +1,24 @@
-// import { Audio } from 'expo-av';
-import React from 'react';
-import { Platform } from 'react-native';
+import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 
 import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
+const audio = () => {
+	return document.getElementById('audio')
+}
+
+export const initService = async () => {
+	serviceWorkerRegistration.register();
+}
 
 export const initPlayer = async (songDispatch) => {
-	const sound = new Audio()
+	const sound = audio()
+	songDispatch({ type: 'init' })
 	sound.addEventListener('loadedmetadata', () => {
-		songDispatch({ type: 'setTime', position: 0, duration: sound.duration })
-		sound.play()
+		audio().play()
+	})
+	sound.addEventListener('loadeddata', () => {
+		audio().play()
 	})
 	sound.addEventListener('play', () => {
 		songDispatch({ type: 'setPlaying', isPlaying: true })
@@ -18,60 +26,69 @@ export const initPlayer = async (songDispatch) => {
 	sound.addEventListener('pause', () => {
 		songDispatch({ type: 'setPlaying', isPlaying: false })
 	})
-	songDispatch({ type: 'setSound', sound })
-}
-
-export const handleAction = (config, song, songDispatch, setTime) => {
-	if (!song.sound) return
-	navigator.mediaSession.setActionHandler("previoustrack", () => {
-		previousSong(config, song, songDispatch)
-	});
-	navigator.mediaSession.setActionHandler("nexttrack", () => {
-		nextSong(config, song, songDispatch)
-	});
-	navigator.mediaSession.setActionHandler("seekbackward", () => {
-		previousSong(config, song, songDispatch)
-	});
-	navigator.mediaSession.setActionHandler("seekforward", () => {
-		nextSong(config, song, songDispatch)
-	});
-	navigator.mediaSession.setActionHandler("pause", () => {
-		pauseSong(song.sound)
-	});
-	navigator.mediaSession.setActionHandler("play", () => {
-		resumeSong(song.sound)
-	});
-	navigator.mediaSession.setActionHandler("seekto", (details) => {
-		setPosition(song.sound, details.seekTime)
-	});
-
-	const timeUpdateHandler = () => {
-		if (!song.sound) return
-		setTime({
-			position: song.sound.currentTime,
-			duration: song.sound.duration,
-		})
-
-	}
-
-	const endedHandler = () => {
+	sound.addEventListener('ended', () => {
 		const songId = song.songInfo.id
 
-		if (song.actionEndOfSong === 'repeat') {
-			setPosition(song.sound, 0)
-			resumeSong(song.sound)
+		if (window.song.actionEndOfSong === 'repeat') {
+			setPosition(0)
+			resumeSong()
 		} else {
-			nextSong(config, song, songDispatch)
+			nextSong(window.config, window.song, songDispatch)
 		}
-		getApi(config, 'scrobble', `id=${songId}&submission=true`)
+		getApi(window.config, 'scrobble', `id=${songId}&submission=true`)
 			.catch((error) => { })
+	})
+	sound.addEventListener('canplaythrough', () => {
+		downloadNextSong(window.config, window.song.queue, window.song.index)
+	})
+
+	navigator.mediaSession.setActionHandler("pause", () => {
+		pauseSong()
+	});
+	navigator.mediaSession.setActionHandler("play", () => {
+		resumeSong()
+	});
+	navigator.mediaSession.setActionHandler("seekto", (details) => {
+		setPosition(details.seekTime)
+	});
+	navigator.mediaSession.setActionHandler("previoustrack", () => {
+		previousSong(window.config, window.song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("nexttrack", () => {
+		nextSong(window.config, window.song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("seekbackward", () => {
+		previousSong(window.config, window.song, songDispatch)
+	});
+	navigator.mediaSession.setActionHandler("seekforward", () => {
+		nextSong(window.config, window.song, songDispatch)
+	});
+
+	addEventListener('keydown', (e) => {
+		if (e.code === 'Space') {
+			if (window.song.isPlaying) pauseSong()
+			else resumeSong()
+		} else if (e.code === 'ArrowRight') nextSong(window.config, window.song, songDispatch)
+		else if (e.code === 'ArrowLeft') previousSong(window.config, window.song, songDispatch)
+		else if (e.code === 'ArrowUp') setVolume(getVolume() + 0.1)
+		else if (e.code === 'ArrowDown') setVolume(getVolume() - 0.1)
+	})
+}
+
+export const updateTime = (setTime) => {
+	const sound = audio()
+	const timeUpdateHandler = () => {
+		setTime({
+			position: audio().currentTime,
+			duration: audio().duration,
+		})
 	}
 
-	song.sound.addEventListener('ended', endedHandler)
-	song.sound.addEventListener('timeupdate', timeUpdateHandler)
+	sound.addEventListener('timeupdate', timeUpdateHandler)
+	sound.addEventListener('durationchange', timeUpdateHandler)
 	return () => {
-		song.sound.removeEventListener('timeupdate', timeUpdateHandler)
-		song.sound.removeEventListener('ended', endedHandler)
+		sound.removeEventListener('timeupdate', timeUpdateHandler)
+		sound.removeEventListener('durationchange', timeUpdateHandler)
 	}
 }
 
@@ -89,11 +106,17 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 	}
 }
 
-export const unloadSong = async (sound) => { }
+export const unloadSong = async () => { }
 
-const loadSong = async (config, sound, queue, index) => {
+const loadSong = async (config, queue, index) => {
 	const song = queue[index]
+	const sound = audio()
+
 	sound.src = urlStream(config, song.id)
+	sound.play()
+		.catch((error) => {
+			console.error(error)
+		})
 	navigator.mediaSession.metadata = new MediaMetadata({
 		title: song.title,
 		artist: song.artist,
@@ -104,50 +127,83 @@ const loadSong = async (config, sound, queue, index) => {
 		.catch((error) => { })
 }
 
-export const playSong = async (config, song, songDispatch, queue, index) => {
-	await loadSong(config, song.sound, queue, index)
+export const playSong = async (config, songDispatch, queue, index) => {
+	await loadSong(config, queue, index)
 	songDispatch({ type: 'setSong', queue, index })
-	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
-	downloadNextSong(config, queue, index)
+	setRepeat(songDispatch, 'next')
 }
 
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong(song.sound)
-		await loadSong(config, song.sound, song.queue, (song.index + 1) % song.queue.length)
+		unloadSong()
+		await loadSong(config, song.queue, (song.index + 1) % song.queue.length)
 		songDispatch({ type: 'next' })
 	}
 }
 
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong(song.sound)
-		await loadSong(config, song.sound, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		unloadSong()
+		await loadSong(config, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
 		songDispatch({ type: 'previous' })
 	}
 }
 
-export const pauseSong = async (sound) => {
-	sound.pause()
+export const pauseSong = async () => {
+	audio().pause()
 }
 
-export const resumeSong = async (sound) => {
-	sound.play()
+export const resumeSong = async () => {
+	audio().play()
 }
 
-export const setPosition = async (sound, position) => {
+export const setPosition = async (position) => {
+	const sound = audio()
+
 	if (position > sound.duration) position = sound.duration
-	if (position < 0) position = 0
+	if (!sound.duration || position < 0) position = 0
 	sound.currentTime = position
 }
 
-export const setVolume = async (sound, volume) => {
+export const setVolume = async (volume) => {
 	if (volume > 1) volume = 1
 	if (volume < 0) volume = 0
-	if (sound) sound.volume = volume
+	audio().volume = volume
+}
+
+export const getVolume = () => {
+	return audio().volume
+}
+
+export const updateVolume = (setVolume) => {
+	const sound = audio()
+
+	const volumeChangeHandler = () => {
+		setVolume(sound.volume)
+	}
+
+	sound.addEventListener('volumechange', volumeChangeHandler)
+	return () => {
+		sound.removeEventListener('volumechange', volumeChangeHandler)
+	}
 }
 
 export const secondToTime = (second) => {
 	if (!second) return '00:00'
 	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
+}
+
+export const tuktuktuk = (songDispatch) => {
+	const sound = new Audio()
+	sound.src = 'https://sawyerf.github.io/tuktuktuk.mp3'
+	sound.addEventListener('loadedmetadata', () => {
+		sound.play()
+	})
+	sound.addEventListener('ended', () => {
+		sound.src = ''
+	})
+}
+
+export const setRepeat = async (songdispatch, action) => {
+  songdispatch({ type: 'setActionEndOfSong', action })
 }

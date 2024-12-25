@@ -1,15 +1,14 @@
 import React from 'react'
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
-import presStyles from '~/styles/pres'
-import mainStyles from '~/styles/main'
-import settingStyles from '~/styles/settings'
-import Header from '~/components/Header'
-import OptionInput from '~/components/settings/OptionInput'
 import { ThemeContext } from '~/contexts/theme'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import OptionInput from '~/components/settings/OptionInput'
+import settingStyles from '~/styles/settings'
 
 const CacheSettings = () => {
 	const insets = useSafeAreaInsets()

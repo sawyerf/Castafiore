@@ -1,61 +1,67 @@
-import { Audio } from 'expo-av';
 import React from 'react';
 
-export const SoundContext = React.createContext(new Audio.Sound())
 export const SongContext = React.createContext()
+
+const newSong = (state, action) => {
+	const song = {
+		...state,
+		...action,
+	}
+	if (window) window.song = song
+	return song
+}
 
 export const songReducer = (state, action) => {
 	switch (action.type) {
-		case 'setSound':
-			return {
-				...state,
-				sound: action.sound,
-			}
+		case 'init':
+			return newSong(state, {
+				isInit: true,
+			})
 		case 'setSong':
-			return {
-				...state,
+			return newSong(state, {
 				songInfo: action.queue[action.index],
 				index: action.index,
 				queue: action.queue,
-			}
+			})
+		case 'resetQueue':
+			return newSong(state, {
+				queue: null,
+				index: 0,
+				songInfo: null,
+			})
+		case 'setIndex':
+			if (!state.queue || state.queue?.length <= action.index) return state
+			return newSong(state, {
+				index: action.index,
+				songInfo: state.queue[action.index],
+			})
 		case 'next':
 			const nextIndex = (state.index + 1) % state.queue.length
-			return {
-				...state,
+			return newSong(state, {
 				index: nextIndex,
 				songInfo: state.queue[nextIndex],
-			}
+			})
 		case 'previous':
 			const previousIndex = (state.queue.length + state.index - 1) % state.queue.length
-			return {
-				...state,
+			return newSong(state, {
 				index: previousIndex,
 				songInfo: state.queue[previousIndex],
-			}
+			})
 		case 'setPlaying':
 			if (action.isPlaying === state.isPlaying) return state
-			return {
-				...state,
+			return newSong(state, {
 				isPlaying: action.isPlaying,
-			}
-		case 'setTime':
-			return {
-				...state,
-				position: action.position,
-				duration: action.duration,
-			}
+			})
 		case 'addQueue':
 			if (!state.sound || !state.songInfo || !state.queue.length || !action.queue.length) return state
-			return {
-				...state,
+			return newSong(state, {
 				queue: [...state.queue, ...action.queue],
-			}
+			})
 		case 'setActionEndOfSong':
 			if (['next', 'repeat'].indexOf(action.action) === -1) return state
-			return {
-				...state,
+			return newSong(state, {
 				actionEndOfSong: action.action,
-			}
+			})
 		default:
 			console.error('Unknown action', action)
 			return state

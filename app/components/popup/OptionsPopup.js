@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View, TouchableOpacity, Modal, Dimensions, ScrollView, Animated, Pressable } from 'react-native';
+import { Text, TouchableOpacity, Modal, Dimensions, ScrollView, Animated, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -32,7 +32,7 @@ const OptionsPopup = ({ visible, close, options }) => {
 	React.useEffect(() => {
 		const sizeOptions = getSizeOptions()
 		if (!visible) slide.setValue(sizeOptions)
-		const paddingTop = Dimensions.get('window').height - sizeOptions
+		const paddingTop = Dimensions.get('window').height - sizeOptions - insets.top
 		if (paddingTop < 0) {
 			setPaddingTop(insets.top ? insets.top + 20 : 20)
 		} else {
@@ -45,6 +45,7 @@ const OptionsPopup = ({ visible, close, options }) => {
 		<Modal
 			transparent={true}
 			onRequestClose={close}
+			statusBarTranslucent={true}
 			visible={visible}>
 			<ScrollView
 				vertical={true}

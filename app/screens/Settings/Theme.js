@@ -1,16 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import md5 from 'md5';
-import { Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { themes } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
 import { ThemeContext } from '~/contexts/theme';
+import { themes } from '~/contexts/theme';
 import Header from '~/components/Header';
+import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
 
 const Theme = ({ navigation }) => {

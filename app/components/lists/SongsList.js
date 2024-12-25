@@ -43,7 +43,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						onLongPress={() => setIndexOptions(index)}
 						onContextMenu={() => setIndexOptions(index)}
 						delayLongPress={200}
-						onPress={() => playSong(config, songCon, songDispatch, listToPlay ? listToPlay : songs, index)}>
+						onPress={() => playSong(config, songDispatch, listToPlay ? listToPlay : songs, index)}>
 						<Image
 							style={styles.albumCover}
 							source={{
@@ -77,9 +77,9 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 								.then((json) => {
 									if (!json.similarSongs?.song) {
 										setError('No similar songs found')
-										playSong(config, songCon, songDispatch, [songs[indexOptions]], 0)
+										playSong(config, songDispatch, [songs[indexOptions]], 0)
 									} else {
-										playSong(config, songCon, songDispatch, json.similarSongs?.song, 0)
+										playSong(config, songDispatch, json.similarSongs?.song, 0)
 									}
 								})
 								.catch((error) => { })
@@ -93,7 +93,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 							if (songCon.queue) {
 								songDispatch({ type: 'addQueue', queue: [songs[indexOptions]] })
 							} else {
-								playSong(config, songCon, songDispatch, [songs[indexOptions]], 0)
+								playSong(config, songDispatch, [songs[indexOptions]], 0)
 							}
 							setIndexOptions(-1)
 						}

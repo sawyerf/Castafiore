@@ -23,6 +23,12 @@ export const songReducer = (state, action) => {
 				index: action.index,
 				queue: action.queue,
 			})
+		case 'resetQueue':
+			return newSong(state, {
+				queue: null,
+				index: 0,
+				songInfo: null,
+			})
 		case 'setIndex':
 			if (!state.queue || state.queue?.length <= action.index) return state
 			return newSong(state, {

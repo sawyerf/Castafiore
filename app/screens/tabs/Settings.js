@@ -5,12 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
-import { tuktuktuk } from '~/utils/player';
+import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import settingStyles from '~/styles/settings';
+import { tuktuktuk } from '~/utils/player';
 import ButtonMenu from '~/components/settings/ButtonMenu';
 import ButtonSwitch from '~/components/settings/ButtonSwitch';
+import mainStyles from '~/styles/main';
+import settingStyles from '~/styles/settings';
 
 const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -18,6 +19,7 @@ const Settings = ({ navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const setting = React.useContext(SettingsContext)
+	const [song, songDispatch] = React.useContext(SongContext)
 
 	return (
 		<ScrollView
@@ -26,7 +28,7 @@ const Settings = ({ navigation }) => {
 		>
 			<View style={settingStyles.optionsContainer(theme)}>
 				<TouchableOpacity
-					onPress={tuktuktuk}
+					onPress={() => tuktuktuk(songDispatch)}
 					style={{
 						flexDirection: 'row',
 						alignItems: 'center',

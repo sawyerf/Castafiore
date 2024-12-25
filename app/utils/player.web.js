@@ -193,7 +193,7 @@ export const secondToTime = (second) => {
 	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 }
 
-export const tuktuktuk = () => {
+export const tuktuktuk = (songDispatch) => {
 	const sound = new Audio()
 	sound.src = 'https://sawyerf.github.io/tuktuktuk.mp3'
 	sound.addEventListener('loadedmetadata', () => {

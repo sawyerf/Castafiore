@@ -116,6 +116,36 @@ export const setRepeat = async (songdispatch, action) => {
 }
 
 export const unloadSong = async () => { }
-export const tuktuktuk = () => { }
+export const tuktuktuk = async (songDispatch) => {
+  const urlTuk = 'https://sawyerf.github.io/tuktuktuk.mp3'
+  const playingState = await TrackPlayer.getPlaybackState()
+
+  if ([State.Paused, State.Ended, State.Stopped, State.None].indexOf(playingState.state) > -1) {
+    const queue = [{
+      id: 'tuktuktuk',
+      albumId: 'tuktuktuk',
+      url: urlTuk,
+      title: 'Tuk Tuk Tuk',
+      album: 'Tuk Tuk Tuk',
+      artist: 'Sawyerf',
+      artwork: require('../../assets/icon.png')
+    },
+    {
+      id: 'tuktuktukend',
+      albumId: 'tuktuktuk',
+      url: urlTuk,
+      title: 'Tuk Tuk Tuk',
+      artist: 'Sawyerf',
+      artwork: require('../../assets/icon.png')
+    }]
+    await TrackPlayer.setQueue(queue)
+    // await TrackPlayer.skip(0)
+    await TrackPlayer.play()
+    songDispatch({ type: 'setSong', queue, index: 0 })
+    setRepeat(songDispatch, 'next')
+    songDispatch({ type: 'setPlaying', isPlaying: false })
+  }
+}
+
 export const updateVolume = (setVolume) => { }
 export const updateTime = (setTime) => { }

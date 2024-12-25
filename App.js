@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import TabBar from '~/components/TabBar';
+import TabBar from '~/components/bar/TabBar';
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';

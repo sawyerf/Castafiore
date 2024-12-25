@@ -24,7 +24,6 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 					}),
 					overflow: 'hidden',
 				}}
-				// numberOfLines={1}
 				multiline={false}
 				placeholder={placeholder}
 				placeholderTextColor={theme.secondaryLight}

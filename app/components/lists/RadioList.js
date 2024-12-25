@@ -172,8 +172,6 @@ const styles = {
 	cardRadio: theme => ({
 		height: 60,
 		minWidth: 200,
-		// marginEnd: 10,
-		// marginBottom: 10,
 		padding: 10,
 		paddingEnd: 20,
 		backgroundColor: theme.secondaryDark,

@@ -139,7 +139,6 @@ export const tuktuktuk = async (songDispatch) => {
       artwork: require('../../assets/icon.png')
     }]
     await TrackPlayer.setQueue(queue)
-    // await TrackPlayer.skip(0)
     await TrackPlayer.play()
     songDispatch({ type: 'setSong', queue, index: 0 })
     setRepeat(songDispatch, 'next')

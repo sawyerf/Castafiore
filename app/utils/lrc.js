@@ -9,7 +9,6 @@ export const parseLrc = (lrc) => {
       const seconds = parseInt(time[2])
       const milliseconds = parseInt(time[3])
       const text = line.replace(/\[(\d{2}):(\d{2})\.(\d{2})\]/, '').trim()
-      // if (!text) continue
       lyrics.push({
         time: minutes * 60 + seconds + milliseconds / 100,
         text

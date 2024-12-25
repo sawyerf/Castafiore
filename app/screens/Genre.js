@@ -88,11 +88,11 @@ const Genre = ({ route }) => {
 }
 
 const styles = {
-	title: theme => ({
-		color: theme.primaryLight,
+	title: {
+		color: '#F9F2F3',
 		fontSize: 50,
 		fontWeight: 'bold',
-	}),
+	},
 	cover: {
 		width: "100%",
 		height: 300,

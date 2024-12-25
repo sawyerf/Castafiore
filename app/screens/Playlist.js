@@ -71,7 +71,7 @@ const Playlist = ({ navigation, route }) => {
 					}
 					<Text style={presStyles.subTitle(theme)}>{((info ? info.duration : route.params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : route.params.playlist.songCount} songs</Text>
 				</View>
-				<RandomButton songList={songs} />
+				<RandomButton songList={songs} style={presStyles.button} />
 			</View>
 			<SongsList config={config} songs={songs} idPlaylist={route.params.playlist.id} onUpdate={() => {
 				getPlaylist()

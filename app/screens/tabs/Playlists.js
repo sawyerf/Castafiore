@@ -145,12 +145,12 @@ const Playlists = ({ navigation }) => {
 								icon={isPublic ? 'globe' : 'lock'}
 								color={theme.primaryTouch}
 								onPress={() => setIsPublic(!isPublic)}
-								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20, /* flex: 'initial' */ }} />
+								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20 }} />
 							<IconButton
 								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
 								size={20}
 								color={theme.secondaryLight}
-								style={{ padding: 10, /*flex: 'initial'*/ }}
+								style={{ padding: 10}}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
 						<>
@@ -160,7 +160,7 @@ const Playlists = ({ navigation }) => {
 								icon="plus"
 								size={20}
 								color={theme.secondaryLight}
-								style={{ padding: 10, /* flex: 'initial' */ }}
+								style={{ padding: 10 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist('')} />
 						</>
 				}

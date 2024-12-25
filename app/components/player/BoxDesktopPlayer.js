@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform } from 'react-native';
+import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -38,7 +38,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 				borderTopColor: theme.tertiaryDark,
 			}}>
 			<View style={{ flexDirection: 'row', flex: 1 }}>
-				<View style={{ ...styles.boxPlayerImage, flex: Platform.OS === 'android' ? 0 : 'initial' }}>
+				<View style={styles.boxPlayerImage}>
 					<ImageError
 						source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
 						style={styles.boxPlayerImage}

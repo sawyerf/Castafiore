@@ -54,7 +54,6 @@ const HorizontalAlbums = ({ config, albums }) => {
 
 const styles = {
 	album: {
-		// marginEnd: 20,
 		width: 160,
 		height: 210,
 		alignItems: 'center',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, Pressable } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,7 +15,7 @@ const BoxPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<Pressable
@@ -32,7 +32,7 @@ const BoxPlayer = ({ fullscreen }) => {
 				margin: 10,
 				borderRadius: 10,
 			}}>
-			<View style={{ ...styles.boxPlayerImage, flex: Platform.OS === 'android' ? 0 : 'initial' }}>
+			<View style={styles.boxPlayerImage}>
 				<ImageError
 					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100) }}
 					style={styles.boxPlayerImage}
@@ -42,11 +42,11 @@ const BoxPlayer = ({ fullscreen }) => {
 					</View>
 				</ImageError>
 			</View>
-			<View style={styles.boxPlayerText}>
+			<View style={{ flex: 1 }}>
 				<Text style={{ color: theme.playerPrimaryText, flex: 1, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
 				<Text style={{ color: theme.playerSecondaryText, flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 			</View>
-			<View style={styles.boxPlayerButton}>
+			<View style={{ flexDirection: 'row' }}>
 				<IconButton
 					icon="step-forward"
 					size={23}
@@ -72,13 +72,6 @@ const styles = {
 		width: 40,
 		marginRight: 10,
 		borderRadius: 4,
-	},
-	boxPlayerText: {
-		flex: 1,
-	},
-	boxPlayerButton: {
-		flex: Platform.OS === 'android' ? 0 : 'initial',
-		flexDirection: 'row',
 	},
 }
 

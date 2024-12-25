@@ -142,7 +142,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
 							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 						</View>
-						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ /* flex: 'initial', */ padding: 20, paddingEnd: 0 }} />
+						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<SlideBar
 						progress={time.position / time.duration}

@@ -1,5 +1,3 @@
-import { Platform } from "react-native"
-
 export default {
 	cover: {
 		width: "100%",
@@ -21,19 +19,10 @@ export default {
 	}),
 	button: {
 		padding: 20,
-		...Platform.select({
-			web: {
-				flex: 'initial',
-			},
-			android: {
-				justifyContent: 'start',
-			},
-		})
+		justifyContent: 'start',
 	},
 	headerContainer: {
 		flexDirection: 'row',
-		// alignItems: 'center',
-		// justifyContent: 'space-between',
 		width: '100%',
 		maxWidth: '100%',
 	},

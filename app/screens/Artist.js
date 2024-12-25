@@ -90,7 +90,7 @@ const Artist = ({ route }) => {
 			<Image
 				style={presStyles.cover}
 				source={{
-					uri: urlCover(config, artist.id),
+					uri: urlCover(config, route.params.artist.id),
 				}}
 			/>
 			<View style={presStyles.headerContainer}>

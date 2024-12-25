@@ -130,7 +130,7 @@ const loadSong = async (config, queue, index) => {
 export const playSong = async (config, songDispatch, queue, index) => {
 	await loadSong(config, queue, index)
 	songDispatch({ type: 'setSong', queue, index })
-	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
+	setRepeat(songDispatch, 'next')
 }
 
 export const nextSong = async (config, song, songDispatch) => {
@@ -202,4 +202,8 @@ export const tuktuktuk = () => {
 	sound.addEventListener('ended', () => {
 		sound.src = ''
 	})
+}
+
+export const setRepeat = async (songdispatch, action) => {
+  songdispatch({ type: 'setActionEndOfSong', action })
 }

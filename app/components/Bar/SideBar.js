@@ -94,7 +94,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
             disabled={(!config.query && route.name !== 'Settings')}
           >
             <Icon name={options.icon} size={26} color={getColor()} style={{ marginRight: 10 }} />
-            <Text style={{ color: getColor(), textAlign: 'left', fontSize: 20, fontWeight: '550' }}>
+            <Text style={{ color: getColor(), textAlign: 'left', fontSize: 20, fontWeight: '600' }}>
               {options.title}
             </Text>
           </TouchableOpacity>

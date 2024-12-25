@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -72,6 +73,11 @@ const App = () => {
                       }
                     }}
                   >
+                    <StatusBar
+                      backgroundColor={'rgba(0, 0, 0, 0)'}
+                      translucent={true}
+                      barStyle={'light-content'}
+                    />
                     <Tab.Navigator
                       tabBar={(props) => <TabBar {...props} />}
                       screenOptions={{

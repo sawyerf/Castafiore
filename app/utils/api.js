@@ -12,7 +12,7 @@ const getUrl = (config, path, query = '') => {
 		console.error('getApi: query is not a string or an object')
 		return ''
 	}
-	return `${config.url}/rest/${path}?${config.query}&${encodedQuery}`
+	return `${config.url}/rest/${path}?${config.query}&f=json&${encodedQuery}`
 }
 
 export const getApi = (config, path, query = '', isCache = false) => {

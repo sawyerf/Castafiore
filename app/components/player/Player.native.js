@@ -2,7 +2,6 @@ import React from 'react';
 
 import { SettingsContext } from '~/contexts/settings';
 import { SongContext } from '~/contexts/song';
-import { updateTime } from '~/utils/player';
 import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
 import BoxDesktopPlayer from './BoxDesktopPlayer';
@@ -10,17 +9,19 @@ import { useProgress, Event, useTrackPlayerEvents, State } from 'react-native-tr
 
 const events = [
   Event.PlaybackState,
-  Event.PlaybackError,
+	Event.PlaybackActiveTrackChanged,
 ];
 
 const Player = ({ state, fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const settings = React.useContext(SettingsContext)
-	const progress = useProgress()
+	const progress = useProgress(500)
 
 	useTrackPlayerEvents(events, async (event) => {
 		if (event.type === Event.PlaybackState) {
-			songDispatch({ type: 'setPlaying', isPlaying: event.state === State.Playing })
+			songDispatch({ type: 'setPlaying', isPlaying: event.state !== State.Paused })
+		} else if (event.type === Event.PlaybackActiveTrackChanged) {
+			songDispatch({ type: 'setIndex', index: event.index })
 		}
 	})
 

@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, getVolume, updateVolume } from '~/utils/player';
+import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, getVolume, updateVolume, setRepeat } from '~/utils/player';
 import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
@@ -60,7 +60,7 @@ const BoxDesktopPlayer = ({ fullscreen, time }) => {
 						size={19}
 						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
 						onPress={() => {
-							songDispatch({ type: 'setActionEndOfSong', action: song.actionEndOfSong === 'repeat' ? 'next' : 'repeat' })
+							setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 						}}
 					/>
 					<IconButton

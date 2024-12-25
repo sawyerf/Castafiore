@@ -46,7 +46,7 @@ const Connect = ({ navigation }) => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
-		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore&f=json`
+		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
 
 		if (uri.startsWith('http://')) {
 			setError('Only https is allowed')
@@ -109,19 +109,21 @@ const Connect = ({ navigation }) => {
 						title="Username"
 						placeholder="Username"
 						value={username}
-						inputMode="url"
+						inputMode="text"
 						placeholderTextColor={theme.primaryLight}
 						onChangeText={username => setUsername(username)}
+						autoComplete="username"
 					/>
 					<OptionInput
 						style={mainStyles.inputSetting(theme)}
 						title="Password"
 						placeholder="Password"
 						value={password}
-						inputMode="url"
+						inputMode="text"
 						placeholderTextColor={theme.primaryLight}
 						onChangeText={password => setPassword(password)}
 						isPassword={true}
+						autoComplete="current-password"
 						isLast={true}
 					/>
 				</View>

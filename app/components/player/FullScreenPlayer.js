@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { nextSong, previousSong, pauseSong, resumeSong, secondToTime } from '~/utils/player';
+import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat } from '~/utils/player';
 import { parseLrc } from '~/utils/lrc';
 import { setPosition } from '~/utils/player';
 import { urlCover, getApi } from '~/utils/api';
@@ -79,7 +79,9 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 	}
 
 	return (
-		<Modal>
+		<Modal
+			statusBarTranslucent={true}
+		>
 			<View
 				style={{
 					...mainStyles.mainContainer(insets, theme),
@@ -185,7 +187,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
 							style={{ paddingVertical: 10, paddingEnd: 20 }}
 							onPress={() => {
-								songDispatch({ type: 'setActionEndOfSong', action: song.actionEndOfSong === 'repeat' ? 'next' : 'repeat' })
+								setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 							}}
 						/>
 						<IconButton

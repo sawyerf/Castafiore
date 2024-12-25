@@ -1,13 +1,47 @@
-import TrackPlayer from "react-native-track-player"
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State } from "react-native-track-player"
 import { getApi, urlCover, urlStream } from './api';
 
 export const initService = async () => {
-  TrackPlayer.registerPlaybackService(() => require('../services/service'));
+  TrackPlayer.registerPlaybackService(() => require('../services/servicePlayback'));
 }
 
 export const initPlayer = async (songDispatch) => {
   songDispatch({ type: 'init' })
   await TrackPlayer.setupPlayer()
+    .catch((error) => {
+      console.error('initPlayer: ', error)
+    })
+  await TrackPlayer.updateOptions({
+    android: {
+      appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
+    },
+    capabilities: [
+      Capability.Play,
+      Capability.Pause,
+      Capability.SkipToNext,
+      Capability.SkipToPrevious,
+      Capability.SeekTo
+    ],
+    notificationCapabilities: [
+      Capability.Play,
+      Capability.Pause,
+      Capability.SkipToNext,
+      Capability.SkipToPrevious,
+      Capability.SeekTo
+    ],
+    progressUpdateEventInterval: -1,
+    icon: require('../../assets/icon.png')
+  })
+  const queue = await TrackPlayer.getQueue()
+  if (queue.length > 0) {
+    const index = await TrackPlayer.getActiveTrackIndex()
+    const isPlaying = await TrackPlayer.getPlaybackState() !== State.Paused
+
+    songDispatch({ type: 'setPlaying', isPlaying })
+    songDispatch({ type: 'setSong', queue, index })
+  } else {
+    setRepeat(songDispatch, 'next')
+  }
 }
 
 export const previousSong = async (config, song, songDispatch) => {
@@ -29,17 +63,31 @@ export const resumeSong = async () => {
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
-  await TrackPlayer.setQueue(queue.map((track) => {
+  const track = queue[index]
+  const tracks = queue.map((track) => {
     return {
       ...track,
+      id: track.id,
       url: urlStream(config, track.id),
-      atwork: urlCover(config, track.albumId)
+      atwork: urlCover(config, track.albumId),
+      artist: track.artist,
+      title: track.title,
+      album: track.album,
+      description: '',
+      date: '',
+      genre: '',
+      rating: false,
+      duration: track.duration,
+      type: 'default',
+      isLiveStream: false,
+      config
     }
-  }))
+  })
+  await TrackPlayer.setQueue(tracks)
   await TrackPlayer.skip(index)
   await TrackPlayer.play()
   songDispatch({ type: 'setSong', queue, index })
-  songDispatch({ type: 'setActionEndOfSong', action: 'next' })
+  setRepeat(songDispatch, 'next')
   songDispatch({ type: 'setPlaying', isPlaying: true })
 }
 
@@ -60,6 +108,11 @@ export const setVolume = async (volume) => {
 
 export const getVolume = () => {
   return TrackPlayer.getVolume()
+}
+
+export const setRepeat = async (songdispatch, action) => {
+  songdispatch({ type: 'setActionEndOfSong', action })
+  TrackPlayer.setRepeatMode(action === 'repeat' ? RepeatMode.Track : RepeatMode.Queue)
 }
 
 export const unloadSong = async () => { }

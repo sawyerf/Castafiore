@@ -21,12 +21,13 @@
     "android": {
       "package": "com.sawyerf.castafiore",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/foreground-icon.png",
         "backgroundColor": "#660000"
       },
-      "androidNavigationBar": {
-        "visible": false,
-        "backgroundColor": "#121212"
+      "splash": {
+        "image": "./assets/foreground-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#660000"
       }
     },
     "web": {

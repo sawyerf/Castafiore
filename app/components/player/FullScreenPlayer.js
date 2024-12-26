@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat } from '~/utils/player';
+import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat, updateTime } from '~/utils/player';
 import { parseLrc } from '~/utils/lrc';
 import { setPosition } from '~/utils/player';
 import { urlCover, getApi } from '~/utils/api';
@@ -21,13 +21,14 @@ const preview = {
 	LYRICS: 2
 }
 
-const FullScreenPlayer = ({ fullscreen, time }) => {
+const FullScreenPlayer = ({ fullscreen }) => {
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const [song, songDispatch] = React.useContext(SongContext)
 	const insets = useSafeAreaInsets();
 	const [lyrics, setLyrics] = React.useState([])
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
+	const time = updateTime()
 
 	React.useEffect(() => {
 		setIsPreview(preview.COVER)

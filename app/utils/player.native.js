@@ -1,4 +1,4 @@
-import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State } from "react-native-track-player"
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress } from "react-native-track-player"
 import { getApi, urlCover, urlStream } from './api';
 
 export const initService = async () => {
@@ -63,7 +63,6 @@ export const resumeSong = async () => {
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
-  const track = queue[index]
   const tracks = queue.map((track) => {
     return {
       ...track,
@@ -147,4 +146,6 @@ export const tuktuktuk = async (songDispatch) => {
 }
 
 export const updateVolume = (setVolume) => { }
-export const updateTime = (setTime) => { }
+export const updateTime = () => {
+  return useProgress(500)
+}

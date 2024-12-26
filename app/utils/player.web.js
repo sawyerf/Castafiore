@@ -1,3 +1,4 @@
+import React from 'react';
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 
 import { getApi, urlCover, urlStream } from './api';
@@ -75,21 +76,27 @@ export const initPlayer = async (songDispatch) => {
 	})
 }
 
-export const updateTime = (setTime) => {
-	const sound = audio()
-	const timeUpdateHandler = () => {
-		setTime({
-			position: audio().currentTime,
-			duration: audio().duration,
-		})
-	}
+export const updateTime = () => {
+	const [time, setTime] = React.useState({ position: 0, duration: 0 })
 
-	sound.addEventListener('timeupdate', timeUpdateHandler)
-	sound.addEventListener('durationchange', timeUpdateHandler)
-	return () => {
-		sound.removeEventListener('timeupdate', timeUpdateHandler)
-		sound.removeEventListener('durationchange', timeUpdateHandler)
-	}
+	React.useEffect(() => {
+		const sound = audio()
+		const timeUpdateHandler = () => {
+			setTime({
+				position: audio().currentTime,
+				duration: audio().duration,
+			})
+		}
+
+		sound.addEventListener('timeupdate', timeUpdateHandler)
+		sound.addEventListener('durationchange', timeUpdateHandler)
+		return () => {
+			sound.removeEventListener('timeupdate', timeUpdateHandler)
+			sound.removeEventListener('durationchange', timeUpdateHandler)
+		}
+	}, [])
+
+	return time
 }
 
 const downloadNextSong = async (config, queue, currentIndex) => {
@@ -205,5 +212,5 @@ export const tuktuktuk = (songDispatch) => {
 }
 
 export const setRepeat = async (songdispatch, action) => {
-  songdispatch({ type: 'setActionEndOfSong', action })
+	songdispatch({ type: 'setActionEndOfSong', action })
 }

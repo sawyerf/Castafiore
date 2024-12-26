@@ -10,7 +10,7 @@ import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { initPlayer, initService } from '~/utils/player';
+import { initPlayer } from '~/utils/player';
 import { SongContext, defaultSong, songReducer } from '~/contexts/song';
 import { ThemeContext, getTheme } from '~/contexts/theme';
 
@@ -106,7 +106,5 @@ const App = () => {
     </SetConfigContext.Provider>
   );
 }
-
-initService()
 
 export default App;

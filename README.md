@@ -57,7 +57,7 @@ npm i
 npm run web
 ```
 
-### Android
+### Android
 If you want to run the app in development mode for android, you need to install Android Studio.
 
 Run the following command that will created an apk

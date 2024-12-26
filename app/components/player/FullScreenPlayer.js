@@ -81,6 +81,7 @@ const FullScreenPlayer = ({ fullscreen, time }) => {
 	return (
 		<Modal
 			statusBarTranslucent={true}
+			onRequestClose={() => fullscreen.set(false)}
 		>
 			<View
 				style={{

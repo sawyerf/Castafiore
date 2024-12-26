@@ -48,7 +48,7 @@ const CacheSettings = () => {
 
 	return (
 		<View style={{ ...mainStyles.mainContainer(insets, theme), flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-			<Header title="Cache" />
+			<Header title="Playlists" />
 			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
 				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text >
 				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5}}>

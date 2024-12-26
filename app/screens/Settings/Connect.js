@@ -14,6 +14,7 @@ import mainStyles from '~/styles/main';
 import OptionInput from '~/components/settings/OptionInput';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import settingStyles from '~/styles/settings';
+import ButtonText from '~/components/settings/ButtonText';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()
@@ -26,7 +27,7 @@ const Connect = ({ navigation }) => {
 	const setConfig = React.useContext(SetConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 	const [serverOption, setServerOption] = React.useState(null)
 
 	React.useEffect(() => {
@@ -88,7 +89,6 @@ const Connect = ({ navigation }) => {
 				</View>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
-						style={mainStyles.inputSetting(theme)}
 						title="Name"
 						placeholder="Name"
 						value={name}
@@ -96,7 +96,6 @@ const Connect = ({ navigation }) => {
 						onChangeText={name => setName(name)}
 					/>
 					<OptionInput
-						style={mainStyles.inputSetting(theme)}
 						title="Url"
 						placeholder="Server Url"
 						value={url}
@@ -105,7 +104,6 @@ const Connect = ({ navigation }) => {
 						onChangeText={url => setUrl(url)}
 					/>
 					<OptionInput
-						style={mainStyles.inputSetting(theme)}
 						title="Username"
 						placeholder="Username"
 						value={username}
@@ -115,7 +113,6 @@ const Connect = ({ navigation }) => {
 						autoComplete="username"
 					/>
 					<OptionInput
-						style={mainStyles.inputSetting(theme)}
 						title="Password"
 						placeholder="Password"
 						value={password}
@@ -127,15 +124,10 @@ const Connect = ({ navigation }) => {
 						isLast={true}
 					/>
 				</View>
-				<View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginBottom: 20 }}>
-					<TouchableOpacity
-						style={styles.loginBtn}
-						onPress={connect}
-					>
-						<Text style={{ color: theme.primaryTouch, fontSize: 17 }}>Connect</Text>
-					</TouchableOpacity>
-				</View>
-
+				<ButtonText
+					text="Connect"
+					onPress={connect}
+				/>
 				<Text style={settingStyles.titleContainer(theme)}>List of servers</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{

@@ -112,7 +112,7 @@ const Playlists = ({ navigation }) => {
 					/>
 				</Animated.View>
 			</View>
-			<TouchableOpacity style={styles.subTitleParent} onPress={() => navigation.navigate('Favorited', { favorited })}>
+			<TouchableOpacity style={{ ...styles.subTitleParent, marginTop: undefined }} onPress={() => navigation.navigate('Favorited', { favorited })}>
 				<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
 				<Text style={{ ...mainStyles.subTitle(theme), flex: 1 }}>Favorited</Text>
 				<Text style={{ color: theme.secondaryLight, fontWeight: 'bold', fontSize: 15 }}>
@@ -132,7 +132,6 @@ const Playlists = ({ navigation }) => {
 									borderWidth: 1,
 									borderRadius: 6,
 									color: theme.primaryLight,
-									// marginEnd: 10,
 									flex: 1,
 									paddingHorizontal: 10
 								}}
@@ -150,7 +149,7 @@ const Playlists = ({ navigation }) => {
 								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
 								size={20}
 								color={theme.secondaryLight}
-								style={{ padding: 10}}
+								style={{ padding: 10 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
 						<>

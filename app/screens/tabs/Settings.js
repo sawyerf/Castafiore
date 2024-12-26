@@ -1,6 +1,6 @@
 import React from 'react';
 import pkg from '~/../package.json';
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableOpacity, Platform, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -92,7 +92,21 @@ const Settings = ({ navigation }) => {
 				<ButtonMenu
 					title="Reset Settings"
 					icon="undo"
-					onPress={() => setSettings(defaultSettings)}
+					onPress={() => {
+						if (Platform.OS === 'web') {
+							const confirm = window.confirm('Are you sure you want to reset all settings?')
+							if (confirm) setSettings(defaultSettings)
+						} else {
+							Alert.alert(
+								'Reset Settings',
+								'Are you sure you want to reset all settings?',
+								[
+									{ text: 'Cancel', style: 'cancel' },
+									{ text: 'OK', onPress: () => setSettings(defaultSettings) }
+								]
+							)
+						}
+					}}
 					isLast={true}
 				/>
 			</View>

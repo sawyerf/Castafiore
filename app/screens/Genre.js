@@ -55,12 +55,12 @@ const Genre = ({ route }) => {
 
 	return (
 		<ScrollView
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 			vertical={true}
 			style={{
 				...mainStyles.mainContainer(insets, theme),
 				paddingTop: 0,
-			}}
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			}}>
 			<BackButton />
 			<View
 				style={styles.cover}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -83,7 +83,20 @@ const VerticalPlaylist = ({ config, playlists }) => {
 						name: 'Delete Playlist',
 						icon: 'trash',
 						onPress: () => {
-							deletePlaylist(playlists[indexOption].id)
+							if (Platform.OS === 'web') {
+								const result = window.confirm(`Are you sure you want to delete playlist: '${playlists[indexOption].name}' ?`)
+								if (result) deletePlaylist(playlists[indexOption].id)
+								else setIndexOption(-1)
+							} else {
+								Alert.alert(
+									'Delete Playlist',
+									`Are you sure you want to delete playlist: '${playlists[indexOption].name}' ?`,
+									[
+										{ text: 'Cancel', onPress: () => setIndexOption(-1), style: 'cancel' },
+										{ text: 'OK', onPress: () => deletePlaylist(playlists[indexOption].id) }
+									]
+								)
+							}
 						}
 					}
 				]}

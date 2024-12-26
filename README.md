@@ -1,5 +1,3 @@
-<img style="height: 1em; margin-right: 5px;" src="https://static.vecteezy.com/system/resources/previews/009/102/039/large_2x/attention-sign-or-warning-caution-exclamation-sign-danger-yellow-triangle-stock-illustration-free-vector.jpg" /> **iOS PWA is stable only in 2024.12.03** <img style="height: 1em; margin-right: 5px;" src="https://static.vecteezy.com/system/resources/previews/009/102/039/large_2x/attention-sign-or-warning-caution-exclamation-sign-danger-yellow-triangle-stock-illustration-free-vector.jpg" />
-
 <a href="https://sawyerf.github.io/Castafiore/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/sawyerf/Castafiore/assets/22857002/ad3f2f95-92d8-4b09-83fe-d0d9a4dd61e1#gh-dark-mode-only">
@@ -24,7 +22,7 @@
 
 </br>
 
-**Castafiore** is a music player that support Subsonic API. It support platform: Web (PWA), IOS and Android (but IOS and Android are not stable)
+**Castafiore** is a music player that support Subsonic API. It is available on the following platforms: **Web** (PWA), **Android**.
 
 ## Support Feature
 - Customize Home page
@@ -36,18 +34,39 @@
 - Radio
 
 ## Build locally
-If you want to build the web version, you can run the following command:
+### Web
+If you want to build the web version, run the following command:
 ```bash
 npm i
 npm run export:web
 ```
 It will generate a folder `web-build` that you can deploy to your server.
 
+### Android
+If you want to build the .apk, you need to install Android Studio and you run the following command
+```bash
+npm i
+npm run export:android
+```
+
 ## Development
-If you want to run the app in development mode, you can run the following command:
+### Web
+If you want to run the app in development mode, run the following command:
 ```bash
 npm i
 npm run web
-# or
-npm start
+```
+
+### Android
+If you want to run the app in development mode for android, you need to install Android Studio.
+
+Run the following command that will created an apk
+```bash
+npm i
+npm run build-dev
+```
+
+Install the apk and run the dev server
+```bash
+npm run android
 ```

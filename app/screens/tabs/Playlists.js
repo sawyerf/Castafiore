@@ -3,14 +3,14 @@ import { Animated, ScrollView, Text, TextInput, TouchableOpacity, View } from 'r
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import IconButton from '~/components/button/IconButton';
-import SongsList from '~/components/lists/SongsList';
-import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 import { ConfigContext } from '~/contexts/config';
+import { getCachedAndApi } from '~/utils/api';
 import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
+import IconButton from '~/components/button/IconButton';
 import mainStyles from '~/styles/main';
-import { getCachedAndApi } from '~/utils/api';
+import SongsList from '~/components/lists/SongsList';
+import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 
 
 const Playlists = ({ navigation }) => {

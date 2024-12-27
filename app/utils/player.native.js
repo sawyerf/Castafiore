@@ -145,7 +145,7 @@ export const tuktuktuk = async (songDispatch) => {
   }
 }
 
-export const updateVolume = (setVolume) => { }
+export const updateVolume = () => { }
 export const updateTime = () => {
   return useProgress(500)
 }

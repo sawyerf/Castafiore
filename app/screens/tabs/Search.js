@@ -14,7 +14,7 @@ import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 
 
-const Search = ({ navigation }) => {
+const Search = () => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
   const theme = React.useContext(ThemeContext)

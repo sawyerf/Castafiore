@@ -6,7 +6,7 @@ import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
-import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
+import { getApi, urlCover, useCachedAndApi } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -18,24 +18,18 @@ import IconButton from '~/components/button/IconButton';
 
 const Artist = ({ route }) => {
 	const insets = useSafeAreaInsets();
-	const [artist, setArtist] = React.useState([]);
-	const [artistInfo, setArtistInfo] = React.useState([]);
 	const [song, songDispatch] = React.useContext(SongContext)
 	const allSongs = React.useRef([])
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 
-	const getArtistInfo = () => {
-		getCachedAndApi(config, 'getArtistInfo', `id=${route.params.artist.id}`, (json) => {
-			setArtistInfo(json.artistInfo)
-		})
-	}
+	const artistInfo = useCachedAndApi([], 'getArtistInfo', `id=${route.params.artist.id}`, (json, setData) => {
+		setData(json.artistInfo)
+	}, [route.params.artist])
 
-	const getArtist = () => {
-		getCachedAndApi(config, 'getArtist', `id=${route.params.artist.id}`, (json) => {
-			setArtist(json.artist)
-		})
-	}
+	const artist = useCachedAndApi([], 'getArtist', `id=${route.params.artist.id}`, (json, setData) => {
+		setData(json.artist)
+	}, [route.params.artist])
 
 	const getRandomSongs = async () => {
 		if (!artist.album) return
@@ -70,13 +64,6 @@ const Artist = ({ route }) => {
 			})
 			.catch((error) => { })
 	}
-
-	React.useEffect(() => {
-		if (config.query) {
-			getArtist()
-			getArtistInfo()
-		}
-	}, [config, route.params.artist])
 
 	return (
 		<ScrollView

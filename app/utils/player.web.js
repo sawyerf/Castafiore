@@ -77,7 +77,10 @@ export const initPlayer = async (songDispatch) => {
 }
 
 export const updateTime = () => {
-	const [time, setTime] = React.useState({ position: 0, duration: 0 })
+	const [time, setTime] = React.useState({
+		position: audio().currentTime,
+		duration: audio().duration,
+	})
 
 	React.useEffect(() => {
 		const sound = audio()
@@ -182,17 +185,22 @@ export const getVolume = () => {
 	return audio().volume
 }
 
-export const updateVolume = (setVolume) => {
-	const sound = audio()
+export const updateVolume = () => {
+	const [volume, setVol] = React.useState(getVolume())
 
-	const volumeChangeHandler = () => {
-		setVolume(sound.volume)
-	}
+	React.useEffect(() => {
+		const sound = audio()
+		const volumeChangeHandler = () => {
+			setVol(sound.volume)
+		}
 
-	sound.addEventListener('volumechange', volumeChangeHandler)
-	return () => {
-		sound.removeEventListener('volumechange', volumeChangeHandler)
-	}
+		sound.addEventListener('volumechange', volumeChangeHandler)
+		return () => {
+			sound.removeEventListener('volumechange', volumeChangeHandler)
+		}
+	}, [])
+
+	return volume
 }
 
 export const secondToTime = (second) => {

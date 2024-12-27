@@ -22,12 +22,12 @@ const preview = {
 }
 
 const FullScreenPlayer = ({ fullscreen }) => {
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
-	const [song, songDispatch] = React.useContext(SongContext)
-	const insets = useSafeAreaInsets();
-	const [lyrics, setLyrics] = React.useState([])
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
+	const [lyrics, setLyrics] = React.useState([])
+	const [song, songDispatch] = React.useContext(SongContext)
+	const config = React.useContext(ConfigContext)
+	const insets = useSafeAreaInsets();
+	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
 
 	React.useEffect(() => {
@@ -120,7 +120,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 								if (index < lyrics.length - 2 && time.position >= lyrics[index + 2]?.time) return null
 								const isCurrent = time.position >= lyric.time && (lyrics.length == index + 1 || time.position < lyrics[index + 1]?.time)
 								return (
-									<View style={{
+									<View key={index} style={{
 										display: 'flex',
 										justifyContent: 'flex-end',
 										minHeight: ((time.position > lyric.time && !isCurrent) || !index) ? 62 : 0,

@@ -3,7 +3,7 @@ import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
-import { getCachedAndApi } from '~/utils/api';
+import { useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import BackButton from '~/components/button/BackButton';
@@ -15,22 +15,19 @@ import SongsList from '~/components/lists/SongsList';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
-	const [songs, setSongs] = React.useState([]);
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 
-	React.useEffect(() => {
-		getCachedAndApi(config, 'getAlbum', `id=${route.params.album.id}`, (json) => {
-			setSongs(json?.album?.song.sort((a, b) => {
-				// sort by discNumber and track
-				if (a.discNumber < b.discNumber) return -1;
-				if (a.discNumber > b.discNumber) return 1;
-				if (a.track < b.track) return -1;
-				if (a.track > b.track) return 1;
-				return 0;
-			}))
-		})
-	}, [config, route.params.album])
+	const songs = useCachedAndApi([], 'getAlbum', `id=${route.params.album.id}`, (json, setData) => {
+		setData(json?.album?.song.sort((a, b) => {
+			// sort by discNumber and track
+			if (a.discNumber < b.discNumber) return -1;
+			if (a.discNumber > b.discNumber) return 1;
+			if (a.track < b.track) return -1;
+			if (a.track > b.track) return 1;
+			return 0;
+		}))
+	}, [route.params.album])
 
 	return (
 		<ScrollView

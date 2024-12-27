@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import React from "react"
+import { ConfigContext } from "~/contexts/config"
 
 const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''
@@ -54,6 +56,19 @@ export const getCachedAndApi = async (config, path, query = '', setData = (json)
 			setData(json)
 		})
 		.catch((error) => { })
+}
+
+export const useCachedAndApi = (initialState, path, query = '', setFunc = (json, setData) => { }, deps = []) => {
+	const config = React.useContext(ConfigContext)
+	const [data, setData] = React.useState(initialState)
+
+	React.useEffect(() => {
+		getCachedAndApi(config, path, query, (json) => {
+			setFunc(json, setData)
+		})
+	}, [config, ...deps])
+
+	return data
 }
 
 export const urlCover = (config, id, size = null) => {

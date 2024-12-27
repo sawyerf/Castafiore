@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, getVolume, updateVolume, setRepeat, updateTime } from '~/utils/player';
+import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, updateVolume, setRepeat, updateTime } from '~/utils/player';
 import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
@@ -13,15 +13,11 @@ import SlideBar from '~/components/button/SlideBar';
 
 const BoxDesktopPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
-	const [volume, setVol] = React.useState(getVolume())
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
-
-	React.useEffect(() => {
-		return updateVolume(setVol)
-	}, [])
-
+	const volume = updateVolume()
+	
 	return (
 		<View
 			style={{

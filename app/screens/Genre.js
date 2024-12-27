@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
-import { getCachedAndApi } from '~/utils/api';
+import { useCachedAndApi } from '~/utils/api';
 import { playSong } from '~/utils/player';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
@@ -20,16 +20,15 @@ const Genre = ({ route }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const [song, songDispatch] = React.useContext(SongContext)
-	const [albums, setAlbums] = React.useState([]);
-	const [songs, setSongs] = React.useState([]);
 	const theme = React.useContext(ThemeContext)
 
-	React.useEffect(() => {
-		if (config.query) {
-			getAlbumsByGenre()
-			getSongs()
-		}
-	}, [config])
+	const albums = useCachedAndApi([], 'getAlbumList', { type: 'byGenre', genre: route.params.genre.value }, (json, setData) => {
+		setData(json?.albumList?.album)
+	})
+
+	const songs = useCachedAndApi([], 'getSongsByGenre', { genre: route.params.genre.value, count: 50 }, (json, setData) => {
+		setData(json?.songsByGenre?.song)
+	})
 
 	const getRandomSongs = () => {
 		getApi(config, 'getRandomSongs', { genre: route.params.genre.value, count: 50 })
@@ -39,18 +38,6 @@ const Genre = ({ route }) => {
 				playSong(config, songDispatch, songs, 0)
 			})
 			.catch((error) => { })
-	}
-
-	const getAlbumsByGenre = () => {
-		getCachedAndApi(config, 'getAlbumList', { type: 'byGenre', genre: route.params.genre.value }, (json) => {
-			setAlbums(json?.albumList?.album)
-		})
-	}
-
-	const getSongs = () => {
-		getCachedAndApi(config, 'getSongsByGenre', { genre: route.params.genre.value, count: 50 }, (json) => {
-			setSongs(json?.songsByGenre?.song)
-		})
 	}
 
 	return (

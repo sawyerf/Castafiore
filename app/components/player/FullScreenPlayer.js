@@ -6,7 +6,6 @@ import { ConfigContext } from '~/contexts/config';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat, updateTime } from '~/utils/player';
-import { parseLrc } from '~/utils/lrc';
 import { setPosition } from '~/utils/player';
 import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
@@ -14,6 +13,7 @@ import IconButton from '~/components/button/IconButton';
 import SlideBar from '~/components/button/SlideBar';
 import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
+import Lyric from '~/components/player/Lyric';
 
 const preview = {
 	COVER: 0,
@@ -23,61 +23,15 @@ const preview = {
 
 const FullScreenPlayer = ({ fullscreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
-	const [lyrics, setLyrics] = React.useState([])
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
 
-	React.useEffect(() => {
-		setIsPreview(preview.COVER)
-		setLyrics([])
-	}, [song.songInfo])
-
-	const getNavidromeLyrics = () => {
-		getApi(config, 'getLyricsBySongId', { id: song.songInfo.id })
-			.then(res => {
-				const ly = res.lyricsList?.structuredLyrics[0]?.line?.map(ly => ({ time: ly.start / 1000, text: ly.value.length ? ly.value : '...' }))
-				if (ly.length == 0) { // not found
-					return getLrcLibLyrics()
-				}
-				ly.sort((a, b) => a.time - b.time)
-				setLyrics(ly)
-				setIsPreview(preview.LYRICS)
-			})
-			.catch(() => { // not found
-				getLrcLibLyrics()
-			})
-	}
-
-	const getLrcLibLyrics = () => {
-		const params = {
-			track_name: song.songInfo.title,
-			artist_name: song.songInfo.artist,
-			album_name: song.songInfo.album,
-			duration: song.songInfo.duration
-		}
-		fetch('https://lrclib.net/api/get?' + Object.keys(params).map((key) => `${key}=${encodeURIComponent(params[key])}`).join('&'), {
-			headers: { 'Lrclib-Client': 'Castafiore' }
-		})
-			.then(res => res.json())
-			.then(res => {
-				const ly = parseLrc(res.syncedLyrics)
-				setLyrics(ly)
-				setIsPreview(preview.LYRICS)
-			})
-			.catch(() => {
-				setIsPreview(preview.LYRICS)
-				setLyrics([{ time: 0, text: 'No lyrics found' }])
-			})
-	}
-
-	const getLyrics = async () => {
-		if (isPreview == preview.LYRICS) return setIsPreview(preview.COVER)
-		if (lyrics.length > 0) return setIsPreview(preview.LYRICS)
-		getNavidromeLyrics()
-	}
+  React.useEffect(() => {
+    setIsPreview(preview.COVER)
+  }, [song.songInfo])
 
 	return (
 		<Modal
@@ -114,30 +68,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 						</ScrollView>
 					}
 					{
-						isPreview == preview.LYRICS &&
-						<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
-							{lyrics.map((lyric, index) => {
-								if (index < lyrics.length - 2 && time.position >= lyrics[index + 2]?.time) return null
-								const isCurrent = time.position >= lyric.time && (lyrics.length == index + 1 || time.position < lyrics[index + 1]?.time)
-								return (
-									<View key={index} style={{
-										display: 'flex',
-										justifyContent: 'flex-end',
-										minHeight: ((time.position > lyric.time && !isCurrent) || !index) ? 62 : 0,
-									}}>
-										<Text
-											key={index}
-											style={{
-												color: isCurrent ? theme.primaryLight : theme.secondaryLight,
-												fontSize: 23,
-												textAlign: 'center',
-											}}>
-											{lyric.text.length ? lyric.text : '...'}
-										</Text>
-									</View>
-								)
-							})}
-						</ScrollView>
+						isPreview == preview.LYRICS && <Lyric song={song} time={time} style={styles.albumImage()} />
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
@@ -197,7 +128,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							size={19}
 							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryLight}
 							style={{ paddingVertical: 10 }}
-							onPress={() => getLyrics()}
+							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
 						<IconButton
 							icon="bars"

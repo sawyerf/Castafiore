@@ -86,9 +86,6 @@ const CacheSettings = () => {
 				</View>
 				<Text style={settingStyles.titleContainer(theme)}>Cache Stats</Text >
 				<View style={settingStyles.optionsContainer(theme)}>
-					{statCache.length === 0 && <View style={settingStyles.optionItem(theme, true)}>
-						<Text style={{ color: theme.primaryLight, fontSize: 16, fontWeight: '400' }}>No Cache</Text>
-					</View>}
 					<FlatList
 						data={statCache}
 						renderItem={({ item, index }) => (
@@ -99,6 +96,11 @@ const CacheSettings = () => {
 							/>
 						)}
 						keyExtractor={(item, index) => index}
+						ListEmptyComponent={(
+							<View style={settingStyles.optionItem(theme, true)}>
+								<Text style={{ color: theme.primaryLight, fontSize: 16, fontWeight: '400' }}>No Cache</Text>
+							</View>
+						)}
 					/>
 				</View>
 			</View>

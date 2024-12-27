@@ -84,7 +84,6 @@ const Lyric = ({ song, time, style }) => {
       data={lyrics}
       ref={refScroll}
       initialNumToRender={lyrics.length}
-      onScrollToIndexFailed={(error) => { console.log(error) }}
       keyExtractor={(item, index) => index}
       renderItem={({ item, index }) => {
         return (

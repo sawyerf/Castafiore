@@ -68,7 +68,8 @@ const FullScreenPlayer = ({ fullscreen }) => {
 						</ScrollView>
 					}
 					{
-						isPreview == preview.LYRICS && <Lyric song={song} time={time} style={styles.albumImage()} />
+						isPreview == preview.LYRICS &&
+						<Lyric song={song} time={time} style={styles.albumImage()} />
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>

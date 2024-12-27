@@ -13,16 +13,16 @@ const HorizontalGenres = ({ config, genres }) => {
 		<CustomScroll
 			style={styles.genreList}
 			contentContainerStyle={styles.scrollContainer}
-		>
-			{genres?.map((genre) => (
+			data={genres}
+			renderItem={({item}) => (
 				<TouchableOpacity
 					style={styles.genreBox(theme)}
-					key={genre?.value}
-					onPress={() => navigation.navigate('Genre', { genre })}>
-					<Text numberOfLines={1} style={styles.genreText(theme)}>{genre.value}</Text>
+					key={item?.value}
+					onPress={() => navigation.navigate('Genre', { genre: item })}>
+					<Text numberOfLines={1} style={styles.genreText(theme)}>{item.value}</Text>
 				</TouchableOpacity>
-			))}
-		</CustomScroll>
+			)}
+		/>
 	)
 }
 
@@ -41,7 +41,9 @@ const styles = {
 		rowGap: 10,
 	},
 	genreBox: theme => ({
+		flex: 1,
 		height: 55,
+		borderRadius: 3,
 		paddingHorizontal: 40,
 		backgroundColor: theme.primaryTouch,
 		justifyContent: 'center',

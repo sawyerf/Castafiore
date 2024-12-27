@@ -2,9 +2,6 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext } from '~/contexts/settings';
-import CustomScroll from '~/components/lists/CustomScroll';
-
 
 const HorizontalLBStat = ({ stats }) => {
   const theme = React.useContext(ThemeContext)
@@ -20,38 +17,34 @@ const HorizontalLBStat = ({ stats }) => {
   }, [stats])
 
   return (
-    <CustomScroll
-      style={styles.custScroll}
-      contentContainerStyle={styles.scrollContainer(stats?.length)}
-    >
+    <View style={styles.scrollContainer(stats?.length)} >
       {
-        stats?.map((stat) => {
-          const time = new Date(stat.time_range)
+        stats.map((item, index) => {
+          const time = new Date(item.time_range)
           const day = days[time.getDay()]
+
           return (
             <View
-              key={stat.time_range}
+              key={index}
               style={{
-                flex: 1,
                 flexDirection: 'column-reverse',
                 alignItems: 'center',
+                flex: 1,
               }}>
               <Text style={{ color: theme.primaryLight, fontSize: 12, textAlign: 'center' }}>{time.getDate()}</Text>
               <View
                 style={{
-                  height: (stat.listen_count / maxCount) * 120,
+                  height: (item.listen_count / maxCount) * 120,
                   width: '100%',
-                  maxWidth: 55,
                   backgroundColor: theme.primaryTouch,
                 }}
-              >
-              </View>
-              <Text style={{ color: theme.secondaryLight, fontSize: 10, textAlign: 'center' }}>{stat.listen_count}</Text>
+              />
+              <Text style={{ color: theme.secondaryLight, fontSize: 10, textAlign: 'center' }}>{item.listen_count}</Text>
             </View>
           )
         })
       }
-    </CustomScroll>
+    </View>
   )
 }
 
@@ -60,6 +53,7 @@ const styles = {
     width: '100%',
   },
   scrollContainer: length => ({
+    display: 'flex',
     width: '100%',
     maxWidth: length * 60,
     paddingStart: 20,

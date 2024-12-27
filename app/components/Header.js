@@ -25,14 +25,15 @@ const Header = ({ title }) => {
 					name="angle-left"
 					size={34}
 					color={theme.primaryLight}
-					style={{ paddingEnd: 10}}
+					style={{ paddingEnd: 10 }}
 				/>
-				<Text style={{
-					color: theme.primaryLight,
-					fontSize: 24,
-					fontWeight: 'bold',
-					lineHeight: 0,
-				}} >
+				<Text numberOfLines={1}
+					style={{
+						color: theme.primaryLight,
+						fontSize: 24,
+						fontWeight: 'bold',
+						lineHeight: 0,
+					}} >
 					{title}
 				</Text>
 			</Pressable>

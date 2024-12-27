@@ -29,107 +29,109 @@ const RadioList = ({ config, radios }) => {
 			albumArtist: radio.homePageUrl,
 		})), index)
 	}
+	const getUrlFavicon = (url) => {
+		if (!url) return null
+		const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'))
+		if (!regex) return null
+		const origin = regex[0]
+		return origin + '/favicon.ico'
+	}
+
 
 	if (!radios) return null
 	return (
-		<CustomScroll
-			contentContainerStyle={{
-				height: 60 * 2 + 10,
-				paddingStart: 20,
-				paddingEnd: 20,
-				flexDirection: 'column',
-				flexWrap: 'wrap',
-				columnGap: 10,
-				rowGap: 10,
-			}}
-		>
-			{radios.map((radio, index) => {
-				const getUrlFavicon = (url) => {
-					if (!url) return null
-					const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'))
-					if (!regex) return null
-					const origin = regex[0]
-					return origin + '/favicon.ico'
-				}
-
-				return (
-					<TouchableOpacity
-						key={index}
-						onPress={() => playRadio(index)}
-						onLongPress={() => setOptionRadio(radio)}
-						delayLongPress={200}
-						style={styles.cardRadio(theme)}
-					>
-						<ImageError
-							source={{ uri: getUrlFavicon(radio.homePageUrl) }}
-							style={styles.image} >
+		<>
+			<CustomScroll
+				contentContainerStyle={{
+					height: 60 * 2 + 10,
+					paddingStart: 20,
+					paddingEnd: 20,
+					flexDirection: 'column',
+					flexWrap: 'wrap',
+					columnGap: 10,
+					rowGap: 10,
+				}}
+				data={[...radios, { lastItem: true }]}
+				renderItem={({ item, index }) => {
+					if (item.lastItem) return (
+						<TouchableOpacity
+							onPress={() => navigation.navigate('UpdateRadio')}
+							delayLongPress={200}
+							style={styles.cardRadio(theme)}
+						>
 							<View
 								style={{
 									...styles.image,
 									alignItems: 'center',
 									justifyContent: 'center',
 								}} >
-								<Icon
-									name="feed"
-									size={32}
-									style={{ marginTop: 2 }}
-									color={theme.primaryLight}
-								/>
+								<Icon name="plus" size={32} color={theme.primaryLight} />
 							</View>
-						</ImageError>
-						<View style={{ flexDirection: 'column' }} >
 							<Text
 								numberOfLines={1}
 								style={{
 									color: theme.primaryLight,
 									fontSize: 16,
-									maxWidth: 275,
 									fontWeight: 'bold',
 									overflow: 'hidden',
 								}}
 							>
-								{radio.name}
+								Add radio
 							</Text>
-							{radio.homePageUrl && <Text
-								numberOfLines={1}
-								style={{
-									color: theme.secondaryLight,
-									maxWidth: 275,
-									fontSize: 16,
-									overflow: 'hidden',
-								}}
-							>
-								{radio.homePageUrl}
-							</Text>}
-						</View>
-					</TouchableOpacity>
-				)
-			})}
-			<TouchableOpacity
-				onPress={() => navigation.navigate('UpdateRadio')}
-				delayLongPress={200}
-				style={styles.cardRadio}
-			>
-				<View
-					style={{
-						...styles.image,
-						alignItems: 'center',
-						justifyContent: 'center',
-					}} >
-					<Icon name="plus" size={32} color={theme.primaryLight} />
-				</View>
-				<Text
-					numberOfLines={1}
-					style={{
-						color: theme.primaryLight,
-						fontSize: 16,
-						fontWeight: 'bold',
-						overflow: 'hidden',
-					}}
-				>
-					Add radio
-				</Text>
-			</TouchableOpacity>
+						</TouchableOpacity>
+					)
+
+					return (
+						<TouchableOpacity
+							key={index}
+							onPress={() => playRadio(index)}
+							onLongPress={() => setOptionRadio(item)}
+							delayLongPress={200}
+							style={styles.cardRadio(theme)}
+						>
+							<ImageError
+								source={{ uri: getUrlFavicon(item.homePageUrl) }}
+								style={styles.image}>
+								<View
+									style={{
+										...styles.image,
+										alignItems: 'center',
+										justifyContent: 'center',
+									}} >
+									<Icon
+										name="feed"
+										size={32}
+										style={{ marginTop: 2 }}
+										color={theme.primaryLight}
+									/>
+								</View>
+							</ImageError>
+							<View style={{ flexDirection: 'column', flex: 1 }} >
+								<Text
+									numberOfLines={1}
+									style={{
+										color: theme.primaryLight,
+										fontSize: 16,
+										flex: 1,
+										fontWeight: 'bold',
+									}}
+								>
+									{item.name}
+								</Text>
+								{item.homePageUrl && <Text
+									numberOfLines={1}
+									style={{
+										color: theme.secondaryLight,
+										fontSize: 16,
+									}}
+								>
+									{item.homePageUrl}
+								</Text>}
+							</View>
+						</TouchableOpacity>
+					)
+				}}
+			/>
 			<OptionsPopup
 				visible={optionRadio !== null}
 				close={() => { setOptionRadio(null) }}
@@ -164,16 +166,15 @@ const RadioList = ({ config, radios }) => {
 					}
 				]}
 			/>
-		</CustomScroll>
+		</>
 	)
 }
 
 const styles = {
 	cardRadio: theme => ({
 		height: 60,
-		minWidth: 200,
+		width: 300,
 		padding: 10,
-		paddingEnd: 20,
 		backgroundColor: theme.secondaryDark,
 		flexDirection: 'row',
 		alignItems: 'center',

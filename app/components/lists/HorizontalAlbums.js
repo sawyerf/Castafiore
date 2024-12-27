@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, TouchableOpacity } from 'react-native';
+import { Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -15,24 +15,27 @@ const HorizontalAlbums = ({ config, albums }) => {
 	const [infoAlbum, setInfoAlbum] = React.useState(null)
 
 	return (
-		<CustomScroll>
-			{albums?.map((album, index) => (
-				<TouchableOpacity
-					style={styles.album}
-					key={album.id}
-					onLongPress={() => setIndexOptions(index)}
-					delayLongPress={200}
-					onPress={() => navigation.navigate('Album', { album: album })}>
-					<Image
-						style={styles.albumCover}
-						source={{
-							uri: urlCover(config, album.id),
-						}}
-					/>
-					<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{album.name}</Text>
-					<Text numberOfLines={1} style={{ ...styles.artist(theme) }}>{album.artist}</Text>
-				</TouchableOpacity >
-			))}
+		<>
+			<CustomScroll
+				data={albums}
+				renderItem={({ item, index }) => (
+					<TouchableOpacity
+						style={styles.album}
+						key={item.id}
+						onLongPress={() => setIndexOptions(index)}
+						delayLongPress={200}
+						onPress={() => navigation.navigate('Album', { album: item })}>
+						<Image
+							style={styles.albumCover}
+							source={{
+								uri: urlCover(config, item.id),
+							}}
+						/>
+						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
+						<Text numberOfLines={1} style={{ ...styles.artist(theme) }}>{item.artist}</Text>
+					</TouchableOpacity >
+				)} />
+
 			<InfoPopup info={infoAlbum} close={() => setInfoAlbum(null)} />
 			<OptionsPopup
 				visible={indexOptions >= 0}
@@ -48,7 +51,7 @@ const HorizontalAlbums = ({ config, albums }) => {
 					}
 				]}
 			/>
-		</CustomScroll>
+		</>
 	)
 }
 

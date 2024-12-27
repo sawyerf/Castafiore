@@ -1,22 +1,25 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, FlatList } from 'react-native';
 import IconButton from '~/components/button/IconButton';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 
-const CustomScroll = ({ children, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
+const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
   const refScroll = React.useRef(null)
-  const refPosition = React.useRef(0)
   const theme = React.useContext(ThemeContext)
   const settings = React.useContext(SettingsContext)
+  const indexScroll = React.useRef(0)
 
   const goRight = () => {
-    // (160 + 10) * 3 = 510
-    refScroll.current.scrollTo({ x: refPosition.current + 510, animated: false })
+    if (indexScroll.current + 3 >= data.length) indexScroll.current = data.length - 1
+    else indexScroll.current = indexScroll.current + 3
+    refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 10})
   }
 
   const goLeft = () => {
-    refScroll.current.scrollTo({ x: refPosition.current - 510, animated: false })
+    if (indexScroll.current < 3) indexScroll.current = 0
+    else indexScroll.current = indexScroll.current - 3
+    refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 10})
   }
 
   return (
@@ -52,16 +55,17 @@ const CustomScroll = ({ children, style = { width: '100%' }, contentContainerSty
             alignItems: 'center',
           }} />
       </View>}
-      <ScrollView
-        ref={refScroll}
-        onScroll={(event) => { refPosition.current = event.nativeEvent.contentOffset.x }}
+      <FlatList
+        data={data}
+        keyExtractor={(item, index) => index}
+        renderItem={renderItem}
         horizontal={true}
         style={style}
         contentContainerStyle={contentContainerStyle}
         showsHorizontalScrollIndicator={false}
-      >
-        {children}
-      </ScrollView >
+        ref={refScroll}
+      />
+      {children}
     </View>
   )
 }

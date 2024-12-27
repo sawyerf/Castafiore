@@ -63,7 +63,7 @@ const CacheSettings = () => {
 						isLast={true}
 					/>
 				</View>
-				<Text style={{...settingStyles.description(theme), marginBottom: 20}}>Number of songs to preview in favorited playlist (default: 3)</Text >
+				<Text style={settingStyles.description(theme)}>Number of songs to preview in favorited playlist (default: 3)</Text >
 
 				<Text style={settingStyles.titleContainer(theme)}>Order Playlists</Text >
 				<View style={settingStyles.optionsContainer(theme)}>

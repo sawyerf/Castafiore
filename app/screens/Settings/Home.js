@@ -45,7 +45,7 @@ const HomeSettings = ({ }) => {
 					<HomeOrder />
 				</View>
 				<Text style={settingStyles.description(theme)}>	{'Select what you want to see on the home page'}</Text >
-				<View style={{ ...settingStyles.optionsContainer(theme), marginTop: 15 }}>
+				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
 						title="Size of album list"
 						value={sizeOfList}
@@ -66,7 +66,7 @@ const HomeSettings = ({ }) => {
 				</View>
 				<Text style={settingStyles.description(theme)}>	{'It\'s recommanded to activate scroll helper on desktop'}</Text >
 
-				<View style={{ ...settingStyles.optionsContainer(theme), marginTop: 15 }}>
+				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
 						title="ListenBrainz User"
 						value={LBUser}

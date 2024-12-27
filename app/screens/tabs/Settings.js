@@ -4,6 +4,7 @@ import { Text, View, Image, ScrollView, TouchableOpacity, Platform, Alert } from
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
+import { confirmAlert } from '~/utils/alert';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
@@ -93,19 +94,11 @@ const Settings = ({ navigation }) => {
 					title="Reset Settings"
 					icon="undo"
 					onPress={() => {
-						if (Platform.OS === 'web') {
-							const confirm = window.confirm('Are you sure you want to reset all settings?')
-							if (confirm) setSettings(defaultSettings)
-						} else {
-							Alert.alert(
-								'Reset Settings',
-								'Are you sure you want to reset all settings?',
-								[
-									{ text: 'Cancel', style: 'cancel' },
-									{ text: 'OK', onPress: () => setSettings(defaultSettings) }
-								]
-							)
-						}
+						confirmAlert(
+							'Reset Settings',
+							'Are you sure you want to reset all settings?',
+							() => setSettings(defaultSettings)
+						)
 					}}
 					isLast={true}
 				/>

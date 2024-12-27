@@ -23,6 +23,7 @@ export default {
 		color: theme.secondaryLight,
 		fontSize: 13,
 		marginStart: 5,
+		marginBottom: 20,
 		width: '100%',
 		textAlign: 'left'
 	}),

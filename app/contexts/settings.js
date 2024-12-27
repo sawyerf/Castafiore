@@ -34,6 +34,7 @@ export const defaultSettings = {
 	cacheNextSong: 5,
 	theme: 'castafiore',
 	scrollHelper: false,
+	showCache: false,
 }
 
 export const getSettings = async () => {

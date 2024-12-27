@@ -6,15 +6,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
+import { confirmAlert } from '~/utils/alert';
 import { getApi } from '~/utils/api';
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
+import ButtonText from '~/components/settings/ButtonText';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import OptionInput from '~/components/settings/OptionInput';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import settingStyles from '~/styles/settings';
-import ButtonText from '~/components/settings/ButtonText';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()
@@ -155,8 +156,13 @@ const Connect = ({ navigation }) => {
 						name: 'Delete',
 						icon: 'trash',
 						onPress: () => {
-							setSettings({ ...settings, servers: settings.servers.filter((server, index) => index !== serverOption.index) })
-							setServerOption(null)
+							confirmAlert(
+								'Delete server',
+								'Are you sure you want to delete this server?',
+								() => {
+									setSettings({ ...settings, servers: settings.servers.filter((server, index) => index !== serverOption.index) })
+									setServerOption(null)
+								})
 						}
 					},
 				]}

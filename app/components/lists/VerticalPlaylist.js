@@ -8,6 +8,7 @@ import { urlCover } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import { getApi } from '~/utils/api';
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { confirmAlert } from '~/utils/alert';
 
 const VerticalPlaylist = ({ config, playlists }) => {
 	const navigation = useNavigation();
@@ -83,22 +84,14 @@ const VerticalPlaylist = ({ config, playlists }) => {
 						name: 'Delete Playlist',
 						icon: 'trash',
 						onPress: () => {
-							if (Platform.OS === 'web') {
-								const result = window.confirm(`Are you sure you want to delete playlist: '${playlists[indexOption].name}' ?`)
-								if (result) deletePlaylist(playlists[indexOption].id)
-								else setIndexOption(-1)
-							} else {
-								Alert.alert(
-									'Delete Playlist',
-									`Are you sure you want to delete playlist: '${playlists[indexOption].name}' ?`,
-									[
-										{ text: 'Cancel', onPress: () => setIndexOption(-1), style: 'cancel' },
-										{ text: 'OK', onPress: () => deletePlaylist(playlists[indexOption].id) }
-									]
-								)
-							}
+							confirmAlert(
+								'Delete Playlist',
+								`Are you sure you want to delete playlist: '${playlists[indexOption].name}' ?`,
+								() => deletePlaylist(playlists[indexOption].id),
+								() => setIndexOption(-1),
+							)
 						}
-					}
+					},
 				]}
 			/>
 		</View>

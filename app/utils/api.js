@@ -48,15 +48,17 @@ export const getCachedAndApi = async (config, path, query = '', setData = (json)
 		return
 	}
 
+	let json = null
 	const key = getUrl(config, path, query)
-	const json = await getJsonCache('api', key)
+	json = await getJsonCache('api', key)
 	if (json) setData(json)
-	getApi(config, path, query, true)
+	json = await getApi(config, path, query, true)
 		.then((json) => {
 			setData(json)
-			setJsonCache('api', url, key)
+			return json
 		})
-		.catch((error) => { })
+		.catch((error) => { return null })
+	await setJsonCache('api', key, json)
 }
 
 export const useCachedAndApi = (initialState, path, query = '', setFunc = (json, setData) => { }, deps = []) => {
@@ -77,23 +79,36 @@ export const getApiCacheFirst = (config, path, query = '') => {
 		const key = getUrl(config, path, query)
 		getJsonCache('api', key)
 			.then((json) => {
-				if (json) return json
+				if (json) return resolve(json)
 				getApi(config, path, query)
 					.then((json) => {
 						setJsonCache('api', key, json)
-						resolve(json)
+							.then(() => {
+								resolve(json)
+							})
 					})
 					.catch((error) => reject(error))
 			})
-			.catch((error) => reject(error))
+			.catch((error) => {
+				getApi(config, path, query)
+					.then((json) => {
+						setJsonCache('api', key, json)
+							.then(() => {
+								resolve(json)
+							})
+					})
+					.catch((error) => reject(error))
+			})
 	})
 }
 
 export const getApiNetworkFirst = (config, path, query = '') => {
 	return new Promise((resolve, reject) => {
+		const key = getUrl(config, path, query)
 		getApi(config, path, query)
 			.then((json) => {
 				setJsonCache('api', key, json)
+					.then(() => resolve(json))
 			})
 			.catch((error) => {
 				getJsonCache('api', getUrl(config, path, query))

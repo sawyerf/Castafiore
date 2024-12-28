@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 export const getCache = async (cacheName, key) => {
   return null
 }
@@ -16,5 +18,6 @@ export const getJsonCache = async (cacheName, key) => {
 }
 
 export const setJsonCache = async (cacheName, key, json) => {
-  AsyncStorage.setItem(key, JSON.stringify(json))
+  if (!json) return
+  await AsyncStorage.setItem(key, JSON.stringify(json))
 }

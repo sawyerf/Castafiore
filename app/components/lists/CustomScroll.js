@@ -23,7 +23,7 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
   }
 
   return (
-    <View>
+    <>
       {settings?.scrollHelper && <View
         style={{
           position: 'absolute',
@@ -66,7 +66,7 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
         ref={refScroll}
       />
       {children}
-    </View>
+    </>
   )
 }
 

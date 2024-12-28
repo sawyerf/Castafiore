@@ -19,7 +19,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
   }, [config.query])
 
   return (
-    <View>
+    <>
       {
         !isFullScreen ?
           settings.isDesktop ?
@@ -28,7 +28,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
           : null
       }
       <Player state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
-    </View >
+    </>
   );
 }
 

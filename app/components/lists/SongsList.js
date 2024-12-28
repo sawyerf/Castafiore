@@ -2,13 +2,12 @@ import React from 'react';
 import { Text, View, Image, TouchableOpacity, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ConfigContext } from '~/contexts/config';
 import { getCache } from '~/utils/cache';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover, getApi } from '~/utils/api';
+import { urlCover, getApi, getApiNetworkFirst } from '~/utils/api';
 import { urlStream } from '~/utils/api';
 import { useNavigation } from '@react-navigation/native';
 import ErrorPopup from '~/components/popup/ErrorPopup';
@@ -114,7 +113,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						name: 'Play similar songs',
 						icon: 'play',
 						onPress: () => {
-							getApi(config, 'getSimilarSongs', `id=${songs[indexOptions].id}&count=50`)
+							getApiNetworkFirst(config, 'getSimilarSongs', `id=${songs[indexOptions].id}&count=50`)
 								.then((json) => {
 									if (!json.similarSongs?.song) {
 										setError('No similar songs found')

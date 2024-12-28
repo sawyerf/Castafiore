@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import React from "react"
 import { ConfigContext } from "~/contexts/config"
+import { getJsonCache, setJsonCache } from "./cache"
 
 const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''
@@ -17,7 +18,7 @@ const getUrl = (config, path, query = '') => {
 	return `${config.url}/rest/${path}?${config.query}&f=json&${encodedQuery}`
 }
 
-export const getApi = (config, path, query = '', isCache = false) => {
+export const getApi = (config, path, query = '') => {
 	return new Promise((resolve, reject) => {
 		if (!config?.url || !config?.query) {
 			reject('getApi: config.url or config.query is not defined')
@@ -28,7 +29,6 @@ export const getApi = (config, path, query = '', isCache = false) => {
 			.then((response) => response.json())
 			.then((json) => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
-					if (isCache) AsyncStorage.setItem(url, JSON.stringify(json['subsonic-response']))
 					resolve(json['subsonic-response'])
 				} else {
 					console.error(`getApi[/rest/${path}]: ${JSON.stringify(json['subsonic-response']?.error)}`)
@@ -49,11 +49,12 @@ export const getCachedAndApi = async (config, path, query = '', setData = (json)
 	}
 
 	const key = getUrl(config, path, query)
-	const cached = await AsyncStorage.getItem(key)
-	if (cached) setData(JSON.parse(cached))
+	const json = await getJsonCache('api', key)
+	if (json) setData(json)
 	getApi(config, path, query, true)
 		.then((json) => {
 			setData(json)
+			setJsonCache('api', url, key)
 		})
 		.catch((error) => { })
 }
@@ -69,6 +70,40 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = (json,
 	}, [config, ...deps])
 
 	return data
+}
+
+export const getApiCacheFirst = (config, path, query = '') => {
+	return new Promise((resolve, reject) => {
+		const key = getUrl(config, path, query)
+		getJsonCache('api', key)
+			.then((json) => {
+				if (json) return json
+				getApi(config, path, query)
+					.then((json) => {
+						setJsonCache('api', key, json)
+						resolve(json)
+					})
+					.catch((error) => reject(error))
+			})
+			.catch((error) => reject(error))
+	})
+}
+
+export const getApiNetworkFirst = (config, path, query = '') => {
+	return new Promise((resolve, reject) => {
+		getApi(config, path, query)
+			.then((json) => {
+				setJsonCache('api', key, json)
+			})
+			.catch((error) => {
+				getJsonCache('api', getUrl(config, path, query))
+					.then((json) => {
+						if (json) resolve(json)
+						else reject(error)
+					})
+					.catch((error) => reject(error))
+			})
+	})
 }
 
 export const urlCover = (config, id, size = null) => {

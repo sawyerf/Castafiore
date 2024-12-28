@@ -27,7 +27,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 		if (config.query) {
 			getList()
 		}
-	}, [config, type, query, enable])
+	}, [config, type, query, enable, settings.listenBrainzUser])
 
 	const getPath = () => {
 		if (type === 'album') return 'getAlbumList'
@@ -60,14 +60,14 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	if (!enable) return null
 	if (!list) return null
 	return (
-		<View>
+		<>
 			<Text style={mainStyles.titleSection(theme)}>{title}</Text>
 			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
 			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
 			{type === 'radio' && <RadioList config={config} radios={list} />}
 			{type === 'listenbrainz' && <HorizontalLBStat config={config} stats={list} /> }
-		</View>
+		</>
 	)
 }
 

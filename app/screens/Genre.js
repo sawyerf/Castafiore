@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
+import { getApiNetworkFirst } from '~/utils/api';
 import { useCachedAndApi } from '~/utils/api';
 import { playSong } from '~/utils/player';
 import { SongContext } from '~/contexts/song';
@@ -31,7 +31,7 @@ const Genre = ({ route }) => {
 	})
 
 	const getRandomSongs = () => {
-		getApi(config, 'getRandomSongs', { genre: route.params.genre.value, count: 50 })
+		getApiNetworkFirst(config, 'getRandomSongs', { genre: route.params.genre.value, count: 50 })
 			.then((json) => {
 				const songs = json.randomSongs?.song
 				if (!songs) return

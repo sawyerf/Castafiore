@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
+import { getApiNetworkFirst } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
@@ -57,7 +57,7 @@ const Search = () => {
 	}
 
 	const getSearch = () => {
-		getApi(config, 'search2', { query })
+		getApiNetworkFirst(config, 'search2', { query })
 			.then((json) => {
 				setResults(json.searchResult2)
 			})
@@ -122,7 +122,7 @@ const Search = () => {
 					}}>No results</Text>
 				) : null}
 				{query.length && results ? (
-					<View>
+					<>
 						{
 							results.artist &&
 							<>
@@ -144,7 +144,7 @@ const Search = () => {
 								<SongsList songs={results.song} config={config} />
 							</>
 						}
-					</View>) : null
+					</>) : null
 				}
 			</ScrollView >
 		</View >

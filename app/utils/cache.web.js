@@ -1,5 +1,6 @@
 export const getCache = async (cacheName, key) => {
   const caches = await window.caches.open(cacheName)
+  if (!caches) return null
   return await caches.match(key)
 }
 
@@ -19,4 +20,16 @@ export const getStatCache = async () => {
     stats.push({ name, count: keys.length })
   }
   return stats.sort((a, b) => a.name.localeCompare(b.name))
+}
+
+export const getJsonCache = async (cacheName, url) => {
+  const cache = await getCache(cacheName, url)
+  if (!cache) return null
+  const json = await cache.json()
+  if (!json) return null
+  return json['subsonic-response']
+}
+
+export const setJsonCache = async (cacheName, key, json) => {
+  // Service worker already do this
 }

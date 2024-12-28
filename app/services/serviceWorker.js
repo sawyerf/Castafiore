@@ -33,7 +33,7 @@ registerRoute(
 
 registerRoute(
 	({ url }) => {
-		return url.pathname.match(/\/rest\/(getAlbum|getAlbum|getPlaylists|getTopSongs|getRandomSongs|search2)$/)
+		return url.pathname.match(/\/rest\/(getAlbumList|getAlbum|favorited|getAlbum|getStarred|getPlaylists|getArtist|getPlaylist|getTopSongs|getArtistInfo|getRandomSongs|search2)$/)
 	},
 	new NetworkFirst({
 		cacheName: "api",

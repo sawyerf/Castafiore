@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 
-import { getApi } from '~/utils/api';
+import { getApi, getApiNetworkFirst } from '~/utils/api';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
@@ -32,7 +32,7 @@ const Home = () => {
 	};
 
 	const clickRandomSong = () => {
-		getApi(config, 'getRandomSongs', `count=50`)
+		getApiNetworkFirst(config, 'getRandomSongs', `count=50`)
 			.then((json) => {
 				playSong(config, songDispatch, json.randomSongs.song, 0)
 			})

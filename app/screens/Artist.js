@@ -6,7 +6,7 @@ import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
-import { getApi, urlCover, useCachedAndApi } from '~/utils/api';
+import { getApi, urlCover, useCachedAndApi, getApiNetworkFirst, getApiCacheFirst } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -35,7 +35,7 @@ const Artist = ({ route }) => {
 		if (!artist.album) return
 		if (!allSongs.current.length) {
 			const songsPending = artist.album.map(async album => {
-				return await getApi(config, 'getAlbum', `id=${album.id}`)
+				return await getApiNetworkFirst(config, 'getAlbum', `id=${album.id}`)
 					.then((json) => {
 						return json.album.song
 					})
@@ -47,7 +47,7 @@ const Artist = ({ route }) => {
 	}
 
 	const getSimilarSongs = () => {
-		getApi(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
+		getApiCacheFirst(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
 			.then((json) => {
 				const songs = json.similarSongs.song
 				playSong(config, songDispatch, songs, 0)
@@ -56,7 +56,7 @@ const Artist = ({ route }) => {
 	}
 
 	const getTopSongs = () => {
-		getApi(config, 'getTopSongs', { artist: route.params.artist.name, count: 50 })
+		getApiNetworkFirst(config, 'getTopSongs', { artist: route.params.artist.name, count: 50 })
 			.then((json) => {
 				const songs = json.topSongs?.song
 				if (!songs) return

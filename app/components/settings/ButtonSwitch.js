@@ -18,6 +18,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 				borderBottomWidth: isLast ? 0 : .5,
 				flexDirection: 'row',
 			}}
+			color={theme.primaryLight}
 			onPress={onPress}
 		>
 			{icon && <View

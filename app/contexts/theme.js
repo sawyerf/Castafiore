@@ -18,7 +18,7 @@ export const themes = {
 		tertiaryDark: '#2e2e2e',
 		// Use for text
 		primaryLight: '#f5f5dc',
-		secondaryLight: 'gray',
+		secondaryLight: '#808080',
 		// Use for button
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
@@ -27,7 +27,7 @@ export const themes = {
 		// Color of the player
 		playerBackground: '#1e1e1e',
 		playerPrimaryText: '#f5f5dc',
-		playerSecondaryText: 'gray',
+		playerSecondaryText: '#808080',
 		playerButton: '#cd1921'
 	},
 	deezer: {
@@ -41,9 +41,9 @@ export const themes = {
 		innerTouch: '#FFFFFF',
 
 		playerBackground: '#155faa',
-		playerPrimaryText: 'white',
-		playerSecondaryText: 'white',
-		playerButton: 'white'
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
 	},
 	spotify: {
 		primaryDark: '#000000',
@@ -95,7 +95,7 @@ export const themes = {
 		secondaryDark: '#f2f2f2',
 		tertiaryDark: '#f3f3f3',
 		primaryLight: '#000000',
-		secondaryLight: '#f2f2f2',
+		secondaryLight: '#999999',
 		primaryTouch: '#FF7700',
 		secondaryTouch: '#FF8800',
 		innerTouch: '#FFFFFF',
@@ -103,14 +103,14 @@ export const themes = {
 		playerBackground: '#FF7700',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#f3e3d6',
-		playerButton: 'white'
+		playerButton: '#FFFFFF'
 	},
 	lightMode: {
 		primaryDark: '#f6f6ef',
 		secondaryDark: '#eaeae1',
 		tertiaryDark: '#dcdcd4',
-		primaryLight: '#121212',
-		secondaryLight: '#1e1e1e',
+		primaryLight: '#1c1c1c',
+		secondaryLight: '#848484',
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
 		innerTouch: '#f6f6ef',

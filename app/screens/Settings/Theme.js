@@ -22,7 +22,7 @@ const Theme = ({ navigation }) => {
 	return (
 		<ScrollView style={mainStyles.mainContainer(insets, theme)} >
 			<Header title="Theme" />
-			<View style={settingStyles.contentMainContainer(insets)}>
+			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
 				<Text style={settingStyles.titleContainer(theme)}>Theme</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{

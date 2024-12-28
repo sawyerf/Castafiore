@@ -30,6 +30,7 @@ const Connect = ({ navigation }) => {
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
 	const [serverOption, setServerOption] = React.useState(null)
+	const [info, setInfo] = React.useState(null)
 
 	React.useEffect(() => {
 		if (config?.name?.length) setName(config.name)
@@ -44,6 +45,16 @@ const Connect = ({ navigation }) => {
 		setConfig(conf)
 	}
 
+	React.useEffect(() => {
+		if (!config?.url) return
+		setError('')
+		getApi({ url: config.url, query: config.query }, 'ping.view')
+			.then((json) => {
+				if (json?.status == 'ok') setInfo(json)
+			})
+			.catch((error) => { })
+	}, [config])
+
 	const connect = () => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
@@ -57,6 +68,7 @@ const Connect = ({ navigation }) => {
 		getApi({ url: uri, query }, 'ping.view')
 			.then((json) => {
 				if (json?.status == 'ok') {
+					setInfo(json)
 					const conf = { name, url: uri, username, query }
 					upConfig(conf)
 					setError('')
@@ -76,19 +88,33 @@ const Connect = ({ navigation }) => {
 	return (
 		<ScrollView style={mainStyles.mainContainer(insets, theme)} >
 			<Header title="Connect" />
-			<View style={settingStyles.contentMainContainer(insets)}>
-				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent: 'center',
-						width: '100%',
-						minHeight: 60,
-						alignItems: 'center',
-					}}
-				>
-					<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
-				</View>
+			<View style={{...settingStyles.contentMainContainer(insets), marginTop: 30}}>
 				<View style={settingStyles.optionsContainer(theme)}>
+					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
+						<View
+							style={{
+								aspectRatio: 1,
+								backgroundColor: theme.primaryTouch,
+								borderRadius: 5,
+								alignItems: 'center',
+								justifyContent: 'center',
+								padding: 10,
+							}}>
+							<Icon name="server" size={30} color={theme.innerTouch} />
+						</View>
+						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+							{!error.length && <Icon name="circle" size={10} color={info ? 'green' : 'red'} />}
+							<Text style={{ color: error.length ? theme.primaryTouch : theme.primaryLight, fontSize: 16, marginStart: 5 }}>
+								{(() => {
+									if (error.length) return error
+									else if (info) return `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} ${info.serverVersion}`
+									else return 'Not connected'
+								})()}
+							</Text>
+						</View>
+					</View>
+				</View>
+				<View style={{...settingStyles.optionsContainer(theme), marginBottom: 10}}>
 					<OptionInput
 						title="Name"
 						placeholder="Name"

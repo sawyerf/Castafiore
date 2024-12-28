@@ -106,11 +106,13 @@ export const themes = {
 		playerButton: '#FFFFFF'
 	},
 	lightMode: {
-		primaryDark: '#f6f6ef',
-		secondaryDark: '#eaeae1',
+		primaryDark: '#fdfcfe',
+		secondaryDark: '#f6f2f8',
 		tertiaryDark: '#dcdcd4',
-		primaryLight: '#1c1c1c',
-		secondaryLight: '#848484',
+
+		primaryLight: '#040208',
+		secondaryLight: '#a09fa0',
+
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
 		innerTouch: '#f6f6ef',

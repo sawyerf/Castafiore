@@ -4,39 +4,42 @@ import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ThemeContext } from '~/contexts/theme'
+import IconButton from '~/components/button/IconButton'
 
 const Header = ({ title }) => {
 	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<View style={{ width: '100%' }}>
-			<Pressable
-				style={({ pressed }) => ({
-					opacity: pressed ? 0.5 : 1,
-					flexDirection: 'row',
-					alignItems: 'center',
-					width: 'min-content',
-					padding: 20,
-				})}
+		<View style={{
+			width: '100%',
+			flexDirection: 'row',
+			alignItems: 'center',
+			height: 70
+		}}>
+			<Text numberOfLines={1}
+				style={{
+					color: theme.primaryLight,
+					fontSize: 20,
+					fontWeight: 'bold',
+					flex: 1,
+					textAlign: 'center',
+				}} >
+				{title}
+			</Text>
+			<IconButton
+				icon="angle-left"
+				size={34}
+				color={theme.primaryLight}
+				style={{
+					position: 'absolute',
+					left: 0,
+					top: 0,
+					paddingHorizontal: 20,
+					height: 70,
+				}}
 				onPress={() => navigation.goBack()}
-			>
-				<Icon
-					name="angle-left"
-					size={34}
-					color={theme.primaryLight}
-					style={{ paddingEnd: 10 }}
-				/>
-				<Text numberOfLines={1}
-					style={{
-						color: theme.primaryLight,
-						fontSize: 24,
-						fontWeight: 'bold',
-						lineHeight: 0,
-					}} >
-					{title}
-				</Text>
-			</Pressable>
+			/>
 		</View >
 	)
 }

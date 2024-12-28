@@ -45,5 +45,4 @@ export default {
 		borderBottomWidth: isLast ? 0 : .5,
 		flexDirection: 'row',
 	}),
-
 }

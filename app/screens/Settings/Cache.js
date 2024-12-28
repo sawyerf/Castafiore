@@ -47,7 +47,7 @@ const CacheSettings = () => {
 	}, [cacheNextSong])
 
 	return (
-		<ScrollView style={{ ...mainStyles.mainContainer(insets, theme) }}>
+		<ScrollView style={mainStyles.mainContainer(insets, theme)}>
 			<Header title="Cache" />
 			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
 				<Text style={settingStyles.titleContainer(theme)}>Auto Cache</Text >

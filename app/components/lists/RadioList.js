@@ -29,6 +29,7 @@ const RadioList = ({ config, radios }) => {
 			albumArtist: radio.homePageUrl,
 		})), index)
 	}
+
 	const getUrlFavicon = (url) => {
 		if (!url) return null
 		const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'))
@@ -36,7 +37,6 @@ const RadioList = ({ config, radios }) => {
 		const origin = regex[0]
 		return origin + '/favicon.ico'
 	}
-
 
 	if (!radios) return null
 	return (

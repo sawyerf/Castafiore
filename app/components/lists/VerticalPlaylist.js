@@ -50,7 +50,7 @@ const VerticalPlaylist = ({ config, playlists }) => {
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
 								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginBottom: 2 }}>{playlist.name}</Text>
-								<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{(playlist.duration / 60) | 1} minutes</Text>
+								<Text numberOfLines={1} style={{ color: theme.secondaryLight }}>{(playlist.duration / 60) | 1} min · {playlist.songCount} songs</Text>
 							</View>
 							{settings.pinPlaylist.includes(playlist.id) && <Icon name="bookmark" size={23} color={theme.secondaryLight} style={{ paddingEnd: 5, paddingStart: 10 }} />}
 						</TouchableOpacity>

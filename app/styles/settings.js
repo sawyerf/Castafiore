@@ -45,4 +45,10 @@ export default {
 		borderBottomWidth: isLast ? 0 : .5,
 		flexDirection: 'row',
 	}),
+	primaryText: theme => ({
+		color: theme.primaryLight,
+		fontSize: 16,
+		marginEnd: 10,
+		flex: 1,
+	}),
 }

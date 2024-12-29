@@ -50,13 +50,13 @@ const App = () => {
     setTheme(getTheme(settings))
   }, [settings.theme])
 
-  const saveSettings = (settings) => {
+  const saveSettings = React.useCallback((settings) => {
     setSettings(settings)
     AsyncStorage.setItem('settings', JSON.stringify(settings))
       .catch((error) => {
         console.error('Save settings error:', error)
       })
-  }
+  }, [settings, setSettings])
 
   return (
     <SetConfigContext.Provider value={setConfig}>

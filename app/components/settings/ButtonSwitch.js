@@ -3,21 +3,14 @@ import { Text, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
+import settingStyles from '~/styles/settings';
 
 const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
 		<Pressable
-			style={{
-				width: '100%',
-				height: 50,
-				paddingEnd: 5,
-				alignItems: 'center',
-				borderBottomColor: theme.secondaryLight,
-				borderBottomWidth: isLast ? 0 : .5,
-				flexDirection: 'row',
-			}}
+			style={settingStyles.optionItem(theme, isLast)}
 			color={theme.primaryLight}
 			onPress={onPress}
 		>
@@ -38,7 +31,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 				/></View> }
 			<Text
 				numberOfLines={1}
-				style={{ color: theme.primaryLight, fontSize: 16, marginEnd: 10, flex: 1 }}>{title}</Text>
+				style={settingStyles.primaryText(theme)}>{title}</Text>
 			<View
 				style={{
 					height: 30,

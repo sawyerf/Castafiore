@@ -14,11 +14,11 @@ const TableItem = ({ title, value, isLast = false }) => {
     }} >
       <Text
         numberOfLines={1}
-        style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, fontWeight: '400', maxWidth: '80%' }}
+        style={{ ...settingStyles.primaryText(theme), flex: undefined, maxWidth: '80%' }}
       >{title}</Text>
       <Text
         numberOfLines={1}
-        style={{ color: theme.primaryLight, fontSize: 16, fontWeight: '400', textAlign: 'right' }}
+        style={{ color: theme.primaryLight, fontSize: 16, textAlign: 'right' }}
       >{value}</Text>
     </View>
   )

@@ -3,21 +3,14 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
+import settingStyles from '~/styles/settings';
 
 const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
 		<TouchableOpacity
-			style={{
-				width: '100%',
-				height: 50,
-				paddingEnd: 5,
-				alignItems: 'center',
-				borderBottomColor: theme.secondaryLight,
-				borderBottomWidth: isLast ? 0 : .5,
-				flexDirection: 'row',
-			}}
+			style={settingStyles.optionItem(theme, isLast)}
 			onPress={onPress}
 		>
 			<View
@@ -37,7 +30,7 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 				/></View>
 			<Text
 				numberOfLines={1}
-				style={{ color: theme.primaryLight, fontSize: 16, marginEnd: 10, flex: 1 }}>{title}</Text>
+				style={settingStyles.primaryText(theme)}>{title}</Text>
 			<Text
 				numberOfLines={1}
 				style={{

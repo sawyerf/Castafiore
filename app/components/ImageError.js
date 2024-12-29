@@ -10,7 +10,7 @@ const ImageError = ({ source, style, children }) => {
 	React.useEffect(() => {
 		if (!source?.uri) setIsImage(false)
 		else setIsImage(true)
-	}, [source?.uri])
+	}, [source, source?.uri])
 
 	if (isImage) return image
 	return children

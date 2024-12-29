@@ -11,7 +11,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 		<View style={settingStyles.optionItem(theme, isLast)} >
 			<Text
 				numberOfLines={1}
-				style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, fontWeight: '400' }}>{title}</Text>
+				style={{ ...settingStyles.primaryText(theme), flex: undefined }}>{title}</Text>
 			<TextInput
 				style={{
 					flex: 1,

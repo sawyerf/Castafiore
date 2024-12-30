@@ -17,6 +17,7 @@ import HomeSettings from '~/screens/Settings/Home';
 import PlaylistsSettings from '~/screens/Settings/Playlists';
 import CacheSettings from '~/screens/Settings/Cache';
 import ThemeSettings from '~/screens/Settings/Theme';
+import ShowAll from '~/screens/ShowAll';
 
 import { ThemeContext } from '~/contexts/theme';
 
@@ -41,6 +42,7 @@ export const HomeStack = () => {
 			<Stack.Screen name="Artist" component={Artist} />
 			<Stack.Screen name="Genre" component={Genre} />
 			<Stack.Screen name="UpdateRadio" component={UpdateRadio} />
+			<Stack.Screen name="ShowAll" component={ShowAll} />
 		</Stack.Navigator>
 	)
 }

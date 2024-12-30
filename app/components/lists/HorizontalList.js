@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
@@ -15,6 +17,7 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
+	const navigation = useNavigation();
 
 	React.useEffect(() => {
 		if (!enable) return
@@ -61,12 +64,30 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 	if (!list) return null
 	return (
 		<>
-			<Text style={mainStyles.titleSection(theme)}>{title}</Text>
+			<Pressable
+				style={{
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					width: '100%',
+				}}
+				onPress={() => { navigation.navigate('ShowAll', { title, type, query, }) }}
+			>
+				<Text style={mainStyles.titleSection(theme)}>{title}</Text>
+				{
+					['album', 'artist'].includes(type) && <Icon
+						name='angle-right'
+						color={theme.secondaryLight}
+						size={25}
+						style={mainStyles.titleSection(theme)}
+					/>
+				}
+			</Pressable>
 			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
 			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
 			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
 			{type === 'radio' && <RadioList config={config} radios={list} />}
-			{type === 'listenbrainz' && <HorizontalLBStat config={config} stats={list} /> }
+			{type === 'listenbrainz' && <HorizontalLBStat config={config} stats={list} />}
 		</>
 	)
 }

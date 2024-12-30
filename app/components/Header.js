@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ThemeContext } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'

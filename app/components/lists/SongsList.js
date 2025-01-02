@@ -1,49 +1,17 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, Platform } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { getCache } from '~/utils/cache';
 import { playSong } from '~/utils/player';
-import { SettingsContext } from '~/contexts/settings';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover, getApi, getApiNetworkFirst } from '~/utils/api';
+import { getApi, getApiNetworkFirst } from '~/utils/api';
 import { urlStream } from '~/utils/api';
 import { useNavigation } from '@react-navigation/native';
 import ErrorPopup from '~/components/popup/ErrorPopup';
-import FavoritedButton from '~/components/button/FavoritedButton';
 import InfoPopup from '~/components/popup/InfoPopup';
 import OptionsPopup from '~/components/popup/OptionsPopup';
-
-const Cached = ({ song, config }) => {
-	const [isCached, setIsCached] = React.useState(false)
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
-
-	React.useEffect(() => {
-		cached(song)
-			.then((res) => {
-				setIsCached(res)
-			})
-	}, [song.id, settings.showCache])
-
-	const cached = async (song) => {
-		if (!settings.showCache) return false
-		const cache = await getCache('song', urlStream(config, song.id))
-		if (cache) return true
-		return false
-	}
-
-	if (isCached) return (
-		<Icon
-			name="cloud-download"
-			size={14}
-			color={theme.secondaryLight}
-			style={{ paddingHorizontal: 5 }}
-		/>
-	)
-	return null
-}
+import SongItem from '~/components/lists/SongItem';
 
 const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { } }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)
@@ -70,35 +38,19 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 								<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {song.discNumber}</Text>
 							</View>
 						}
-						<TouchableOpacity
-							style={styles.song}
-							key={song.id}
-							onLongPress={() => setIndexOptions(index)}
-							onContextMenu={() => setIndexOptions(index)}
-							delayLongPress={200}
-							onPress={() => playSong(config, songDispatch, listToPlay ? listToPlay : songs, index)}>
-							<Image
-								style={styles.albumCover}
-								source={{
-									uri: urlCover(config, song.albumId, 300),
-								}}
-							/>
-							<View style={{ flex: 1, flexDirection: 'column' }}>
-								<Text numberOfLines={1} style={{ color: indexPlaying === index ? theme.primaryTouch : theme.primaryLight, fontSize: 16, marginBottom: 2 }}>
-									{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
-								</Text>
-								<Text numberOfLines={1} style={{ color: indexPlaying === index ? theme.secondaryTouch : theme.secondaryLight }}>
-									{song.artist}
-								</Text>
-							</View>
-							<Cached song={song} config={config} />
-							<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ padding: 5, paddingStart: 10 }} />
-						</TouchableOpacity>
+						<SongItem
+							config={config}
+							song={song}
+							queue={listToPlay ? listToPlay : songs}
+							index={index}
+							isIndex={isIndex}
+							isPlaying={indexPlaying === index}
+							setIndexOptions={setIndexOptions}
+						/>
 					</View>
 				)
-			}
-			)
-			}
+			})}
+
 			{/* Popups */}
 			<ErrorPopup message={error} close={() => setError(null)} />
 			<InfoPopup info={songInfo} close={() => setSongInfo(null)} />
@@ -234,20 +186,6 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 				]} />
 		</View>
 	)
-}
-
-const styles = {
-	song: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 10,
-	},
-	albumCover: {
-		height: 50,
-		width: 50,
-		marginRight: 10,
-		borderRadius: 4,
-	},
 }
 
 export default SongsList;

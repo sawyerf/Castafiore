@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Dimensions, Modal } from 'react-native';
+import { Text, View, Image, ScrollView, Dimensions, Modal, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -11,10 +11,9 @@ import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
 import SlideBar from '~/components/button/SlideBar';
-import SongsList from '~/components/lists/SongsList';
+import SongItem from '~/components/lists/SongItem';
 import mainStyles from '~/styles/main';
 import Lyric from '~/components/player/Lyric';
-import { FlatList } from 'react-native-web';
 
 const preview = {
 	COVER: 0,
@@ -35,12 +34,6 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	React.useEffect(() => {
 		setIsPreview(preview.COVER)
 	}, [song.songInfo])
-
-	React.useEffect(() => {
-		if (isPreview === preview.COVER) {
-			scroll.current.scrollTo({ x: 50, y: 0, animated: false })
-		}
-	}, [isPreview])
 
 	return (
 		<Modal
@@ -79,9 +72,9 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							horizontal={true}
 							showsHorizontalScrollIndicator={false}
 							scrollEventThrottle={16}
+							onLayout={() => scroll.current.scrollTo({ x: 50, y: 0, animated: false })}
 							onScroll={(event) => { scrollPosition.current = event.nativeEvent.contentOffset.x }}
 							onTouchEnd={(event) => {
-								console.log(scrollPosition.current)
 								if (scrollPosition.current < 20) {
 									previousSong(config, song, songDispatch)
 								} else if (scrollPosition.current > 80) {
@@ -99,9 +92,26 @@ const FullScreenPlayer = ({ fullscreen }) => {
 					}
 					{
 						isPreview == preview.QUEUE &&
-						<ScrollView style={{ ...styles.albumImage(), borderRadius: null }} showsVerticalScrollIndicator={false}>
-							<SongsList config={config} songs={song.queue} isMargin={false} indexPlaying={song.index} />
-						</ScrollView>
+						<FlatList
+							style={{ ...styles.albumImage(), borderRadius: null }}
+							contentContainerStyle={{ width: '100%' }}
+							ref={scroll}
+							data={song.queue}
+							keyExtractor={(item, index) => index}
+							initialNumToRender={song.queue.length}
+							showsVerticalScrollIndicator={false}
+							onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
+							onScrollToIndexFailed={() => { }}
+							renderItem={({ item, index }) => (
+								<SongItem
+									config={config}
+									song={item}
+									queue={song.queue}
+									index={index}
+									isPlaying={song.songInfo.id === item.id}
+								/>
+							)}
+						/>
 					}
 					{
 						isPreview == preview.LYRICS &&

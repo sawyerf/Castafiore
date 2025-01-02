@@ -1,9 +1,9 @@
 import TrackPlayer, { Event } from "react-native-track-player"
-import { setPosition, pauseSong, playSong } from "~/utils/player"
+import { setPosition, pauseSong, resumeSong } from "~/utils/player"
 import { getApi } from "~/utils/api"
 
 module.exports = async () => {
-  TrackPlayer.addEventListener(Event.RemotePlay, () => playSong())
+  TrackPlayer.addEventListener(Event.RemotePlay, () => resumeSong())
   TrackPlayer.addEventListener(Event.RemotePause, () => pauseSong())
   TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext())
   TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())

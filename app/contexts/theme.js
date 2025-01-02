@@ -37,7 +37,7 @@ export const themes = {
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#a238ff',
-		secondaryTouch: '#a238ff',
+		secondaryTouch: '#862ed4',
 		innerTouch: '#FFFFFF',
 
 		playerBackground: '#155faa',
@@ -52,7 +52,7 @@ export const themes = {
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#1DB954',
-		secondaryTouch: '#1ED760',
+		secondaryTouch: '#1BAD4F',
 		innerTouch: '#FFFFFF',
 
 		playerBackground: '#191414',
@@ -67,7 +67,7 @@ export const themes = {
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',
 		primaryTouch: '#FF2D55',
-		secondaryTouch: '#FF375F',
+		secondaryTouch: '#C42341',
 		innerTouch: '#FFFFFF',
 
 		playerBackground: '#1C1C1E',
@@ -82,7 +82,7 @@ export const themes = {
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#D7DADC',
 		primaryTouch: '#FF4500',
-		secondaryTouch: '#ff4500',
+		secondaryTouch: '#CF3800',
 		innerTouch: '#FFFFFF',
 
 		playerBackground: '#141415',

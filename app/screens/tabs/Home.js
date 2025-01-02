@@ -17,7 +17,7 @@ const Home = () => {
 	const [song, songDispatch] = React.useContext(SongContext)
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 	const [statusRefresh, setStatusRefresh] = React.useState();
 	const [refreshing, setRefreshing] = React.useState(false);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;

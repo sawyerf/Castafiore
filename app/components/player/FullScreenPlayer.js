@@ -14,6 +14,7 @@ import SlideBar from '~/components/button/SlideBar';
 import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
 import Lyric from '~/components/player/Lyric';
+import { FlatList } from 'react-native-web';
 
 const preview = {
 	COVER: 0,
@@ -28,10 +29,18 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
+	const scroll = React.useRef(null)
+	const scrollPosition = React.useRef(0)
 
-  React.useEffect(() => {
-    setIsPreview(preview.COVER)
-  }, [song.songInfo])
+	React.useEffect(() => {
+		setIsPreview(preview.COVER)
+	}, [song.songInfo])
+
+	React.useEffect(() => {
+		if (isPreview === preview.COVER) {
+			scroll.current.scrollTo({ x: 50, y: 0, animated: false })
+		}
+	}, [isPreview])
 
 	return (
 		<Modal
@@ -56,10 +65,37 @@ const FullScreenPlayer = ({ fullscreen }) => {
 				<View style={styles.playerContainer}>
 					{
 						isPreview == preview.COVER &&
-						<Image
-							source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
-							style={styles.albumImage()}
-						/>
+						<ScrollView
+							style={{
+								...styles.albumImage(),
+								borderRadius: undefined,
+							}}
+							contentContainerStyle={{
+								alignItems: 'center',
+								justifyContent: 'center',
+								paddingHorizontal: 50,
+							}}
+							ref={scroll}
+							horizontal={true}
+							showsHorizontalScrollIndicator={false}
+							scrollEventThrottle={16}
+							onScroll={(event) => { scrollPosition.current = event.nativeEvent.contentOffset.x }}
+							onTouchEnd={(event) => {
+								console.log(scrollPosition.current)
+								if (scrollPosition.current < 20) {
+									previousSong(config, song, songDispatch)
+								} else if (scrollPosition.current > 80) {
+									nextSong(config, song, songDispatch)
+								}
+								scroll.current.scrollTo({ x: 50, y: 0, animated: true })
+							}}
+							contentOffset={{ x: 50, y: 0 }}
+						>
+							<Image
+								source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
+								style={styles.albumImage()}
+							/>
+						</ScrollView>
 					}
 					{
 						isPreview == preview.QUEUE &&

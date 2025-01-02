@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -10,6 +10,7 @@ import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import SlideBar from '~/components/button/SlideBar';
+import FavoritedButton from '~/components/button/FavoritedButton';
 
 const BoxDesktopPlayer = ({ fullscreen }) => {
 	const [song, songDispatch] = React.useContext(SongContext)
@@ -17,7 +18,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
 	const volume = updateVolume()
-	
+
 	return (
 		<View
 			style={{
@@ -28,32 +29,43 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 				width: '100vw',
 
 				flexDirection: 'row',
-				backgroundColor: theme.playerBackground,
+				backgroundColor: theme.secondaryDark,
 				padding: 10,
 				paddingLeft: 15,
 				borderTopWidth: 1,
 				borderTopColor: theme.tertiaryDark,
 			}}>
 			<View style={{ flexDirection: 'row', flex: 1 }}>
-				<View style={styles.boxPlayerImage}>
+				<Pressable
+					style={styles.boxPlayerImage}
+					onPress={() => fullscreen.set(true)}
+				>
 					<ImageError
 						source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
 						style={styles.boxPlayerImage}
 					>
 						<View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }}>
-							<Icon name="music" size={23} color={theme.playerPrimaryText} />
+							<Icon name="music" size={23} color={theme.primaryLight} />
 						</View>
 					</ImageError>
+				</Pressable>
+				<View style={{ justifyContent: 'center', gap: 2, flex: 'min-content', maxWidth: 'min-content' }}>
+					<Text style={{ color: theme.primaryLight, fontWeight: 'bold', maxWidth: 400 }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+					<Text style={{ color: theme.secondaryLight, maxWidth: 400 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
-				<View style={{ flex: 1, justifyContent: 'center', gap: 2 }}>
-					<Text style={{ color: theme.playerPrimaryText, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
-					<Text style={{ color: theme.playerSecondaryText, }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
-				</View>
+				<FavoritedButton
+					id={song?.songInfo?.id}
+					isFavorited={song?.songInfo?.starred}
+					config={config}
+					size={19}
+					style={{ marginHorizontal: 15, padding: 5 }}
+				/>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 7 }}>
-				<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 20 }}>
+				<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
 					<IconButton
 						icon="repeat"
+						style={{ width: 22, alignItems: 'end' }}
 						size={19}
 						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
 						onPress={() => {
@@ -62,26 +74,30 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					/>
 					<IconButton
 						icon="step-backward"
-						size={19}
+						style={{ width: 10, alignItems: 'end' }}
+						size={17}
 						color={theme.primaryLight}
 						onPress={() => previousSong(config, song, songDispatch)}
 					/>
 					<IconButton
 						icon={song.isPlaying ? 'pause' : 'play'}
+						style={{ width: 20, alignItems: 'center' }}
 						size={19}
 						color={theme.primaryLight}
 						onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
 					/>
 					<IconButton
 						icon="step-forward"
-						size={19}
+						style={{ width: 10, alignItems: 'start' }}
+						size={17}
 						color={theme.primaryLight}
 						onPress={() => nextSong(config, song, songDispatch)}
 					/>
 					<IconButton
 						icon="bars"
 						size={19}
-						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
+						style={{ width: 22, alignItems: 'start' }}
+						color={theme.secondaryLight}
 					/>
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>
@@ -130,7 +146,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					onPress={() => fullscreen.set(true)}
 				/>
 			</View>
-		</View>
+		</View >
 	)
 }
 

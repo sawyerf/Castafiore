@@ -26,9 +26,7 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, config, size = 2
 				padding: 20,
 				...style,
 			}}
-			onPress={() => {
-				onPressFavorited()
-			}}
+			onPress={onPressFavorited}
 			size={size}
 			icon={favorited ? "heart" : "heart-o"}
 			color={theme.primaryTouch}

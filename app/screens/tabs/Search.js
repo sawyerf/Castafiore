@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ConfigContext } from '~/contexts/config';
 import { getApiNetworkFirst } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
+import { SettingsContext } from '~/contexts/settings';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
@@ -18,6 +19,7 @@ const Search = () => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
   const theme = React.useContext(ThemeContext)
+	const settings = React.useContext(SettingsContext)
 	const [query, setQuery] = React.useState('');
 	const [results, setResults] = React.useState();
 	const [timeout, setTimeoutState] = React.useState(null);
@@ -85,7 +87,7 @@ const Search = () => {
 					placeholderTextColor={theme.secondaryLight}
 					value={query}
 					onChangeText={(query) => setQuery(query)}
-					autoFocus={true}
+					autoFocus={settings?.isDesktop}
 				/>
 				{
 					query &&

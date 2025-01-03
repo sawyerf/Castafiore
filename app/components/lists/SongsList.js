@@ -13,7 +13,7 @@ import InfoPopup from '~/components/popup/InfoPopup';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import SongItem from '~/components/lists/SongItem';
 
-const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { } }) => {
+const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
@@ -46,6 +46,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 							isIndex={isIndex}
 							isPlaying={indexPlaying === index}
 							setIndexOptions={setIndexOptions}
+							onPress={onPress}
 						/>
 					</View>
 				)

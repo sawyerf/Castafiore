@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image } from 'react-native'
 
-const ImageError = ({ source, style, children }) => {
+const ImageError = ({ source, style = {}, children = null }) => {
 	const [isImage, setIsImage] = React.useState(true)
 	const image = React.useMemo(() => {
 		return <Image source={source} onError={() => setIsImage(false)} style={style} />
@@ -13,7 +13,13 @@ const ImageError = ({ source, style, children }) => {
 	}, [source, source?.uri])
 
 	if (isImage) return image
-	return children
+	if (children) return children
+	return (
+		<Image
+			source={require('~/../assets/foreground-icon.png')}
+			style={style}
+		/>
+	)
 }
 
 export default ImageError;

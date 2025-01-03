@@ -41,7 +41,7 @@ const Cached = ({ song, config }) => {
 	return null
 }
 
-const SongItem = ({ config, song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { } }) => {
+const SongItem = ({ config, song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => {} }) => {
 	const [songCon, songDispatch] = React.useContext(SongContext)
 	const theme = React.useContext(ThemeContext)
 
@@ -52,11 +52,14 @@ const SongItem = ({ config, song, queue, index, isIndex = false, isPlaying = fal
 			onLongPress={() => setIndexOptions(index)}
 			onContextMenu={() => setIndexOptions(index)}
 			delayLongPress={200}
-			onPress={() => playSong(config, songDispatch, queue, index)}>
+			onPress={() => {
+				onPress(song)
+				playSong(config, songDispatch, queue, index)
+			}}>
 			<Image
 				style={styles.albumCover}
 				source={{
-					uri: urlCover(config, song.albumId, 300),
+					uri: urlCover(config, song.albumId, 100),
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>

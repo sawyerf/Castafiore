@@ -6,7 +6,7 @@ import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import CustomScroll from '~/components/lists/CustomScroll';
 
-const HorizontalArtists = ({ config, artists }) => {
+const HorizontalArtists = ({ config, artists, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 
@@ -14,7 +14,10 @@ const HorizontalArtists = ({ config, artists }) => {
 		<CustomScroll
 			data={artists}
 			renderItem={({ item }) => (
-				<TouchableOpacity style={styles.artist} key={item.id} onPress={() => navigation.navigate('Artist', { artist: item })} >
+				<TouchableOpacity style={styles.artist} key={item.id} onPress={() => {
+					onPress(item)
+					navigation.navigate('Artist', { artist: item })
+				}} >
 					<Image
 						style={styles.artistCover}
 						source={{

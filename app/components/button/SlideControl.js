@@ -25,9 +25,9 @@ const SlideControl = ({ uri }) => {
 		onPanResponderRelease: () => {
 			startMove.current = 0
 			if (position._value < -50) {
-				previousSong(config, song, songDispatch)
-			} else if (position._value > 50) {
 				nextSong(config, song, songDispatch)
+			} else if (position._value > 50) {
+				previousSong(config, song, songDispatch)
 			}
 			Animated.timing(position, {
 				toValue: 0,

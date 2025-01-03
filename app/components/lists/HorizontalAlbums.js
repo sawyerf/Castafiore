@@ -8,7 +8,7 @@ import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
 import CustomScroll from '~/components/lists/CustomScroll';
 
-const HorizontalAlbums = ({ config, albums }) => {
+const HorizontalAlbums = ({ config, albums, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 	const [indexOptions, setIndexOptions] = React.useState(-1)
@@ -24,7 +24,10 @@ const HorizontalAlbums = ({ config, albums }) => {
 						key={item.id}
 						onLongPress={() => setIndexOptions(index)}
 						delayLongPress={200}
-						onPress={() => navigation.navigate('Album', { album: item })}>
+						onPress={() => {
+							onPress(item)
+							navigation.navigate('Album', { album: item })
+						}}>
 						<Image
 							style={styles.albumCover}
 							source={{

@@ -108,6 +108,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 						stylePress={{ flex: 1, height: 6 }}
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
+						pauseOnMove={true}
 					/>
 					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
 				</View>

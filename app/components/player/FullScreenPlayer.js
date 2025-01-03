@@ -1,19 +1,20 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Dimensions, Modal, FlatList } from 'react-native';
+import { Text, View, Dimensions, Modal, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
+import { setPosition } from '~/utils/player';
 import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
+import { urlCover } from '~/utils/api';
 import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat, updateTime } from '~/utils/player';
-import { setPosition } from '~/utils/player';
-import { urlCover, getApi } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
-import SlideBar from '~/components/button/SlideBar';
-import SongItem from '~/components/lists/SongItem';
-import mainStyles from '~/styles/main';
 import Lyric from '~/components/player/Lyric';
+import mainStyles from '~/styles/main';
+import SlideBar from '~/components/button/SlideBar';
+import SlideControl from '~/components/button/SlideControl';
+import SongItem from '~/components/lists/SongItem';
 
 const preview = {
 	COVER: 0,
@@ -29,7 +30,6 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
 	const scroll = React.useRef(null)
-	const scrollPosition = React.useRef(0)
 
 	React.useEffect(() => {
 		setIsPreview(preview.COVER)
@@ -44,6 +44,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 				style={{
 					...mainStyles.mainContainer(insets, theme),
 					...styles.mainContainer(insets, theme),
+					touchAction: 'none',
 				}}
 			>
 				<IconButton
@@ -58,37 +59,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 				<View style={styles.playerContainer}>
 					{
 						isPreview == preview.COVER &&
-						<ScrollView
-							style={{
-								...styles.albumImage(),
-								borderRadius: undefined,
-							}}
-							contentContainerStyle={{
-								alignItems: 'center',
-								justifyContent: 'center',
-								paddingHorizontal: 50,
-							}}
-							ref={scroll}
-							horizontal={true}
-							showsHorizontalScrollIndicator={false}
-							scrollEventThrottle={16}
-							onLayout={() => scroll.current.scrollTo({ x: 50, y: 0, animated: false })}
-							onScroll={(event) => { scrollPosition.current = event.nativeEvent.contentOffset.x }}
-							onTouchEnd={(event) => {
-								if (scrollPosition.current < 20) {
-									previousSong(config, song, songDispatch)
-								} else if (scrollPosition.current > 80) {
-									nextSong(config, song, songDispatch)
-								}
-								scroll.current.scrollTo({ x: 50, y: 0, animated: true })
-							}}
-							contentOffset={{ x: 50, y: 0 }}
-						>
-							<Image
-								source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
-								style={styles.albumImage()}
-							/>
-						</ScrollView>
+						<SlideControl uri={urlCover(config, song?.songInfo?.albumId)} />
 					}
 					{
 						isPreview == preview.QUEUE &&
@@ -131,6 +102,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 						isBitogno={true}
+						pauseOnMove={true}
 					/>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>

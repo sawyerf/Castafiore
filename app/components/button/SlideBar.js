@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Pressable, Platform } from 'react-native'
+import { View, Pressable, Platform, PanResponder, Animated } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
+import { pauseSong, resumeSong } from '~/utils/player'
 
 const SlideBar = ({
   progress = 0,
@@ -11,30 +12,53 @@ const SlideBar = ({
   styleProgress = {},
   isBitogno = false,
   sizeBitogno = 12,
+  pauseOnMove = false
 }) => {
-  const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0 })
+  const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0, x: 0 })
   const theme = React.useContext(ThemeContext)
-
-  const onPressHandler = ({ nativeEvent }) => {
-    const prog = nativeEvent.locationX / layoutBar.width
-    if (!prog || prog < 0) return onPress(0)
-    else if (prog > 1) return onPress(1)
-    return onPress(prog)
-  }
+  const viewRef = React.useRef(null)
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    // onStartShouldSetPanResponderCapture: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    // onMoveShouldSetPanResponderCapture: () => true,
+    onPanResponderGrant: (evt, gestureState) => {
+      if (pauseOnMove) pauseSong()
+      const prog = (gestureState.x0 - layoutBar.x) / layoutBar.width
+      if (!prog || prog < 0) return onPress(0)
+      else if (prog > 1) return onPress(1)
+      onPress(prog)
+    },
+    onPanResponderMove: (evt, gestureState) => {
+      const prog = (gestureState.moveX - layoutBar.x) / layoutBar.width
+      if (!prog || prog < 0) return onPress(0)
+      else if (prog > 1) return onPress(1)
+      onPress(prog)
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (pauseOnMove) resumeSong()
+    }
+  })
 
   return (
-    <Pressable
+    <View
       style={stylePress}
-      onPressIn={onPressHandler}
-      onPressOut={onPressHandler}
-      onLayout={({ nativeEvent }) => setLayoutBar({ width: nativeEvent.layout.width, height: nativeEvent.layout.height })}
+      ref={viewRef}
+      onLayout={() => {
+        viewRef.current.measure((x, y, width, height, pageX, pageY) => {
+          setLayoutBar({ width, height, x: pageX })
+        })
+      }}
       pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}
+      {...panResponder.panHandlers}
     >
       <View style={{ borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden', ...styleBar }}>
-        <View style={{ width: `${progress * 100}%`, height: '100%', backgroundColor: theme.primaryTouch, ...styleProgress }} />
+        <View
+          style={{ width: `${progress * 100}%`, height: '100%', backgroundColor: theme.primaryTouch, ...styleProgress }}
+        />
       </View>
       {isBitogno && <View style={styles.bitognoBar(progress, sizeBitogno, theme)} />}
-    </Pressable>
+    </View>
   )
 }
 

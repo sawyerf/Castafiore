@@ -3,7 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
-import { SongContext } from '~/contexts/song';
+import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, updateVolume, setRepeat, updateTime } from '~/utils/player';
 import { urlCover } from '~/utils/api';
@@ -13,7 +13,8 @@ import SlideBar from '~/components/button/SlideBar';
 import FavoritedButton from '~/components/button/FavoritedButton';
 
 const BoxDesktopPlayer = ({ fullscreen }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const time = updateTime()
@@ -56,7 +57,6 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 				<FavoritedButton
 					id={song?.songInfo?.id}
 					isFavorited={song?.songInfo?.starred}
-					config={config}
 					size={19}
 					style={{ marginHorizontal: 15, padding: 5 }}
 				/>

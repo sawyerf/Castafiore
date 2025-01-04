@@ -1,12 +1,14 @@
 import React from 'react';
 
+import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { getApi } from '~/utils/api';
 import IconButton from './IconButton';
 
-const FavoritedButton = ({ id, isFavorited = false, style = {}, config, size = 23 }) => {
+const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => {
 	const [favorited, setFavorited] = React.useState(isFavorited)
 	const theme = React.useContext(ThemeContext)
+	const config = React.useContext(ConfigContext)
 
 	React.useEffect(() => {
 		setFavorited(isFavorited)

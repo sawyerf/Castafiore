@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
 import { setPosition } from '~/utils/player';
-import { SongContext } from '~/contexts/song';
+import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat, updateTime } from '~/utils/player';
@@ -24,7 +24,8 @@ const preview = {
 
 const FullScreenPlayer = ({ fullscreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
-	const [song, songDispatch] = React.useContext(SongContext)
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
@@ -42,7 +43,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 		>
 			<View
 				style={{
-					...mainStyles.mainContainer(insets, theme),
+					...mainStyles.contentMainContainer(insets),
 					...styles.mainContainer(insets, theme),
 					touchAction: 'none',
 				}}
@@ -75,7 +76,6 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							onScrollToIndexFailed={() => { }}
 							renderItem={({ item, index }) => (
 								<SongItem
-									config={config}
 									song={item}
 									queue={song.queue}
 									index={index}
@@ -93,7 +93,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
 							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 						</View>
-						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} config={config} style={{ padding: 20, paddingEnd: 0 }} />
+						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<SlideBar
 						progress={time.position / time.duration}

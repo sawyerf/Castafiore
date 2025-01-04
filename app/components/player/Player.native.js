@@ -1,8 +1,8 @@
 import React from 'react';
-import { useProgress, Event, useTrackPlayerEvents, State } from 'react-native-track-player';
+import { Event, useTrackPlayerEvents, State } from 'react-native-track-player';
 
 import { SettingsContext } from '~/contexts/settings';
-import { SongContext } from '~/contexts/song';
+import { SongContext, SongDispatchContext } from '~/contexts/song';
 import BoxPlayer from './BoxPlayer';
 import FullScreenPlayer from './FullScreenPlayer';
 import BoxDesktopPlayer from './BoxDesktopPlayer';
@@ -13,7 +13,8 @@ const events = [
 ];
 
 const Player = ({ state, fullscreen }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const settings = React.useContext(SettingsContext)
 
 	useTrackPlayerEvents(events, async (event) => {

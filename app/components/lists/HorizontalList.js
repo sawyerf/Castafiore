@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
+import { ConfigContext } from '~/contexts/config';
 import HorizontalAlbums from './HorizontalAlbums';
 import HorizontalArtists from './HorizontalArtists';
 import HorizontalGenres from './HorizontalGenres';
@@ -13,24 +14,19 @@ import HorizontalLBStat from './HorizontalLBStat';
 import mainStyles from '~/styles/main';
 import RadioList from './RadioList';
 
-const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
+const HorizontalList = ({ title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
 	const navigation = useNavigation();
-
-	React.useEffect(() => {
-		if (!enable) return
-		if (!refresh) return
-		getList()
-	}, [refresh])
+	const config = React.useContext(ConfigContext)
 
 	React.useEffect(() => {
 		if (!enable) return
 		if (config.query) {
 			getList()
 		}
-	}, [config, type, query, enable, settings.listenBrainzUser])
+	}, [config, refresh, type, query, enable, settings.listenBrainzUser])
 
 	const getPath = () => {
 		if (type === 'album') return 'getAlbumList'
@@ -71,7 +67,8 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 					alignItems: 'center',
 					width: '100%',
 				}}
-				onPress={() => { navigation.navigate('ShowAll', { title, type, query, }) }}
+				disabled={type !== 'album' && type !== 'artist'}
+				onPress={() => { navigation.navigate('ShowAll', { title, type, query }) }}
 			>
 				<Text style={mainStyles.titleSection(theme)}>{title}</Text>
 				{
@@ -83,11 +80,11 @@ const HorizontalList = ({ config, title, type, query, refresh, enable }) => {
 					/>
 				}
 			</Pressable>
-			{type === 'album' && <HorizontalAlbums config={config} albums={list} />}
-			{type === 'artist' && <HorizontalArtists config={config} artists={list} />}
-			{type === 'genre' && <HorizontalGenres config={config} genres={list} />}
-			{type === 'radio' && <RadioList config={config} radios={list} />}
-			{type === 'listenbrainz' && <HorizontalLBStat config={config} stats={list} />}
+			{type === 'album' && <HorizontalAlbums albums={list} />}
+			{type === 'artist' && <HorizontalArtists artists={list} />}
+			{type === 'genre' && <HorizontalGenres genres={list} />}
+			{type === 'radio' && <RadioList radios={list} />}
+			{type === 'listenbrainz' && <HorizontalLBStat stats={list} />}
 		</>
 	)
 }

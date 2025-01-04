@@ -2,11 +2,11 @@ import React from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { SongContext } from '~/contexts/song';
+import { SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
-import { getApi, urlCover, useCachedAndApi, getApiNetworkFirst, getApiCacheFirst } from '~/utils/api';
+import { urlCover, useCachedAndApi, getApiNetworkFirst, getApiCacheFirst } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -18,7 +18,7 @@ import IconButton from '~/components/button/IconButton';
 
 const Artist = ({ route }) => {
 	const insets = useSafeAreaInsets();
-	const [song, songDispatch] = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const allSongs = React.useRef([])
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -67,12 +67,9 @@ const Artist = ({ route }) => {
 
 	return (
 		<ScrollView
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-				paddingTop: 0,
-			}}
+			style={mainStyles.mainContainer(insets, theme)}
 			vertical={true}
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
 				style={presStyles.cover}
@@ -101,17 +98,16 @@ const Artist = ({ route }) => {
 					id={route.params.artist.id}
 					isFavorited={artist.starred}
 					style={{ ...presStyles.button, paddingStart: 7.5 }}
-					config={config}
 					size={25}
 				/>
 			</View>
 			<Text style={{ ...mainStyles.titleSection(theme), marginTop: 0 }}>Albums</Text>
-			<HorizontalAlbums config={config} albums={artist.album} />
+			<HorizontalAlbums albums={artist.album} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
 					<>
 						<Text style={mainStyles.titleSection(theme)}>Similar Artist</Text>
-						<HorizontalArtists config={config} artists={artistInfo.similarArtist} />
+						<HorizontalArtists artists={artistInfo.similarArtist} />
 					</>
 				)
 			}

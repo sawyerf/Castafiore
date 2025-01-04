@@ -9,6 +9,7 @@ import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
+import SelectItem from '~/components/settings/SelectItem';
 
 const CacheSettings = () => {
 	const insets = useSafeAreaInsets()
@@ -43,15 +44,21 @@ const CacheSettings = () => {
 	React.useEffect(() => {
 		if (previewFavorited === '') return
 		const number = parseInt(previewFavorited)
+		if (number === settings.previewFavorited) return
 		setSettings({ ...settings, previewFavorited: number })
 	}, [previewFavorited])
 
 	return (
-		<View style={{ ...mainStyles.mainContainer(insets, theme), flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+		<View
+			style={{
+				...mainStyles.mainContainer(insets, theme),
+				...mainStyles.contentMainContainer(insets)
+			}}
+		>
 			<Header title="Playlists" />
 			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
 				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text >
-				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5}}>
+				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5 }}>
 					<OptionInput
 						title="Song preview favorited"
 						value={previewFavorited}
@@ -69,23 +76,20 @@ const CacheSettings = () => {
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(orders).map((name, index) => (
-							<TouchableOpacity style={settingStyles.optionItem(theme, true)} key={index}
-								delayLongPress={200}
-								onLongPress={null}
+							<SelectItem
+								key={index}
+								text={orders[name].name}
+								icon={orders[name].icon}
+								isSelect={name == settings.orderPlaylist}
 								onPress={() => {
 									setSettings({ ...settings, orderPlaylist: name })
-								}}>
-								<Icon name={orders[name].icon} size={16} color={theme.primaryLight} style={{ marginEnd: 10 }} />
-								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
-									{orders[name].name}
-								</Text>
-								{(name == settings.orderPlaylist) && <Icon name="check" size={20} color={theme.primaryTouch} />}
-							</TouchableOpacity>
+								}}
+							/>
 						))
 					}
 				</View>
 			</View>
-		</View>
+		</View >
 	)
 }
 

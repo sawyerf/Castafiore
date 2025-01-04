@@ -1,15 +1,15 @@
 import React from 'react';
-import { SongContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import presStyles from '~/styles/pres';
-import { playSong } from '~/utils/player';
 
 import { ConfigContext } from '~/contexts/config';
-import IconButton from './IconButton';
+import { playSong } from '~/utils/player';
+import { SongDispatchContext } from '~/contexts/song';
+import { ThemeContext } from '~/contexts/theme';
+import IconButton from '~/components/button/IconButton';
+import presStyles from '~/styles/pres';
 
 const RandomButton = ({ songList, size = 23 }) => {
   const theme = React.useContext(ThemeContext)
-	const [song, songDispatch] = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 
 	function shuffle(array) {

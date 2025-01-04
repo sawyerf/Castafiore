@@ -3,7 +3,8 @@ import { Text, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { playSong } from '~/utils/player';
-import { SongContext } from '~/contexts/song';
+import { SongContext, SongDispatchContext } from '~/contexts/song';
+import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { getApi, getApiNetworkFirst } from '~/utils/api';
 import { urlStream } from '~/utils/api';
@@ -13,8 +14,9 @@ import InfoPopup from '~/components/popup/InfoPopup';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import SongItem from '~/components/lists/SongItem';
 
-const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
-	const [songCon, songDispatch] = React.useContext(SongContext)
+const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
 	const [playlistList, setPlaylistList] = React.useState([])
@@ -22,25 +24,25 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 	const [error, setError] = React.useState(null)
 	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
+	const config = React.useContext(ConfigContext)
 
 	return (
 		<View style={{
 			flexDirection: 'column',
 			paddingHorizontal: isMargin ? 20 : 0,
 		}}>
-			{songs?.map((song, index) => {
+			{songs?.map((item, index) => {
 				return (
 					<View key={index}>
 						{
-							isIndex && multiCD && (index === 0 || songs[index - 1].discNumber !== song.discNumber) &&
+							isIndex && multiCD && (index === 0 || songs[index - 1].discNumber !== item.discNumber) &&
 							<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 5, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
 								<Icon name="circle-o" size={23} color={theme.secondaryLight} />
-								<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {song.discNumber}</Text>
+								<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {item.discNumber}</Text>
 							</View>
 						}
 						<SongItem
-							config={config}
-							song={song}
+							song={item}
 							queue={listToPlay ? listToPlay : songs}
 							index={index}
 							isIndex={isIndex}
@@ -83,7 +85,7 @@ const SongsList = ({ config, songs, isIndex = false, listToPlay = null, isMargin
 						name: 'Add to queue',
 						icon: 'th-list',
 						onPress: () => {
-							if (songCon.queue) {
+							if (song.queue) {
 								songDispatch({ type: 'addQueue', queue: [songs[indexOptions]] })
 							} else {
 								playSong(config, songDispatch, [songs[indexOptions]], 0)

@@ -167,6 +167,10 @@ export const resumeSong = async () => {
 	audio().play()
 }
 
+export const stopSong = async () => {
+	audio().pause()
+}
+
 export const setPosition = async (position) => {
 	const sound = audio()
 
@@ -205,6 +209,7 @@ export const updateVolume = () => {
 
 export const secondToTime = (second) => {
 	if (!second) return '00:00'
+	if (second === Infinity) return '∞:∞'
 	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 }
 

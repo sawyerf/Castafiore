@@ -3,42 +3,41 @@ import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import { themes } from '~/contexts/theme';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
+import SelectItem from '~/components/settings/SelectItem';
 
-const Theme = ({ navigation }) => {
+const Theme = () => {
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const setConfig = React.useContext(SetConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
-		<ScrollView style={mainStyles.mainContainer(insets, theme)} >
+		<ScrollView
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}
+		>
 			<Header title="Theme" />
 			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
 				<Text style={settingStyles.titleContainer(theme)}>Theme</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(themes).map((themeName, index) => (
-							<TouchableOpacity style={settingStyles.optionItem(theme, true)} key={index}
-								delayLongPress={200}
-								onLongPress={null}
+							<SelectItem
+								key={index}
+								text={themeName}
+								icon="tint"
+								colorIcon={themes[themeName].primaryTouch}
+								isSelect={themeName == settings.theme}
 								onPress={() => {
 									setSettings({ ...settings, theme: themeName })
-								}}>
-								<Icon name="tint" size={20} color={themes[themeName].primaryTouch} style={{ marginEnd: 10 }} />
-								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
-									{themeName}
-								</Text>
-								{(themeName == settings.theme) && <Icon name="check" size={20} color={theme.primaryTouch} />}
-							</TouchableOpacity>
+								}}
+							/>
 						))
 					}
 				</View>

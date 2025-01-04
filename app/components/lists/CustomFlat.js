@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, FlatList } from 'react-native';
 import IconButton from '~/components/button/IconButton';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 
-const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
+const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
   const refScroll = React.useRef(null)
   const theme = React.useContext(ThemeContext)
   const settings = React.useContext(SettingsContext)
@@ -12,14 +12,14 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
 
   const goRight = () => {
     if (indexScroll.current + 3 >= data.length) indexScroll.current = data.length - 1
-    else indexScroll.current = indexScroll.current + 30
-    refScroll.current.scrollTo({ x: indexScroll.current, y: 0, animated: true, viewOffset: 10 })
+    else indexScroll.current = indexScroll.current + 3
+    refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 10})
   }
 
   const goLeft = () => {
     if (indexScroll.current < 3) indexScroll.current = 0
-    else indexScroll.current = indexScroll.current - 30
-    refScroll.current.scrollTo({ x: indexScroll.current, y: 0, animated: true, viewOffset: 10 })
+    else indexScroll.current = indexScroll.current - 3
+    refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 10})
   }
 
   // View is necessary to show the scroll helper
@@ -56,7 +56,7 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
             alignItems: 'center',
           }} />
       </View>}
-      <ScrollView
+      <FlatList
         data={data}
         keyExtractor={(item, index) => index}
         renderItem={renderItem}
@@ -65,9 +65,7 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
         contentContainerStyle={contentContainerStyle}
         showsHorizontalScrollIndicator={false}
         ref={refScroll}
-      >
-        {children}
-      </ScrollView>
+      />
     </View>
   )
 }

@@ -3,15 +3,17 @@ import { Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
+import { ConfigContext } from '~/contexts/config';
 import { urlCover } from '~/utils/api';
-import CustomScroll from '~/components/lists/CustomScroll';
+import CustomFlat from '~/components/lists/CustomFlat';
 
-const HorizontalArtists = ({ config, artists, onPress = () => { } }) => {
+const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
+	const config = React.useContext(ConfigContext)
 
 	return (
-		<CustomScroll
+		<CustomFlat
 			data={artists}
 			renderItem={({ item }) => (
 				<TouchableOpacity style={styles.artist} key={item.id} onPress={() => {

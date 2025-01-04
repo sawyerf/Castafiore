@@ -7,7 +7,7 @@ import FullScreenPlayer from './FullScreenPlayer';
 import BoxDesktopPlayer from './BoxDesktopPlayer';
 
 const Player = ({ state, fullscreen }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
+	const song = React.useContext(SongContext)
 	const settings = React.useContext(SettingsContext)
 
 	React.useEffect(() => {

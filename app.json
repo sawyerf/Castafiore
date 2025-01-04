@@ -16,7 +16,8 @@
         "UIBackgroundModes": [
           "audio"
         ]
-      }
+      },
+      "bundleIdentifier": "com.sawyerf.castafiore"
     },
     "android": {
       "package": "com.sawyerf.castafiore",

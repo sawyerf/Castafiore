@@ -119,7 +119,7 @@ const Playlists = ({ navigation }) => {
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
 			</TouchableOpacity>
-			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} config={config} listToPlay={favorited} />
+			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} listToPlay={favorited} />
 
 			<View style={{ ...styles.subTitleParent, marginTop: 10 }}>
 				{
@@ -164,7 +164,7 @@ const Playlists = ({ navigation }) => {
 						</>
 				}
 			</View>
-			<VerticalPlaylist playlists={playlists} config={config} />
+			<VerticalPlaylist playlists={playlists} />
 		</ScrollView>
 	)
 }

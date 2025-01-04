@@ -5,10 +5,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApiNetworkFirst } from '~/utils/api';
-import { useCachedAndApi } from '~/utils/api';
 import { playSong } from '~/utils/player';
-import { SongContext } from '~/contexts/song';
+import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
+import { useCachedAndApi } from '~/utils/api';
 import BackButton from '~/components/button/BackButton';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import IconButton from '~/components/button/IconButton';
@@ -19,7 +19,7 @@ import SongsList from '~/components/lists/SongsList';
 const Genre = ({ route }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
-	const [song, songDispatch] = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 
 	const albums = useCachedAndApi([], 'getAlbumList', { type: 'byGenre', genre: route.params.genre.value }, (json, setData) => {
@@ -42,12 +42,10 @@ const Genre = ({ route }) => {
 
 	return (
 		<ScrollView
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}
 			vertical={true}
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-				paddingTop: 0,
-			}}>
+		>
 			<BackButton />
 			<View
 				style={styles.cover}
@@ -67,9 +65,9 @@ const Genre = ({ route }) => {
 				/>
 			</View>
 			<Text style={{ ...mainStyles.subTitle(theme), ...mainStyles.stdVerticalMargin }}>Albums</Text>
-			<HorizontalAlbums config={config} albums={albums} />
+			<HorizontalAlbums albums={albums} />
 			<Text style={{ ...mainStyles.subTitle(theme), ...mainStyles.stdVerticalMargin, marginBottom: 14, marginTop: 20 }}>Songs</Text>
-			<SongsList config={config} songs={songs} />
+			<SongsList songs={songs} />
 		</ScrollView>
 	)
 }

@@ -33,11 +33,8 @@ const Playlist = ({ navigation, route }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-				paddingTop: 0,
-			}}
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
 				style={presStyles.cover}
@@ -73,7 +70,7 @@ const Playlist = ({ navigation, route }) => {
 				</View>
 				<RandomButton songList={songs} style={presStyles.button} />
 			</View>
-			<SongsList config={config} songs={songs} idPlaylist={route.params.playlist.id} onUpdate={() => {
+			<SongsList songs={songs} idPlaylist={route.params.playlist.id} onUpdate={() => {
 				getPlaylist()
 			}} />
 		</ScrollView>

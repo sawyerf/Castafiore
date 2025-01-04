@@ -6,13 +6,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext } from '~/contexts/config';
 import { urlCover } from '~/utils/api';
 import { playSong } from '~/utils/player';
-import { SongContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
+import { SongDispatchContext } from '~/contexts/song';
 
 const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
-	const [_, songDispatch] = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
@@ -52,7 +52,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
 							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 13, marginBottom: 2 }}> {itemHist.name || itemHist.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 13 }}> {itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 13 }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
 						</View>
 					</>
 				) : (

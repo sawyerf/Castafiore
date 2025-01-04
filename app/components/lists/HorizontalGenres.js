@@ -3,14 +3,14 @@ import { Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
-import CustomScroll from '~/components/lists/CustomScroll';
+import CustomFlat from '~/components/lists/CustomFlat';
 
-const HorizontalGenres = ({ config, genres }) => {
+const HorizontalGenres = ({ genres }) => {
 	const navigation = useNavigation();
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<CustomScroll
+		<CustomFlat
 			style={styles.genreList}
 			contentContainerStyle={styles.scrollContainer}
 			data={genres}

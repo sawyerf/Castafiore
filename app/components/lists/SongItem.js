@@ -1,20 +1,22 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { getCache } from '~/utils/cache';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
-import { SongContext } from '~/contexts/song';
+import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
-import { urlStream } from '~/utils/api';
+import { urlCover, urlStream } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
+import ImageError from '~/components/ImageError';
+import { SongDispatchContext } from '~/contexts/song';
 
-const Cached = ({ song, config }) => {
+const Cached = ({ song }) => {
 	const [isCached, setIsCached] = React.useState(false)
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
+	const config = React.useContext(ConfigContext)
 
 	React.useEffect(() => {
 		cached(song)
@@ -41,9 +43,10 @@ const Cached = ({ song, config }) => {
 	return null
 }
 
-const SongItem = ({ config, song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => {} }) => {
-	const [songCon, songDispatch] = React.useContext(SongContext)
+const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => { } }) => {
+	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
+	const config = React.useContext(ConfigContext)
 
 	return (
 		<TouchableOpacity
@@ -56,8 +59,8 @@ const SongItem = ({ config, song, queue, index, isIndex = false, isPlaying = fal
 				onPress(song)
 				playSong(config, songDispatch, queue, index)
 			}}>
-			<Image
-				style={styles.albumCover}
+			<ImageError
+				style={styles.albumCover(theme)}
 				source={{
 					uri: urlCover(config, song.albumId, 100),
 				}}
@@ -70,8 +73,8 @@ const SongItem = ({ config, song, queue, index, isIndex = false, isPlaying = fal
 					{song.artist}
 				</Text>
 			</View>
-			<Cached song={song} config={config} />
-			<FavoritedButton id={song.id} isFavorited={song?.starred} config={config} style={{ padding: 5, paddingStart: 10 }} />
+			<Cached song={song} />
+			<FavoritedButton id={song.id} isFavorited={song?.starred} style={{ padding: 5, paddingStart: 10 }} />
 		</TouchableOpacity>
 	)
 }
@@ -82,12 +85,13 @@ const styles = {
 		alignItems: 'center',
 		marginBottom: 10,
 	},
-	albumCover: {
+	albumCover: theme => ({
 		height: 50,
 		width: 50,
 		marginRight: 10,
 		borderRadius: 4,
-	},
+		backgroundColor: theme.secondaryDark,
+	}),
 }
 
 export default SongItem;

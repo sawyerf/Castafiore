@@ -28,12 +28,13 @@ export default {
 		textAlign: 'left'
 	}),
 	contentMainContainer: insets => ({
-		...mainStyles.contentMainContainer(insets),
 		maxWidth: 800,
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 20,
+		paddingStart: 20,
+		paddingEnd: 20,
 		alignSelf: 'center',
 	}),
 	optionItem: (theme, isLast) => ({

@@ -80,12 +80,10 @@ const InfoPopup = ({ info, close }) => {
 								key={index}
 								style={{
 									flexDirection: 'row',
-									alignItems: 'center',
+									alignItems: 'flex-start',
 									padding: 10,
-									paddingStart: 20,
-									paddingEnd: 20,
 									borderBottomWidth: 1,
-									borderBottomColor: theme.primaryLight,
+									borderBottomColor: theme.secondaryLight,
 								}}
 							>
 								<Text style={{ color: theme.primaryLight, fontSize: 14, flex: 1, minWidth: 100 }}>{key}</Text>

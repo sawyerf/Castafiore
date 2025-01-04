@@ -37,3 +37,6 @@ yarn-error.*
 *.aab
 *.apk
 *.zip
+android
+ios
+android/**

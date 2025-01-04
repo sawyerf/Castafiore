@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -74,7 +74,11 @@ const Search = () => {
 	}
 
 	return (
-		<View style={mainStyles.mainContainer(insets, theme)} >
+		<View style={{
+			...mainStyles.mainContainer(insets, theme),
+			...mainStyles.contentMainContainer(insets),
+			paddingBottom: 0,
+		}}>
 			<Text style={mainStyles.mainTitle(theme)}>Search</Text>
 			<View style={{ marginBottom: 20, ...mainStyles.stdVerticalMargin, flexDirection: 'row' }}>
 				<TextInput
@@ -95,12 +99,12 @@ const Search = () => {
 					autoFocus={settings?.isDesktop}
 				/>
 				{
-					query.length &&
-					<TouchableOpacity
-						onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
-						style={{ justifyContent: 'center' }}>
-						<Text size={20} style={{ color: theme.primaryTouch }}>Clear</Text>
-					</TouchableOpacity>
+					query.length ?
+						<Pressable
+							onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
+							style={({ pressed }) => ({ justifyContent: 'center', opacity: pressed ? 0.5 : 1 })}>
+							<Text size={20} style={{ color: theme.primaryTouch }}>Clear</Text>
+						</Pressable> : null
 				}
 				<Icon name="search" size={20} color={theme.secondaryLight} style={{ position: 'absolute', left: 0, margin: 9 }} />
 			</View>
@@ -125,21 +129,21 @@ const Search = () => {
 							results.artist &&
 							<>
 								<Text style={mainStyles.titleSection(theme)}>Artists</Text>
-								<HorizontalArtists artists={results.artist} config={config} onPress={addHistory} />
+								<HorizontalArtists artists={results.artist} onPress={addHistory} />
 							</>
 						}
 						{
 							results.album &&
 							<>
 								<Text style={mainStyles.titleSection(theme)}>Albums</Text>
-								<HorizontalAlbums albums={results.album} config={config} onPress={addHistory} />
+								<HorizontalAlbums albums={results.album} onPress={addHistory} />
 							</>
 						}
 						{
 							results.song &&
 							<>
 								<Text style={mainStyles.titleSection(theme)}>Songs</Text>
-								<SongsList songs={results.song} config={config} onPress={addHistory} />
+								<SongsList songs={results.song} onPress={addHistory} />
 							</>
 						}
 					</>) : null

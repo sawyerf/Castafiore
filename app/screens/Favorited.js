@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
-import { ConfigContext } from '~/contexts/config';
 import SongsList from '~/components/lists/SongsList';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -13,17 +12,13 @@ import BackButton from '~/components/button/BackButton';
 
 const Favorited = ({ route }) => {
 	const insets = useSafeAreaInsets();
-	const config = React.useContext(ConfigContext)
   const theme = React.useContext(ThemeContext)
 
 	return (
 		<ScrollView
 			vertical={true}
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-				paddingTop: 0,
-			}}
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<View
 				style={styles.cover}
@@ -37,7 +32,7 @@ const Favorited = ({ route }) => {
 				</View>
 				<RandomButton songList={route.params.favorited} />
 			</View>
-			<SongsList songs={route.params.favorited} config={config} />
+			<SongsList songs={route.params.favorited} />
 		</ScrollView>
 	)
 }

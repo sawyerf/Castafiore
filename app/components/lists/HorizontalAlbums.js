@@ -4,19 +4,21 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import { ConfigContext } from '~/contexts/config';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
-import CustomScroll from '~/components/lists/CustomScroll';
+import CustomFlat from '~/components/lists/CustomFlat';
 
-const HorizontalAlbums = ({ config, albums, onPress = () => { } }) => {
+const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const [infoAlbum, setInfoAlbum] = React.useState(null)
+	const config = React.useContext(ConfigContext)
 
 	return (
 		<>
-			<CustomScroll
+			<CustomFlat
 				data={albums}
 				renderItem={({ item, index }) => (
 					<TouchableOpacity
@@ -35,7 +37,7 @@ const HorizontalAlbums = ({ config, albums, onPress = () => { } }) => {
 							}}
 						/>
 						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
-						<Text numberOfLines={1} style={{ ...styles.artist(theme) }}>{item.artist}</Text>
+						<Text numberOfLines={1} style={{ ...styles.artist(theme) }}>{year ? item.year : item.artist}</Text>
 					</TouchableOpacity >
 				)} />
 

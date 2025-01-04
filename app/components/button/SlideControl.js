@@ -2,17 +2,22 @@ import React from 'react';
 import { Animated, PanResponder, Image, Dimensions } from 'react-native';
 
 import { ConfigContext } from '~/contexts/config';
-import { SongContext } from '~/contexts/song';
-import { nextSong, previousSong } from '~/utils/player';
+import { SongContext, SongDispatchContext } from '~/contexts/song';
+import { nextSong, previousSong, resumeSong, pauseSong } from '~/utils/player';
+import { ThemeContext } from '~/contexts/theme';
+import ImageError from '~/components/ImageError';
 
 const SlideControl = ({ uri }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
+	const theme = React.useContext(ThemeContext)
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const startMove = React.useRef(0)
 	const position = React.useRef(new Animated.Value(0)).current
+	const previousTap = React.useRef(0)
 	const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => false,
-    onMoveShouldSetPanResponder: () => true,
+		onStartShouldSetPanResponder: () => true,
+		onMoveShouldSetPanResponder: () => true,
 		onPanResponderGrant: (_, gestureState) => {
 			startMove.current = gestureState.x0
 		},
@@ -28,6 +33,14 @@ const SlideControl = ({ uri }) => {
 				nextSong(config, song, songDispatch)
 			} else if (position._value > 50) {
 				previousSong(config, song, songDispatch)
+			} else if (position._value === 0) {
+				let now = Date.now()
+				if (now - previousTap.current < 300) {
+					if (song.isPlaying) pauseSong()
+					else resumeSong()
+					now = 0
+				}
+				previousTap.current = now
 			}
 			Animated.timing(position, {
 				toValue: 0,
@@ -41,14 +54,16 @@ const SlideControl = ({ uri }) => {
 		<Animated.View
 			style={{
 				...styles.albumImage(),
-				borderRadius: undefined,
 				transform: [{ translateX: position }]
 			}}
 			{...panResponder.panHandlers}
 		>
-			<Image
+			<ImageError
 				source={{ uri }}
-				style={styles.albumImage()}
+				style={{
+					...styles.albumImage(),
+					backgroundColor: theme.secondaryDark,
+				}}
 			/>
 		</Animated.View>
 	)

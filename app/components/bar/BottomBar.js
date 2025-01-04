@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/contexts/config';
@@ -51,18 +51,15 @@ const BottomBar = ({ state, descriptors, navigation }) => {
         }
 
         return (
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
+          <Pressable
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
+            style={({ pressed }) => ({
               flex: 1,
               paddingBottom: insets.bottom ? insets.bottom : 10,
               paddingTop: 10,
-            }}
+              opacity: pressed ? 0.5 : 1,
+            })}
             key={index}
             disabled={(!config.query && route.name !== 'Settings')}
           >
@@ -70,7 +67,7 @@ const BottomBar = ({ state, descriptors, navigation }) => {
             <Text style={{ color: getColor(), textAlign: 'center' }}>
               {options.title}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         );
       })}
     </View>

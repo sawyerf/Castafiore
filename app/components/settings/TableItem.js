@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Platform } from 'react-native'
+import { Text, View } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'

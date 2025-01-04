@@ -2,7 +2,7 @@ import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, 
 import { getApi, urlCover, urlStream } from './api';
 
 export const initService = async () => {
-  TrackPlayer.registerPlaybackService(() => require('../services/servicePlayback'));
+  TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'));
 }
 
 export const initPlayer = async (songDispatch) => {
@@ -30,7 +30,7 @@ export const initPlayer = async (songDispatch) => {
       Capability.SeekTo
     ],
     progressUpdateEventInterval: -1,
-    icon: require('../../assets/icon.png')
+    icon: require('~/../assets/icon.png')
   })
   const queue = await TrackPlayer.getQueue()
   if (queue.length > 0) {
@@ -60,6 +60,10 @@ export const pauseSong = async () => {
 
 export const resumeSong = async () => {
   await TrackPlayer.play()
+}
+
+export const stopSong = async () => {
+  await TrackPlayer.stop()
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
@@ -92,6 +96,7 @@ export const playSong = async (config, songDispatch, queue, index) => {
 
 export const secondToTime = (second) => {
   if (!second) return '00:00'
+	if (second === Infinity) return '∞:∞'
   return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 }
 
@@ -127,7 +132,7 @@ export const tuktuktuk = async (songDispatch) => {
       title: 'Tuk Tuk Tuk',
       album: 'Tuk Tuk Tuk',
       artist: 'Sawyerf',
-      artwork: require('../../assets/icon.png')
+      artwork: require('~/../assets/icon.png')
     },
     {
       id: 'tuktuktukend',
@@ -135,7 +140,7 @@ export const tuktuktuk = async (songDispatch) => {
       url: urlTuk,
       title: 'Tuk Tuk Tuk',
       artist: 'Sawyerf',
-      artwork: require('../../assets/icon.png')
+      artwork: require('~/../assets/icon.png')
     }]
     await TrackPlayer.setQueue(queue)
     await TrackPlayer.play()

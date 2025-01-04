@@ -32,11 +32,8 @@ const Album = ({ navigation, route }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-				paddingTop: 0,
-			}}
-			contentContainerStyle={mainStyles.contentMainContainer(insets)}>
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
 				style={presStyles.cover}
@@ -51,10 +48,10 @@ const Album = ({ navigation, route }) => {
 						<Text style={presStyles.subTitle(theme)}>{route.params.album.artist}</Text>
 					</TouchableOpacity>
 				</View>
-				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 0 }} config={config} size={25} />
+				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 0 }} size={25} />
 				<RandomButton songList={songs} size={25} />
 			</View>
-			<SongsList config={config} songs={songs} isIndex={true} />
+			<SongsList songs={songs} isIndex={true} />
 		</ScrollView>
 	)
 }

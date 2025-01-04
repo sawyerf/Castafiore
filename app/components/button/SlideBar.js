@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Pressable, Platform, PanResponder, Animated } from 'react-native'
+import { View, Platform, PanResponder } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
-import { pauseSong, resumeSong } from '~/utils/player'
+import { stopSong, resumeSong } from '~/utils/player'
 
 const SlideBar = ({
   progress = 0,
@@ -19,11 +19,9 @@ const SlideBar = ({
   const viewRef = React.useRef(null)
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    // onStartShouldSetPanResponderCapture: () => true,
     onMoveShouldSetPanResponder: () => true,
-    // onMoveShouldSetPanResponderCapture: () => true,
     onPanResponderGrant: (evt, gestureState) => {
-      if (pauseOnMove) pauseSong()
+      if (pauseOnMove) stopSong()
       const prog = (gestureState.x0 - layoutBar.x) / layoutBar.width
       if (!prog || prog < 0) return onPress(0)
       else if (prog > 1) return onPress(1)
@@ -69,7 +67,7 @@ const styles = {
     height: sizeBitogno,
     borderRadius: sizeBitogno / 2,
     backgroundColor: theme.primaryTouch,
-    left: Platform.OS === 'web' ? `calc(${vol * 100}% - ${sizeBitogno / 2}px)` : vol * 99 + '%', // TODO: fix calc native
+    left: Platform.select({ web: `calc(${vol * 100}% - ${sizeBitogno / 2}px)`, default: vol * 99 + '%' }),
     top: 7
   })
 }

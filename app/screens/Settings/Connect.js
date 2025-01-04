@@ -86,9 +86,12 @@ const Connect = ({ navigation }) => {
 	}
 
 	return (
-		<ScrollView style={mainStyles.mainContainer(insets, theme)} >
+		<ScrollView
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}
+		>
 			<Header title="Connect" />
-			<View style={{...settingStyles.contentMainContainer(insets), marginTop: 30}}>
+			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
 						<View
@@ -114,7 +117,7 @@ const Connect = ({ navigation }) => {
 						</View>
 					</View>
 				</View>
-				<View style={{...settingStyles.optionsContainer(theme), marginBottom: 10}}>
+				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 10 }}>
 					<OptionInput
 						title="Name"
 						placeholder="Name"

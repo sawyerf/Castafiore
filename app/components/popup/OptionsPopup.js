@@ -69,9 +69,7 @@ const OptionsPopup = ({ visible, close, options }) => {
 						backgroundColor: theme.primaryDark,
 						borderTopLeftRadius: 20,
 						borderTopRightRadius: 20,
-						transform: [{
-							translateY: slide
-						}]
+						transform: [{ translateY: slide }]
 					}}
 				>
 					{[

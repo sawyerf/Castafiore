@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, Pressable, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ConfigContext } from '~/contexts/config';
 
+import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
+import { tuktuktuk } from '~/utils/player';
 import pkg from '~/../package.json';
 
 const SideBar = ({ state, descriptors, navigation }) => {
@@ -27,7 +28,8 @@ const SideBar = ({ state, descriptors, navigation }) => {
     }}
     >
       <View style={{ marginHorizontal: 10, marginTop: 15, marginBottom: 15 }} >
-        <TouchableOpacity
+        <Pressable
+          onPress={tuktuktuk}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -41,7 +43,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
             <Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
             <Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -73,14 +75,10 @@ const SideBar = ({ state, descriptors, navigation }) => {
         }
 
         return (
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
+          <Pressable
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
+            style={({ pressed }) => ({
               flexDirection: 'row',
               alignItems: 'center',
               backgroundColor: isFocused ? theme.primaryDark : undefined,
@@ -89,7 +87,8 @@ const SideBar = ({ state, descriptors, navigation }) => {
               paddingLeft: 10,
               borderRadius: 8,
               marginBottom: 3,
-            }}
+              opacity: pressed ? 0.5 : 1,
+            })}
             key={index}
             disabled={(!config.query && route.name !== 'Settings')}
           >
@@ -97,7 +96,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
             <Text style={{ color: getColor(), textAlign: 'left', fontSize: 20, fontWeight: '600' }}>
               {options.title}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         );
       })}
     </View>

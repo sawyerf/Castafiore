@@ -1,16 +1,15 @@
+import { Platform } from "react-native";
+
 export default {
 	mainContainer: (insets, theme) => ({
 		flex: 1,
 		backgroundColor: theme.primaryDark,
-		paddingTop: insets.top,
-		paddingBottom: insets.bottom,
-		paddingLeft: insets.left,
-		paddingRight: insets.right,
 	}),
-	contentMainContainer: (insets) => ({
-		// add inset because for screen home for ios and android, the refresh change the height of the screen
-		// paddingBottom: insets.bottom + 80
-		paddingBottom: 80
+	contentMainContainer: (insets, statusBar = true) => ({
+		paddingTop: statusBar ? insets.top : 0,
+		paddingBottom: 80 + Platform.select({ web: 0, android: insets.bottom }),
+		paddingStart: insets.left,
+		paddingEnd: insets.right,
 	}),
 	mainTitle: theme => ({
 		color: theme.primaryLight,

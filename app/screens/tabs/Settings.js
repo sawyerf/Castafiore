@@ -1,12 +1,12 @@
 import React from 'react';
 import pkg from '~/../package.json';
-import { Text, View, Image, ScrollView, TouchableOpacity, Platform, Alert } from 'react-native';
+import { Text, View, Image, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
-import { SongContext } from '~/contexts/song';
+import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { tuktuktuk } from '~/utils/player';
 import ButtonMenu from '~/components/settings/ButtonMenu';
@@ -20,22 +20,26 @@ const Settings = ({ navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const setting = React.useContext(SettingsContext)
-	const [song, songDispatch] = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 
 	return (
 		<ScrollView
 			style={mainStyles.mainContainer(insets, theme)}
-			contentContainerStyle={{ ...settingStyles.contentMainContainer(insets), paddingTop: 40 }}
+			contentContainerStyle={{
+				...mainStyles.contentMainContainer(insets),
+				...settingStyles.contentMainContainer(insets)
+			}}
 		>
-			<View style={settingStyles.optionsContainer(theme)}>
-				<TouchableOpacity
+			<View style={{...settingStyles.optionsContainer(theme), marginTop: 40}}>
+				<Pressable
 					onPress={() => tuktuktuk(songDispatch)}
-					style={{
+					style={({ pressed }) => ({
 						flexDirection: 'row',
 						alignItems: 'center',
 						width: '100%',
 						paddingVertical: 10,
-					}}>
+						opacity: pressed ? 0.5 : 1,
+					})}>
 					<Image
 						source={require('~/../assets/icon.png')}
 						style={{ width: 50, height: 50, borderRadius: 10, marginEnd: 10 }}
@@ -44,7 +48,7 @@ const Settings = ({ navigation }) => {
 						<Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
 						<Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
 					</View>
-				</TouchableOpacity>
+				</Pressable>
 			</View>
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu

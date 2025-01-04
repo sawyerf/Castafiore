@@ -1,23 +1,27 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Linking } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ThemeContext } from '~/contexts/theme'
-import { SongContext } from '~/contexts/song';
-import { playSong } from '~/utils/player';
-import OptionsPopup from '~/components/popup/OptionsPopup';
+import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
+import { playSong } from '~/utils/player';
+import { SongDispatchContext } from '~/contexts/song';
+import { ThemeContext } from '~/contexts/theme'
+import CustomFlat from '~/components/lists/CustomFlat';
 import ImageError from '~/components/ImageError';
-import CustomScroll from '~/components/lists/CustomScroll';
+import OptionsPopup from '~/components/popup/OptionsPopup';
 
-const RadioList = ({ config, radios }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
+const RadioList = ({ radios }) => {
+	const songDispatch = React.useContext(SongDispatchContext)
 	const [optionRadio, setOptionRadio] = React.useState(null)
 	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
+	const config = React.useContext(ConfigContext)
 
-	const playRadio = (index) => {
+	React.shouldComponentUpdate = () => false
+
+	const playRadio = React.useCallback((index) => {
 		playSong(config, songDispatch, radios.map(radio => ({
 			id: radio.streamUrl,
 			title: radio.name,
@@ -28,20 +32,20 @@ const RadioList = ({ config, radios }) => {
 			duration: 0,
 			albumArtist: radio.homePageUrl,
 		})), index)
-	}
+	})
 
-	const getUrlFavicon = (url) => {
+	const getUrlFavicon = React.useCallback((url) => {
 		if (!url) return null
 		const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'))
 		if (!regex) return null
 		const origin = regex[0]
 		return origin + '/favicon.ico'
-	}
+	})
 
 	if (!radios) return null
 	return (
 		<>
-			<CustomScroll
+			<CustomFlat
 				contentContainerStyle={{
 					height: 60 * 2 + 10,
 					paddingStart: 20,

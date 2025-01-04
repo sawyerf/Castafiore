@@ -85,11 +85,11 @@ const styles = {
     maxWidth: 245,
     opacity: pressed ? 0.5 : 1,
   }),
-  albumCover: type => ({
+  albumCover: (type) => ({
     width: "100%",
     aspectRatio: 1,
     marginBottom: 6,
-    borderRadius: type === 'artist' ? '50%' : 0,
+    borderRadius: type === 'artist' ? 500 : 0,
   }),
   titleAlbum: (theme) => ({
     color: theme.primaryLight,

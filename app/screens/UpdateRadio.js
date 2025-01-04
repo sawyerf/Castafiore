@@ -50,7 +50,10 @@ const UpdateRadio = ({ navigation, route }) => {
 	}
 
 	return (
-		<View style={mainStyles.mainContainer(insets, theme)} >
+		<View style={{
+			...mainStyles.mainContainer(insets, theme),
+			...mainStyles.contentMainContainer(insets)
+		}} >
 			<Header title={route.params?.id ? 'Update Radio' : 'Create Radio'} />
 			<View style={settingStyles.contentMainContainer(insets)}>
 				<View

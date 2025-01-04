@@ -3,8 +3,8 @@ import { Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { SongContext } from '~/contexts/song';
 import { nextSong, pauseSong, resumeSong } from '~/utils/player';
+import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
@@ -12,7 +12,8 @@ import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 
 const BoxPlayer = ({ fullscreen }) => {
-	const [song, songDispatch] = React.useContext(SongContext)
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)

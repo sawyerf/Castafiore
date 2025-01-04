@@ -15,6 +15,7 @@ import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
 import TableItem from '~/components/settings/TableItem'
+import ListMap from '~/components/lists/ListMap'
 
 const CacheSettings = () => {
 	const insets = useSafeAreaInsets()
@@ -44,11 +45,15 @@ const CacheSettings = () => {
 	React.useEffect(() => {
 		if (cacheNextSong === '') return
 		const number = parseInt(cacheNextSong)
+		if (number === settings.cacheNextSong) return
 		setSettings({ ...settings, cacheNextSong: number })
 	}, [cacheNextSong])
 
 	return (
-		<ScrollView style={mainStyles.mainContainer(insets, theme)}>
+		<ScrollView
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}
+		>
 			<Header title="Cache" />
 
 			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
@@ -108,16 +113,16 @@ const CacheSettings = () => {
 				</View>
 				<Text style={settingStyles.titleContainer(theme)}>Cache Stats</Text >
 				<View style={settingStyles.optionsContainer(theme)}>
-					<FlatList
+					<ListMap
 						data={statCache}
-						renderItem={({ item, index }) => (
+						renderItem={(item, index) => (
 							<TableItem
+								key={index}
 								title={item.name}
 								value={item.count}
 								isLast={index === statCache.length - 1}
 							/>
 						)}
-						keyExtractor={(item, index) => index}
 						ListEmptyComponent={(
 							<View style={settingStyles.optionItem(theme, true)}>
 								<Text style={{ color: theme.primaryLight, fontSize: 16, fontWeight: '400' }}>No Cache</Text>

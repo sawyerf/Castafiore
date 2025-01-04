@@ -30,12 +30,14 @@ const HomeSettings = ({ }) => {
 	}, [sizeOfList])
 
 	React.useEffect(() => {
-		// if (LBUser === '') return
 		if (LBUser != settings.listenBrainzUser) setSettings({ ...settings, listenBrainzUser: LBUser })
 	}, [LBUser])
 
 	return (
-		<ScrollView style={mainStyles.mainContainer(insets, theme)}>
+		<ScrollView
+			style={mainStyles.mainContainer(insets, theme)}
+			contentContainerStyle={mainStyles.contentMainContainer(insets)}
+		>
 			<Header title="Home" />
 			<View
 				style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}
@@ -59,7 +61,7 @@ const HomeSettings = ({ }) => {
 				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5 }}>
 					<ButtonSwitch
 						title={'Show scroll helper'}
-						onPress={() => setSettings({ ...settings, scrollHelper: !settings.scrollHelper }) }
+						onPress={() => setSettings({ ...settings, scrollHelper: !settings.scrollHelper })}
 						value={settings.scrollHelper}
 						isLast={true}
 					/>
@@ -70,7 +72,7 @@ const HomeSettings = ({ }) => {
 					<OptionInput
 						title="ListenBrainz User"
 						value={LBUser}
-						onChangeText={(text) => setLBUser(text) }
+						onChangeText={(text) => setLBUser(text)}
 						placeholder="user"
 						isLast={true}
 					/>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SongContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 
 import { getApi, getApiNetworkFirst } from '~/utils/api';
@@ -11,25 +10,21 @@ import { ThemeContext } from '~/contexts/theme';
 import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
 import mainStyles from '~/styles/main';
+import { SongDispatchContext } from '~/contexts/song';
 
 const Home = () => {
 	const insets = useSafeAreaInsets();
-	const [song, songDispatch] = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const theme = React.useContext(ThemeContext)
 	const [statusRefresh, setStatusRefresh] = React.useState();
-	const [refreshing, setRefreshing] = React.useState(false);
+	const [refresh, setRefresh] = React.useState(0);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
 	const rotation = rotationValue.interpolate({
 		inputRange: [0, 1],
 		outputRange: ['0deg', '360deg']
 	})
-
-	const onRefresh = () => {
-		if (refreshing) return;
-		setRefreshing(true);
-	};
 
 	const clickRandomSong = () => {
 		getApiNetworkFirst(config, 'getRandomSongs', `count=50`)
@@ -39,19 +34,15 @@ const Home = () => {
 			.catch((error) => { })
 	}
 
-	React.useEffect(() => {
-		if (refreshing) {
-			rotationValue.setValue(0)
-			Animated.timing(rotationValue, {
-				toValue: 1,
-				duration: 1000,
-				useNativeDriver: true,
-			}).start()
-			setTimeout(() => {
-				setRefreshing(false)
-			}, 1000)
-		}
-	}, [refreshing])
+	const forceRefresh = () => {
+		setRefresh(refresh + 1)
+		rotationValue.setValue(0)
+		Animated.timing(rotationValue, {
+			toValue: 1,
+			duration: 1000,
+			useNativeDriver: true,
+		}).start()
+	}
 
 	const getStatusRefresh = () => {
 		getApi(config, 'getScanStatus')
@@ -62,7 +53,7 @@ const Home = () => {
 					}, 1000)
 					setStatusRefresh(json.scanStatus)
 				} else {
-					setRefreshing(true)
+					forceRefresh()
 					setStatusRefresh()
 				}
 			})
@@ -70,7 +61,7 @@ const Home = () => {
 	}
 
 	const refreshServer = () => {
-		setRefreshing(true)
+		forceRefresh()
 		getApi(config, 'startScan', 'fullScan=true')
 			.then((json) => {
 				getStatusRefresh()
@@ -92,11 +83,7 @@ const Home = () => {
 					<Text style={mainStyles.subTitle(theme)}>
 						{statusRefresh.count}°
 					</Text> :
-					<Animated.View style={{
-						transform: [{
-							rotate: rotation
-						}]
-					}}>
+					<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 						<IconButton
 							icon="refresh"
 							size={30}
@@ -104,13 +91,13 @@ const Home = () => {
 							style={{ paddingHorizontal: 10 }}
 							onLongPress={refreshServer}
 							delayLongPress={200}
-							onPress={() => setRefreshing(true)}
+							onPress={forceRefresh}
 						/>
 					</Animated.View>
 				}
 			</View>
 			{config?.url && settings?.homeOrder?.map((value, index) =>
-				<HorizontalList key={index} config={config} refresh={refreshing} {...value} />
+				<HorizontalList key={index} refresh={refresh} {...value} />
 			)}
 		</ScrollView>
 	);

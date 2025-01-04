@@ -1,19 +1,20 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, Alert, Platform } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
-import OptionsPopup from '~/components/popup/OptionsPopup';
-import { getApi } from '~/utils/api';
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { ConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
+import { getApi, urlCover } from '~/utils/api';
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { ThemeContext } from '~/contexts/theme';
+import OptionsPopup from '~/components/popup/OptionsPopup';
 
-const VerticalPlaylist = ({ config, playlists }) => {
+const VerticalPlaylist = ({ playlists }) => {
 	const navigation = useNavigation();
 	const [indexOption, setIndexOption] = React.useState(-1);
 	const [deletePlaylists, setDeletePlaylists] = React.useState([])
+	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)

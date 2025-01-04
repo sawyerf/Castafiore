@@ -44,7 +44,10 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 		if (type == 'listenbrainz') {
 			fetch(`https://api.listenbrainz.org/1/stats/user/${encodeURIComponent(settings.listenBrainzUser)}/listening-activity?range=this_week`, { mode: 'cors' })
 				.then(response => response.json())
-				.then(data => setList(data.payload.listening_activity))
+				.then(data => {
+					if (!data?.payload?.listening_activity?.length) return
+					setList(data.payload.listening_activity)
+				})
 				.catch(error => console.error(error))
 		} else {
 			getCachedAndApi(config, path, nquery, (json) => {

@@ -45,6 +45,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 				style={{
 					...mainStyles.contentMainContainer(insets),
 					...styles.mainContainer(insets, theme),
+					paddingBottom: insets.bottom,
 					touchAction: 'none',
 				}}
 			>
@@ -174,10 +175,11 @@ const styles = {
 		paddingHorizontal: 25,
 		maxWidth: 500,
 		width: '100%',
+		height: '100%',
 		alignItems: 'center',
 		flexDirection: 'column',
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	albumImage: () => {
 		// it shitcode but it dosn't work with just width and aspectRatio for the songlist (queue)

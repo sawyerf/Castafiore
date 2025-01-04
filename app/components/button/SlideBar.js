@@ -14,7 +14,7 @@ const SlideBar = ({
   sizeBitogno = 12,
   pauseOnMove = false
 }) => {
-  const [layoutBar, setLayoutBar] = React.useState({ width: 0, height: 0, x: 0 })
+  const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
   const theme = React.useContext(ThemeContext)
   const viewRef = React.useRef(null)
   const panResponder = PanResponder.create({
@@ -22,13 +22,13 @@ const SlideBar = ({
     onMoveShouldSetPanResponder: () => true,
     onPanResponderGrant: (evt, gestureState) => {
       if (pauseOnMove) stopSong()
-      const prog = (gestureState.x0 - layoutBar.x) / layoutBar.width
+      const prog = (gestureState.x0 - layoutBar.current.x) / layoutBar.current.width
       if (!prog || prog < 0) return onPress(0)
       else if (prog > 1) return onPress(1)
       onPress(prog)
     },
     onPanResponderMove: (evt, gestureState) => {
-      const prog = (gestureState.moveX - layoutBar.x) / layoutBar.width
+      const prog = (gestureState.moveX - layoutBar.current.x) / layoutBar.current.width
       if (!prog || prog < 0) return onPress(0)
       else if (prog > 1) return onPress(1)
       onPress(prog)
@@ -44,7 +44,7 @@ const SlideBar = ({
       ref={viewRef}
       onLayout={() => {
         viewRef.current.measure((x, y, width, height, pageX, pageY) => {
-          setLayoutBar({ width, height, x: pageX })
+          layoutBar.current = { width, height, x: pageX }
         })
       }}
       pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}

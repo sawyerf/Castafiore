@@ -16,39 +16,40 @@ const SlideControl = ({ uri }) => {
 	const position = React.useRef(new Animated.Value(0)).current
 	const previousTap = React.useRef(0)
 	const panResponder = PanResponder.create({
-		onStartShouldSetPanResponder: () => true,
-		onMoveShouldSetPanResponder: () => true,
-		onPanResponderGrant: (_, gestureState) => {
-			startMove.current = gestureState.x0
-		},
-		onPanResponderMove: (_, gestureState) => {
-			const move = gestureState.moveX - startMove.current
-			if (move < -100) position.setValue(-100)
-			else if (move > 100) position.setValue(100)
-			else position.setValue(move)
-		},
-		onPanResponderRelease: () => {
-			startMove.current = 0
-			if (position._value < -50) {
-				nextSong(config, song, songDispatch)
-			} else if (position._value > 50) {
-				previousSong(config, song, songDispatch)
-			} else if (position._value === 0) {
-				let now = Date.now()
-				if (now - previousTap.current < 300) {
-					if (song.isPlaying) pauseSong()
-					else resumeSong()
-					now = 0
+			onStartShouldSetPanResponder: () => true,
+			onMoveShouldSetPanResponder: () => true,
+			onPanResponderGrant: (_, gestureState) => {
+				startMove.current = gestureState.x0
+				position.setValue(0)
+			},
+			onPanResponderMove: (_, gestureState) => {
+				const move = gestureState.moveX - startMove.current
+				if (move < -100) position.setValue(-100)
+				else if (move > 100) position.setValue(100)
+				else position.setValue(move)
+			},
+			onPanResponderRelease: () => {
+				startMove.current = 0
+				if (position._value < -50) {
+					nextSong(config, song, songDispatch)
+				} else if (position._value > 50) {
+					previousSong(config, song, songDispatch)
+				} else if (position._value === 0) {
+					let now = Date.now()
+					if (now - previousTap.current < 300) {
+						if (song.isPlaying) pauseSong()
+						else resumeSong()
+						now = 0
+					}
+					previousTap.current = now
 				}
-				previousTap.current = now
+				Animated.timing(position, {
+					toValue: 0,
+					useNativeDriver: true,
+					duration: 200
+				}).start()
 			}
-			Animated.timing(position, {
-				toValue: 0,
-				useNativeDriver: true,
-				duration: 200
-			}).start()
-		}
-	})
+		})
 
 	return (
 		<Animated.View

@@ -45,7 +45,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 							style={{
 								width: 45,
 								height: 45,
-								borderRadius: itemHist.mediaType ? 3 : '50%',
+								borderRadius: itemHist.mediaType ? 3 : 25,
 								marginEnd: 10,
 								backgroundColor: theme.secondaryDark,
 							}}

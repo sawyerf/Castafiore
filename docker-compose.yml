@@ -1,0 +1,21 @@
+services:
+  android-builder:
+    image: openjdk:11-jdk
+    container_name: android-builder
+    working_dir: /app
+    volumes:
+      - .:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+      - "19006:19006"
+    stdin_open: true
+    tty: true
+    networks:
+      - builder_network
+
+networks:
+  builder_network:
+    driver: bridge

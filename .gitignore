@@ -40,3 +40,5 @@ yarn-error.*
 android
 ios
 android/**
+.node_modules
+node_modules

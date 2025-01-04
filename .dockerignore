@@ -1,0 +1,4 @@
+**/node_modules
+.expo
+.github
+web-build

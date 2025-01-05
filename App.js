@@ -10,7 +10,7 @@ import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { initPlayer } from '~/utils/player';
+import Player from '~/utils/player';
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song';
 import { ThemeContext, getTheme } from '~/contexts/theme';
 
@@ -31,7 +31,7 @@ const App = () => {
   const [theme, setTheme] = React.useState(getTheme())
 
   React.useEffect(() => {
-    if (!song.isInit) initPlayer(dispatch)
+    if (!song.isInit) Player.initPlayer(dispatch)
     getConfig()
       .then((config) => {
         setConfig(config)

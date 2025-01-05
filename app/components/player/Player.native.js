@@ -1,5 +1,6 @@
 import React from 'react';
 import { Event, useTrackPlayerEvents, State } from 'react-native-track-player';
+import { useWindowDimensions } from 'react-native';
 
 import { SettingsContext } from '~/contexts/settings';
 import { SongContext, SongDispatchContext } from '~/contexts/song';

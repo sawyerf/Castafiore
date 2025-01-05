@@ -227,3 +227,22 @@ export const tuktuktuk = (songDispatch) => {
 export const setRepeat = async (songdispatch, action) => {
 	songdispatch({ type: 'setActionEndOfSong', action })
 }
+
+export default {
+	initService,
+	initPlayer,
+	updateTime,
+	playSong,
+	nextSong,
+	previousSong,
+	pauseSong,
+	resumeSong,
+	stopSong,
+	setPosition,
+	setVolume,
+	getVolume,
+	updateVolume,
+	secondToTime,
+	tuktuktuk,
+	setRepeat,
+}

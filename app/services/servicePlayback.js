@@ -1,13 +1,14 @@
 import TrackPlayer, { Event } from "react-native-track-player"
-import { setPosition, pauseSong, resumeSong } from "~/utils/player"
+
+import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
 
 module.exports = async () => {
-  TrackPlayer.addEventListener(Event.RemotePlay, () => resumeSong())
-  TrackPlayer.addEventListener(Event.RemotePause, () => pauseSong())
+  TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
+  TrackPlayer.addEventListener(Event.RemotePause, () => Player.pauseSong())
   TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext())
   TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())
-  TrackPlayer.addEventListener(Event.RemoteSeek, (event) => setPosition(event.position))
+  TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
     if (event.track?.id === 'tuktuktukend') {
       await TrackPlayer.remove([0, 1])

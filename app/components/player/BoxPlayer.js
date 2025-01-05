@@ -3,11 +3,11 @@ import { Text, View, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { nextSong, pauseSong, resumeSong } from '~/utils/player';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import Player from '~/utils/player';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 
@@ -53,14 +53,14 @@ const BoxPlayer = ({ fullscreen }) => {
 					size={23}
 					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
-					onPress={() => nextSong(config, song, songDispatch)}
+					onPress={() => Player.nextSong(config, song, songDispatch)}
 				/>
 				<IconButton
 					icon={song.isPlaying ? 'pause' : 'play'}
 					size={23}
 					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
-					onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
+					onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 				/>
 			</View>
 		</Pressable>

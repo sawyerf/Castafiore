@@ -1,8 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import { ConfigContext } from '~/contexts/config';
 import { SettingsContext } from '~/contexts/settings';
-
 import Player from '~/components/player/Player';
 import BottomBar from '~/components/bar/BottomBar';
 import SideBar from '~/components/bar/SideBar';

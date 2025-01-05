@@ -5,7 +5,7 @@ import { ThemeContext } from '~/contexts/theme'
 import { ConfigContext } from '~/contexts/config'
 import { getApi } from '~/utils/api'
 import { parseLrc } from '~/utils/lrc'
-import { setPosition } from '~/utils/player'
+import Player from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
@@ -91,7 +91,7 @@ const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
         return (
           <Pressable
             onPress={() => {
-              setPosition(item.time)
+              Player.setPosition(item.time)
             }}
             >
           <Text

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { tuktuktuk } from '~/utils/player';
+import Player from '~/utils/player';
 import pkg from '~/../package.json';
 
 const SideBar = ({ state, descriptors, navigation }) => {
@@ -29,7 +29,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
     >
       <View style={{ marginHorizontal: 10, marginTop: 15, marginBottom: 15 }} >
         <Pressable
-          onPress={tuktuktuk}
+          onPress={Player.tuktuktuk}
           style={{
             flexDirection: 'row',
             alignItems: 'center',

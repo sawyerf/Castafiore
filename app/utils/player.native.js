@@ -154,3 +154,23 @@ export const updateVolume = () => { }
 export const updateTime = () => {
   return useProgress(500)
 }
+
+export default {
+  initService,
+  initPlayer,
+  previousSong,
+  nextSong,
+  pauseSong,
+  resumeSong,
+  stopSong,
+  playSong,
+  secondToTime,
+  setPosition,
+  setVolume,
+  getVolume,
+  setRepeat,
+  unloadSong,
+  tuktuktuk,
+  updateVolume,
+  updateTime
+}

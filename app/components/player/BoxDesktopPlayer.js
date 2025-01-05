@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext } from '~/contexts/config';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, updateVolume, setRepeat, updateTime } from '~/utils/player';
 import { urlCover } from '~/utils/api';
+import Player from '~/utils/player';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import SlideBar from '~/components/button/SlideBar';
@@ -17,8 +17,9 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
-	const time = updateTime()
-	const volume = updateVolume()
+	const time = Player.updateTime()
+	const volume = Player.updateVolume()
+	const [fakeTime, setFakeTime] = React.useState(-1)
 
 	return (
 		<View
@@ -36,20 +37,18 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 				borderTopWidth: 1,
 				borderTopColor: theme.tertiaryDark,
 			}}>
-			<View style={{ flexDirection: 'row', flex: 1 }}>
-				<Pressable
+			<Pressable
+				onPress={() => fullscreen.set(true)}
+				style={{ flexDirection: 'row', flex: 1 }}
+			>
+				<ImageError
+					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
 					style={styles.boxPlayerImage}
-					onPress={() => fullscreen.set(true)}
 				>
-					<ImageError
-						source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
-						style={styles.boxPlayerImage}
-					>
-						<View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }}>
-							<Icon name="music" size={23} color={theme.primaryLight} />
-						</View>
-					</ImageError>
-				</Pressable>
+					<View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }}>
+						<Icon name="music" size={23} color={theme.primaryLight} />
+					</View>
+				</ImageError>
 				<View style={{ justifyContent: 'center', gap: 2, flex: 'min-content', maxWidth: 'min-content' }}>
 					<Text style={{ color: theme.primaryLight, fontWeight: 'bold', maxWidth: 400 }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
 					<Text style={{ color: theme.secondaryLight, maxWidth: 400 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
@@ -60,7 +59,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					size={19}
 					style={{ marginHorizontal: 15, padding: 5 }}
 				/>
-			</View>
+			</Pressable>
 			<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 7 }}>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
 					<IconButton
@@ -69,7 +68,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 						size={19}
 						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
 						onPress={() => {
-							setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
+							Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 						}}
 					/>
 					<IconButton
@@ -77,21 +76,21 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 						style={{ width: 10, alignItems: 'end' }}
 						size={17}
 						color={theme.primaryLight}
-						onPress={() => previousSong(config, song, songDispatch)}
+						onPress={() => Player.previousSong(config, song, songDispatch)}
 					/>
 					<IconButton
 						icon={song.isPlaying ? 'pause' : 'play'}
 						style={{ width: 20, alignItems: 'center' }}
 						size={19}
 						color={theme.primaryLight}
-						onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
+						onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 					/>
 					<IconButton
 						icon="step-forward"
 						style={{ width: 10, alignItems: 'start' }}
 						size={17}
 						color={theme.primaryLight}
-						onPress={() => nextSong(config, song, songDispatch)}
+						onPress={() => Player.nextSong(config, song, songDispatch)}
 					/>
 					<IconButton
 						icon="bars"
@@ -101,16 +100,17 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					/>
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.position)}</Text>
+					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
 					<SlideBar
-						progress={time.position / time.duration}
-						onPress={(progress) => setPosition(progress * time.duration)}
+						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
+						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
+						onChange={(progress) => setFakeTime(progress)}
+						onComplete={() => Player.setPosition(fakeTime * time.duration) && Player.resumeSong() && setFakeTime(-1)}
 						stylePress={{ flex: 1, height: 6 }}
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
-						pauseOnMove={true}
 					/>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
+					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(time.duration)}</Text>
 				</View>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
@@ -119,11 +119,12 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					size={17}
 					color={'#fff'}
 					style={{ width: 27 }}
-					onPress={() => setVolume(volume ? 0 : 1)}
+					onPress={() => Player.setVolume(volume ? 0 : 1)}
 				/>
 				<SlideBar
 					progress={volume}
-					onPress={(progress) => setVolume(progress)}
+					onStart={(progress) => Player.setVolume(progress)}
+					onChange={(progress) => Player.setVolume(progress)}
 					stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
 					styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 					styleProgress={{ backgroundColor: theme.primaryTouch }}

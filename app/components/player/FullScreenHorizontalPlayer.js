@@ -10,9 +10,10 @@ import SlideBar from '~/components/button/SlideBar'
 import { ConfigContext } from '~/contexts/config'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import { nextSong, pauseSong, resumeSong, previousSong, setPosition, secondToTime, setVolume, updateVolume, setRepeat, updateTime, playSong } from '~/utils/player'
+import Player from '~/utils/player'
 import { urlCover } from '~/utils/api'
 import Lyric from '~/components/player/Lyric'
+import SlideControl from '../button/SlideControl'
 
 const preview = {
   COVER: 0,
@@ -27,8 +28,9 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
   const song = React.useContext(SongContext)
   const songDispatch = React.useContext(SongDispatchContext)
   const theme = React.useContext(ThemeContext)
-  const time = updateTime()
-  const volume = updateVolume()
+  const time = Player.updateTime()
+  const volume = Player.updateVolume()
+  const [fakeTime, setFakeTime] = React.useState(-1)
   const scroll = React.useRef(null)
   const { height } = useWindowDimensions()
 
@@ -90,7 +92,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
             flexDirection: 'row',
           }}
         >
-          <View
+          <SlideControl
             style={{
               flex: 2,
               justifyContent: 'flex-start',
@@ -137,7 +139,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
                 {song?.songInfo?.artist}
               </Text>
             </View>
-          </View>
+          </SlideControl>
           {
             isPreview == preview.QUEUE &&
             <View style={{ flex: 1, maxWidth: '50%', justifyContent: 'flex-end' }}>
@@ -160,7 +162,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
                     }}
                     key={item.id}
                     onPress={() => {
-                      playSong(config, songDispatch, song.queue, index)
+                      Player.playSong(config, songDispatch, song.queue, index)
                     }}>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
                       <Text numberOfLines={1} style={{ color: song.index === index ? 'red' : '#fff', fontSize: 16, marginBottom: 2, textAlign: 'right' }}>
@@ -189,16 +191,17 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
           }
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7, maxWidth: '100%' }}>
-          <Text style={{ color: '#fff', fontSize: 13 }}>{secondToTime(time.position)}</Text>
+          <Text style={{ color: '#fff', fontSize: 13 }}>{fakeTime < 0 ? Player.secondToTime(time.position) : Player.secondToTime(fakeTime * time.duration)}</Text>
           <SlideBar
-            progress={time.position / time.duration}
-            onPress={(progress) => setPosition(progress * time.duration)}
+            progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
+            onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
+            onChange={(progress) => setFakeTime(progress)}
+						onComplete={() => Player.setPosition(fakeTime * time.duration) && Player.resumeSong() && setFakeTime(-1)}
             stylePress={{ flex: 1, height: 26, paddingVertical: 10 }}
             styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: '#fff', overflow: 'hidden' }}
             styleProgress={{ backgroundColor: theme.primaryTouch }}
-            pauseOnMove={true}
           />
-          <Text style={{ color: '#fff', fontSize: 13 }}>{secondToTime(time.duration)}</Text>
+          <Text style={{ color: '#fff', fontSize: 13 }}>{Player.secondToTime(time.duration)}</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 5 }}>
@@ -217,7 +220,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
               size={25}
               color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
               onPress={() => {
-                setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
+                Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
               }}
             />
             <IconButton
@@ -225,21 +228,21 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
               style={{ alignItems: 'end' }}
               size={25}
               color={'#fff'}
-              onPress={() => previousSong(config, song, songDispatch)}
+              onPress={() => Player.previousSong(config, song, songDispatch)}
             />
             <IconButton
               icon={song.isPlaying ? 'pause' : 'play'}
               style={{ width: 22, alignItems: 'center' }}
               size={25}
               color={'#fff'}
-              onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
+              onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
             />
             <IconButton
               icon="step-forward"
               style={{ alignItems: 'start' }}
               size={25}
               color={'#fff'}
-              onPress={() => nextSong(config, song, songDispatch)}
+              onPress={() => Player.nextSong(config, song, songDispatch)}
             />
             <IconButton
               icon="bars"
@@ -255,11 +258,13 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
               size={17}
               color={'#fff'}
               style={{ width: 27 }}
-              onPress={() => setVolume(volume ? 0 : 1)}
+              onPress={() => Player.setVolume(volume ? 0 : 1)}
             />
             <SlideBar
               progress={volume}
-              onPress={(progress) => setVolume(progress)}
+              // onPress={(progress) => setVolume(progress)}
+              onStart={(progress) => Player.setVolume(progress)}
+              onChange={(progress) => Player.setVolume(progress)}
               stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
               styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: '#fff', overflow: 'hidden' }}
               styleProgress={{ backgroundColor: theme.primaryTouch }}

@@ -8,7 +8,7 @@ import { confirmAlert } from '~/utils/alert';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
 import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { tuktuktuk } from '~/utils/player';
+import Player from '~/utils/player';
 import ButtonMenu from '~/components/settings/ButtonMenu';
 import ButtonSwitch from '~/components/settings/ButtonSwitch';
 import mainStyles from '~/styles/main';
@@ -32,7 +32,7 @@ const Settings = ({ navigation }) => {
 		>
 			<View style={{...settingStyles.optionsContainer(theme), marginTop: 40}}>
 				<Pressable
-					onPress={() => tuktuktuk(songDispatch)}
+					onPress={() => Player.tuktuktuk(songDispatch)}
 					style={({ pressed }) => ({
 						flexDirection: 'row',
 						alignItems: 'center',

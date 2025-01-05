@@ -2,17 +2,18 @@ import React from 'react'
 import { View, Platform, PanResponder } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
-import { stopSong, resumeSong } from '~/utils/player'
 
 const SlideBar = ({
   progress = 0,
-  onPress = (progress) => { },
+  // onPress = (progress) => { },
+  onStart = (progress) => { },
+  onChange = (progress) => { },
+  onComplete = (progress) => { },
   stylePress = {},
   styleBar = {},
   styleProgress = {},
   isBitogno = false,
   sizeBitogno = 12,
-  pauseOnMove = false
 }) => {
   const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
   const theme = React.useContext(ThemeContext)
@@ -21,20 +22,19 @@ const SlideBar = ({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
     onPanResponderGrant: (evt, gestureState) => {
-      if (pauseOnMove) stopSong()
       const prog = (gestureState.x0 - layoutBar.current.x) / layoutBar.current.width
-      if (!prog || prog < 0) return onPress(0)
-      else if (prog > 1) return onPress(1)
-      onPress(prog)
+      if (!prog || prog < 0) return onStart(0)
+      else if (prog > 1) return onStart(1)
+      onStart(prog)
     },
     onPanResponderMove: (evt, gestureState) => {
       const prog = (gestureState.moveX - layoutBar.current.x) / layoutBar.current.width
-      if (!prog || prog < 0) return onPress(0)
-      else if (prog > 1) return onPress(1)
-      onPress(prog)
+      if (!prog || prog < 0) return onChange(0)
+      else if (prog > 1) return onChange(1)
+      onChange(prog)
     },
     onPanResponderRelease: (evt, gestureState) => {
-      if (pauseOnMove) resumeSong()
+      onComplete(progress)
     }
   })
 

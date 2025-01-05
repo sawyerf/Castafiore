@@ -3,11 +3,10 @@ import { Text, View, Dimensions, Modal, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
-import { setPosition } from '~/utils/player';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
-import { nextSong, previousSong, pauseSong, resumeSong, secondToTime, setRepeat, updateTime } from '~/utils/player';
+import Player from '~/utils/player';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
 import Lyric from '~/components/player/Lyric';
@@ -15,6 +14,7 @@ import mainStyles from '~/styles/main';
 import SlideBar from '~/components/button/SlideBar';
 import SlideControl from '~/components/button/SlideControl';
 import SongItem from '~/components/lists/SongItem';
+import ImageError from '~/components/ImageError';
 
 const preview = {
 	COVER: 0,
@@ -29,7 +29,8 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
-	const time = updateTime()
+	const time = Player.updateTime()
+	const [fakeTime, setFakeTime] = React.useState(-1)
 	const scroll = React.useRef(null)
 
 	React.useEffect(() => {
@@ -61,7 +62,15 @@ const FullScreenPlayer = ({ fullscreen }) => {
 				<View style={styles.playerContainer}>
 					{
 						isPreview == preview.COVER &&
-						<SlideControl uri={urlCover(config, song?.songInfo?.albumId)} />
+						<SlideControl style={styles.albumImage()}>
+							<ImageError
+								source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
+								style={{
+									...styles.albumImage(),
+									backgroundColor: theme.secondaryDark,
+								}}
+							/>
+						</SlideControl>
 					}
 					{
 						isPreview == preview.QUEUE &&
@@ -97,18 +106,19 @@ const FullScreenPlayer = ({ fullscreen }) => {
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<SlideBar
-						progress={time.position / time.duration}
-						onPress={(progress) => setPosition(progress * time.duration)}
+						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
+						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
+						onChange={(progress) => setFakeTime(progress)}
+						onComplete={() => Player.setPosition(fakeTime * time.duration) && Player.resumeSong() && setFakeTime(-1)}
 						stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 						isBitogno={true}
-						pauseOnMove={true}
 					/>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.position)}</Text>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{secondToTime(time.duration)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(time.duration)}</Text>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
 						<IconButton
@@ -116,21 +126,21 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							size={30}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
-							onPress={() => previousSong(config, song, songDispatch)}
+							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
 						<IconButton
 							icon={song.isPlaying ? 'pause' : 'play'}
 							size={30}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
-							onPress={() => song.isPlaying ? pauseSong() : resumeSong()}
+							onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 						/>
 						<IconButton
 							icon="step-forward"
 							size={30}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
-							onPress={() => nextSong(config, song, songDispatch)}
+							onPress={() => Player.nextSong(config, song, songDispatch)}
 						/>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
@@ -140,7 +150,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
 							style={{ paddingVertical: 10, paddingEnd: 20 }}
 							onPress={() => {
-								setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
+								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 							}}
 						/>
 						<IconButton

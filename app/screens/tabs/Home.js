@@ -27,7 +27,7 @@ const Home = () => {
 	})
 
 	const clickRandomSong = () => {
-		getApiNetworkFirst(config, 'getRandomSongs', `count=50`)
+		getApiNetworkFirst(config, 'getRandomSongs', `size=50`)
 			.then((json) => {
 				playSong(config, songDispatch, json.randomSongs.song, 0)
 			})

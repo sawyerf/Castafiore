@@ -9,7 +9,7 @@ import { setPosition } from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
-const Lyric = ({ song, time, style }) => {
+const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
   const [indexCurrent, setIndex] = React.useState(0)
   const [lyrics, setLyrics] = React.useState([])
   const config = React.useContext(ConfigContext)
@@ -96,8 +96,8 @@ const Lyric = ({ song, time, style }) => {
             >
           <Text
             style={{
-              color: index === indexCurrent ? theme.primaryLight : theme.secondaryLight,
-              fontSize: 23,
+              color: index === indexCurrent ? color?.active || theme.primaryLight : color?.inactive || theme.secondaryLight,
+              fontSize: sizeText,
               textAlign: 'center',
             }}>
             {item.text.length ? item.text : '...'}

@@ -114,23 +114,13 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 				</View>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
-				{
-					volume ?
-						<IconButton
-							icon="volume-up"
-							size={17}
-							color={theme.primaryLight}
-							style={{ width: 27 }}
-							onPress={() => setVolume(0)}
-						/>
-						: <IconButton
-							icon="volume-off"
-							size={17}
-							style={{ width: 27 }}
-							color={theme.primaryLight}
-							onPress={() => setVolume(1)}
-						/>
-				}
+				<IconButton
+					icon={volume ? "volume-up" : "volume-off"}
+					size={17}
+					color={'#fff'}
+					style={{ width: 27 }}
+					onPress={() => setVolume(volume ? 0 : 1)}
+				/>
 				<SlideBar
 					progress={volume}
 					onPress={(progress) => setVolume(progress)}

@@ -80,7 +80,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 									song={item}
 									queue={song.queue}
 									index={index}
-									isPlaying={song.songInfo.id === item.id}
+									isPlaying={song.index === index}
 								/>
 							)}
 						/>

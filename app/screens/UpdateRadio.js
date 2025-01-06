@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -30,18 +30,14 @@ const UpdateRadio = ({ navigation, route }) => {
 		if (!name || !streamUrl) return
 		if (!route.params?.id) {
 			getApi(config, 'createInternetRadioStation', { name, streamUrl, homepageUrl: homePageUrl, })
-				.then((data) => {
-					navigation.goBack()
-				})
+				.then(() => { navigation.goBack() })
 				.catch((error) => {
 					if (error.isApiError) setError(error.message)
 					else setError('Failed to connect to server')
 				})
 		} else {
 			getApi(config, 'updateInternetRadioStation', { id: route.params.id, name, streamUrl, homepageUrl: homePageUrl, })
-				.then((data) => {
-					navigation.goBack()
-				})
+				.then(() => { navigation.goBack() })
 				.catch((error) => {
 					if (error.isApiError) setError(error.message)
 					else setError('Failed to connect to server')
@@ -50,12 +46,12 @@ const UpdateRadio = ({ navigation, route }) => {
 	}
 
 	return (
-		<View style={{
-			...mainStyles.mainContainer(insets, theme),
-			...mainStyles.contentMainContainer(insets)
-		}} >
+		<View style={[
+			mainStyles.mainContainer(insets, theme),
+			mainStyles.contentMainContainer(insets)
+		]} >
 			<Header title={route.params?.id ? 'Update Radio' : 'Create Radio'} />
-			<View style={settingStyles.contentMainContainer(insets)}>
+			<View style={settingStyles.contentMainContainer}>
 				<View
 					style={{
 						flexDirection: 'row',
@@ -108,15 +104,4 @@ const UpdateRadio = ({ navigation, route }) => {
 	)
 }
 
-const styles = {
-	textInput: theme => ({
-		color: theme.secondaryLight,
-		fontSize: 20,
-		width: '90%',
-		marginBottom: 10,
-		marginStart: 35,
-		fontWeight: 'bold',
-		textAlign: 'left',
-	})
-}
 export default UpdateRadio;

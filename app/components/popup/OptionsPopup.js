@@ -9,7 +9,7 @@ const OptionsPopup = ({ visible, close, options }) => {
 	const insets = useSafeAreaInsets();
 	const [paddingTop, setPaddingTop] = React.useState(0)
 	const slide = React.useRef(new Animated.Value(0)).current
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	useEffect(() => {
 		// slide options from bottom

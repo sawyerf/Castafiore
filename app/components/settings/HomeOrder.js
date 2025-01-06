@@ -7,10 +7,10 @@ import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 import IconButton from '~/components/button/IconButton';
 
-const HomeOrder = ({ }) => {
+const HomeOrder = () => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	const moveTop = (index) => () => {
 		if (index == 0) return

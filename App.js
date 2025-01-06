@@ -18,95 +18,95 @@ const Tab = createBottomTabNavigator();
 
 // debug
 // window.addEventListener("unhandledrejection", (event) => {
-//   console.log(event.reason);
-//   fetch(`/lolipop/reject?error=${event.reason}&message=${event.reason.message}&stack=${event.reason.stack}`, {
-//     mode: 'no-cors'
-//   })
+// 	console.log(event.reason);
+// 	fetch(`/lolipop/reject?error=${event.reason}&message=${event.reason.message}&stack=${event.reason.stack}`, {
+// 		mode: 'no-cors'
+// 	})
 // });
 
 const App = () => {
-  const [config, setConfig] = React.useState({});
-  const [settings, setSettings] = React.useState({});
-  const [song, dispatch] = React.useReducer(songReducer, defaultSong)
-  const [theme, setTheme] = React.useState(getTheme())
+	const [config, setConfig] = React.useState({});
+	const [settings, setSettings] = React.useState({});
+	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
+	const [theme, setTheme] = React.useState(getTheme())
 
-  React.useEffect(() => {
-    if (!song.isInit) Player.initPlayer(dispatch)
-    getConfig()
-      .then((config) => {
-        setConfig(config)
-      })
-    getSettings()
-      .then((settings) => {
-        setSettings(settings)
-      })
-  }, [])
+	React.useEffect(() => {
+		if (!song.isInit) Player.initPlayer(dispatch)
+		getConfig()
+			.then((config) => {
+				setConfig(config)
+			})
+		getSettings()
+			.then((settings) => {
+				setSettings(settings)
+			})
+	}, [])
 
-  React.useEffect(() => {
-    if (window) window.config = config
-  }, [config])
+	React.useEffect(() => {
+		if (window) window.config = config
+	}, [config])
 
-  React.useEffect(() => {
-    setTheme(getTheme(settings))
-  }, [settings.theme])
+	React.useEffect(() => {
+		setTheme(getTheme(settings))
+	}, [settings.theme])
 
-  const saveSettings = React.useCallback((settings) => {
-    setSettings(settings)
-    AsyncStorage.setItem('settings', JSON.stringify(settings))
-      .catch((error) => {
-        console.error('Save settings error:', error)
-      })
-  }, [settings, setSettings])
+	const saveSettings = React.useCallback((settings) => {
+		setSettings(settings)
+		AsyncStorage.setItem('settings', JSON.stringify(settings))
+			.catch((error) => {
+				console.error('Save settings error:', error)
+			})
+	}, [settings, setSettings])
 
-  return (
-    <SetConfigContext.Provider value={setConfig}>
-      <SetSettingsContext.Provider value={saveSettings}>
-        <SongDispatchContext.Provider value={dispatch}>
-          <ConfigContext.Provider value={config}>
-            <SettingsContext.Provider value={settings}>
-              <ThemeContext.Provider value={theme}>
-                <SongContext.Provider value={song}>
-                  <SafeAreaProvider>
-                    <NavigationContainer
-                      documentTitle={{
-                        formatter: (options, route) => {
-                          return `Castafiore`
-                        }
-                      }}
-                    >
-                      <StatusBar
-                        backgroundColor={'rgba(0, 0, 0, 0)'}
-                        translucent={true}
-                        barStyle={'light-content'}
-                      />
-                      <Tab.Navigator
-                        tabBar={(props) => <TabBar {...props} />}
-                        screenOptions={{
-                          headerShown: false,
-                          tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
-                          tabBarStyle: {
-                            backgroundColor: theme.secondaryDark,
-                            borderTopColor: theme.secondaryDark,
-                            tabBarActiveTintColor: theme.primaryTouch,
-                          }
-                        }}
-                      >
-                        <Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
-                        {/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
-                        <Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
-                        <Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
-                        <Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
-                      </Tab.Navigator>
-                    </NavigationContainer>
-                  </SafeAreaProvider>
-                </SongContext.Provider>
-              </ThemeContext.Provider>
-            </SettingsContext.Provider>
-          </ConfigContext.Provider>
-        </SongDispatchContext.Provider>
-      </SetSettingsContext.Provider>
-    </SetConfigContext.Provider >
-  );
+	return (
+		<SetConfigContext.Provider value={setConfig}>
+			<SetSettingsContext.Provider value={saveSettings}>
+				<SongDispatchContext.Provider value={dispatch}>
+					<ConfigContext.Provider value={config}>
+						<SettingsContext.Provider value={settings}>
+							<ThemeContext.Provider value={theme}>
+								<SongContext.Provider value={song}>
+									<SafeAreaProvider>
+										<NavigationContainer
+											documentTitle={{
+												formatter: () => {
+													return `Castafiore`
+												}
+											}}
+										>
+											<StatusBar
+												backgroundColor={'rgba(0, 0, 0, 0)'}
+												translucent={true}
+												barStyle={'light-content'}
+											/>
+											<Tab.Navigator
+												tabBar={(props) => <TabBar {...props} />}
+												screenOptions={{
+													headerShown: false,
+													tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
+													tabBarStyle: {
+														backgroundColor: theme.secondaryDark,
+														borderTopColor: theme.secondaryDark,
+														tabBarActiveTintColor: theme.primaryTouch,
+													}
+												}}
+											>
+												<Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
+												{/* <Tab.Screen name="Explorer" options={{ title: 'Explorer', icon: "compass" }} component={Explorer} /> */}
+												<Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
+												<Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
+												<Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
+											</Tab.Navigator>
+										</NavigationContainer>
+									</SafeAreaProvider>
+								</SongContext.Provider>
+							</ThemeContext.Provider>
+						</SettingsContext.Provider>
+					</ConfigContext.Provider>
+				</SongDispatchContext.Provider>
+			</SetSettingsContext.Provider>
+		</SetConfigContext.Provider >
+	);
 }
 
 export default App;

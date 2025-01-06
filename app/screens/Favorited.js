@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -12,7 +12,7 @@ import BackButton from '~/components/button/BackButton';
 
 const Favorited = ({ route }) => {
 	const insets = useSafeAreaInsets();
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<ScrollView
@@ -37,7 +37,7 @@ const Favorited = ({ route }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	cover: {
 		width: "100%",
 		height: 300,
@@ -46,6 +46,6 @@ const styles = {
 		alignItems: 'center',
 		backgroundColor: '#c68588',
 	},
-}
+})
 
 export default Favorited;

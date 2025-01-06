@@ -46,7 +46,7 @@ export const getSettings = async () => {
 			...defaultSettings,
 			...data,
 		}
-	} catch (error) {
+	} catch {
 		return defaultSettings
 	}
 }

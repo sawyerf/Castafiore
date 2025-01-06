@@ -9,7 +9,7 @@ const ErrorPopup = ({ message, close }) => {
 	const insets = useSafeAreaInsets();
 	const [visible, setVisible] = React.useState(false);
 	const slide = React.useRef(new Animated.Value(-200)).current;
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (message) {
@@ -47,7 +47,7 @@ const ErrorPopup = ({ message, close }) => {
 				}}
 			>
 				<Text style={{ fontSize: 16, color: theme.primaryLight, fontWeight: 'bold' }}>Error</Text>
-				<Text style={{ ...presStyles.text, color: theme.primaryLight }}>{message}</Text>
+				<Text style={[presStyles.text, { color: theme.primaryLight }]}>{message}</Text>
 			</Animated.View>
 		</Modal >
 	)

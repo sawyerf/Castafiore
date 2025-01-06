@@ -6,7 +6,7 @@ import { SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { playSong } from '~/utils/player';
-import { urlCover, useCachedAndApi, getApiNetworkFirst, getApiCacheFirst } from '~/utils/api';
+import { urlCover, useCachedAndApi, getApiNetworkFirst } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -39,20 +39,11 @@ const Artist = ({ route }) => {
 					.then((json) => {
 						return json.album.song
 					})
-					.catch((error) => { })
+					.catch(() => { })
 			})
 			allSongs.current = (await Promise.all(songsPending)).flat()
 		}
 		playSong(config, songDispatch, shuffle(allSongs.current), 0)
-	}
-
-	const getSimilarSongs = () => {
-		getApiCacheFirst(config, 'getSimilarSongs', `id=${route.params.artist.id}&count=50`)
-			.then((json) => {
-				const songs = json.similarSongs.song
-				playSong(config, songDispatch, songs, 0)
-			})
-			.catch((error) => { })
 	}
 
 	const getTopSongs = () => {
@@ -62,7 +53,7 @@ const Artist = ({ route }) => {
 				if (!songs) return
 				playSong(config, songDispatch, songs, 0)
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	return (
@@ -79,17 +70,17 @@ const Artist = ({ route }) => {
 			/>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={{ ...presStyles.title(theme) }}>{route.params.artist.name}</Text>
+					<Text style={presStyles.title(theme)}>{route.params.artist.name}</Text>
 					<Text style={presStyles.subTitle(theme)}>Artist</Text>
 				</View>
 				<IconButton
-					style={{ ...presStyles.button, justifyContent: undefined, paddingEnd: 7.5 }}
+					style={[presStyles.button, { justifyContent: undefined, paddingEnd: 7.5 }]}
 					icon="arrow-up"
 					size={25}
 					onPress={getTopSongs}
 				/>
 				<IconButton
-					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 7.5, paddingEnd: 7.5 }}
+					style={[presStyles.button, { justifyContent: undefined, paddingStart: 7.5, paddingEnd: 7.5 }]}
 					icon="random"
 					size={25}
 					onPress={getRandomSongs}
@@ -97,11 +88,11 @@ const Artist = ({ route }) => {
 				<FavoritedButton
 					id={route.params.artist.id}
 					isFavorited={artist.starred}
-					style={{ ...presStyles.button, paddingStart: 7.5 }}
+					style={[presStyles.button, { paddingStart: 7.5 }]}
 					size={25}
 				/>
 			</View>
-			<Text style={{ ...mainStyles.titleSection(theme), marginTop: 0 }}>Albums</Text>
+			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>
 			<HorizontalAlbums albums={artist.album} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
@@ -113,9 +104,6 @@ const Artist = ({ route }) => {
 			}
 		</ScrollView >
 	)
-}
-
-const styles = {
 }
 
 export default Artist;

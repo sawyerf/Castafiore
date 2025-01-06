@@ -50,10 +50,9 @@ const SlideControl = ({ children, style, }) => {
 
 	return (
 		<Animated.View
-			style={{
-				...style,
+			style={[style, {
 				transform: [{ translateX: position }]
-			}}
+			}]}
 			{...panResponder.panHandlers}
 		>
 			{children}

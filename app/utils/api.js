@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import React from "react"
 import { ConfigContext } from "~/contexts/config"
 import { getJsonCache, setJsonCache } from "./cache"
@@ -42,7 +41,7 @@ export const getApi = (config, path, query = '') => {
 	})
 }
 
-export const getCachedAndApi = async (config, path, query = '', setData = (json) => { }) => {
+export const getCachedAndApi = async (config, path, query = '', setData = () => { }) => {
 	if (!config?.url || !config?.query) {
 		console.error('getCachedApi: config.url or config.query is not defined')
 		return
@@ -57,11 +56,11 @@ export const getCachedAndApi = async (config, path, query = '', setData = (json)
 			setData(json)
 			return json
 		})
-		.catch((error) => { return null })
+		.catch(() => { return null })
 	await setJsonCache('api', key, json)
 }
 
-export const useCachedAndApi = (initialState, path, query = '', setFunc = (json, setData) => { }, deps = []) => {
+export const useCachedAndApi = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
 	const config = React.useContext(ConfigContext)
 	const [data, setData] = React.useState(initialState)
 
@@ -89,7 +88,7 @@ export const getApiCacheFirst = (config, path, query = '') => {
 					})
 					.catch((error) => reject(error))
 			})
-			.catch((error) => {
+			.catch(() => {
 				getApi(config, path, query)
 					.then((json) => {
 						setJsonCache('api', key, json)

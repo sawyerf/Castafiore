@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -117,7 +117,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 				<IconButton
 					icon={volume ? "volume-up" : "volume-off"}
 					size={17}
-					color={'#fff'}
+					color={theme.primaryLight}
 					style={{ width: 27 }}
 					onPress={() => Player.setVolume(volume ? 0 : 1)}
 				/>
@@ -142,13 +142,13 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	boxPlayerImage: {
 		height: 56,
 		width: 56,
 		marginRight: 10,
 		borderRadius: 4,
 	},
-}
+})
 
 export default BoxDesktopPlayer;

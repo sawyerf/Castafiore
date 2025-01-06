@@ -1,4 +1,4 @@
-export function register(config) {}
+export function register(_config) {}
 
 export function unregister() {}
 

@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { ThemeContext } from '~/contexts/theme'
@@ -50,15 +49,15 @@ const CacheSettings = () => {
 
 	return (
 		<View
-			style={{
-				...mainStyles.mainContainer(insets, theme),
-				...mainStyles.contentMainContainer(insets)
-			}}
+			style={[
+				mainStyles.mainContainer(insets, theme),
+				mainStyles.contentMainContainer(insets)
+			]}
 		>
 			<Header title="Playlists" />
-			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
+			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text >
-				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5 }}>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
 						title="Song preview favorited"
 						value={previewFavorited}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Dimensions, Modal, FlatList } from 'react-native';
+import { Text, View, Dimensions, Modal, FlatList, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -43,12 +43,12 @@ const FullScreenPlayer = ({ fullscreen }) => {
 			onRequestClose={() => fullscreen.set(false)}
 		>
 			<View
-				style={{
-					...mainStyles.contentMainContainer(insets),
-					...styles.mainContainer(insets, theme),
-					paddingBottom: insets.bottom,
-					touchAction: 'none',
-				}}
+				style={[
+					mainStyles.contentMainContainer(insets),
+					styles.mainContainer(insets, theme), {
+						paddingBottom: insets.bottom,
+						touchAction: 'none',
+					}]}
 			>
 				<IconButton
 					style={{
@@ -65,17 +65,16 @@ const FullScreenPlayer = ({ fullscreen }) => {
 						<SlideControl style={styles.albumImage()}>
 							<ImageError
 								source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
-								style={{
-									...styles.albumImage(),
+								style={[styles.albumImage(), {
 									backgroundColor: theme.secondaryDark,
-								}}
+								}]}
 							/>
 						</SlideControl>
 					}
 					{
 						isPreview == preview.QUEUE &&
 						<FlatList
-							style={{ ...styles.albumImage(), borderRadius: null }}
+							style={[styles.albumImage(), { borderRadius: null }]}
 							contentContainerStyle={{ width: '100%' }}
 							ref={scroll}
 							data={song.queue}
@@ -174,7 +173,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	mainContainer: (insets, theme) => ({
 		width: '100%',
 		height: '100%',
@@ -204,6 +203,6 @@ const styles = {
 			borderRadius: 10,
 		}
 	},
-}
+})
 
 export default FullScreenPlayer;

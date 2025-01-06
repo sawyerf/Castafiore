@@ -1,9 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import md5 from 'md5';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import md5 from 'md5';
 
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
@@ -52,7 +52,7 @@ const Connect = ({ navigation }) => {
 			.then((json) => {
 				if (json?.status == 'ok') setInfo(json)
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}, [config])
 
 	const connect = () => {
@@ -91,7 +91,7 @@ const Connect = ({ navigation }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title="Connect" />
-			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
+			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
 						<View
@@ -117,7 +117,7 @@ const Connect = ({ navigation }) => {
 						</View>
 					</View>
 				</View>
-				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 10 }}>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 10 }]}>
 					<OptionInput
 						title="Name"
 						placeholder="Name"
@@ -201,15 +201,6 @@ const Connect = ({ navigation }) => {
 
 		</ScrollView >
 	)
-}
-
-const styles = {
-	loginBtn: {
-		width: '100%',
-		height: 50,
-		alignItems: "center",
-		justifyContent: "center",
-	}
 }
 
 export default Connect;

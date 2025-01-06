@@ -4,9 +4,10 @@ import { useWindowDimensions } from 'react-native';
 
 import { SettingsContext } from '~/contexts/settings';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
-import BoxPlayer from './BoxPlayer';
-import FullScreenPlayer from './FullScreenPlayer';
-import BoxDesktopPlayer from './BoxDesktopPlayer';
+import BoxPlayer from '~/components/player/BoxPlayer';
+import FullScreenPlayer from '~/components/player/FullScreenPlayer';
+import BoxDesktopPlayer from '~/components/player/BoxDesktopPlayer';
+import FullScreenHorizontalPlayer from '~/components/player/FullScreenHorizontalPlayer';
 
 const events = [
 	Event.PlaybackState,

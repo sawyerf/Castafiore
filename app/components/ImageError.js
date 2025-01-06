@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image } from 'react-native'
 
-const ImageError = ({ source , style = {}, children = null }) => {
+const ImageError = ({ source, style = {}, children = null }) => {
 	const [isImage, setIsImage] = React.useState(true)
 	const lastSource = React.useRef(null)
 	const ImageMemo = React.useMemo(() => {

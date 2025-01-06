@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -37,7 +37,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 							}}
 						/>
 						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
-						<Text numberOfLines={1} style={{ ...styles.artist(theme) }}>{year ? item.year : item.artist}</Text>
+						<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : item.artist}</Text>
 					</TouchableOpacity >
 				)} />
 
@@ -60,7 +60,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	album: {
 		width: 160,
 		height: 210,
@@ -83,6 +83,6 @@ const styles = {
 		fontSize: 14,
 		width: 160,
 	}),
-}
+})
 
 export default HorizontalAlbums;

@@ -11,7 +11,7 @@ import OptionInput from '~/components/settings/OptionInput';
 import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
 
-const HomeSettings = ({ }) => {
+const HomeSettings = () => {
 	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
@@ -40,10 +40,10 @@ const HomeSettings = ({ }) => {
 		>
 			<Header title="Home" />
 			<View
-				style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}
+				style={[settingStyles.contentMainContainer, { marginTop: 30 }]}
 			>
 				<Text style={settingStyles.titleContainer(theme)}> Home Page</Text >
-				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5 }}>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<HomeOrder />
 				</View>
 				<Text style={settingStyles.description(theme)}>	{'Select what you want to see on the home page'}</Text >
@@ -57,8 +57,8 @@ const HomeSettings = ({ }) => {
 					/>
 				</View>
 
-				<Text style={{ ...settingStyles.titleContainer(theme) }}>Scroll</Text>
-				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5 }}>
+				<Text style={settingStyles.titleContainer(theme)}>Scroll</Text>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<ButtonSwitch
 						title={'Show scroll helper'}
 						onPress={() => setSettings({ ...settings, scrollHelper: !settings.scrollHelper })}

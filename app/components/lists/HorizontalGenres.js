@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -14,7 +14,7 @@ const HorizontalGenres = ({ genres }) => {
 			style={styles.genreList}
 			contentContainerStyle={styles.scrollContainer}
 			data={genres}
-			renderItem={({item}) => (
+			renderItem={({ item }) => (
 				<TouchableOpacity
 					style={styles.genreBox(theme)}
 					key={item?.value}
@@ -26,12 +26,11 @@ const HorizontalGenres = ({ genres }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	genreList: {
 		width: '100%',
 	},
 	scrollContainer: {
-		height: '100%',
 		height: 55 * 2 + 10,
 		paddingStart: 20,
 		paddingEnd: 20,
@@ -54,6 +53,6 @@ const styles = {
 		fontSize: 20,
 		fontWeight: 'bold',
 	}),
-}
+})
 
 export default HorizontalGenres;

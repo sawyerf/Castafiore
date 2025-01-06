@@ -28,7 +28,7 @@ export const initPlayer = async (songDispatch) => {
 		songDispatch({ type: 'setPlaying', isPlaying: false })
 	})
 	sound.addEventListener('ended', () => {
-		const songId = song.songInfo.id
+		const songId = window.song.songInfo.id
 
 		if (window.song.actionEndOfSong === 'repeat') {
 			setPosition(0)
@@ -37,7 +37,7 @@ export const initPlayer = async (songDispatch) => {
 			nextSong(window.config, window.song, songDispatch)
 		}
 		getApi(window.config, 'scrobble', `id=${songId}&submission=true`)
-			.catch((error) => { })
+			.catch(() => { })
 	})
 	sound.addEventListener('canplaythrough', () => {
 		downloadNextSong(window.config, window.song.queue, window.song.index)
@@ -110,8 +110,8 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 		const index = (currentIndex + queue.length + i) % queue.length
 		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-z0-9]*$/)) {
 			await fetch(urlStream(config, queue[index].id))
-				.then((_) => { queue[index].isDownloaded = true })
-				.catch((_) => { })
+				.then(() => { queue[index].isDownloaded = true })
+				.catch(() => { })
 		}
 	}
 }
@@ -134,7 +134,7 @@ const loadSong = async (config, queue, index) => {
 		artwork: [{ src: urlCover(config, song.albumId) }],
 	})
 	getApi(config, 'scrobble', `id=${song.id}&submission=false`)
-		.catch((error) => { })
+		.catch(() => { })
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
@@ -213,7 +213,7 @@ export const secondToTime = (second) => {
 	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 }
 
-export const tuktuktuk = (songDispatch) => {
+export const tuktuktuk = (_songDispatch) => {
 	const sound = new Audio()
 	sound.src = 'https://sawyerf.github.io/tuktuktuk.mp3'
 	sound.addEventListener('loadedmetadata', () => {

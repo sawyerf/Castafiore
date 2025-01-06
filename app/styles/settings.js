@@ -1,6 +1,6 @@
-import mainStyles from '~/styles/main'
+import { StyleSheet } from 'react-native'
 
-export default {
+export default StyleSheet.create({
 	titleContainer: theme => ({
 		width: '100%',
 		fontSize: 12,
@@ -27,7 +27,7 @@ export default {
 		width: '100%',
 		textAlign: 'left'
 	}),
-	contentMainContainer: insets => ({
+	contentMainContainer: {
 		maxWidth: 800,
 		width: '100%',
 		alignItems: 'center',
@@ -36,7 +36,7 @@ export default {
 		paddingStart: 20,
 		paddingEnd: 20,
 		alignSelf: 'center',
-	}),
+	},
 	optionItem: (theme, isLast) => ({
 		width: '100%',
 		height: 50,
@@ -52,4 +52,4 @@ export default {
 		marginEnd: 10,
 		flex: 1,
 	}),
-}
+})

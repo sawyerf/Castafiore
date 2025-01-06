@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Linking } from 'react-native'
+import { View, Text, TouchableOpacity, Linking, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -36,7 +36,7 @@ const RadioList = ({ radios }) => {
 
 	const getUrlFavicon = React.useCallback((url) => {
 		if (!url) return null
-		const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'))
+		const regex = url.match(new RegExp('^(?:f|ht)tp(?:s)?://([^/]+)', 'im'))
 		if (!regex) return null
 		const origin = regex[0]
 		return origin + '/favicon.ico'
@@ -64,11 +64,10 @@ const RadioList = ({ radios }) => {
 							style={styles.cardRadio(theme)}
 						>
 							<View
-								style={{
-									...styles.image,
+								style={[styles.image, {
 									alignItems: 'center',
 									justifyContent: 'center',
-								}} >
+								}]} >
 								<Icon name="plus" size={32} color={theme.primaryLight} />
 							</View>
 							<Text
@@ -97,11 +96,10 @@ const RadioList = ({ radios }) => {
 								source={{ uri: getUrlFavicon(item.homePageUrl) }}
 								style={styles.image}>
 								<View
-									style={{
-										...styles.image,
+									style={[styles.image, {
 										alignItems: 'center',
 										justifyContent: 'center',
-									}} >
+									}]} >
 									<Icon
 										name="feed"
 										size={32}
@@ -161,11 +159,11 @@ const RadioList = ({ radios }) => {
 						icon: 'trash-o',
 						onPress: () => {
 							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)
-								.then((json) => {
+								.then(() => {
 									setOptionRadio(null)
 									radios.splice(radios.indexOf(optionRadio), 1)
 								})
-								.catch((error) => { })
+								.catch(() => { })
 						}
 					}
 				]}
@@ -174,7 +172,7 @@ const RadioList = ({ radios }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	cardRadio: theme => ({
 		height: 60,
 		width: 300,
@@ -191,6 +189,6 @@ const styles = {
 		marginRight: 10,
 		borderRadius: 3,
 	},
-}
+})
 
 export default RadioList;

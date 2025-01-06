@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/contexts/config';
 
@@ -31,7 +31,7 @@ const Home = () => {
 			.then((json) => {
 				playSong(config, songDispatch, json.randomSongs.song, 0)
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	const forceRefresh = () => {
@@ -57,16 +57,16 @@ const Home = () => {
 					setStatusRefresh()
 				}
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	const refreshServer = () => {
 		forceRefresh()
 		getApi(config, 'startScan', 'fullScan=true')
-			.then((json) => {
+			.then(() => {
 				getStatusRefresh()
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	return (
@@ -97,13 +97,13 @@ const Home = () => {
 				}
 			</View>
 			{config?.url && settings?.homeOrder?.map((value, index) =>
-				<HorizontalList key={index} refresh={refresh} {...value} />
+				<HorizontalList key={index} refresh={refresh}{...value} />
 			)}
 		</ScrollView>
 	);
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	boxRandom: theme => ({
 		backgroundColor: theme.secondaryTouch,
 		alignItems: 'center',
@@ -117,6 +117,6 @@ const styles = {
 		color: theme.innerTouch,
 		fontWeight: 'bold',
 	}),
-}
+})
 
 export default Home;

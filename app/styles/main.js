@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
+import { StyleSheet } from "react-native";
 
-export default {
+export default StyleSheet.create({
 	mainContainer: (insets, theme) => ({
 		flex: 1,
 		backgroundColor: theme.primaryDark,
@@ -41,4 +42,4 @@ export default {
 		alignItems: "center",
 		justifyContent: "center",
 	}
-}
+})

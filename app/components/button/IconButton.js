@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -11,7 +11,7 @@ const IconButton = ({ icon, size = 23, color = undefined, style = {}, onPress, o
 			style={({ pressed }) => ({
 				justifyContent: 'center',
 				opacity: pressed ? 0.5 : 1,
-				...style,
+				...StyleSheet.flatten(style),
 			})}
 			onLongPress={onLongPress}
 			delayLongPress={delayLongPress}

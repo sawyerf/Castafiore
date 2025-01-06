@@ -5,13 +5,13 @@ import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 
 const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false }) => {
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 
 	return (
 		<View style={settingStyles.optionItem(theme, isLast)} >
 			<Text
 				numberOfLines={1}
-				style={{ ...settingStyles.primaryText(theme), flex: undefined }}>{title}</Text>
+				style={[settingStyles.primaryText(theme), { flex: undefined }]}>{title}</Text>
 			<TextInput
 				style={{
 					flex: 1,

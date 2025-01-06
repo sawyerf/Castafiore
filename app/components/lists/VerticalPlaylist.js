@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -21,11 +21,11 @@ const VerticalPlaylist = ({ playlists }) => {
 
 	const deletePlaylist = (id) => {
 		getApi(config, 'deletePlaylist', `id=${id}`)
-			.then((json) => {
+			.then(() => {
 				setIndexOption(-1)
 				setDeletePlaylists([...deletePlaylists, id])
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	return (
@@ -99,7 +99,7 @@ const VerticalPlaylist = ({ playlists }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	favoritedSong: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -111,6 +111,6 @@ const styles = {
 		marginRight: 10,
 		borderRadius: 4,
 	},
-}
+})
 
 export default VerticalPlaylist;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, TouchableOpacity } from 'react-native';
+import { Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -33,7 +33,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	artist: {
 		flexDirection: 'collumn',
 		alignItems: 'center',
@@ -44,6 +44,6 @@ const styles = {
 		marginBottom: 10,
 		borderRadius: 50,
 	},
-}
+})
 
 export default HorizontalArtists;

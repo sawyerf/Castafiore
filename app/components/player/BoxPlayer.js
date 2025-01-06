@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -67,13 +67,13 @@ const BoxPlayer = ({ fullscreen }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	boxPlayerImage: {
 		height: 40,
 		width: 40,
 		marginRight: 10,
 		borderRadius: 4,
 	},
-}
+})
 
 export default BoxPlayer;

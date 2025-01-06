@@ -68,19 +68,19 @@ const Search = () => {
 			.then((json) => {
 				setResults(json.searchResult2)
 			})
-			.catch((error) => {
+			.catch(() => {
 				setResults(undefined)
 			})
 	}
 
 	return (
-		<View style={{
-			...mainStyles.mainContainer(insets, theme),
-			...mainStyles.contentMainContainer(insets),
-			paddingBottom: 0,
-		}}>
+		<View style={[
+			mainStyles.mainContainer(insets, theme),
+			mainStyles.contentMainContainer(insets), {
+				paddingBottom: 0,
+			}]}>
 			<Text style={mainStyles.mainTitle(theme)}>Search</Text>
-			<View style={{ marginBottom: 20, ...mainStyles.stdVerticalMargin, flexDirection: 'row' }}>
+			<View style={[mainStyles.stdVerticalMargin, { marginBottom: 20, flexDirection: 'row' }]}>
 				<TextInput
 					style={{
 						flex: 1,
@@ -151,9 +151,6 @@ const Search = () => {
 			</ScrollView>
 		</View>
 	)
-}
-
-const styles = {
 }
 
 export default Search;

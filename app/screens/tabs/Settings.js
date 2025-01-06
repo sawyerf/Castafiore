@@ -25,12 +25,12 @@ const Settings = ({ navigation }) => {
 	return (
 		<ScrollView
 			style={mainStyles.mainContainer(insets, theme)}
-			contentContainerStyle={{
-				...mainStyles.contentMainContainer(insets),
-				...settingStyles.contentMainContainer(insets)
-			}}
+			contentContainerStyle={[
+				mainStyles.contentMainContainer(insets),
+				settingStyles.contentMainContainer
+			]}
 		>
-			<View style={{...settingStyles.optionsContainer(theme), marginTop: 40}}>
+			<View style={[settingStyles.optionsContainer(theme), { marginTop: 40 }]}>
 				<Pressable
 					onPress={() => Player.tuktuktuk(songDispatch)}
 					style={({ pressed }) => ({
@@ -65,7 +65,7 @@ const Settings = ({ navigation }) => {
 					title="Desktop"
 					icon="desktop"
 					value={setting.isDesktop}
-					onPress={(value) => setSettings({ ...setting, isDesktop: !setting.isDesktop })}
+					onPress={() => setSettings({ ...setting, isDesktop: !setting.isDesktop })}
 					isLast={true} />
 			</View>
 

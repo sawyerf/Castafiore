@@ -7,28 +7,28 @@ import BottomBar from '~/components/bar/BottomBar';
 import SideBar from '~/components/bar/SideBar';
 
 const TabBar = ({ state, descriptors, navigation }) => {
-  const config = React.useContext(ConfigContext)
-  const settings = React.useContext(SettingsContext)
-  const [isFullScreen, setIsFullScreen] = React.useState(false)
+	const config = React.useContext(ConfigContext)
+	const settings = React.useContext(SettingsContext)
+	const [isFullScreen, setIsFullScreen] = React.useState(false)
 
-  React.useEffect(() => {
-    if (config.query === null) {
-      navigation.navigate('SettingsStack')
-    }
-  }, [config.query])
+	React.useEffect(() => {
+		if (config.query === null) {
+			navigation.navigate('SettingsStack')
+		}
+	}, [config.query])
 
-  return (
-    <>
-      {
-        !isFullScreen ?
-          settings.isDesktop ?
-            <SideBar state={state} descriptors={descriptors} navigation={navigation} />
-            : <BottomBar state={state} descriptors={descriptors} navigation={navigation} />
-          : null
-      }
-      <Player state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
-    </>
-  );
+	return (
+		<>
+			{
+				!isFullScreen ?
+					settings.isDesktop ?
+						<SideBar state={state} descriptors={descriptors} navigation={navigation} />
+						: <BottomBar state={state} descriptors={descriptors} navigation={navigation} />
+					: null
+			}
+			<Player state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
+		</>
+	);
 }
 
 export default TabBar;

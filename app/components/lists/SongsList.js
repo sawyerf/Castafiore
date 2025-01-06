@@ -77,7 +77,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 										playSong(config, songDispatch, json.similarSongs?.song, 0)
 									}
 								})
-								.catch((error) => { })
+								.catch(() => { })
 							setIndexOptions(-1)
 						}
 					},
@@ -121,23 +121,23 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 								.then((json) => {
 									setPlaylistList(json.playlists.playlist)
 								})
-								.catch((error) => { })
+								.catch(() => { })
 						}
 					},
-					...playlistList?.map((playlist, index) => ({
+					...(playlistList?.map((playlist) => ({
 						name: playlist.name,
 						icon: 'angle-right',
 						indent: 1,
 						onPress: () => {
 							getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${songs[indexOptions].id}`)
-								.then((json) => {
+								.then(() => {
 									setIndexOptions(-1)
 									setPlaylistList([])
 									onUpdate()
 								})
-								.catch((error) => { })
+								.catch(() => { })
 						}
-					})),
+					})) || []),
 					...(() => {
 						if (!idPlaylist) return []
 						return ([
@@ -146,12 +146,12 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 								icon: 'trash-o',
 								onPress: () => {
 									getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${indexOptions}`)
-										.then((json) => {
+										.then(() => {
 											setIndexOptions(-1)
 											setPlaylistList([])
 											onUpdate()
 										})
-										.catch((error) => { })
+										.catch(() => { })
 								}
 							}
 						])
@@ -169,12 +169,12 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 										const a = document.createElement('a');
 										a.download = `${songs[indexOptions].artist} - ${songs[indexOptions].title}.mp3`;
 										a.href = URL.createObjectURL(data);
-										a.addEventListener('click', (e) => {
+										a.addEventListener('click', () => {
 											setTimeout(() => URL.revokeObjectURL(a.href), 1 * 1000);
 										});
 										a.click();
 									})
-									.catch((error) => { })
+									.catch(() => { })
 							}
 						}])
 					})(),

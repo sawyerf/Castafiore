@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
@@ -23,7 +22,7 @@ const Theme = () => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title="Theme" />
-			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
+			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Theme</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{

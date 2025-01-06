@@ -8,14 +8,14 @@ import IconButton from '~/components/button/IconButton';
 import presStyles from '~/styles/pres';
 
 const RandomButton = ({ songList, size = 23 }) => {
-  const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 
 	function shuffle(array) {
 		return array.map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value)
+			.sort((a, b) => a.sort - b.sort)
+			.map(({ value }) => value)
 	}
 
 	const shuffleSong = () => {

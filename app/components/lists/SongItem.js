@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { getCache } from '~/utils/cache';
@@ -79,7 +79,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	song: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -92,6 +92,6 @@ const styles = {
 		borderRadius: 4,
 		backgroundColor: theme.secondaryDark,
 	}),
-}
+})
 
 export default SongItem;

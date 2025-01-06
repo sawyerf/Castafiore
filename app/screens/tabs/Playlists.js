@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Animated, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -87,7 +87,7 @@ const Playlists = ({ navigation }) => {
 
 	const addPlaylist = () => {
 		if (!newPlaylist?.length) return
-		getCachedAndApi(config, 'createPlaylist', `name=${newPlaylist}`, (json) => {
+		getCachedAndApi(config, 'createPlaylist', `name=${newPlaylist}`, () => {
 			setNewPlaylist(null)
 			getPlaylists()
 			setIsPublic(false)
@@ -101,7 +101,7 @@ const Playlists = ({ navigation }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
-				<Text style={{ ...mainStyles.mainTitle(theme), marginBottom: 0, marginTop: 0 }}>Your Playlists</Text>
+				<Text style={[mainStyles.mainTitle(theme), { marginBottom: 0, marginTop: 0 }]}>Your Playlists</Text>
 				<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 					<IconButton
 						icon="refresh"
@@ -112,16 +112,16 @@ const Playlists = ({ navigation }) => {
 					/>
 				</Animated.View>
 			</View>
-			<TouchableOpacity style={{ ...styles.subTitleParent, marginTop: undefined }} onPress={() => navigation.navigate('Favorited', { favorited })}>
+			<TouchableOpacity style={[styles.subTitleParent, { marginTop: undefined }]} onPress={() => navigation.navigate('Favorited', { favorited })}>
 				<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
-				<Text style={{ ...mainStyles.subTitle(theme), flex: 1 }}>Favorited</Text>
+				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>Favorited</Text>
 				<Text style={{ color: theme.secondaryLight, fontWeight: 'bold', fontSize: 15 }}>
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
 			</TouchableOpacity>
 			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} listToPlay={favorited} />
 
-			<View style={{ ...styles.subTitleParent, marginTop: 10 }}>
+			<View style={[styles.subTitleParent, { marginTop: 10 }]}>
 				{
 					newPlaylist !== null ?
 						<>
@@ -154,7 +154,7 @@ const Playlists = ({ navigation }) => {
 						</> :
 						<>
 							<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
-							<Text style={{ ...mainStyles.subTitle(theme), flex: 1 }}> Playlists</Text>
+							<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}> Playlists</Text>
 							<IconButton
 								icon="plus"
 								size={20}
@@ -169,7 +169,7 @@ const Playlists = ({ navigation }) => {
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	subTitleParent: {
 		flexDirection: 'row',
 		// justifyContent: 'space-between',
@@ -178,6 +178,6 @@ const styles = {
 		marginBottom: 17,
 		...mainStyles.stdVerticalMargin
 	},
-}
+})
 
 export default Playlists;

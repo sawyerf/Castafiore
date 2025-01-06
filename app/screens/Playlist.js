@@ -11,7 +11,7 @@ import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import SongsList from '~/components/lists/SongsList';
 
-const Playlist = ({ navigation, route }) => {
+const Playlist = ({ route }) => {
 	const insets = useSafeAreaInsets();
 	const [songs, setSongs] = React.useState([]);
 	const config = React.useContext(ConfigContext)
@@ -53,11 +53,11 @@ const Playlist = ({ navigation, route }) => {
 								autoFocus={true}
 								onSubmitEditing={() => {
 									getApi(config, 'updatePlaylist', `playlistId=${route.params.playlist.id}&name=${title}`)
-										.then((json) => {
+										.then(() => {
 											setTitle(null)
 											getPlaylist()
 										})
-										.catch(_ => { })
+										.catch(() => { })
 								}}
 								onBlur={() => setTitle(null)}
 							/>
@@ -75,9 +75,6 @@ const Playlist = ({ navigation, route }) => {
 			}} />
 		</ScrollView>
 	)
-}
-
-const styles = {
 }
 
 export default Playlist;

@@ -16,18 +16,15 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 
 	const onPressFavorited = () => {
 		getApi(config, favorited ? 'unstar' : 'star', `id=${id}`)
-			.then((json) => {
+			.then(() => {
 				setFavorited(!favorited)
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	return (
 		<IconButton
-			style={{
-				padding: 20,
-				...style,
-			}}
+			style={[{ padding: 20 }, style]}
 			onPress={onPressFavorited}
 			size={size}
 			icon={favorited ? "heart" : "heart-o"}

@@ -28,7 +28,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 					name={icon}
 					size={18}
 					color={theme.innerTouch}
-				/></View> }
+				/></View>}
 			<Text
 				numberOfLines={1}
 				style={settingStyles.primaryText(theme)}>{title}</Text>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { ThemeContext } from '~/contexts/theme'

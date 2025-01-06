@@ -1,4 +1,6 @@
-export default {
+import { StyleSheet } from 'react-native';
+
+export default StyleSheet.create({
 	cover: {
 		width: "100%",
 		height: 300,
@@ -26,4 +28,4 @@ export default {
 		width: '100%',
 		maxWidth: '100%',
 	},
-}
+})

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, FlatList, ScrollView, Platform } from 'react-native'
+import { View, Text, ScrollView, Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -56,18 +56,18 @@ const CacheSettings = () => {
 		>
 			<Header title="Cache" />
 
-			<View style={{ ...settingStyles.contentMainContainer(insets), marginTop: 30 }}>
+			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				{
 					Platform.OS === 'android' &&
 					<View style={settingStyles.optionsContainer(theme)}>
-						<View style={{ ...settingStyles.optionItem(theme, true), height: undefined, }}>
+						<View style={[settingStyles.optionItem(theme, true), { height: undefined }]}>
 							<Icon
 								name={'warning'}
 								size={18}
 								color={'yellow'}
 								style={{ marginEnd: 10 }}
 							/>
-							<Text style={{ ...settingStyles.primaryText(theme), textAlign: 'center', marginVertical: 15 }}>Song caching is not yet supported on Android.</Text>
+							<Text style={[settingStyles.primaryText(theme), { textAlign: 'center', marginVertical: 15 }]}>Song caching is not yet supported on Android.</Text>
 							<Icon
 								name={'warning'}
 								size={18}
@@ -78,7 +78,7 @@ const CacheSettings = () => {
 					</View>
 				}
 				<Text style={settingStyles.titleContainer(theme)}>Auto Cache</Text >
-				<View style={{ ...settingStyles.optionsContainer(theme), marginBottom: 5 }}>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
 						title="Cache next song"
 						value={cacheNextSong}

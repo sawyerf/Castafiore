@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -37,7 +37,7 @@ const Genre = ({ route }) => {
 				if (!songs) return
 				playSong(config, songDispatch, songs, 0)
 			})
-			.catch((error) => { })
+			.catch(() => { })
 	}
 
 	return (
@@ -58,21 +58,21 @@ const Genre = ({ route }) => {
 					<Text style={presStyles.subTitle(theme)}>{route.params.genre?.albumCount || 0} albums · {route.params.genre?.songCount || 0} songs </Text>
 				</View>
 				<IconButton
-					style={{ ...presStyles.button, justifyContent: undefined, paddingStart: 20, paddingEnd: 20 }}
+					style={[presStyles.button, { justifyContent: undefined, paddingStart: 20, paddingEnd: 20 }]}
 					icon="random"
 					size={25}
 					onPress={getRandomSongs}
 				/>
 			</View>
-			<Text style={{ ...mainStyles.subTitle(theme), ...mainStyles.stdVerticalMargin }}>Albums</Text>
+			<Text style={[mainStyles.subTitle(theme), mainStyles.stdVerticalMargin]}>Albums</Text>
 			<HorizontalAlbums albums={albums} />
-			<Text style={{ ...mainStyles.subTitle(theme), ...mainStyles.stdVerticalMargin, marginBottom: 14, marginTop: 20 }}>Songs</Text>
+			<Text style={[mainStyles.subTitle(theme), mainStyles.stdVerticalMargin, { marginBottom: 14, marginTop: 20 }]}>Songs</Text>
 			<SongsList songs={songs} />
 		</ScrollView>
 	)
 }
 
-const styles = {
+const styles = StyleSheet.create({
 	title: {
 		color: '#F9F2F3',
 		fontSize: 50,
@@ -86,6 +86,6 @@ const styles = {
 		alignItems: 'center',
 		backgroundColor: '#c68588',
 	},
-}
+})
 
 export default Genre;

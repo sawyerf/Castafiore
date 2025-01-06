@@ -48,15 +48,12 @@ const Album = ({ navigation, route }) => {
 						<Text style={presStyles.subTitle(theme)}>{route.params.album.artist}</Text>
 					</TouchableOpacity>
 				</View>
-				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={{ ...presStyles.button, paddingEnd: 0 }} size={25} />
+				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={[presStyles.button, { paddingEnd: 0 }]} size={25} />
 				<RandomButton songList={songs} size={25} />
 			</View>
 			<SongsList songs={songs} isIndex={true} />
 		</ScrollView>
 	)
-}
-
-const styles = {
 }
 
 export default Album;

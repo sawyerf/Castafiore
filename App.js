@@ -16,14 +16,6 @@ import { ThemeContext, getTheme } from '~/contexts/theme';
 
 const Tab = createBottomTabNavigator();
 
-// debug
-// window.addEventListener("unhandledrejection", (event) => {
-// 	console.log(event.reason);
-// 	fetch(`/lolipop/reject?error=${event.reason}&message=${event.reason.message}&stack=${event.reason.stack}`, {
-// 		mode: 'no-cors'
-// 	})
-// });
-
 const App = () => {
 	const [config, setConfig] = React.useState({});
 	const [settings, setSettings] = React.useState({});

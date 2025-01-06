@@ -5,7 +5,6 @@ import { ThemeContext } from '~/contexts/theme'
 
 const SlideBar = ({
 	progress = 0,
-	// onPress = (progress) => { },
 	onStart = () => { },
 	onChange = () => { },
 	onComplete = () => { },

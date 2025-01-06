@@ -172,7 +172,6 @@ const Playlists = ({ navigation }) => {
 const styles = StyleSheet.create({
 	subTitleParent: {
 		flexDirection: 'row',
-		// justifyContent: 'space-between',
 		alignItems: 'center',
 		marginTop: 10,
 		marginBottom: 17,

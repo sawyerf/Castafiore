@@ -29,8 +29,6 @@ export const defaultSettings = {
 			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
 		}
 	],
-	// Future settings
-	endOfQueue: 'repeat', type: 'album', // stop, repeat, random, recomandation
 	cacheNextSong: 5,
 	theme: 'castafiore',
 	scrollHelper: false,

@@ -214,7 +214,6 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 							icon="comment-o"
 							size={25}
 							color={isPreview == preview.LYRICS ? theme.primaryTouch : color.primary}
-							// style={{ paddingVertical: 10 }}
 							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
 					</View>
@@ -267,7 +266,6 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 						/>
 						<SlideBar
 							progress={volume}
-							// onPress={(progress) => setVolume(progress)}
 							onStart={(progress) => Player.setVolume(progress)}
 							onChange={(progress) => Player.setVolume(progress)}
 							stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}

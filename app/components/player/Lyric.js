@@ -46,14 +46,14 @@ const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
 		getApi(config, 'getLyricsBySongId', { id: song.songInfo.id })
 			.then(res => {
 				const ly = res.lyricsList?.structuredLyrics[0]?.line?.map(ly => ({ time: ly.start / 1000, text: ly.value.length ? ly.value : '...' }))
-				if (ly.length == 0) { // not found
+				if (ly.length == 0) { // If not found
 					return getLrcLibLyrics()
 				}
 				ly.sort((a, b) => a.time - b.time)
 				setLyrics(ly)
 				AsyncStorage.setItem(`lyrics/${song.songInfo.id}`, JSON.stringify(ly))
 			})
-			.catch(() => { // not found
+			.catch(() => { // If not found
 				getLrcLibLyrics()
 			})
 	}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -11,6 +11,7 @@ import IconButton from '~/components/button/IconButton';
 import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
+import size from '~/styles/size';
 
 
 const Playlists = ({ navigation }) => {
@@ -97,7 +98,7 @@ const Playlists = ({ navigation }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
@@ -105,20 +106,23 @@ const Playlists = ({ navigation }) => {
 				<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 					<IconButton
 						icon="refresh"
-						size={30}
+						size={size.icon.large}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
 						onPress={() => setRefreshing(true)}
 					/>
 				</Animated.View>
 			</View>
-			<TouchableOpacity style={[styles.subTitleParent, { marginTop: undefined }]} onPress={() => navigation.navigate('Favorited', { favorited })}>
-				<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
+			<Pressable
+				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.subTitleParent, { marginTop: 0 }])}
+				onPress={() => navigation.navigate('Favorited', { favorited })}
+			>
+				<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
 				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>Favorited</Text>
 				<Text style={{ color: theme.secondaryLight, fontWeight: 'bold', fontSize: 15 }}>
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
 				</Text>
-			</TouchableOpacity>
+			</Pressable>
 			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} listToPlay={favorited} />
 
 			<View style={[styles.subTitleParent, { marginTop: 10 }]}>
@@ -147,17 +151,17 @@ const Playlists = ({ navigation }) => {
 								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20 }} />
 							<IconButton
 								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
-								size={20}
+								size={size.icon.tiny}
 								color={theme.secondaryLight}
 								style={{ padding: 10 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
 						<>
-							<Icon name="heart" size={23} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
+							<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
 							<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}> Playlists</Text>
 							<IconButton
 								icon="plus"
-								size={20}
+								size={size.icon.tiny}
 								color={theme.secondaryLight}
 								style={{ padding: 10 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist('')} />

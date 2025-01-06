@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { Text, TouchableOpacity, Modal, Dimensions, ScrollView, Animated, Pressable } from 'react-native';
+import { Text, Modal, Dimensions, ScrollView, Animated, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeContext } from '~/contexts/theme';
+import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const OptionsPopup = ({ visible, close, options }) => {
 	const insets = useSafeAreaInsets();
@@ -82,27 +84,27 @@ const OptionsPopup = ({ visible, close, options }) => {
 					].map((option, index) => {
 						if (!option) return null
 						return (
-							<TouchableOpacity
-								style={{
+							<Pressable
+								style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 									flexDirection: 'row',
 									alignItems: 'center',
 									paddingHorizontal: 25,
 									height: 53,
 									justifyContent: 'flex-start',
 									alignContent: 'center',
-								}}
+								}])}
 								key={index}
 								onPress={option.onPress}>
-								<Icon name={option.icon} size={20} color={theme.primaryLight} style={{
+								<Icon name={option.icon} size={size.icon.tiny} color={theme.primaryLight} style={{
 									padding: 15 * (option.indent || 0),
 									width: 25,
 									textAlign: 'center'
 								}} />
 								<Text
-									style={{ color: theme.primaryLight, fontSize: 20, marginStart: 10 }}
+									style={{ color: theme.primaryLight, fontSize: size.text.large, marginStart: 10 }}
 									numberOfLines={1}
 								>{option.name}</Text>
-							</TouchableOpacity>
+							</Pressable>
 						)
 					})}
 				</Animated.View>

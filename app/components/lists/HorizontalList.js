@@ -13,6 +13,7 @@ import HorizontalGenres from './HorizontalGenres';
 import HorizontalLBStat from './HorizontalLBStat';
 import mainStyles from '~/styles/main';
 import RadioList from './RadioList';
+import size from '~/styles/size';
 
 const HorizontalList = ({ title, type, query, refresh, enable }) => {
 	const [list, setList] = React.useState();
@@ -78,7 +79,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 					['album', 'artist'].includes(type) && <Icon
 						name='angle-right'
 						color={theme.secondaryLight}
-						size={25}
+						size={size.icon.medium}
 						style={mainStyles.titleSection(theme)}
 					/>
 				}

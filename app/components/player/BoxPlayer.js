@@ -10,6 +10,7 @@ import { urlCover } from '~/utils/api';
 import Player from '~/utils/player';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
+import size from '~/styles/size';
 
 const BoxPlayer = ({ fullscreen }) => {
 	const song = React.useContext(SongContext)
@@ -38,8 +39,8 @@ const BoxPlayer = ({ fullscreen }) => {
 					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100) }}
 					style={styles.boxPlayerImage}
 				>
-					<View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
-						<Icon name="music" size={23} color={theme.playerPrimaryText} />
+					<View style={{ width: size.image.player, height: size.image.player, alignItems: 'center', justifyContent: 'center' }}>
+						<Icon name="music" size={size.icon.small} color={theme.playerPrimaryText} />
 					</View>
 				</ImageError>
 			</View>
@@ -50,14 +51,14 @@ const BoxPlayer = ({ fullscreen }) => {
 			<View style={{ flexDirection: 'row' }}>
 				<IconButton
 					icon="step-forward"
-					size={23}
+					size={size.icon.small}
 					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => Player.nextSong(config, song, songDispatch)}
 				/>
 				<IconButton
 					icon={song.isPlaying ? 'pause' : 'play'}
-					size={23}
+					size={size.icon.small}
 					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
@@ -69,8 +70,8 @@ const BoxPlayer = ({ fullscreen }) => {
 
 const styles = StyleSheet.create({
 	boxPlayerImage: {
-		height: 40,
-		width: 40,
+		height: size.image.player,
+		width: size.image.player,
 		marginRight: 10,
 		borderRadius: 4,
 	},

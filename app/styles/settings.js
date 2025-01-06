@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import size from '~/styles/size';
 
 export default StyleSheet.create({
 	titleContainer: theme => ({
@@ -21,7 +22,7 @@ export default StyleSheet.create({
 	}),
 	description: theme => ({
 		color: theme.secondaryLight,
-		fontSize: 13,
+		fontSize: size.text.small,
 		marginStart: 5,
 		marginBottom: 20,
 		width: '100%',
@@ -46,10 +47,10 @@ export default StyleSheet.create({
 		borderBottomWidth: isLast ? 0 : .5,
 		flexDirection: 'row',
 	}),
-	primaryText: theme => ({
+	primaryText: (theme, style = { flex: 1 }) => ({
 		color: theme.primaryLight,
-		fontSize: 16,
+		fontSize: size.text.medium,
 		marginEnd: 10,
-		flex: 1,
+		...style,
 	}),
 })

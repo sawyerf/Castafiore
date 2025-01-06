@@ -2,9 +2,11 @@ import React from 'react';
 import { Text, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ConfigContext } from '~/contexts/config';
 
+import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
+import mainStyles from '~/styles/main';
+import size from '~/styles/size';
 
 const BottomBar = ({ state, descriptors, navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -54,16 +56,15 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 					<Pressable
 						onPress={onPress}
 						onLongPress={onLongPress}
-						style={({ pressed }) => ({
+						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 							flex: 1,
 							paddingBottom: insets.bottom ? insets.bottom : 10,
 							paddingTop: 10,
-							opacity: pressed ? 0.5 : 1,
-						})}
+						}])}
 						key={index}
 						disabled={(!config.query && route.name !== 'Settings')}
 					>
-						<Icon name={options.icon} size={20} color={getColor()} style={{ alignSelf: 'center', marginBottom: 5 }} />
+						<Icon name={options.icon} size={size.icon.tiny} color={getColor()} style={{ alignSelf: 'center', marginBottom: 5 }} />
 						<Text style={{ color: getColor(), textAlign: 'center' }}>
 							{options.title}
 						</Text>

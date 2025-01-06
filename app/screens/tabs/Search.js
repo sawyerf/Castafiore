@@ -13,6 +13,7 @@ import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import HistoryItem from '~/components/HistoryItem';
+import size from '~/styles/size';
 
 const Search = () => {
 	const [history, setHistory] = React.useState([]);
@@ -75,7 +76,7 @@ const Search = () => {
 
 	return (
 		<View style={[
-			mainStyles.mainContainer(insets, theme),
+			mainStyles.mainContainer(theme),
 			mainStyles.contentMainContainer(insets), {
 				paddingBottom: 0,
 			}]}>
@@ -85,7 +86,7 @@ const Search = () => {
 					style={{
 						flex: 1,
 						color: theme.primaryLight,
-						fontSize: 20,
+						fontSize: size.text.large,
 						padding: 8,
 						paddingLeft: 36,
 						borderRadius: 10,
@@ -102,11 +103,11 @@ const Search = () => {
 					query.length ?
 						<Pressable
 							onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
-							style={({ pressed }) => ({ justifyContent: 'center', opacity: pressed ? 0.5 : 1 })}>
-							<Text size={20} style={{ color: theme.primaryTouch }}>Clear</Text>
+							style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }])}>
+							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>Clear</Text>
 						</Pressable> : null
 				}
-				<Icon name="search" size={20} color={theme.secondaryLight} style={{ position: 'absolute', left: 0, margin: 9 }} />
+				<Icon name="search" size={size.icon.tiny} color={theme.secondaryLight} style={{ position: 'absolute', left: 0, margin: 9 }} />
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ flexDirection: 'column', paddingBottom: 80, gap: 10 }}>
 				{
@@ -118,7 +119,7 @@ const Search = () => {
 						<Text style={{
 							margin: 20,
 							color: theme.secondaryLight,
-							fontSize: 20,
+							fontSize: size.text.large,
 							textAlign: 'center',
 						}}>No results</Text>
 					) : null

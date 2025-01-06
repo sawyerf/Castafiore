@@ -7,6 +7,8 @@ import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import Player from '~/utils/player';
 import pkg from '~/../package.json';
+import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const SideBar = ({ state, descriptors, navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -37,11 +39,11 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					}}>
 					<Image
 						source={require('~/../assets/icon.png')}
-						style={{ width: 50, height: 50, borderRadius: 10, marginEnd: 10 }}
+						style={mainStyles.icon}
 					/>
 					<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
-						<Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
+						<Text style={{ color: theme.secondaryLight, fontSize: size.text.small }}>Version {pkg.version}</Text>
 					</View>
 				</Pressable>
 			</View>
@@ -78,7 +80,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					<Pressable
 						onPress={onPress}
 						onLongPress={onLongPress}
-						style={({ pressed }) => ({
+						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 							flexDirection: 'row',
 							alignItems: 'center',
 							backgroundColor: isFocused ? theme.primaryDark : undefined,
@@ -87,13 +89,12 @@ const SideBar = ({ state, descriptors, navigation }) => {
 							paddingLeft: 10,
 							borderRadius: 8,
 							marginBottom: 3,
-							opacity: pressed ? 0.5 : 1,
-						})}
+						}])}
 						key={index}
 						disabled={(!config.query && route.name !== 'Settings')}
 					>
 						<Icon name={options.icon} size={26} color={getColor()} style={{ marginRight: 10 }} />
-						<Text style={{ color: getColor(), textAlign: 'left', fontSize: 20, fontWeight: '600' }}>
+						<Text style={{ color: getColor(), textAlign: 'left', fontSize: size.text.large, fontWeight: '600' }}>
 							{options.title}
 						</Text>
 					</Pressable>

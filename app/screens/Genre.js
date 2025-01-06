@@ -15,6 +15,7 @@ import IconButton from '~/components/button/IconButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import SongsList from '~/components/lists/SongsList';
+import size from '~/styles/size';
 
 const Genre = ({ route }) => {
 	const insets = useSafeAreaInsets();
@@ -42,7 +43,7 @@ const Genre = ({ route }) => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}
 			vertical={true}
 		>
@@ -54,13 +55,13 @@ const Genre = ({ route }) => {
 			</View>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)}><Icon name="heart" size={23} color={theme.primaryTouch} /> {route.params.genre.value}</Text>
+					<Text style={presStyles.title(theme)}><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> {route.params.genre.value}</Text>
 					<Text style={presStyles.subTitle(theme)}>{route.params.genre?.albumCount || 0} albums · {route.params.genre?.songCount || 0} songs </Text>
 				</View>
 				<IconButton
-					style={[presStyles.button, { justifyContent: undefined, paddingStart: 20, paddingEnd: 20 }]}
+					style={[presStyles.button, { justifyContent: 'flex-start', paddingStart: 20, paddingEnd: 20 }]}
 					icon="random"
-					size={25}
+					size={size.icon.medium}
 					onPress={getRandomSongs}
 				/>
 			</View>

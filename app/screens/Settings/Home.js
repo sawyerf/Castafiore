@@ -35,7 +35,7 @@ const HomeSettings = () => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title="Home" />

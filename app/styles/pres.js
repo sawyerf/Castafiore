@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import size from '~/styles/size';
 
 export default StyleSheet.create({
 	cover: {
@@ -7,7 +8,7 @@ export default StyleSheet.create({
 	},
 	title: theme => ({
 		color: theme.primaryLight,
-		fontSize: 30,
+		fontSize: size.title.medium,
 		fontWeight: 'bold',
 		margin: 20,
 		marginBottom: 0,
@@ -15,7 +16,7 @@ export default StyleSheet.create({
 	}),
 	subTitle: theme => ({
 		color: theme.secondaryLight,
-		fontSize: 20,
+		fontSize: size.text.large,
 		marginBottom: 30,
 		marginStart: 20,
 	}),

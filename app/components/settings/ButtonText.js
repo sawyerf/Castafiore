@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
+import mainStyles from '~/styles/main'
+import size from '~/styles/size';
 
 const ButtonText = ({ text, onPress, disabled = false }) => {
 	const theme = React.useContext(ThemeContext)
@@ -9,7 +11,7 @@ const ButtonText = ({ text, onPress, disabled = false }) => {
 	return (
 		<View style={styles.main}>
 			<Pressable
-				style={styles.button}
+				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.button])}
 				onPress={onPress}
 				disabled={disabled}
 			>
@@ -26,16 +28,15 @@ const styles = StyleSheet.create({
 		width: '100%',
 		marginBottom: 20
 	},
-	button: ({ pressed }) => ({
-		opacity: pressed ? 0.5 : 1,
+	button: {
 		width: '100%',
 		height: 50,
 		alignItems: "center",
 		justifyContent: "center",
-	}),
+	},
 	text: theme => ({
 		color: theme.primaryTouch,
-		fontSize: 17
+		fontSize: size.text.medium
 	})
 })
 

@@ -13,6 +13,7 @@ import ErrorPopup from '~/components/popup/ErrorPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import SongItem from '~/components/lists/SongItem';
+import size from '~/styles/size';
 
 const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
 	const song = React.useContext(SongContext)
@@ -37,8 +38,8 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 						{
 							isIndex && multiCD && (index === 0 || songs[index - 1].discNumber !== item.discNumber) &&
 							<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 5, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
-								<Icon name="circle-o" size={23} color={theme.secondaryLight} />
-								<Text style={{ color: theme.secondaryLight, fontSize: 20, marginBottom: 2, marginStart: 10 }}>Disc {item.discNumber}</Text>
+								<Icon name="circle-o" size={size.icon.small} color={theme.secondaryLight} />
+								<Text style={{ color: theme.secondaryLight, fontSize: size.text.large, marginBottom: 2, marginStart: 10 }}>Disc {item.discNumber}</Text>
 							</View>
 						}
 						<SongItem

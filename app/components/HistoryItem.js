@@ -4,12 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
-import { urlCover } from '~/utils/api';
 import { playSong } from '~/utils/player';
+import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
+import { urlCover } from '~/utils/api';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
-import { SongDispatchContext } from '~/contexts/song';
+import mainStyles from '~/styles/main';
+import size from '~/styles/size';
 
 const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
@@ -30,13 +32,12 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 	}
 
 	return (
-		<Pressable key={index} onPress={handlePress} style={({ pressed }) => ({
+		<Pressable key={index} onPress={handlePress} style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 			marginHorizontal: 20,
 			flexDirection: 'row',
 			alignItems: 'center',
-			opacity: pressed ? 0.5 : 1,
 			paddingVertical: typeof itemHist === 'object' ? 0 : 6,
-		})}>
+		}])}>
 			{
 				typeof itemHist === 'object' ? (
 					<>
@@ -45,20 +46,20 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 							style={{
 								width: 45,
 								height: 45,
-								borderRadius: itemHist.mediaType ? 3 : 25,
+								borderRadius: itemHist.mediaType ? 3 : size.radius.circle,
 								marginEnd: 10,
 								backgroundColor: theme.secondaryDark,
 							}}
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 13, marginBottom: 2 }}> {itemHist.name || itemHist.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 13 }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
+							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.small, marginBottom: 2 }}> {itemHist.name || itemHist.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
 						</View>
 					</>
 				) : (
 					<>
 						<Icon name="eye" size={17} color={theme.secondaryLight} style={{ width: 45, marginEnd: 10, textAlign: 'center' }} />
-						<Text style={{ color: theme.secondaryLight, fontSize: 17 }}>{itemHist}</Text>
+						<Text style={{ color: theme.secondaryLight, fontSize: size.text.medium }}>{itemHist}</Text>
 					</>
 				)
 			}

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { ThemeContext } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
+import size from '~/styles/size';
 
 const Header = ({ title }) => {
 	const navigation = useNavigation()
@@ -19,7 +20,7 @@ const Header = ({ title }) => {
 			<Text numberOfLines={1}
 				style={{
 					color: theme.primaryLight,
-					fontSize: 20,
+					fontSize: size.text.large,
 					fontWeight: 'bold',
 					flex: 1,
 					textAlign: 'center',

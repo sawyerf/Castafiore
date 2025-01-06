@@ -1,8 +1,8 @@
-import { Platform } from "react-native";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
+import size from "~/styles/size";
 
 export default StyleSheet.create({
-	mainContainer: (insets, theme) => ({
+	mainContainer: (theme) => ({
 		flex: 1,
 		backgroundColor: theme.primaryDark,
 	}),
@@ -14,19 +14,19 @@ export default StyleSheet.create({
 	}),
 	mainTitle: theme => ({
 		color: theme.primaryLight,
-		fontSize: 30,
+		fontSize: size.title.medium,
 		fontWeight: 'bold',
 		margin: 20,
 		marginTop: 30
 	}),
 	subTitle: theme => ({
 		color: theme.primaryLight,
-		fontSize: 25,
+		fontSize: size.title.small,
 		fontWeight: 'bold',
 	}),
 	titleSection: theme => ({
 		color: theme.primaryLight,
-		fontSize: 25,
+		fontSize: size.title.small,
 		fontWeight: 'bold',
 		margin: 20,
 		marginTop: 25,
@@ -41,5 +41,21 @@ export default StyleSheet.create({
 		height: 50,
 		alignItems: "center",
 		justifyContent: "center",
-	}
+	},
+	coverSmall: theme => ({
+		height: size.image.small,
+		width: size.image.small,
+		// marginStart: 10,
+		borderRadius: 4,
+		backgroundColor: theme.secondaryDark,
+	}),
+	icon: {
+		width: size.image.small,
+		height: size.image.small,
+		borderRadius: 10,
+		marginEnd: 10
+	},
+	opacity: ({ pressed }) => ({
+		opacity: pressed ? 0.5 : 1,
+	}),
 })

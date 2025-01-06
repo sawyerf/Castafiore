@@ -8,11 +8,12 @@ import { confirmAlert } from '~/utils/alert';
 import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings';
 import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import Player from '~/utils/player';
 import ButtonMenu from '~/components/settings/ButtonMenu';
 import ButtonSwitch from '~/components/settings/ButtonSwitch';
 import mainStyles from '~/styles/main';
+import Player from '~/utils/player';
 import settingStyles from '~/styles/settings';
+import size from '~/styles/size';
 
 const Settings = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
@@ -24,7 +25,7 @@ const Settings = ({ navigation }) => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={[
 				mainStyles.contentMainContainer(insets),
 				settingStyles.contentMainContainer
@@ -33,20 +34,19 @@ const Settings = ({ navigation }) => {
 			<View style={[settingStyles.optionsContainer(theme), { marginTop: 40 }]}>
 				<Pressable
 					onPress={() => Player.tuktuktuk(songDispatch)}
-					style={({ pressed }) => ({
+					style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 						flexDirection: 'row',
 						alignItems: 'center',
 						width: '100%',
 						paddingVertical: 10,
-						opacity: pressed ? 0.5 : 1,
-					})}>
+					}])}>
 					<Image
 						source={require('~/../assets/icon.png')}
-						style={{ width: 50, height: 50, borderRadius: 10, marginEnd: 10 }}
+						style={mainStyles.icon}
 					/>
 					<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 20, marginBottom: 0 }}>Castafiore</Text>
-						<Text style={{ color: theme.secondaryLight, fontSize: 13 }}>Version {pkg.version}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
+						<Text style={{ color: theme.secondaryLight, fontSize: size.text.small }}>Version {pkg.version}</Text>
 					</View>
 				</Pressable>
 			</View>

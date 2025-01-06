@@ -3,11 +3,12 @@ import { View, Text, Pressable, Image, FlatList, StyleSheet } from 'react-native
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
 import { getCachedAndApi } from '~/utils/api';
-import mainStyles from '~/styles/main';
+import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import Header from '~/components/Header';
+import mainStyles from '~/styles/main';
+import size from '~/styles/size';
 
 
 const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
@@ -39,7 +40,7 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 
 	const ItemComponent = React.memo(({ item, index }) => (
 		<Pressable
-			style={styles.album}
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
 			key={index}
 			onPress={() => navigation.navigate('Album', { album: item })}>
 			<Image
@@ -56,7 +57,7 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 	return (
 		<FlatList
 			vertical={true}
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, true)}
 			columnWrapperStyle={{
 				gap: 10,
@@ -75,28 +76,27 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 }
 
 const styles = StyleSheet.create({
-	album: ({ pressed }) => ({
+	album: {
 		flex: 1,
 		maxWidth: "50%",
-		opacity: pressed ? 0.5 : 1,
-	}),
+	},
 	albumCover: (type) => ({
 		width: "100%",
 		aspectRatio: 1,
 		marginBottom: 6,
-		borderRadius: type === 'artist' ? 500 : 0,
+		borderRadius: type === 'artist' ? size.radius.circle : 0,
 	}),
 	titleAlbum: (theme) => ({
 		color: theme.primaryLight,
-		fontSize: 14,
-		width: 160,
+		fontSize: size.text.small,
+		width: '100%',
 		marginBottom: 3,
 		marginTop: 3,
 	}),
 	artist: theme => ({
 		color: theme.secondaryLight,
-		fontSize: 14,
-		width: 160,
+		fontSize: size.text.small,
+		width: '100%',
 	}),
 })
 

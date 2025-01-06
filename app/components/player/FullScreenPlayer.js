@@ -15,6 +15,7 @@ import SlideBar from '~/components/button/SlideBar';
 import SlideControl from '~/components/button/SlideControl';
 import SongItem from '~/components/lists/SongItem';
 import ImageError from '~/components/ImageError';
+import size from '~/styles/size';
 
 const preview = {
 	COVER: 0,
@@ -99,8 +100,8 @@ const FullScreenPlayer = ({ fullscreen }) => {
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 26, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: 20, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
+							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.title.small, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.large, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
@@ -116,27 +117,27 @@ const FullScreenPlayer = ({ fullscreen }) => {
 					/>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
-						<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(time.duration)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
+						<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
 						<IconButton
 							icon="step-backward"
-							size={30}
+							size={size.icon.large}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
 							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
 						<IconButton
 							icon={song.isPlaying ? 'pause' : 'play'}
-							size={30}
+							size={size.icon.large}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
 							onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 						/>
 						<IconButton
 							icon="step-forward"
-							size={30}
+							size={size.icon.large}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
 							onPress={() => Player.nextSong(config, song, songDispatch)}

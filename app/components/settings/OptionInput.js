@@ -3,6 +3,7 @@ import { Text, View, TextInput, Platform } from 'react-native';
 
 import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
+import size from '~/styles/size';
 
 const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
@@ -11,13 +12,13 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 		<View style={settingStyles.optionItem(theme, isLast)} >
 			<Text
 				numberOfLines={1}
-				style={[settingStyles.primaryText(theme), { flex: undefined }]}>{title}</Text>
+				style={settingStyles.primaryText(theme, { flex: undefined })}>{title}</Text>
 			<TextInput
 				style={{
 					flex: 1,
 					textAlign: 'right',
 					color: theme.primaryLight,
-					fontSize: 16,
+					fontSize: size.text.medium,
 					height: '100%',
 					...Platform.select({
 						web: { outline: 'none' }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,6 +16,7 @@ import mainStyles from '~/styles/main';
 import OptionInput from '~/components/settings/OptionInput';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import settingStyles from '~/styles/settings';
+import size from '~/styles/size';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()
@@ -87,7 +88,7 @@ const Connect = ({ navigation }) => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title="Connect" />
@@ -103,11 +104,11 @@ const Connect = ({ navigation }) => {
 								justifyContent: 'center',
 								padding: 10,
 							}}>
-							<Icon name="server" size={30} color={theme.innerTouch} />
+							<Icon name="server" size={size.icon.large} color={theme.innerTouch} />
 						</View>
 						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
 							{!error.length && <Icon name="circle" size={10} color={info ? 'green' : 'red'} />}
-							<Text style={{ color: error.length ? theme.primaryTouch : theme.primaryLight, fontSize: 16, marginStart: 5 }}>
+							<Text style={{ color: error.length ? theme.primaryTouch : theme.primaryLight, fontSize: size.text.medium, marginStart: 5 }}>
 								{(() => {
 									if (error.length) return error
 									else if (info) return `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} ${info.serverVersion}`
@@ -162,19 +163,21 @@ const Connect = ({ navigation }) => {
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						settings?.servers?.map((server, index) => (
-							<TouchableOpacity style={settingStyles.optionItem(theme, true)} key={index}
+							<Pressable
+								key={index}
+								style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, true)])}
 								delayLongPress={200}
 								onLongPress={() => setServerOption({ ...server, index })}
 								onPress={() => {
 									upConfig({ name: server.name, url: server.url, username: server.username, query: server.query })
 									setPassword('')
 								}}>
-								<Icon name="server" size={20} color={theme.secondaryLight} style={{ marginEnd: 10 }} />
-								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: 16, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
+								<Icon name="server" size={size.icon.tiny} color={theme.secondaryLight} style={{ marginEnd: 10 }} />
+								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
 									{server.name?.length ? server.name : server.url}
 								</Text>
-								{(server.query === config.query && server.url === config.url && config.name === server.name) && <Icon name="check" size={20} color={theme.primaryTouch} />}
-							</TouchableOpacity>
+								{(server.query === config.query && server.url === config.url && config.name === server.name) && <Icon name="check" size={size.icon.tiny} color={theme.primaryTouch} />}
+							</Pressable>
 						))
 					}
 				</View>

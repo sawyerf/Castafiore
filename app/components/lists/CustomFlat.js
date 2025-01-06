@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
-import IconButton from '~/components/button/IconButton';
-import { ThemeContext } from '~/contexts/theme';
+
 import { SettingsContext } from '~/contexts/settings';
+import { ThemeContext } from '~/contexts/theme';
+import IconButton from '~/components/button/IconButton';
+import size from '~/styles/size';
 
 const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
 	const refScroll = React.useRef(null)
@@ -35,7 +37,7 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 					columnGap: 1,
 				}}
 			>
-				<IconButton icon="chevron-left" size={20} onPress={goLeft} color={theme.secondaryLight}
+				<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryLight}
 					style={{
 						backgroundColor: theme.secondaryDark,
 						height: 30,
@@ -45,7 +47,7 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 						justifyContent: 'center',
 						alignItems: 'center',
 					}} />
-				<IconButton icon="chevron-right" size={20} onPress={goRight} color={theme.secondaryLight}
+				<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryLight}
 					style={{
 						backgroundColor: theme.secondaryDark,
 						height: 30,

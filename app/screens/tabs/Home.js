@@ -1,16 +1,17 @@
 import React from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, Animated, StyleSheet, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ConfigContext } from '~/contexts/config';
 
 import { getApi, getApiNetworkFirst } from '~/utils/api';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
+import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
 import mainStyles from '~/styles/main';
-import { SongDispatchContext } from '~/contexts/song';
+import size from '~/styles/size';
 
 const Home = () => {
 	const insets = useSafeAreaInsets();
@@ -71,14 +72,15 @@ const Home = () => {
 
 	return (
 		<ScrollView vertical={true}
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 20 }}>
-				<TouchableOpacity style={styles.boxRandom(theme)}
+				<Pressable
+					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.boxRandom(theme)])}
 					onPress={clickRandomSong}>
 					<Text style={styles.textRandom(theme)}>Random Song</Text>
-				</TouchableOpacity>
+				</Pressable>
 				{statusRefresh ?
 					<Text style={mainStyles.subTitle(theme)}>
 						{statusRefresh.count}°
@@ -86,7 +88,7 @@ const Home = () => {
 					<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 						<IconButton
 							icon="refresh"
-							size={30}
+							size={size.icon.large}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
 							onLongPress={refreshServer}
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
 		padding: 7,
 		paddingHorizontal: 15,
 		justifyContent: 'center',
-		borderRadius: 50,
+		borderRadius: size.radius.circle,
 	}),
 	textRandom: theme => ({
 		fontSize: 18,

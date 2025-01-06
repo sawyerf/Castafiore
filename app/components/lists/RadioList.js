@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Linking, StyleSheet } from 'react-native'
+import { View, Text, Linking, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -11,6 +11,8 @@ import { ThemeContext } from '~/contexts/theme'
 import CustomFlat from '~/components/lists/CustomFlat';
 import ImageError from '~/components/ImageError';
 import OptionsPopup from '~/components/popup/OptionsPopup';
+import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const RadioList = ({ radios }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
@@ -58,10 +60,10 @@ const RadioList = ({ radios }) => {
 				data={[...radios, { lastItem: true }]}
 				renderItem={({ item, index }) => {
 					if (item.lastItem) return (
-						<TouchableOpacity
+						<Pressable
 							onPress={() => navigation.navigate('UpdateRadio')}
 							delayLongPress={200}
-							style={styles.cardRadio(theme)}
+							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
 						>
 							<View
 								style={[styles.image, {
@@ -74,23 +76,23 @@ const RadioList = ({ radios }) => {
 								numberOfLines={1}
 								style={{
 									color: theme.primaryLight,
-									fontSize: 16,
+									fontSize: size.text.medium,
 									fontWeight: 'bold',
 									overflow: 'hidden',
 								}}
 							>
 								Add radio
 							</Text>
-						</TouchableOpacity>
+						</Pressable>
 					)
 
 					return (
-						<TouchableOpacity
+						<Pressable
 							key={index}
 							onPress={() => playRadio(index)}
 							onLongPress={() => setOptionRadio(item)}
 							delayLongPress={200}
-							style={styles.cardRadio(theme)}
+							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
 						>
 							<ImageError
 								source={{ uri: getUrlFavicon(item.homePageUrl) }}
@@ -113,7 +115,7 @@ const RadioList = ({ radios }) => {
 									numberOfLines={1}
 									style={{
 										color: theme.primaryLight,
-										fontSize: 16,
+										fontSize: size.text.medium,
 										flex: 1,
 										fontWeight: 'bold',
 									}}
@@ -124,13 +126,13 @@ const RadioList = ({ radios }) => {
 									numberOfLines={1}
 									style={{
 										color: theme.secondaryLight,
-										fontSize: 16,
+										fontSize: size.text.medium,
 									}}
 								>
 									{item.homePageUrl}
 								</Text>}
 							</View>
-						</TouchableOpacity>
+						</Pressable>
 					)
 				}}
 			/>

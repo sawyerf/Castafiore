@@ -15,6 +15,7 @@ import FavoritedButton from '~/components/button/FavoritedButton';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
+import size from '~/styles/size';
 
 const Artist = ({ route }) => {
 	const insets = useSafeAreaInsets();
@@ -58,7 +59,7 @@ const Artist = ({ route }) => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			vertical={true}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
@@ -74,22 +75,22 @@ const Artist = ({ route }) => {
 					<Text style={presStyles.subTitle(theme)}>Artist</Text>
 				</View>
 				<IconButton
-					style={[presStyles.button, { justifyContent: undefined, paddingEnd: 7.5 }]}
+					style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
 					icon="arrow-up"
-					size={25}
+					size={size.icon.medium}
 					onPress={getTopSongs}
 				/>
 				<IconButton
-					style={[presStyles.button, { justifyContent: undefined, paddingStart: 7.5, paddingEnd: 7.5 }]}
+					style={[presStyles.button, { justifyContent: 'flex-start', paddingStart: 7.5, paddingEnd: 7.5 }]}
 					icon="random"
-					size={25}
+					size={size.icon.medium}
 					onPress={getRandomSongs}
 				/>
 				<FavoritedButton
 					id={route.params.artist.id}
 					isFavorited={artist.starred}
 					style={[presStyles.button, { paddingStart: 7.5 }]}
-					size={25}
+					size={size.icon.medium}
 				/>
 			</View>
 			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>

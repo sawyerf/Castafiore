@@ -9,6 +9,7 @@ import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import BackButton from '~/components/button/BackButton';
+import size from '~/styles/size';
 
 const Favorited = ({ route }) => {
 	const insets = useSafeAreaInsets();
@@ -17,7 +18,7 @@ const Favorited = ({ route }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<View
@@ -27,7 +28,7 @@ const Favorited = ({ route }) => {
 			</View>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)}><Icon name="heart" size={23} color={theme.primaryTouch} /> Favorited</Text>
+					<Text style={presStyles.title(theme)}><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> Favorited</Text>
 					<Text style={presStyles.subTitle(theme)}>{route.params.favorited?.length || 0} songs</Text>
 				</View>
 				<RandomButton songList={route.params.favorited} />

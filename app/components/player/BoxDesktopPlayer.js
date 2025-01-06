@@ -11,6 +11,7 @@ import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import SlideBar from '~/components/button/SlideBar';
 import FavoritedButton from '~/components/button/FavoritedButton';
+import size from '~/styles/size';
 
 const BoxDesktopPlayer = ({ fullscreen }) => {
 	const song = React.useContext(SongContext)
@@ -46,7 +47,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					style={styles.boxPlayerImage}
 				>
 					<View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }}>
-						<Icon name="music" size={23} color={theme.primaryLight} />
+						<Icon name="music" size={size.icon.small} color={theme.primaryLight} />
 					</View>
 				</ImageError>
 				<View style={{ justifyContent: 'center', gap: 2, flex: 'min-content', maxWidth: 'min-content' }}>
@@ -100,7 +101,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					/>
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
+					<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
 					<SlideBar
 						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
 						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
@@ -110,7 +111,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 					/>
-					<Text style={{ color: theme.primaryLight, fontSize: 13 }}>{Player.secondToTime(time.duration)}</Text>
+					<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
 				</View>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >

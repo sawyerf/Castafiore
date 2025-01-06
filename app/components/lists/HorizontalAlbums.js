@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, Image, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -8,6 +8,8 @@ import { ConfigContext } from '~/contexts/config';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import InfoPopup from '~/components/popup/InfoPopup';
 import CustomFlat from '~/components/lists/CustomFlat';
+import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
@@ -21,8 +23,8 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 			<CustomFlat
 				data={albums}
 				renderItem={({ item, index }) => (
-					<TouchableOpacity
-						style={styles.album}
+					<Pressable
+						style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
 						key={item.id}
 						onLongPress={() => setIndexOptions(index)}
 						delayLongPress={200}
@@ -38,7 +40,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 						/>
 						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
 						<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : item.artist}</Text>
-					</TouchableOpacity >
+					</Pressable>
 				)} />
 
 			<InfoPopup info={infoAlbum} close={() => setInfoAlbum(null)} />
@@ -62,26 +64,26 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 
 const styles = StyleSheet.create({
 	album: {
-		width: 160,
+		width: size.image.large,
 		height: 210,
 		alignItems: 'center',
 	},
 	albumCover: {
-		width: 160,
-		height: 160,
+		width: size.image.large,
+		height: size.image.large,
 		marginBottom: 6,
 	},
 	titleAlbum: (theme) => ({
 		color: theme.primaryLight,
-		fontSize: 14,
-		width: 160,
+		fontSize: size.text.small,
+		width: size.image.large,
 		marginBottom: 3,
 		marginTop: 3,
 	}),
 	artist: theme => ({
 		color: theme.secondaryLight,
-		fontSize: 14,
-		width: 160,
+		fontSize: size.text.small,
+		width: size.image.large,
 	}),
 })
 

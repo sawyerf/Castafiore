@@ -16,6 +16,7 @@ import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
 import TableItem from '~/components/settings/TableItem'
 import ListMap from '~/components/lists/ListMap'
+import size from '~/styles/size';
 
 const CacheSettings = () => {
 	const insets = useSafeAreaInsets()
@@ -51,7 +52,7 @@ const CacheSettings = () => {
 
 	return (
 		<ScrollView
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title="Cache" />
@@ -60,7 +61,7 @@ const CacheSettings = () => {
 				{
 					Platform.OS === 'android' &&
 					<View style={settingStyles.optionsContainer(theme)}>
-						<View style={[settingStyles.optionItem(theme, true), { height: undefined }]}>
+						<View style={[settingStyles.optionItem(theme, true), { height: 'auto' }]}>
 							<Icon
 								name={'warning'}
 								size={18}
@@ -125,7 +126,7 @@ const CacheSettings = () => {
 						)}
 						ListEmptyComponent={(
 							<View style={settingStyles.optionItem(theme, true)}>
-								<Text style={{ color: theme.primaryLight, fontSize: 16, fontWeight: '400' }}>No Cache</Text>
+								<Text style={{ color: theme.primaryLight, fontSize: size.text.medium, fontWeight: '400' }}>No Cache</Text>
 							</View>
 						)}
 					/>

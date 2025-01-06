@@ -1,9 +1,11 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
 import CustomFlat from '~/components/lists/CustomFlat';
+import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const HorizontalGenres = ({ genres }) => {
 	const navigation = useNavigation();
@@ -15,12 +17,12 @@ const HorizontalGenres = ({ genres }) => {
 			contentContainerStyle={styles.scrollContainer}
 			data={genres}
 			renderItem={({ item }) => (
-				<TouchableOpacity
-					style={styles.genreBox(theme)}
+				<Pressable
+					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.genreBox(theme)])}
 					key={item?.value}
 					onPress={() => navigation.navigate('Genre', { genre: item })}>
 					<Text numberOfLines={1} style={styles.genreText(theme)}>{item.value}</Text>
-				</TouchableOpacity>
+				</Pressable>
 			)}
 		/>
 	)
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
 	}),
 	genreText: theme => ({
 		color: theme.primaryLight,
-		fontSize: 20,
+		fontSize: size.text.large,
 		fontWeight: 'bold',
 	}),
 })

@@ -11,7 +11,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "export:web": "expo export:web",
-    "eslint": "eslint app index.js App.js --ext .js"
+    "eslint": "eslint app index.js App.js -c eslint.config.mjs"
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",

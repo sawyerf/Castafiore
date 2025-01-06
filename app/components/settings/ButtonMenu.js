@@ -1,16 +1,18 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
+import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<TouchableOpacity
-			style={settingStyles.optionItem(theme, isLast)}
+		<Pressable
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, isLast)])}
 			onPress={onPress}
 		>
 			<View
@@ -37,18 +39,18 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 					flex: 1,
 					textAlign: 'right',
 					color: theme.secondaryLight,
-					fontSize: 16,
+					fontSize: size.text.medium,
 					overflow: 'hidden',
 				}}>
 				{endText}
 			</Text>
 			<Icon
 				name="angle-right"
-				size={20}
+				size={size.icon.tiny}
 				style={{ marginStart: 10 }}
 				color={theme.secondaryLight}
 			/>
-		</TouchableOpacity>
+		</Pressable>
 	)
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Image, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -33,7 +33,7 @@ const Playlist = ({ route }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
@@ -62,9 +62,12 @@ const Playlist = ({ route }) => {
 								onBlur={() => setTitle(null)}
 							/>
 							:
-							<TouchableOpacity onLongPress={() => setTitle(info.name)} delayLongPress={200}>
+							<Pressable
+								style={mainStyles.opacity}
+								onLongPress={() => setTitle(info.name)} delayLongPress={200}
+							>
 								<Text style={presStyles.title(theme)} numberOfLines={2}>{info?.name}</Text>
-							</TouchableOpacity>
+							</Pressable>
 					}
 					<Text style={presStyles.subTitle(theme)}>{((info ? info.duration : route.params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : route.params.playlist.songCount} songs</Text>
 				</View>

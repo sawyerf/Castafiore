@@ -1,19 +1,21 @@
 import React from 'react'
-import { Modal, View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
+import { Modal, View, Text, Image, FlatList, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useWindowDimensions } from 'react-native'
 
-import FavoritedButton from '~/components/button/FavoritedButton'
-import IconButton from '~/components/button/IconButton'
-import ImageError from '~/components/ImageError'
-import SlideBar from '~/components/button/SlideBar'
 import { ConfigContext } from '~/contexts/config'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import Player from '~/utils/player'
 import { urlCover } from '~/utils/api'
+import FavoritedButton from '~/components/button/FavoritedButton'
+import IconButton from '~/components/button/IconButton'
+import ImageError from '~/components/ImageError'
 import Lyric from '~/components/player/Lyric'
-import SlideControl from '../button/SlideControl'
+import Player from '~/utils/player'
+import size from '~/styles/size';
+import SlideBar from '~/components/button/SlideBar'
+import SlideControl from '~/components/button/SlideControl'
+import mainStyles from '~/styles/main'
 
 const preview = {
 	COVER: 0,
@@ -118,14 +120,14 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 							<FavoritedButton
 								id={song?.songInfo?.id}
 								isFavorited={song?.songInfo?.starred}
-								size={25}
+								size={size.icon.medium}
 								style={{ padding: 0, paddingBottom: 10, marginStart: 20, width: 'min-content' }}
 							/>
 							<Text
 								numberOfLines={1}
 								style={{
 									color: color.primary,
-									fontSize: 30,
+									fontSize: size.title.medium,
 									fontWeight: 'bold',
 									marginHorizontal: 20,
 								}}
@@ -136,7 +138,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 								numberOfLines={1}
 								style={{
 									color: color.primary,
-									fontSize: 20,
+									fontSize: size.text.large,
 									margin: 20,
 									marginTop: 0,
 								}}
@@ -159,44 +161,38 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 								onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
 								onScrollToIndexFailed={() => { }}
 								renderItem={({ item, index }) => (
-									<TouchableOpacity
-										style={{
+									<Pressable
+										style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 											flexDirection: 'row',
 											alignItems: 'center',
 											marginBottom: 10,
-										}}
+										}])}
 										key={item.id}
 										onPress={() => {
 											Player.playSong(config, songDispatch, song.queue, index)
 										}}>
 										<View style={{ flex: 1, flexDirection: 'column' }}>
-											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: 16, marginBottom: 2, textAlign: 'right' }}>
+											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: size.text.medium, marginBottom: 2, textAlign: 'right' }}>
 												{item.title}
 											</Text>
-											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.secondary, textAlign: 'right' }}>
+											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.secondary, fontSize: size.text.small, textAlign: 'right' }}>
 												{item.artist}
 											</Text>
 										</View>
 										<ImageError
-											style={{
-												height: 50,
-												width: 50,
-												marginStart: 10,
-												borderRadius: 4,
-												backgroundColor: theme.secondaryDark,
-											}}
+											style={[mainStyles.coverSmall(theme), { marginStart: 10 }]}
 											source={{
 												uri: urlCover(config, item.albumId, 100),
 											}}
 										/>
-									</TouchableOpacity>
+									</Pressable>
 								)}
 							/>
 						</View>
 					}
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 7, maxWidth: '100%' }}>
-					<Text style={{ color: color.primary, fontSize: 13 }}>{fakeTime < 0 ? Player.secondToTime(time.position) : Player.secondToTime(fakeTime * time.duration)}</Text>
+					<Text style={{ color: color.primary, fontSize: size.text.small }}>{fakeTime < 0 ? Player.secondToTime(time.position) : Player.secondToTime(fakeTime * time.duration)}</Text>
 					<SlideBar
 						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
 						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
@@ -206,13 +202,13 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 					/>
-					<Text style={{ color: color.primary, fontSize: 13 }}>{Player.secondToTime(time.duration)}</Text>
+					<Text style={{ color: color.primary, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 5 }}>
 						<IconButton
 							icon="comment-o"
-							size={25}
+							size={size.icon.medium}
 							color={isPreview == preview.LYRICS ? theme.primaryTouch : color.primary}
 							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
@@ -221,7 +217,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 						<IconButton
 							icon="repeat"
 							style={{ width: 30, alignItems: 'end' }}
-							size={25}
+							size={size.icon.medium}
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
@@ -230,27 +226,27 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 						<IconButton
 							icon="step-backward"
 							style={{ alignItems: 'end' }}
-							size={25}
+							size={size.icon.medium}
 							color={color.primary}
 							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
 						<IconButton
 							icon={song.isPlaying ? 'pause' : 'play'}
 							style={{ width: 22, alignItems: 'center' }}
-							size={25}
+							size={size.icon.medium}
 							color={color.primary}
 							onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 						/>
 						<IconButton
 							icon="step-forward"
 							style={{ alignItems: 'start' }}
-							size={25}
+							size={size.icon.medium}
 							color={color.primary}
 							onPress={() => Player.nextSong(config, song, songDispatch)}
 						/>
 						<IconButton
 							icon="bars"
-							size={25}
+							size={size.icon.medium}
 							style={{ width: 30, alignItems: 'start' }}
 							color={theme.secondaryLight}
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}

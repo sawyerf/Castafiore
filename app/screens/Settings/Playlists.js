@@ -50,7 +50,7 @@ const CacheSettings = () => {
 	return (
 		<View
 			style={[
-				mainStyles.mainContainer(insets, theme),
+				mainStyles.mainContainer(theme),
 				mainStyles.contentMainContainer(insets)
 			]}
 		>

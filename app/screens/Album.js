@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -12,6 +12,7 @@ import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import SongsList from '~/components/lists/SongsList';
+import size from '~/styles/size';
 
 const Album = ({ navigation, route }) => {
 	const insets = useSafeAreaInsets();
@@ -32,7 +33,7 @@ const Album = ({ navigation, route }) => {
 	return (
 		<ScrollView
 			vertical={true}
-			style={mainStyles.mainContainer(insets, theme)}
+			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
@@ -44,12 +45,15 @@ const Album = ({ navigation, route }) => {
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
 					<Text style={presStyles.title(theme)} numberOfLines={2}>{route.params.album.name}</Text>
-					<TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}>
+					<Pressable
+						style={mainStyles.opacity}
+						onPress={() => navigation.navigate('Artist', { artist: { id: route.params.album.artistId, name: route.params.album.artist } })}
+					>
 						<Text style={presStyles.subTitle(theme)}>{route.params.album.artist}</Text>
-					</TouchableOpacity>
+					</Pressable>
 				</View>
-				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={[presStyles.button, { paddingEnd: 0 }]} size={25} />
-				<RandomButton songList={songs} size={25} />
+				<FavoritedButton id={route.params.album.id} isFavorited={route.params.album.starred} style={[presStyles.button, { paddingEnd: 0 }]} size={size.icon.medium} />
+				<RandomButton songList={songs} size={size.icon.medium} />
 			</View>
 			<SongsList songs={songs} isIndex={true} />
 		</ScrollView>

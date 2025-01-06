@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import IconButton from '~/components/button/IconButton';
 import { ThemeContext } from '~/contexts/theme';
 import presStyles from '~/styles/pres';
+import size from '~/styles/size';
 
 const InfoPopup = ({ info, close }) => {
 	const insets = useSafeAreaInsets();
@@ -86,8 +87,8 @@ const InfoPopup = ({ info, close }) => {
 									borderBottomColor: theme.secondaryLight,
 								}}
 							>
-								<Text style={{ color: theme.primaryLight, fontSize: 14, flex: 1, minWidth: 100 }}>{key}</Text>
-								<Text style={{ color: theme.secondaryLight, fontSize: 14, flex: 5 }}>{objectToString(info[key])}</Text>
+								<Text style={{ color: theme.primaryLight, fontSize: size.text.small, flex: 1, minWidth: 100 }}>{key}</Text>
+								<Text style={{ color: theme.secondaryLight, fontSize: size.text.small, flex: 5 }}>{objectToString(info[key])}</Text>
 							</View>
 						))
 					}

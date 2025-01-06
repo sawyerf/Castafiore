@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeContext } from '~/contexts/theme';
 import presStyles from '~/styles/pres';
+import size from '~/styles/size';
 
 const ErrorPopup = ({ message, close }) => {
 	const insets = useSafeAreaInsets();
@@ -46,7 +47,7 @@ const ErrorPopup = ({ message, close }) => {
 					transform: [{ translateY: slide }],
 				}}
 			>
-				<Text style={{ fontSize: 16, color: theme.primaryLight, fontWeight: 'bold' }}>Error</Text>
+				<Text style={{ fontSize: size.text.medium, color: theme.primaryLight, fontWeight: 'bold' }}>Error</Text>
 				<Text style={[presStyles.text, { color: theme.primaryLight }]}>{message}</Text>
 			</Animated.View>
 		</Modal >

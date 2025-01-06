@@ -1,16 +1,18 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { ConfigContext } from '~/contexts/config';
 import { getCache } from '~/utils/cache';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
-import { ConfigContext } from '~/contexts/config';
+import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover, urlStream } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import ImageError from '~/components/ImageError';
-import { SongDispatchContext } from '~/contexts/song';
+import mainStyles from '~/styles/main';
+import size from '~/styles/size';
 
 const Cached = ({ song }) => {
 	const [isCached, setIsCached] = React.useState(false)
@@ -49,8 +51,8 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 	const config = React.useContext(ConfigContext)
 
 	return (
-		<TouchableOpacity
-			style={styles.song}
+		<Pressable
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song])}
 			key={song.id}
 			onLongPress={() => setIndexOptions(index)}
 			onContextMenu={() => setIndexOptions(index)}
@@ -60,22 +62,22 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 				playSong(config, songDispatch, queue, index)
 			}}>
 			<ImageError
-				style={styles.albumCover(theme)}
+				style={[mainStyles.coverSmall(theme), { marginRight: 10 }]}
 				source={{
 					uri: urlCover(config, song.albumId, 100),
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
-				<Text numberOfLines={1} style={{ color: isPlaying ? theme.primaryTouch : theme.primaryLight, fontSize: 16, marginBottom: 2 }}>
+				<Text numberOfLines={1} style={{ color: isPlaying ? theme.primaryTouch : theme.primaryLight, fontSize: size.text.medium, marginBottom: 2 }}>
 					{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
 				</Text>
-				<Text numberOfLines={1} style={{ color: isPlaying ? theme.secondaryTouch : theme.secondaryLight }}>
+				<Text numberOfLines={1} style={{ color: isPlaying ? theme.secondaryTouch : theme.secondaryLight, fontSize: size.text.small }}>
 					{song.artist}
 				</Text>
 			</View>
 			<Cached song={song} />
 			<FavoritedButton id={song.id} isFavorited={song?.starred} style={{ padding: 5, paddingStart: 10 }} />
-		</TouchableOpacity>
+		</Pressable>
 	)
 }
 
@@ -85,13 +87,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 10,
 	},
-	albumCover: theme => ({
-		height: 50,
-		width: 50,
-		marginRight: 10,
-		borderRadius: 4,
-		backgroundColor: theme.secondaryDark,
-	}),
 })
 
 export default SongItem;

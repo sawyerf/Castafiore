@@ -12,6 +12,7 @@ import ImageError from '~/components/ImageError';
 import SlideBar from '~/components/button/SlideBar';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import size from '~/styles/size';
+import PlayButton from '~/components/button/PlayButton';
 
 const BoxDesktopPlayer = ({ fullscreen }) => {
 	const song = React.useContext(SongContext)
@@ -79,12 +80,10 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 						color={theme.primaryLight}
 						onPress={() => Player.previousSong(config, song, songDispatch)}
 					/>
-					<IconButton
-						icon={song.isPlaying ? 'pause' : 'play'}
-						style={{ width: 20, alignItems: 'center' }}
+					<PlayButton
+						style={{ width: 22, alignItems: 'center' }}
 						size={19}
 						color={theme.primaryLight}
-						onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 					/>
 					<IconButton
 						icon="step-forward"

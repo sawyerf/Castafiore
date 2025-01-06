@@ -16,6 +16,7 @@ import size from '~/styles/size';
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import mainStyles from '~/styles/main'
+import PlayButton from '../button/PlayButton'
 
 const preview = {
 	COVER: 0,
@@ -230,12 +231,10 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 							color={color.primary}
 							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
-						<IconButton
-							icon={song.isPlaying ? 'pause' : 'play'}
-							style={{ width: 22, alignItems: 'center' }}
+						<PlayButton
 							size={size.icon.medium}
 							color={color.primary}
-							onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
+							style={{ width: 30, alignItems: 'end' }}
 						/>
 						<IconButton
 							icon="step-forward"

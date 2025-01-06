@@ -16,6 +16,7 @@ import SlideControl from '~/components/button/SlideControl';
 import SongItem from '~/components/lists/SongItem';
 import ImageError from '~/components/ImageError';
 import size from '~/styles/size';
+import PlayButton from '~/components/button/PlayButton';
 
 const preview = {
 	COVER: 0,
@@ -128,12 +129,10 @@ const FullScreenPlayer = ({ fullscreen }) => {
 							style={{ paddingHorizontal: 10 }}
 							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
-						<IconButton
-							icon={song.isPlaying ? 'pause' : 'play'}
+						<PlayButton
 							size={size.icon.large}
 							color={theme.primaryLight}
 							style={{ paddingHorizontal: 10 }}
-							onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 						/>
 						<IconButton
 							icon="step-forward"

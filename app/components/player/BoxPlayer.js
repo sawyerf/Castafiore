@@ -7,6 +7,7 @@ import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import PlayButton from '~/components/button/PlayButton';
 import Player from '~/utils/player';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
@@ -56,12 +57,10 @@ const BoxPlayer = ({ fullscreen }) => {
 					style={{ width: 35, alignItems: 'center' }}
 					onPress={() => Player.nextSong(config, song, songDispatch)}
 				/>
-				<IconButton
-					icon={song.isPlaying ? 'pause' : 'play'}
+				<PlayButton
 					size={size.icon.small}
 					color={theme.playerButton}
 					style={{ width: 35, alignItems: 'center' }}
-					onPress={() => song.isPlaying ? Player.pauseSong() : Player.resumeSong()}
 				/>
 			</View>
 		</Pressable>

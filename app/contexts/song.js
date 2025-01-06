@@ -50,11 +50,13 @@ export const songReducer = (state, action) => {
 				songInfo: state.queue[previousIndex],
 			})
 		}
-		case 'setPlaying':
-			if (action.isPlaying === state.isPlaying) return state
-			return newSong(state, {
-				isPlaying: action.isPlaying,
-			})
+		case 'setPlaying': {
+			if (action.isPlaying === state.isPlaying && action.state === state.state) return state
+			const nState = {}
+			nState.isPlaying = action.isPlaying
+			if (action.state) nState.state = action.state
+			return newSong(state, nState)
+		}
 		case 'addQueue':
 			if (!state.sound || !state.songInfo || !state.queue.length || !action.queue.length) return state
 			return newSong(state, {

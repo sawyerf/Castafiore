@@ -35,9 +35,10 @@ export const initPlayer = async (songDispatch) => {
 	const queue = await TrackPlayer.getQueue()
 	if (queue.length > 0) {
 		const index = await TrackPlayer.getActiveTrackIndex()
-		const isPlaying = await TrackPlayer.getPlaybackState() !== State.Paused
+		const state = await TrackPlayer.getPlaybackState()
+		const isPlaying = state !== State.Paused
 
-		songDispatch({ type: 'setPlaying', isPlaying })
+		songDispatch({ type: 'setPlaying', isPlaying, state })
 		songDispatch({ type: 'setSong', queue, index })
 	} else {
 		setRepeat(songDispatch, 'next')
@@ -52,6 +53,9 @@ export const previousSong = async (config, song, songDispatch) => {
 export const nextSong = async (config, song, songDispatch) => {
 	await TrackPlayer.skipToNext()
 	songDispatch({ type: 'next' })
+}
+
+export const reload = async () => {
 }
 
 export const pauseSong = async () => {
@@ -172,5 +176,7 @@ export default {
 	unloadSong,
 	tuktuktuk,
 	updateVolume,
-	updateTime
+	updateTime,
+	reload,
+	State,
 }

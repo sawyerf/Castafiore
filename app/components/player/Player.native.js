@@ -22,7 +22,7 @@ const Player = ({ state, fullscreen }) => {
 
 	useTrackPlayerEvents(events, async (event) => {
 		if (event.type === Event.PlaybackState) {
-			songDispatch({ type: 'setPlaying', isPlaying: event.state !== State.Paused })
+			songDispatch({ type: 'setPlaying', isPlaying: event.state !== State.Paused, state: event.state })
 		} else if (event.type === Event.PlaybackActiveTrackChanged) {
 			songDispatch({ type: 'setIndex', index: event.index })
 		}

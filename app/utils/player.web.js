@@ -4,6 +4,16 @@ import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration
 import { getApi, urlCover, urlStream } from './api';
 import { getSettings } from '~/contexts/settings';
 
+const State = {
+	None: 'none',
+	Paused: 'paused',
+	Playing: 'playing',
+	Stopped: 'stopped',
+	Ended: 'ended',
+	Loading: 'loading',
+	Error: 'error',
+}
+
 const audio = () => {
 	return document.getElementById('audio')
 }
@@ -15,17 +25,32 @@ export const initService = async () => {
 export const initPlayer = async (songDispatch) => {
 	const sound = audio()
 	songDispatch({ type: 'init' })
+	sound.addEventListener('error', () => {
+		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Error })
+	})
+	sound.addEventListener('loadstart', () => {
+		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Loading })
+	})
+	sound.addEventListener('waiting', () => {
+		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Loading })
+	})
+	sound.addEventListener('canplay', () => {
+		audio().play()
+	})
 	sound.addEventListener('loadedmetadata', () => {
 		audio().play()
 	})
 	sound.addEventListener('loadeddata', () => {
 		audio().play()
 	})
+	sound.addEventListener('playing', () => {
+		songDispatch({ type: 'setPlaying', isPlaying: true, state: State.Playing })
+	})
 	sound.addEventListener('play', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: true })
+		songDispatch({ type: 'setPlaying', isPlaying: true, state: State.Playing })
 	})
 	sound.addEventListener('pause', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: false })
+		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Paused })
 	})
 	sound.addEventListener('ended', () => {
 		const songId = window.song.songInfo.id
@@ -159,6 +184,10 @@ export const previousSong = async (config, song, songDispatch) => {
 	}
 }
 
+export const reload = async () => {
+	audio().load()
+}
+
 export const pauseSong = async () => {
 	audio().pause()
 }
@@ -245,4 +274,6 @@ export default {
 	secondToTime,
 	tuktuktuk,
 	setRepeat,
+	reload,
+	State,
 }

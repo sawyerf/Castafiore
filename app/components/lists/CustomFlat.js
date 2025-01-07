@@ -59,14 +59,15 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 					}} />
 			</View>}
 			<FlatList
+				ref={refScroll}
 				data={data}
 				keyExtractor={(item, index) => index}
 				renderItem={renderItem}
 				horizontal={true}
 				style={style}
+				onScrollToIndexFailed={() => { }}
 				contentContainerStyle={contentContainerStyle}
 				showsHorizontalScrollIndicator={false}
-				ref={refScroll}
 			/>
 		</View>
 	)

@@ -56,6 +56,7 @@ export const nextSong = async (config, song, songDispatch) => {
 }
 
 export const reload = async () => {
+	await TrackPlayer.retry()
 }
 
 export const pauseSong = async () => {

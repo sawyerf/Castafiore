@@ -81,11 +81,12 @@ const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
 
 	return (
 		<FlatList
+			ref={refScroll}
 			style={[style, { borderRadius: null }]}
 			showsVerticalScrollIndicator={false}
-			data={lyrics}
-			ref={refScroll}
+			onScrollToIndexFailed={() => { }}
 			initialNumToRender={lyrics.length}
+			data={lyrics}
 			keyExtractor={(item, index) => index}
 			renderItem={({ item, index }) => {
 				return (

@@ -16,7 +16,7 @@ import size from '~/styles/size';
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import mainStyles from '~/styles/main'
-import PlayButton from '../button/PlayButton'
+import PlayButton from '~/components/button/PlayButton'
 
 const preview = {
 	COVER: 0,

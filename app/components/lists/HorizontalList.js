@@ -7,12 +7,12 @@ import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
-import HorizontalAlbums from './HorizontalAlbums';
-import HorizontalArtists from './HorizontalArtists';
-import HorizontalGenres from './HorizontalGenres';
-import HorizontalLBStat from './HorizontalLBStat';
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
+import HorizontalArtists from '~/components/lists/HorizontalArtists';
+import HorizontalGenres from '~/components/lists/HorizontalGenres';
+import HorizontalLBStat from '~/components/lists/HorizontalLBStat';
 import mainStyles from '~/styles/main';
-import RadioList from './RadioList';
+import RadioList from '~/components/lists/RadioList';
 import size from '~/styles/size';
 
 const HorizontalList = ({ title, type, query, refresh, enable }) => {

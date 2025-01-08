@@ -20,7 +20,6 @@ const Playlists = ({ navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
-	const [refreshing, setRefreshing] = React.useState(false);
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
 	const [isPublic, setIsPublic] = React.useState(false);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
@@ -37,27 +36,29 @@ const Playlists = ({ navigation }) => {
 		}
 	}, [config])
 
-	React.useEffect(() => {
-		if (refreshing) {
-			rotationValue.setValue(0)
-			Animated.timing(rotationValue, {
-				toValue: 1,
-				duration: 1000,
-				useNativeDriver: true,
-			}).start()
-			getFavorited()
-			getPlaylists()
-		}
-	}, [refreshing])
+	const onRefresh = () => {
+		rotationValue.setValue(0)
+		Animated.timing(rotationValue, {
+			toValue: 1,
+			duration: 1000,
+			useNativeDriver: true,
+		}).start()
+		getFavorited()
+		getPlaylists()
+	}
 
 	React.useEffect(() => {
 		setPlaylists([...playlists].sort(sortPlaylist))
-	}, [settings])
+	}, [settings.pinPlaylist, settings.orderPlaylist])
+
+	const isPin = (item) => {
+		return item.comment?.includes(`#${config.username}-pin`) || settings.pinPlaylist.includes(item.id)
+	}
 
 	const sortPlaylist = (a, b) => {
-		if (settings.pinPlaylist.includes(a.id) && !settings.pinPlaylist.includes(b.id)) {
+		if (isPin(a) && !isPin(b)) {
 			return -1
-		} else if (!settings.pinPlaylist.includes(a.id) && settings.pinPlaylist.includes(b.id)) {
+		} else if (!isPin(a) && isPin(b)) {
 			return 1
 		} else if (settings.pinPlaylist.includes(a.id) && settings.pinPlaylist.includes(b.id)) {
 			return settings.pinPlaylist.indexOf(a.id) - settings.pinPlaylist.indexOf(b.id)
@@ -75,14 +76,12 @@ const Playlists = ({ navigation }) => {
 	const getFavorited = () => {
 		getCachedAndApi(config, 'getStarred', null, (json) => {
 			setFavorited(json.starred.song)
-			setRefreshing(false);
 		})
 	}
 
 	const getPlaylists = () => {
 		getCachedAndApi(config, 'getPlaylists', null, (json) => {
 			setPlaylists([...json.playlists.playlist].sort(sortPlaylist))
-			setRefreshing(false);
 		})
 	}
 
@@ -109,7 +108,7 @@ const Playlists = ({ navigation }) => {
 						size={size.icon.large}
 						color={theme.primaryLight}
 						style={{ paddingHorizontal: 10 }}
-						onPress={() => setRefreshing(true)}
+						onPress={onRefresh}
 					/>
 				</Animated.View>
 			</View>
@@ -168,7 +167,7 @@ const Playlists = ({ navigation }) => {
 						</>
 				}
 			</View>
-			<VerticalPlaylist playlists={playlists} />
+			<VerticalPlaylist playlists={playlists} onRefresh={getPlaylists} />
 		</ScrollView>
 	)
 }

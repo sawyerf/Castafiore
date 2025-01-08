@@ -3,13 +3,16 @@ import { ActivityIndicator } from 'react-native';
 
 import { SongContext } from '~/contexts/song';
 import Player from '~/utils/player';
-import IconButton from './IconButton';
+import IconButton from '~/components/button/IconButton';
 
 const PlayButton = ({ style = {}, size, color }) => {
 	const song = React.useContext(SongContext)
 	const [icon, setIcon] = React.useState('pause')
+	const timeout = React.useRef(null)
 
 	React.useEffect(() => {
+		clearTimeout(timeout.current)
+
 		switch (song.state) {
 			case Player.State.Playing:
 				setIcon('pause')
@@ -24,7 +27,9 @@ const PlayButton = ({ style = {}, size, color }) => {
 				setIcon('warning')
 				break
 			case Player.State.Loading:
-				setIcon('square')
+				timeout.current = setTimeout(() => {
+					setIcon('loading')
+				}, 500)
 				break
 			default:
 				break
@@ -41,7 +46,7 @@ const PlayButton = ({ style = {}, size, color }) => {
 		}
 	}
 
-	if (icon === 'square') {
+	if (icon === 'loading') {
 		return <ActivityIndicator size={'small'} color={color} style={style} />
 	}
 	return (

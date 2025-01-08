@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, Pressable, Platform } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
@@ -7,20 +7,40 @@ import size from '~/styles/size';
 
 const TableItem = ({ title, value, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
+	const [isCopied, setIsCopied] = React.useState(false)
+
+	const onPress = () => {
+		if (Platform.OS === 'web') {
+			navigator.clipboard.writeText(value)
+			setIsCopied(true)
+			setTimeout(() => setIsCopied(false), 1000)
+		}
+	}
 
 	return (
-		<View style={[settingStyles.optionItem(theme, isLast), {
-			justifyContent: 'space-between'
-		}]} >
+		<Pressable
+			style={[settingStyles.optionItem(theme, isLast), {
+				justifyContent: 'space-between'
+			}]}
+			onPress={onPress}
+		>
 			<Text
 				numberOfLines={1}
-				style={[settingStyles.primaryText(theme, { flex: undefined }), { maxWidth: '80%' }]}
+				style={[settingStyles.primaryText(theme, { flex: undefined }), {
+					maxWidth: '80%',
+					width: 'min-content',
+				}]}
 			>{title}</Text>
 			<Text
 				numberOfLines={1}
-				style={{ color: theme.primaryLight, fontSize: size.text.medium, textAlign: 'right' }}
-			>{value}</Text>
-		</View>
+				style={{
+					color: isCopied ? theme.primaryLight : theme.secondaryLight,
+					fontSize: size.text.medium,
+					textAlign: 'right',
+					flex: 1,
+				}}
+			>{isCopied ? 'Copied' : value}</Text>
+		</Pressable>
 	)
 }
 

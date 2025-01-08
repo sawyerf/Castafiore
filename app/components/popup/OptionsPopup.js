@@ -1,47 +1,44 @@
-import React, { useEffect } from 'react';
-import { Text, Modal, Dimensions, ScrollView, Animated, Pressable } from 'react-native';
+import React from 'react';
+import { Text, Modal, ScrollView, Animated, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeContext } from '~/contexts/theme';
+import InfoPopup from '~/components/popup/InfoPopup';
 import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
-const OptionsPopup = ({ visible, close, options }) => {
+const OptionsPopup = ({ reff, visible, close, options }) => {
 	const insets = useSafeAreaInsets();
-	const [paddingTop, setPaddingTop] = React.useState(0)
-	const slide = React.useRef(new Animated.Value(0)).current
 	const theme = React.useContext(ThemeContext)
+	const slide = React.useRef(new Animated.Value(-1000)).current
+	const isAnim = React.useRef(false)
+	const [info, setInfo] = React.useState(null)
 
-	useEffect(() => {
-		// slide options from bottom
-		if (visible) {
-			Animated.timing(slide, {
-				toValue: 0,
-				duration: 100,
-				useNativeDriver: true
-			}).start()
-		} else {
-			slide.setValue(getSizeOptions())
-		}
-	}, [visible])
-
-	const getSizeOptions = () => {
-		const lenghtOptions = options.filter(value => value).length + 1
-		return 53 * lenghtOptions + (insets.bottom ? insets.bottom : 20) + 10
-	}
+	React.useImperativeHandle(reff, () => ({
+		close: close,
+		setInfo: setInfo,
+	}), [close])
 
 	React.useEffect(() => {
-		const sizeOptions = getSizeOptions()
-		if (!visible) slide.setValue(sizeOptions)
-		const paddingTop = Dimensions.get('window').height - sizeOptions - insets.top
-		if (paddingTop < 0) {
-			setPaddingTop(insets.top ? insets.top + 20 : 20)
-		} else {
-			setPaddingTop(paddingTop)
-		}
-	}, [options, insets])
+		if (!visible) slide.setValue(-10000)
+		isAnim.current = true
+	}, [visible])
 
+	const onLayout = (event) => {
+		if (!isAnim.current) return
+		isAnim.current = false
+		slide.setValue(event.nativeEvent.layout.height)
+		Animated.timing(slide, {
+			toValue: 0,
+			duration: 100,
+			useNativeDriver: true
+		}).start()
+	}
+
+	if (info) return (
+		<InfoPopup info={info} close={() => setInfo(null)} />
+	)
 	if (!visible) return null;
 	return (
 		<Modal
@@ -56,18 +53,25 @@ const OptionsPopup = ({ visible, close, options }) => {
 					height: '100%',
 					backgroundColor: 'rgba(0,0,0,0.5)',
 				}}
+				contentContainerStyle={{
+					justifyContent: 'flex-end',
+					minHeight: '100%',
+				}}
 			>
 				<Pressable
 					onPress={close}
 					style={{
-						height: paddingTop,
+						width: '100%',
+						minHeight: insets.top + 100,
+						flex: 1,
 					}}
 				/>
 				<Animated.View
+					onLayout={onLayout}
 					style={{
 						width: "100%",
 						paddingTop: 10,
-						paddingBottom: insets.bottom ? insets.bottom : 20,
+						paddingBottom: insets.bottom > 20 ? insets.bottom : 20,
 						backgroundColor: theme.primaryDark,
 						borderTopLeftRadius: 20,
 						borderTopRightRadius: 20,

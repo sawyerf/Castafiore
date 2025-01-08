@@ -38,11 +38,16 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 		})
 	}
 
-	const ItemComponent = React.memo(({ item, index }) => (
+	const onPress = (item) => {
+		if (type === 'album') return navigation.navigate('Album', { album: item })
+		if (type === 'artist') return navigation.navigate('Artist', { artist: item })
+	}
+
+	const ItemComponent = React.memo(function Item ({ item, index }) {(
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
 			key={index}
-			onPress={() => navigation.navigate('Album', { album: item })}>
+			onPress={() => onPress(item)}>
 			<Image
 				style={styles.albumCover(type)}
 				source={{
@@ -52,7 +57,7 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 			<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
 			<Text numberOfLines={1} style={styles.artist(theme)}>{item.artist}</Text>
 		</Pressable>
-	))
+	)})
 
 	return (
 		<FlatList

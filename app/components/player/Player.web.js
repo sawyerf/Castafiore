@@ -3,10 +3,10 @@ import { useWindowDimensions } from 'react-native';
 
 import { SettingsContext } from '~/contexts/settings';
 import { SongContext } from '~/contexts/song';
-import BoxDesktopPlayer from './BoxDesktopPlayer';
-import BoxPlayer from './BoxPlayer';
-import FullScreenHorizontalPlayer from './FullScreenHorizontalPlayer';
-import FullScreenPlayer from './FullScreenPlayer';
+import BoxDesktopPlayer from '~/components/player/BoxDesktopPlayer';
+import BoxPlayer from '~/components/player/BoxPlayer';
+import FullScreenHorizontalPlayer from '~/components/player/FullScreenHorizontalPlayer';
+import FullScreenPlayer from '~/components/player/FullScreenPlayer';
 
 const Player = ({ state, fullscreen }) => {
 	const song = React.useContext(SongContext)

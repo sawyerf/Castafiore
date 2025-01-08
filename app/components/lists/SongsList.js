@@ -9,8 +9,6 @@ import { ThemeContext } from '~/contexts/theme';
 import { getApi, getApiNetworkFirst } from '~/utils/api';
 import { urlStream } from '~/utils/api';
 import { useNavigation } from '@react-navigation/native';
-import ErrorPopup from '~/components/popup/ErrorPopup';
-import InfoPopup from '~/components/popup/InfoPopup';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import SongItem from '~/components/lists/SongItem';
 import size from '~/styles/size';
@@ -21,11 +19,10 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
 	const [playlistList, setPlaylistList] = React.useState([])
-	const [songInfo, setSongInfo] = React.useState(null)
-	const [error, setError] = React.useState(null)
 	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
+	const reffOption = React.useRef()
 
 	return (
 		<View style={{
@@ -56,9 +53,8 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 			})}
 
 			{/* Popups */}
-			<ErrorPopup message={error} close={() => setError(null)} />
-			<InfoPopup info={songInfo} close={() => setSongInfo(null)} />
 			<OptionsPopup
+				reff={reffOption}
 				visible={indexOptions >= 0}
 				close={() => {
 					setPlaylistList([])
@@ -72,7 +68,6 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 							getApiNetworkFirst(config, 'getSimilarSongs', `id=${songs[indexOptions].id}&count=50`)
 								.then((json) => {
 									if (!json.similarSongs?.song) {
-										setError('No similar songs found')
 										playSong(config, songDispatch, [songs[indexOptions]], 0)
 									} else {
 										playSong(config, songDispatch, json.similarSongs?.song, 0)
@@ -184,7 +179,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 						icon: 'info',
 						onPress: () => {
 							setIndexOptions(-1)
-							setSongInfo(songs[indexOptions])
+							reffOption.current.setInfo(songs[indexOptions])
 						}
 					},
 				]} />

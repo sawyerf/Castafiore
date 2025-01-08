@@ -2,10 +2,11 @@ import React from 'react';
 import { Text, View, Pressable, Modal, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import IconButton from '~/components/button/IconButton';
 import { ThemeContext } from '~/contexts/theme';
-import presStyles from '~/styles/pres';
+import IconButton from '~/components/button/IconButton';
+import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
+import TableItem from '~/components/settings/TableItem';
 
 const InfoPopup = ({ info, close }) => {
 	const insets = useSafeAreaInsets();
@@ -35,7 +36,7 @@ const InfoPopup = ({ info, close }) => {
 				style={{
 					width: '100%',
 					height: '100%',
-					backgroundColor: 'rgba(0,0,0,0.5)',
+					backgroundColor: 'rgba(0,0,0,0.9)',
 					justifyContent: 'center',
 					alignItems: 'center',
 				}}
@@ -50,21 +51,27 @@ const InfoPopup = ({ info, close }) => {
 					}}
 				/>
 				<ScrollView
+					showsHorizontalScrollIndicator={false}
+					showsVerticalScrollIndicator={false}
 					style={{
-						marginTop: insets.top ? insets.top + 20 : 20,
-						marginBottom: (insets.bottom ? insets.bottom : 20) + 63,
-						marginStart: 20,
-						marginEnd: 20,
-						borderRadius: 20,
-						backgroundColor: theme.primaryDark,
-						maxWidth: 1000,
-						width: '90%',
+						maxWidth: 800,
+						width: '100%',
 					}}
 					contentContainerStyle={{
 						padding: 20,
+						marginTop: insets.top,
+						marginBottom: insets.bottom,
 					}}
 				>
-					<Text style={[presStyles.title(theme), { marginBottom: 20 }]}>Song Info</Text>
+					<Text numberOfLines={1}
+						style={{
+							color: '#fff',
+							fontSize: size.text.large,
+							fontWeight: 'bold',
+							flex: 1,
+							textAlign: 'center',
+							marginBottom: 50,
+						}} > Song Info </Text>
 					<IconButton
 						icon="close"
 						onPress={close}
@@ -75,25 +82,20 @@ const InfoPopup = ({ info, close }) => {
 							padding: 10,
 						}}
 					/>
-					{
-						Object.keys(info).map((key, index) => (
-							<View
-								key={index}
-								style={{
-									flexDirection: 'row',
-									alignItems: 'flex-start',
-									padding: 10,
-									borderBottomWidth: 1,
-									borderBottomColor: theme.secondaryLight,
-								}}
-							>
-								<Text style={{ color: theme.primaryLight, fontSize: size.text.small, flex: 1, minWidth: 100 }}>{key}</Text>
-								<Text style={{ color: theme.secondaryLight, fontSize: size.text.small, flex: 5 }}>{objectToString(info[key])}</Text>
-							</View>
-						))
-					}
+					<View style={settingStyles.optionsContainer(theme)}>
+						{
+							Object.keys(info).map((key, index) => (
+								<TableItem
+									key={index}
+									title={key}
+									value={objectToString(info[key])}
+									isLast={index === Object.keys(info).length - 1}
+								/>
+							))
+						}
+					</View>
 				</ScrollView>
-			</View>
+			</View >
 		</Modal >
 	)
 }

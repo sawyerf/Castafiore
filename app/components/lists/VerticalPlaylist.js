@@ -12,7 +12,7 @@ import OptionsPopup from '~/components/popup/OptionsPopup';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
-const VerticalPlaylist = ({ playlists }) => {
+const VerticalPlaylist = ({ playlists, onRefresh }) => {
 	const navigation = useNavigation();
 	const [indexOption, setIndexOption] = React.useState(-1);
 	const [deletePlaylists, setDeletePlaylists] = React.useState([])
@@ -20,12 +20,41 @@ const VerticalPlaylist = ({ playlists }) => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
+	const refOption = React.useRef()
+
+	const isPin = (index) => {
+		return settings.pinPlaylist.includes(playlists[index].id) || playlists[index].comment?.includes(`#${config.username}-pin`)
+	}
 
 	const deletePlaylist = (id) => {
 		getApi(config, 'deletePlaylist', `id=${id}`)
 			.then(() => {
 				setIndexOption(-1)
 				setDeletePlaylists([...deletePlaylists, id])
+			})
+			.catch(() => { })
+	}
+
+	const pinToComment = (index) => {
+		getApi(config, 'updatePlaylist', {
+			playlistId: playlists[index].id,
+			comment: `${playlists[index].comment || ''}\n#${config.username}-pin`,
+		})
+			.then(() => {
+				onRefresh()
+			})
+			.catch(() => { })
+	}
+
+	const unPinToComment = (index) => {
+		if (!playlists[index].comment) return
+		if (!playlists[index].comment.includes(`\n#${config.username}-pin`)) return
+		getApi(config, 'updatePlaylist', {
+			playlistId: playlists[index].id,
+			comment: playlists[index].comment.replaceAll(`#${config.username}-pin`, ''),
+		})
+			.then(() => {
+				onRefresh()
 			})
 			.catch(() => { })
 	}
@@ -55,23 +84,25 @@ const VerticalPlaylist = ({ playlists }) => {
 								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2 }}>{playlist.name}</Text>
 								<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small }}>{(playlist.duration / 60) | 1} min · {playlist.songCount} songs</Text>
 							</View>
-							{settings.pinPlaylist.includes(playlist.id) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryLight} style={{ paddingEnd: 5, paddingStart: 10 }} />}
+							{(settings.pinPlaylist.includes(playlist.id) || playlist.comment?.includes(`#${config.username}-pin`)) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryLight} style={{ paddingEnd: 5, paddingStart: 10 }} />}
 						</Pressable>
 					)
 				})
 			}
 			<OptionsPopup
+				reff={refOption}
 				visible={indexOption >= 0}
 				close={() => setIndexOption(-1)}
 				options={[
 					...(() => {
 						if (indexOption < 0) return []
-						if (!settings.pinPlaylist.includes(playlists[indexOption].id)) return [{
+						if (!isPin(indexOption)) return [{
 							name: 'Pin Playlist',
 							icon: 'bookmark',
 							onPress: () => {
 								setSettings({ ...settings, pinPlaylist: [...settings.pinPlaylist, playlists[indexOption].id] })
 								setIndexOption(-1)
+								pinToComment(indexOption)
 							}
 						}]
 						return [{
@@ -80,6 +111,7 @@ const VerticalPlaylist = ({ playlists }) => {
 							onPress: () => {
 								setSettings({ ...settings, pinPlaylist: settings.pinPlaylist.filter(id => id !== playlists[indexOption].id) })
 								setIndexOption(-1)
+								unPinToComment(indexOption)
 							}
 						}]
 					})(),
@@ -93,6 +125,14 @@ const VerticalPlaylist = ({ playlists }) => {
 								() => deletePlaylist(playlists[indexOption].id),
 								() => setIndexOption(-1),
 							)
+						}
+					},
+					{
+						name: 'Info',
+						icon: 'info',
+						onPress: () => {
+							refOption.current.setInfo(playlists[indexOption])
+							setIndexOption(-1)
 						}
 					},
 				]}

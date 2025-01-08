@@ -6,7 +6,6 @@ import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import { ConfigContext } from '~/contexts/config';
 import OptionsPopup from '~/components/popup/OptionsPopup';
-import InfoPopup from '~/components/popup/InfoPopup';
 import CustomFlat from '~/components/lists/CustomFlat';
 import size from '~/styles/size';
 import mainStyles from '~/styles/main';
@@ -15,8 +14,8 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 	const [indexOptions, setIndexOptions] = React.useState(-1)
-	const [infoAlbum, setInfoAlbum] = React.useState(null)
 	const config = React.useContext(ConfigContext)
+	const refOption = React.useRef()
 
 	return (
 		<>
@@ -43,8 +42,8 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 					</Pressable>
 				)} />
 
-			<InfoPopup info={infoAlbum} close={() => setInfoAlbum(null)} />
 			<OptionsPopup
+				reff={refOption}
 				visible={indexOptions >= 0}
 				close={() => { setIndexOptions(-1) }}
 				options={[
@@ -52,8 +51,8 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 						name: 'Info',
 						icon: 'info',
 						onPress: () => {
+							refOption.current.setInfo(albums[indexOptions])
 							setIndexOptions(-1)
-							setInfoAlbum(albums[indexOptions])
 						}
 					}
 				]}

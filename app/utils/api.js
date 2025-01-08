@@ -1,6 +1,6 @@
 import React from "react"
 import { ConfigContext } from "~/contexts/config"
-import { getJsonCache, setJsonCache } from "./cache"
+import { getJsonCache, setJsonCache } from "~/utils/cache"
 
 const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''

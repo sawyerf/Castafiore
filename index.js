@@ -1,7 +1,7 @@
 import registerRootComponent from 'expo/build/launch/registerRootComponent';
 
 import App from './App';
-import { initService } from './app/utils/player';
+import { initService } from '~/utils/player';
 
 registerRootComponent(App);
 

@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemeContext } from '~/contexts/theme';
-import IconButton from './IconButton';
+import IconButton from '~/components/button/IconButton';
 import size from '~/styles/size';
 
 const BackButton = () => {

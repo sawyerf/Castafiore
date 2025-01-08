@@ -1,7 +1,7 @@
 import React from 'react';
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 
-import { getApi, urlCover, urlStream } from './api';
+import { getApi, urlCover, urlStream } from '~/utils/api';
 import { getSettings } from '~/contexts/settings';
 
 const State = {
@@ -91,13 +91,29 @@ export const initPlayer = async (songDispatch) => {
 	});
 
 	addEventListener('keydown', (e) => {
-		if (e.code === 'Space') {
+		if (e.key === ' ') {
 			if (window.song.isPlaying) pauseSong()
 			else resumeSong()
-		} else if (e.code === 'ArrowRight') nextSong(window.config, window.song, songDispatch)
-		else if (e.code === 'ArrowLeft') previousSong(window.config, window.song, songDispatch)
-		else if (e.code === 'ArrowUp') setVolume(getVolume() + 0.1)
-		else if (e.code === 'ArrowDown') setVolume(getVolume() - 0.1)
+			e.preventDefault()
+		} else if (e.key === 'ArrowRight') {
+			nextSong(window.config, window.song, songDispatch)
+			e.preventDefault()
+		}
+		else if (e.key === 'ArrowLeft') {
+			previousSong(window.config, window.song, songDispatch)
+			e.preventDefault()
+		}
+		else if (e.key === 'ArrowUp') {
+			setVolume(getVolume() + 0.1)
+			e.preventDefault()
+		}
+		else if (e.key === 'ArrowDown') {
+			setVolume(getVolume() - 0.1)
+			e.preventDefault()
+		} else if (e.key === 'm') {
+			setVolume(getVolume() ? 0 : 1)
+			e.preventDefault()
+		}
 	})
 }
 

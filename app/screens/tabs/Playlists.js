@@ -49,10 +49,10 @@ const Playlists = ({ navigation }) => {
 
 	React.useEffect(() => {
 		setPlaylists([...playlists].sort(sortPlaylist))
-	}, [settings.pinPlaylist, settings.orderPlaylist])
+	}, [settings.orderPlaylist])
 
 	const isPin = (item) => {
-		return item.comment?.includes(`#${config.username}-pin`) || settings.pinPlaylist.includes(item.id)
+		return item.comment?.includes(`#${config.username}-pin`)
 	}
 
 	const sortPlaylist = (a, b) => {
@@ -60,8 +60,6 @@ const Playlists = ({ navigation }) => {
 			return -1
 		} else if (!isPin(a) && isPin(b)) {
 			return 1
-		} else if (settings.pinPlaylist.includes(a.id) && settings.pinPlaylist.includes(b.id)) {
-			return settings.pinPlaylist.indexOf(a.id) - settings.pinPlaylist.indexOf(b.id)
 		} else if (settings.orderPlaylist === 'title') {
 			return a.name.localeCompare(b.name)
 		} else if (settings.orderPlaylist === 'changed') {

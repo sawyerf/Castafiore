@@ -11,6 +11,7 @@ import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import HorizontalGenres from '~/components/lists/HorizontalGenres';
 import HorizontalLBStat from '~/components/lists/HorizontalLBStat';
+import HorizontalPlaylists from '~/components/lists/HorizontalPlaylists';
 import mainStyles from '~/styles/main';
 import RadioList from '~/components/lists/RadioList';
 import size from '~/styles/size';
@@ -34,6 +35,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 		if (type === 'artist') return 'getStarred'
 		if (type === 'genre') return 'getGenres'
 		if (type === 'radio') return 'getInternetRadioStations'
+		if (type === 'playlist') return 'getPlaylists'
 		return type
 	}
 
@@ -56,6 +58,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				if (type == 'artist') return setList(json?.starred?.artist)
 				if (type == 'genre') return setList(json?.genres?.genre)
 				if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
+				if (type == 'playlist') return setList(json?.playlists?.playlist)
 			})
 		}
 	}
@@ -89,6 +92,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 			{type === 'genre' && <HorizontalGenres genres={list} />}
 			{type === 'radio' && <RadioList radios={list} />}
 			{type === 'listenbrainz' && <HorizontalLBStat stats={list} />}
+			{type === 'playlist' && <HorizontalPlaylists playlists={list} />}
 		</>
 	)
 }

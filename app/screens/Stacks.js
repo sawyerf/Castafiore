@@ -43,6 +43,7 @@ export const HomeStack = () => {
 			<Stack.Screen name="Genre" component={Genre} />
 			<Stack.Screen name="UpdateRadio" component={UpdateRadio} />
 			<Stack.Screen name="ShowAll" component={ShowAll} />
+			<Stack.Screen name="Playlist" component={Playlist} />
 		</Stack.Navigator>
 	)
 }

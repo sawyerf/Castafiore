@@ -1,6 +1,6 @@
 export default {
 	image: {
-		tiny: 20,
+		tiny: 40,
 		player: 40,
 		small: 50, // example: album cover in song list
 		medium: 100, // example: album cover in album list

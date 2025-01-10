@@ -96,7 +96,7 @@ const App = () => {
 					</ConfigContext.Provider>
 				</SongDispatchContext.Provider>
 			</SetSettingsContext.Provider>
-		</SetConfigContext.Provider >
+		</SetConfigContext.Provider>
 	);
 }
 

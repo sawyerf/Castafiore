@@ -61,7 +61,7 @@ const ItemPlaylist = ({ item }) => {
               onPress={() => Player.playSong(config, songDispatch, songList, index)}
             >
               <ImageError
-                source={{ uri: urlCover(config, item.id) }}
+                source={{ uri: urlCover(config, item.albumId) }}
                 style={{ width: size.image.tiny, height: size.image.tiny, marginEnd: 10, borderRadius: 4 }}
               />
               <View style={{ flexDirection: 'column', flex: 1, marginEnd: 10 }}>

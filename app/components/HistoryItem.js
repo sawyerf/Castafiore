@@ -42,7 +42,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 				typeof itemHist === 'object' ? (
 					<>
 						<ImageError
-							source={{ uri: urlCover(config, itemHist.id, 100) }}
+							source={{ uri: urlCover(config, itemHist.albumId || itemHist.id, 100) }}
 							style={{
 								width: 45,
 								height: 45,

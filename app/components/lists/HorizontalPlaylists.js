@@ -26,7 +26,7 @@ const ItemPlaylist = ({ item }) => {
     getCachedAndApi(config, 'getPlaylist', `id=${item.id}`, (json) => {
       setSongList(json?.playlist?.entry)
     })
-  }, [])
+  }, [item.id])
 
   return (
     <View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryDark }} >
@@ -49,7 +49,7 @@ const ItemPlaylist = ({ item }) => {
       </Pressable>
       <View style={{ flexDirection: 'column', gap: 7, marginTop: 10, paddingStart: 10, width: '100%' }} >
         {
-          songList.slice(0, 3).map((song, index) => (
+          songList.slice(0, 3).map((item, index) => (
             <Pressable
               key={index}
               style={(pressed) => ([mainStyles.opacity(pressed), {
@@ -61,18 +61,18 @@ const ItemPlaylist = ({ item }) => {
               onPress={() => Player.playSong(config, songDispatch, songList, index)}
             >
               <ImageError
-                source={{ uri: urlCover(config, song.id) }}
+                source={{ uri: urlCover(config, item.id) }}
                 style={{ width: size.image.tiny, height: size.image.tiny, marginEnd: 10, borderRadius: 4 }}
               />
               <View style={{ flexDirection: 'column', flex: 1, marginEnd: 10 }}>
                 <Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.small, width: '100%' }}>
-                  {song.title}
+                  {item.title}
                 </Text>
                 <Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small, width: '100%' }}>
-                  {song.artist}
+                  {item.artist}
                 </Text>
               </View>
-              <FavoritedButton song={song} style={{ padding: 0 }} size={size.icon.tiny} />
+              <FavoritedButton song={item} style={{ padding: 0 }} size={size.icon.tiny} />
             </Pressable>
           ))
         }

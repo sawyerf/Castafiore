@@ -51,6 +51,7 @@ const SlideControl = ({ children, style, }) => {
 	return (
 		<Animated.View
 			style={[style, {
+				touchAction: 'none', // this fix bug on iOS PWA
 				transform: [{ translateX: position }]
 			}]}
 			{...panResponder.panHandlers}

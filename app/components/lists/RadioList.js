@@ -15,13 +15,11 @@ import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
 const RadioList = ({ radios }) => {
+	const theme = React.useContext(ThemeContext)
+	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const [optionRadio, setOptionRadio] = React.useState(null)
 	const navigation = useNavigation()
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
-
-	React.shouldComponentUpdate = () => false
 
 	const playRadio = React.useCallback((index) => {
 		playSong(config, songDispatch, radios.map(radio => ({

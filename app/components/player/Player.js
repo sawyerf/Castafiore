@@ -1,12 +1,12 @@
-import React from 'react';
-import { useWindowDimensions } from 'react-native';
+import React from 'react'
+import { useWindowDimensions } from 'react-native'
 
-import { SettingsContext } from '~/contexts/settings';
-import { SongContext } from '~/contexts/song';
-import BoxDesktopPlayer from '~/components/player/BoxDesktopPlayer';
-import BoxPlayer from '~/components/player/BoxPlayer';
-import FullScreenHorizontalPlayer from '~/components/player/FullScreenHorizontalPlayer';
-import FullScreenPlayer from '~/components/player/FullScreenPlayer';
+import { SettingsContext } from '~/contexts/settings'
+import { SongContext } from '~/contexts/song'
+import BoxDesktopPlayer from '~/components/player/BoxDesktopPlayer'
+import BoxPlayer from '~/components/player/BoxPlayer'
+import FullScreenHorizontalPlayer from '~/components/player/FullScreenHorizontalPlayer'
+import FullScreenPlayer from '~/components/player/FullScreenPlayer'
 
 const Player = ({ state, fullscreen }) => {
 	const song = React.useContext(SongContext)
@@ -26,4 +26,4 @@ const Player = ({ state, fullscreen }) => {
 	return <BoxPlayer fullscreen={fullscreen} />
 }
 
-export default Player;
+export default Player

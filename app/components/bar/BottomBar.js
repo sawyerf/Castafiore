@@ -1,15 +1,15 @@
-import React from 'react';
-import { Text, View, Pressable } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react'
+import { Text, View, Pressable } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import mainStyles from '~/styles/main'
+import size from '~/styles/size'
 
 const BottomBar = ({ state, descriptors, navigation }) => {
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 
@@ -24,36 +24,36 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 		}}
 		>
 			{state.routes.map((route, index) => {
-				const { options } = descriptors[route.key];
-				const isFocused = state.index === index;
+				const options = React.useMemo(() => descriptors[route.key].options, [])
+				const isFocused = React.useMemo(() => state.index === index, [state.index, index])
+				const color = React.useMemo(() => {
+					if (isFocused) return theme.primaryTouch
+					if (!config.query && route.name !== 'Settings') return theme.secondaryLight
+					return theme.primaryLight
+				}, [isFocused, config.query, route.name, theme])
 
 				const onPress = () => {
 					const event = navigation.emit({
 						type: 'tabPress',
 						target: route.key,
 						canPreventDefault: true,
-					});
+					})
 
 					if (!isFocused && !event.defaultPrevented) {
-						navigation.navigate(route.name, route.params);
+						navigation.navigate(route.name, route.params)
 					}
-				};
+				}
 
 				const onLongPress = () => {
 					navigation.emit({
 						type: 'tabLongPress',
 						target: route.key,
-					});
-				};
-
-				const getColor = () => {
-					if (isFocused) return theme.primaryTouch
-					if (!config.query && route.name !== 'Settings') return theme.secondaryLight
-					return theme.primaryLight
+					})
 				}
 
 				return (
 					<Pressable
+						key={index}
 						onPress={onPress}
 						onLongPress={onLongPress}
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
@@ -61,19 +61,18 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 							paddingBottom: insets.bottom ? insets.bottom : 10,
 							paddingTop: 10,
 						}])}
-						key={index}
 						disabled={(!config.query && route.name !== 'Settings')}
 					>
-						<Icon name={options.icon} size={size.icon.tiny} color={getColor()} style={{ alignSelf: 'center', marginBottom: 5 }} />
-						<Text style={{ color: getColor(), textAlign: 'center' }}>
+						<Icon name={options.icon} size={size.icon.tiny} color={color} style={{ alignSelf: 'center', marginBottom: 5 }} />
+						<Text style={{ color: color, textAlign: 'center' }}>
 							{options.title}
 						</Text>
 					</Pressable>
-				);
+				)
 			})}
 		</View>
 	)
 }
 
 
-export default BottomBar;
+export default BottomBar

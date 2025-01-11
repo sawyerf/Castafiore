@@ -1,4 +1,4 @@
-import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress } from "react-native-track-player"
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress, Event, useTrackPlayerEvents } from 'react-native-track-player';
 import { urlCover, urlStream } from '~/utils/api';
 
 export const initService = async () => {
@@ -32,6 +32,20 @@ export const initPlayer = async (songDispatch) => {
 		progressUpdateEventInterval: -1,
 		icon: require('~/../assets/icon.png')
 	})
+	// Catch player events
+	useTrackPlayerEvents(
+		[
+			Event.PlaybackState,
+			Event.PlaybackActiveTrackChanged,
+		],
+		async (event) => {
+			if (event.type === Event.PlaybackState) {
+				songDispatch({ type: 'setPlaying', isPlaying: event.state !== State.Paused, state: event.state })
+			} else if (event.type === Event.PlaybackActiveTrackChanged) {
+				songDispatch({ type: 'setIndex', index: event.index })
+			}
+		})
+	// Set the player to the current song
 	const queue = await TrackPlayer.getQueue()
 	if (queue.length > 0) {
 		const index = await TrackPlayer.getActiveTrackIndex()
@@ -43,6 +57,7 @@ export const initPlayer = async (songDispatch) => {
 	} else {
 		setRepeat(songDispatch, 'next')
 	}
+
 }
 
 export const previousSong = async (config, song, songDispatch) => {

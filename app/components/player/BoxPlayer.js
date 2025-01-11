@@ -35,34 +35,30 @@ const BoxPlayer = ({ fullscreen }) => {
 				margin: 10,
 				borderRadius: 10,
 			}}>
-			<View style={styles.boxPlayerImage}>
-				<ImageError
-					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100) }}
-					style={styles.boxPlayerImage}
-				>
-					<View style={{ width: size.image.player, height: size.image.player, alignItems: 'center', justifyContent: 'center' }}>
-						<Icon name="music" size={size.icon.small} color={theme.playerPrimaryText} />
-					</View>
-				</ImageError>
-			</View>
+			<ImageError
+				source={{ uri: urlCover(config, song?.songInfo?.albumId, 100) }}
+				style={styles.boxPlayerImage}
+			>
+				<View style={styles.boxPlayerImage}>
+					<Icon name="music" size={size.icon.small} color={theme.playerPrimaryText} />
+				</View>
+			</ImageError>
 			<View style={{ flex: 1 }}>
 				<Text style={{ color: theme.playerPrimaryText, flex: 1, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
 				<Text style={{ color: theme.playerSecondaryText, flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 			</View>
-			<View style={{ flexDirection: 'row' }}>
-				<IconButton
-					icon="step-forward"
-					size={size.icon.small}
-					color={theme.playerButton}
-					style={{ width: 35, alignItems: 'center' }}
-					onPress={() => Player.nextSong(config, song, songDispatch)}
-				/>
-				<PlayButton
-					size={size.icon.small}
-					color={theme.playerButton}
-					style={{ width: 35, alignItems: 'center' }}
-				/>
-			</View>
+			<IconButton
+				icon="step-forward"
+				size={size.icon.small}
+				color={theme.playerButton}
+				style={{ width: 35, alignItems: 'center' }}
+				onPress={() => Player.nextSong(config, song, songDispatch)}
+			/>
+			<PlayButton
+				size={size.icon.small}
+				color={theme.playerButton}
+				style={{ width: 35, alignItems: 'center' }}
+			/>
 		</Pressable>
 	)
 }
@@ -73,6 +69,8 @@ const styles = StyleSheet.create({
 		width: size.image.player,
 		marginRight: 10,
 		borderRadius: 4,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 })
 

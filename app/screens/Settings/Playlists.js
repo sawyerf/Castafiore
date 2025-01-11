@@ -10,30 +10,31 @@ import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
 import SelectItem from '~/components/settings/SelectItem';
 
+const orders = {
+	'title': {
+		name: 'Title',
+		icon: 'sort-alpha-asc',
+	},
+	'changed': {
+		name: 'Recently Updated',
+		icon: 'sort-amount-desc',
+	},
+	'newest': {
+		name: 'Newest First',
+		icon: 'sort-numeric-desc',
+	},
+	'oldest': {
+		name: 'Oldest First',
+		icon: 'sort-numeric-asc',
+	},
+}
+
 const CacheSettings = () => {
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
 	const [previewFavorited, setPreviewFavorited] = React.useState(settings.previewFavorited.toString())
-	const orders = {
-		'title': {
-			name: 'Title',
-			icon: 'sort-alpha-asc',
-		},
-		'changed': {
-			name: 'Recently Updated',
-			icon: 'sort-amount-desc',
-		},
-		'newest': {
-			name: 'Newest First',
-			icon: 'sort-numeric-desc',
-		},
-		'oldest': {
-			name: 'Oldest First',
-			icon: 'sort-numeric-asc',
-		},
-	}
 
 	React.useEffect(() => {
 		if (settings.previewFavorited.toString() != previewFavorited)

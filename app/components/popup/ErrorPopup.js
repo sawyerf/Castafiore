@@ -8,9 +8,9 @@ import size from '~/styles/size';
 
 const ErrorPopup = ({ message, close }) => {
 	const insets = useSafeAreaInsets();
+	const theme = React.useContext(ThemeContext)
 	const [visible, setVisible] = React.useState(false);
 	const slide = React.useRef(new Animated.Value(-200)).current;
-	const theme = React.useContext(ThemeContext)
 
 	React.useEffect(() => {
 		if (message) {

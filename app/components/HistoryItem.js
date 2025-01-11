@@ -14,10 +14,10 @@ import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
 const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
-	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
-	const navigation = useNavigation()
+	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
+	const navigation = useNavigation()
 
 	const handlePress = () => {
 		if (typeof itemHist === 'string') {

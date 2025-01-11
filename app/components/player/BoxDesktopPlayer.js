@@ -25,20 +25,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 
 	return (
 		<View
-			style={{
-				position: 'absolute',
-				bottom: 0,
-				left: 0,
-				right: 0,
-				width: '100vw',
-
-				flexDirection: 'row',
-				backgroundColor: theme.secondaryDark,
-				padding: 10,
-				paddingLeft: 15,
-				borderTopWidth: 1,
-				borderTopColor: theme.tertiaryDark,
-			}}>
+			style={styles.container(theme)}>
 			<Pressable
 				onPress={() => fullscreen.set(true)}
 				style={{ flexDirection: 'row', flex: 1 }}
@@ -47,13 +34,13 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
 					style={styles.boxPlayerImage}
 				>
-					<View style={{ width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }}>
+					<View style={styles.boxPlayerImage} >
 						<Icon name="music" size={size.icon.small} color={theme.primaryLight} />
 					</View>
 				</ImageError>
 				<View style={{ justifyContent: 'center', gap: 2, flex: 'min-content', maxWidth: 'min-content' }}>
-					<Text style={{ color: theme.primaryLight, fontWeight: 'bold', maxWidth: 400 }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
-					<Text style={{ color: theme.secondaryLight, maxWidth: 400 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
+					<Text numberOfLines={1} style={{ color: theme.primaryLight, fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+					<Text numberOfLines={1} style={{ color: theme.secondaryLight, maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
 				<FavoritedButton
 					id={song?.songInfo?.id}
@@ -143,11 +130,26 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 }
 
 const styles = StyleSheet.create({
+	container: theme => ({
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
+		width: '100vw',
+		flexDirection: 'row',
+		backgroundColor: theme.secondaryDark,
+		padding: 10,
+		paddingLeft: 15,
+		borderTopWidth: 1,
+		borderTopColor: theme.tertiaryDark,
+	}),
 	boxPlayerImage: {
 		height: 56,
 		width: 56,
 		marginRight: 10,
 		borderRadius: 4,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 })
 

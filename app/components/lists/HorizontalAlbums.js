@@ -11,11 +11,11 @@ import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
 const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
-	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
-	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
 	const refOption = React.useRef()
+	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	return (
 		<>

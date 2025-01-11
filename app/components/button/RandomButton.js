@@ -12,7 +12,7 @@ const RandomButton = ({ songList, size = 23 }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 
-	function shuffle(array) {
+	const shuffle = (array) => {
 		return array.map(value => ({ value, sort: Math.random() }))
 			.sort((a, b) => a.sort - b.sort)
 			.map(({ value }) => value)

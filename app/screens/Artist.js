@@ -19,10 +19,10 @@ import size from '~/styles/size';
 
 const Artist = ({ route }) => {
 	const insets = useSafeAreaInsets();
-	const songDispatch = React.useContext(SongDispatchContext)
-	const allSongs = React.useRef([])
 	const config = React.useContext(ConfigContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
+	const allSongs = React.useRef([])
 
 	const artistInfo = useCachedAndApi([], 'getArtistInfo', `id=${route.params.artist.id}`, (json, setData) => {
 		setData(json.artistInfo)

@@ -15,15 +15,15 @@ import size from '~/styles/size';
 
 
 const Playlists = ({ navigation }) => {
-	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
+	const insets = useSafeAreaInsets();
+	const settings = React.useContext(SettingsContext)
 	const theme = React.useContext(ThemeContext)
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
 	const [isPublic, setIsPublic] = React.useState(false);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
-	const settings = React.useContext(SettingsContext)
 	const rotation = rotationValue.interpolate({
 		inputRange: [0, 1],
 		outputRange: ['0deg', '360deg']
@@ -36,6 +36,10 @@ const Playlists = ({ navigation }) => {
 		}
 	}, [config])
 
+	React.useEffect(() => {
+		setPlaylists([...playlists].sort(sortPlaylist))
+	}, [settings.orderPlaylist])
+
 	const onRefresh = () => {
 		rotationValue.setValue(0)
 		Animated.timing(rotationValue, {
@@ -46,10 +50,6 @@ const Playlists = ({ navigation }) => {
 		getFavorited()
 		getPlaylists()
 	}
-
-	React.useEffect(() => {
-		setPlaylists([...playlists].sort(sortPlaylist))
-	}, [settings.orderPlaylist])
 
 	const isPin = (item) => {
 		return item.comment?.includes(`#${config.username}-pin`)

@@ -10,8 +10,8 @@ import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
 const HorizontalArtists = ({ artists, onPress = () => { } }) => {
-	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
+	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
 
 	return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { ThemeContext } from '~/contexts/theme'
@@ -11,37 +11,42 @@ const Header = ({ title }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<View style={{
-			width: '100%',
-			flexDirection: 'row',
-			alignItems: 'center',
-			height: 70
-		}}>
-			<Text numberOfLines={1}
-				style={{
-					color: theme.primaryLight,
-					fontSize: size.text.large,
-					fontWeight: 'bold',
-					flex: 1,
-					textAlign: 'center',
-				}} >
+		<View style={styles.header}>
+			<Text numberOfLines={1} style={styles.title(theme)}>
 				{title}
 			</Text>
 			<IconButton
 				icon="angle-left"
 				size={34}
 				color={theme.primaryLight}
-				style={{
-					position: 'absolute',
-					left: 0,
-					top: 0,
-					paddingHorizontal: 20,
-					height: 70,
-				}}
+				style={styles.backButton}
 				onPress={() => navigation.goBack()}
 			/>
 		</View >
 	)
 }
+
+const styles = StyleSheet.create({
+	header: {
+		width: '100%',
+		flexDirection: 'row',
+		alignItems: 'center',
+		height: 70
+	},
+	title: theme => ({
+		color: theme.primaryLight,
+		fontSize: size.text.large,
+		fontWeight: 'bold',
+		flex: 1,
+		textAlign: 'center',
+	}),
+	backButton: {
+		position: 'absolute',
+		left: 0,
+		top: 0,
+		paddingHorizontal: 20,
+		height: 70,
+	}
+})
 
 export default Header;

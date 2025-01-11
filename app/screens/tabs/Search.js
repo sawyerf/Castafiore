@@ -16,13 +16,13 @@ import HistoryItem from '~/components/HistoryItem';
 import size from '~/styles/size';
 
 const Search = () => {
+	const insets = useSafeAreaInsets();
+	const config = React.useContext(ConfigContext)
+	const settings = React.useContext(SettingsContext)
+	const theme = React.useContext(ThemeContext)
 	const [history, setHistory] = React.useState([]);
 	const [query, setQuery] = React.useState('');
 	const [results, setResults] = React.useState();
-	const config = React.useContext(ConfigContext)
-	const insets = useSafeAreaInsets();
-	const settings = React.useContext(SettingsContext)
-	const theme = React.useContext(ThemeContext)
 	const timeout = React.useRef(null);
 
 	React.useEffect(() => {

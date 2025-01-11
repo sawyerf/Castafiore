@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, View, Text, Image, FlatList, Pressable } from 'react-native'
+import { Modal, View, Text, Image, FlatList, Pressable, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useWindowDimensions } from 'react-native'
 
@@ -54,15 +54,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 		>
 			<Image
 				source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
-				style={{
-					width: '100%',
-					height: '100%',
-					position: 'absolute',
-					top: 0,
-					left: 0,
-					zIndex: -1,
-					backgroundColor: '#000',
-				}}
+				style={styles.backgroundImage}
 				blurRadius={5}
 			/>
 			<View style={{
@@ -108,15 +100,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 							flexDirection: 'row',
 						}}
 					>
-						<Image
-							source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
-							style={{
-								height: 200,
-								maxHeight: '100%',
-								aspectRatio: 1,
-								borderRadius: 5,
-							}}
-						/>
+						<ImageError style={styles.imageCover} source={{ uri: urlCover(config, song?.songInfo?.albumId) }} />
 						<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
 							<FavoritedButton
 								id={song?.songInfo?.id}
@@ -124,43 +108,23 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 								size={size.icon.medium}
 								style={{ padding: 0, paddingBottom: 10, marginStart: 20, width: 'min-content' }}
 							/>
-							<Text
-								numberOfLines={1}
-								style={{
-									color: color.primary,
-									fontSize: size.title.medium,
-									fontWeight: 'bold',
-									marginHorizontal: 20,
-								}}
-							>
-								{song?.songInfo?.title}
-							</Text>
-							<Text
-								numberOfLines={1}
-								style={{
-									color: color.primary,
-									fontSize: size.text.large,
-									margin: 20,
-									marginTop: 0,
-								}}
-							>
-								{song?.songInfo?.artist}
-							</Text>
+							<Text numberOfLines={1} style={styles.title}>{song?.songInfo?.title}</Text>
+							<Text numberOfLines={1} style={styles.artist}>{song?.songInfo?.artist}</Text>
 						</View>
 					</SlideControl>
 					{
 						isPreview == preview.QUEUE &&
 						<View style={{ flex: 1, maxWidth: '50%', justifyContent: 'flex-end' }}>
 							<FlatList
+								ref={scroll}
+								onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
 								style={{ height: '100%' }}
 								contentContainerStyle={{ width: '100%', minHeight: '100%', justifyContent: 'flex-end' }}
-								ref={scroll}
-								data={song.queue}
-								keyExtractor={(item, index) => index}
 								initialNumToRender={song.queue.length}
 								showsVerticalScrollIndicator={false}
-								onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
 								onScrollToIndexFailed={() => { }}
+								data={song.queue}
+								keyExtractor={(_, index) => index}
 								renderItem={({ item, index }) => (
 									<Pressable
 										style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
@@ -234,7 +198,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 						<PlayButton
 							size={size.icon.medium}
 							color={color.primary}
-							style={{ width: 30, alignItems: 'end' }}
+							style={{ width: 30, alignItems: 'center' }}
 						/>
 						<IconButton
 							icon="step-forward"
@@ -281,5 +245,36 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 		</Modal>
 	)
 }
+
+const styles = StyleSheet.create({
+	backgroundImage: {
+		width: '100%',
+		height: '100%',
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		zIndex: -1,
+		backgroundColor: '#000',
+	},
+	title: {
+		color: color.primary,
+		fontSize: size.title.medium,
+		fontWeight: 'bold',
+		marginHorizontal: 20,
+	},
+	artist: {
+		color: color.primary,
+		fontSize: size.text.large,
+		margin: 20,
+		marginTop: 0,
+	},
+	imageCover: {
+		height: 200,
+		maxHeight: '100%',
+		aspectRatio: 1,
+		borderRadius: 5,
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+	},
+})
 
 export default FullScreenHorizontalPlayer

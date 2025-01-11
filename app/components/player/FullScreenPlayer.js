@@ -44,14 +44,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 			statusBarTranslucent={true}
 			onRequestClose={() => fullscreen.set(false)}
 		>
-			<View
-				style={[
-					mainStyles.contentMainContainer(insets),
-					styles.mainContainer(insets, theme), {
-						paddingBottom: insets.bottom,
-						touchAction: 'none',
-					}]}
-			>
+			<View style={[ mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>
 				<IconButton
 					style={{
 						width: '100%',
@@ -177,6 +170,7 @@ const styles = StyleSheet.create({
 	mainContainer: (insets, theme) => ({
 		width: '100%',
 		height: '100%',
+		paddingBottom: insets.bottom,
 		backgroundColor: theme.primaryDark,
 		alignItems: 'center',
 	}),

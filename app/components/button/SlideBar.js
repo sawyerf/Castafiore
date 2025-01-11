@@ -14,8 +14,8 @@ const SlideBar = ({
 	isBitogno = false,
 	sizeBitogno = 12,
 }) => {
-	const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
 	const theme = React.useContext(ThemeContext)
+	const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
 	const viewRef = React.useRef(null)
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
@@ -49,9 +49,9 @@ const SlideBar = ({
 			pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}
 			{...panResponder.panHandlers}
 		>
-			<View style={{ borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden', ...styleBar }}>
+			<View style={[{ borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }, styleBar]}>
 				<View
-					style={{ width: `${progress * 100}%`, height: '100%', backgroundColor: theme.primaryTouch, ...styleProgress }}
+					style={[{ width: `${progress * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }, styleProgress]}
 				/>
 			</View>
 			{isBitogno && <View style={styles.bitognoBar(progress, sizeBitogno, theme)} />}

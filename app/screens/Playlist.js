@@ -13,10 +13,10 @@ import SongsList from '~/components/lists/SongsList';
 
 const Playlist = ({ route }) => {
 	const insets = useSafeAreaInsets();
-	const [songs, setSongs] = React.useState([]);
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const [info, setInfo] = React.useState(null)
+	const [songs, setSongs] = React.useState([]);
 	const [title, setTitle] = React.useState(null)
 
 	const getPlaylist = () => {

@@ -20,16 +20,16 @@ import size from '~/styles/size';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()
-	const [name, setName] = React.useState('');
-	const [url, setUrl] = React.useState('');
-	const [username, setUsername] = React.useState('');
-	const [password, setPassword] = React.useState('');
-	const [error, setError] = React.useState('');
 	const config = React.useContext(ConfigContext)
 	const setConfig = React.useContext(SetConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
+	const [name, setName] = React.useState('');
+	const [url, setUrl] = React.useState('');
+	const [username, setUsername] = React.useState('');
+	const [password, setPassword] = React.useState('');
+	const [error, setError] = React.useState('');
 	const [serverOption, setServerOption] = React.useState(null)
 	const [info, setInfo] = React.useState(null)
 

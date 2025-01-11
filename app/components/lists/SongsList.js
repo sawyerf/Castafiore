@@ -14,14 +14,14 @@ import SongItem from '~/components/lists/SongItem';
 import size from '~/styles/size';
 
 const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
-	const song = React.useContext(SongContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const [indexOptions, setIndexOptions] = React.useState(-1)
-	const multiCD = songs?.filter(song => song.discNumber !== songs[0].discNumber).length > 0
-	const [playlistList, setPlaylistList] = React.useState([])
 	const navigation = useNavigation()
+	const song = React.useContext(SongContext)
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
+	const songDispatch = React.useContext(SongDispatchContext)
+	const [indexOptions, setIndexOptions] = React.useState(-1)
+	const [playlistList, setPlaylistList] = React.useState([])
+	const isMultiCD = React.useMemo(() => songs?.filter(item => item.discNumber !== songs[0].discNumber).length > 0, [songs])
 	const reffOption = React.useRef()
 
 	return (
@@ -33,7 +33,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 				return (
 					<View key={index}>
 						{
-							isIndex && multiCD && (index === 0 || songs[index - 1].discNumber !== item.discNumber) &&
+							isIndex && isMultiCD && (index === 0 || songs[index - 1].discNumber !== item.discNumber) &&
 							<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 5, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
 								<Icon name="circle-o" size={size.icon.small} color={theme.secondaryLight} />
 								<Text style={{ color: theme.secondaryLight, fontSize: size.text.large, marginBottom: 2, marginStart: 10 }}>Disc {item.discNumber}</Text>

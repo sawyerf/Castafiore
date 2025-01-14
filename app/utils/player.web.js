@@ -117,6 +117,8 @@ export const initPlayer = async (songDispatch) => {
 	})
 }
 
+export const useEvent = (_songDispatch) => {}
+
 export const updateTime = () => {
 	const [time, setTime] = React.useState({
 		position: audio().currentTime,
@@ -276,6 +278,7 @@ export const setRepeat = async (songdispatch, action) => {
 export default {
 	initService,
 	initPlayer,
+	useEvent,
 	updateTime,
 	playSong,
 	nextSong,

@@ -21,6 +21,7 @@ const App = () => {
 	const [settings, setSettings] = React.useState({});
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 	const [theme, setTheme] = React.useState(getTheme())
+	Player.useEvent(dispatch)
 
 	React.useEffect(() => {
 		if (!song.isInit) Player.initPlayer(dispatch)

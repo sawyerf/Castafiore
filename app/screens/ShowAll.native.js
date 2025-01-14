@@ -43,7 +43,8 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 		if (type === 'artist') return navigation.navigate('Artist', { artist: item })
 	}
 
-	const ItemComponent = React.memo(function Item ({ item, index }) {(
+	const ItemComponent = React.memo(function Item ({ item, index }) {
+		return (
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
 			key={index}

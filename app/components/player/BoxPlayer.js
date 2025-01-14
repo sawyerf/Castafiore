@@ -12,6 +12,7 @@ import Player from '~/utils/player';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import size from '~/styles/size';
+import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen';
 
 const BoxPlayer = ({ fullscreen }) => {
 	const song = React.useContext(SongContext)
@@ -19,6 +20,7 @@ const BoxPlayer = ({ fullscreen }) => {
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
+	const isKeyboardOpen = useKeyboardIsOpen()
 
 	return (
 		<Pressable
@@ -34,6 +36,7 @@ const BoxPlayer = ({ fullscreen }) => {
 				padding: 10,
 				margin: 10,
 				borderRadius: 10,
+				display: isKeyboardOpen ? 'none' : undefined,
 			}}>
 			<ImageError
 				source={{ uri: urlCover(config, song?.songInfo?.albumId, 100) }}

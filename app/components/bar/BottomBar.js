@@ -7,11 +7,13 @@ import { ConfigContext } from '~/contexts/config'
 import { ThemeContext } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
+import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
 const BottomBar = ({ state, descriptors, navigation }) => {
 	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
+	const keyboardIsOpen = useKeyboardIsOpen()
 
 	return (
 		<View style={{
@@ -21,6 +23,7 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 			borderTopWidth: 1,
 			paddingLeft: insets.left,
 			paddingRight: insets.right,
+			display: keyboardIsOpen ? 'none' : undefined,
 		}}
 		>
 			{state.routes.map((route, index) => {

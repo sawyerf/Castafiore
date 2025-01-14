@@ -108,7 +108,7 @@ const Connect = ({ navigation }) => {
 						</View>
 						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
 							{!error.length && <Icon name="circle" size={10} color={info ? 'green' : 'red'} />}
-							<Text style={{ color: error.length ? theme.primaryTouch : theme.primaryLight, fontSize: size.text.medium, marginStart: 5 }}>
+							<Text style={{ color: error.length ? '#ff0000' : theme.primaryLight, fontSize: size.text.medium, marginStart: 5 }}>
 								{(() => {
 									if (error.length) return error
 									else if (info) return `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} ${info.serverVersion}`

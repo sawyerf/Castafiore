@@ -32,6 +32,21 @@ export const initPlayer = async (songDispatch) => {
 		progressUpdateEventInterval: -1,
 		icon: require('~/../assets/icon.png')
 	})
+	// Set the player to the current song
+	const queue = await TrackPlayer.getQueue()
+	if (queue.length > 0) {
+		const index = await TrackPlayer.getActiveTrackIndex()
+		const state = await TrackPlayer.getPlaybackState()
+		const isPlaying = state !== State.Paused
+
+		songDispatch({ type: 'setPlaying', isPlaying, state })
+		songDispatch({ type: 'setSong', queue, index })
+	} else {
+		setRepeat(songDispatch, 'next')
+	}
+}
+
+export const useEvent = (songDispatch) => {
 	// Catch player events
 	useTrackPlayerEvents(
 		[
@@ -45,19 +60,6 @@ export const initPlayer = async (songDispatch) => {
 				songDispatch({ type: 'setIndex', index: event.index })
 			}
 		})
-	// Set the player to the current song
-	const queue = await TrackPlayer.getQueue()
-	if (queue.length > 0) {
-		const index = await TrackPlayer.getActiveTrackIndex()
-		const state = await TrackPlayer.getPlaybackState()
-		const isPlaying = state !== State.Paused
-
-		songDispatch({ type: 'setPlaying', isPlaying, state })
-		songDispatch({ type: 'setSong', queue, index })
-	} else {
-		setRepeat(songDispatch, 'next')
-	}
-
 }
 
 export const previousSong = async (config, song, songDispatch) => {
@@ -194,5 +196,6 @@ export default {
 	updateVolume,
 	updateTime,
 	reload,
+	useEvent,
 	State,
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Player from '~/utils/player';
 
 export const SongContext = React.createContext()
 export const SongDispatchContext = React.createContext()
@@ -51,11 +52,10 @@ export const songReducer = (state, action) => {
 			})
 		}
 		case 'setPlaying': {
-			if (action.isPlaying === state.isPlaying && action.state === state.state) return state
-			const nState = {}
-			nState.isPlaying = action.isPlaying
-			if (action.state) nState.state = action.state
-			return newSong(state, nState)
+			if (action.state === state.state || !action.state) return state
+			return newSong(state, {
+				state: action.state,
+			})
 		}
 		case 'addQueue':
 			if (!state.sound || !state.songInfo || !state.queue.length || !action.queue.length) return state
@@ -78,8 +78,8 @@ export const defaultSong = {
 	songInfo: null,
 	queue: null,
 	index: 0,
-	isPlaying: false,
 	actionEndOfSong: 'next',
+	state: Player.State.Stopped,
 	// Time
 	position: 0,
 	duration: 0,

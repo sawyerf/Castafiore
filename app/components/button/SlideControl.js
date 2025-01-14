@@ -34,7 +34,7 @@ const SlideControl = ({ children, style, }) => {
 			} else if (position._value === 0) {
 				let now = Date.now()
 				if (now - previousTap.current < 300) {
-					if (song.isPlaying) Player.pauseSong()
+					if (song.state === Player.State.Playing) Player.pauseSong()
 					else Player.resumeSong()
 					now = 0
 				}

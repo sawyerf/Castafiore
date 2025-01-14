@@ -26,13 +26,13 @@ export const initPlayer = async (songDispatch) => {
 	const sound = audio()
 	songDispatch({ type: 'init' })
 	sound.addEventListener('error', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Error })
+		songDispatch({ type: 'setPlaying', state: State.Error })
 	})
 	sound.addEventListener('loadstart', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Loading })
+		songDispatch({ type: 'setPlaying', state: State.Loading })
 	})
 	sound.addEventListener('waiting', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Loading })
+		songDispatch({ type: 'setPlaying', state: State.Loading })
 	})
 	sound.addEventListener('canplay', () => {
 		audio().play()
@@ -44,13 +44,16 @@ export const initPlayer = async (songDispatch) => {
 		audio().play()
 	})
 	sound.addEventListener('playing', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: true, state: State.Playing })
+		songDispatch({ type: 'setPlaying', state: State.Playing })
+		navigator.mediaSession.playbackState = 'playing'
 	})
 	sound.addEventListener('play', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: true, state: State.Playing })
+		songDispatch({ type: 'setPlaying', state: State.Playing })
+		navigator.mediaSession.playbackState = 'playing'
 	})
 	sound.addEventListener('pause', () => {
-		songDispatch({ type: 'setPlaying', isPlaying: false, state: State.Paused })
+		songDispatch({ type: 'setPlaying', state: State.Paused })
+		navigator.mediaSession.playbackState = 'paused'
 	})
 	sound.addEventListener('ended', () => {
 		const songId = window.song.songInfo.id
@@ -92,7 +95,7 @@ export const initPlayer = async (songDispatch) => {
 
 	addEventListener('keydown', (e) => {
 		if (e.key === ' ') {
-			if (window.song.isPlaying) pauseSong()
+			if (window.song.state === State.Playing) pauseSong()
 			else resumeSong()
 			e.preventDefault()
 		} else if (e.key === 'ArrowRight') {

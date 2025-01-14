@@ -39,7 +39,7 @@ const PlayButton = ({ style = {}, size, color }) => {
 	const onPress = () => {
 		if (song.state === Player.State.Error) {
 			Player.reload()
-		} if (song.isPlaying) {
+		} if (song.state === Player.State.Playing) {
 			Player.pauseSong()
 		} else {
 			Player.resumeSong()

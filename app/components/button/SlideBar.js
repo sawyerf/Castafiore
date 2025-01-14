@@ -39,7 +39,7 @@ const SlideBar = ({
 
 	return (
 		<View
-			style={stylePress}
+			style={[stylePress, { touchAction: 'none' }]}
 			ref={viewRef}
 			onLayout={() => {
 				viewRef.current.measure((x, y, width, height, pageX) => {

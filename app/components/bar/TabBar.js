@@ -9,7 +9,6 @@ import SideBar from '~/components/bar/SideBar';
 const TabBar = ({ state, descriptors, navigation }) => {
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
-	const [isFullScreen, setIsFullScreen] = React.useState(false)
 
 	React.useEffect(() => {
 		if (config.query === null) {
@@ -20,13 +19,11 @@ const TabBar = ({ state, descriptors, navigation }) => {
 	return (
 		<>
 			{
-				!isFullScreen ?
-					settings.isDesktop ?
-						<SideBar state={state} descriptors={descriptors} navigation={navigation} />
-						: <BottomBar state={state} descriptors={descriptors} navigation={navigation} />
-					: null
+				settings.isDesktop ?
+					<SideBar state={state} descriptors={descriptors} navigation={navigation} />
+					: <BottomBar state={state} descriptors={descriptors} navigation={navigation} />
 			}
-			<Player state={state} fullscreen={{ value: isFullScreen, set: setIsFullScreen }} />
+			<Player state={state} />
 		</>
 	);
 }

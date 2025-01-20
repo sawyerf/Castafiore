@@ -14,7 +14,7 @@ import ImageError from '~/components/ImageError';
 import size from '~/styles/size';
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen';
 
-const BoxPlayer = ({ fullscreen }) => {
+const BoxPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
@@ -24,7 +24,7 @@ const BoxPlayer = ({ fullscreen }) => {
 
 	return (
 		<Pressable
-			onPress={() => fullscreen.set(true)}
+			onPress={() => setFullScreen(true)}
 			style={{
 				position: 'absolute',
 				bottom: (insets.bottom ? insets.bottom : 15) + 53,

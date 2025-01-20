@@ -29,7 +29,7 @@ const color = {
 	secondary: '#c6c6c6'
 }
 
-const FullScreenHorizontalPlayer = ({ fullscreen }) => {
+const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets()
@@ -49,7 +49,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 
 	return (
 		<Modal
-			visible={fullscreen.value}
+			visible={true}
 			transparent={true}
 		>
 			<Image
@@ -237,7 +237,7 @@ const FullScreenHorizontalPlayer = ({ fullscreen }) => {
 							size={17}
 							style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
 							color={color.primary}
-							onPress={() => fullscreen.set(false)}
+							onPress={() => setFullScreen(false)}
 						/>
 					</View>
 				</View>

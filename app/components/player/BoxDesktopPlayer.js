@@ -14,7 +14,7 @@ import FavoritedButton from '~/components/button/FavoritedButton';
 import size from '~/styles/size';
 import PlayButton from '~/components/button/PlayButton';
 
-const BoxDesktopPlayer = ({ fullscreen }) => {
+const BoxDesktopPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
@@ -27,7 +27,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 		<View
 			style={styles.container(theme)}>
 			<Pressable
-				onPress={() => fullscreen.set(true)}
+				onPress={() => setFullScreen(true)}
 				style={{ flexDirection: 'row', flex: 1 }}
 			>
 				<ImageError
@@ -122,7 +122,7 @@ const BoxDesktopPlayer = ({ fullscreen }) => {
 					size={17}
 					style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
 					color={theme.primaryLight}
-					onPress={() => fullscreen.set(true)}
+					onPress={() => setFullScreen(true)}
 				/>
 			</View>
 		</View >

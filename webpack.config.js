@@ -1,6 +1,7 @@
 const createExpoWebpackConfigAsync = require("@expo/webpack-config");
 const path = require("path");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 module.exports = async function (env, argv) {
@@ -25,6 +26,21 @@ module.exports = async function (env, argv) {
 				maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
 			})
 		);
+
+		config.plugins.push(
+			new CopyWebpackPlugin({
+				patterns: [
+					{
+						from: path.resolve(__dirname, "assets/icon.svg"),
+						to: path.resolve(__dirname, "web-build/pwa/icon.svg"),
+					},
+					{
+						from: path.resolve(__dirname, "assets/adaptative-icon.png"),
+						to: path.resolve(__dirname, "web-build/pwa/adaptative-icon.png"),
+					},
+				],
+			}),
+		)
 
 		// Uncomment to analyze bundle size
 		// config.plugins.push(

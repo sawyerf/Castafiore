@@ -8,22 +8,23 @@ import BoxPlayer from '~/components/player/BoxPlayer'
 import FullScreenHorizontalPlayer from '~/components/player/FullScreenHorizontalPlayer'
 import FullScreenPlayer from '~/components/player/FullScreenPlayer'
 
-const Player = ({ state, fullscreen }) => {
+const Player = ({ state }) => {
 	const song = React.useContext(SongContext)
 	const settings = React.useContext(SettingsContext)
 	const { height, width } = useWindowDimensions()
+	const [fullScreen, setFullScreen] = React.useState(false)
 
 	React.useEffect(() => {
-		fullscreen.set(false)
+		setFullScreen(false)
 	}, [state.index])
 
 	if (!song?.songInfo) return null
-	else if (fullscreen.value) {
-		if (width <= height) return <FullScreenPlayer fullscreen={fullscreen} />
-		else return <FullScreenHorizontalPlayer fullscreen={fullscreen} />
+	else if (fullScreen) {
+		if (width <= height) return <FullScreenPlayer setFullScreen={setFullScreen} />
+		else return <FullScreenHorizontalPlayer setFullScreen={setFullScreen} />
 	}
-	else if (settings.isDesktop) return <BoxDesktopPlayer fullscreen={fullscreen} />
-	return <BoxPlayer fullscreen={fullscreen} />
+	else if (settings.isDesktop) return <BoxDesktopPlayer setFullScreen={setFullScreen} />
+	return <BoxPlayer setFullScreen={setFullScreen} />
 }
 
 export default Player

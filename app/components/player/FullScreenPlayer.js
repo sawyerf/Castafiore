@@ -24,7 +24,7 @@ const preview = {
 	LYRICS: 2
 }
 
-const FullScreenPlayer = ({ fullscreen }) => {
+const FullScreenPlayer = ({ setFullScreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
@@ -42,7 +42,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 	return (
 		<Modal
 			statusBarTranslucent={true}
-			onRequestClose={() => fullscreen.set(false)}
+			onRequestClose={() => setFullScreen(false)}
 		>
 			<View style={[ mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>
 				<IconButton
@@ -53,7 +53,7 @@ const FullScreenPlayer = ({ fullscreen }) => {
 					}}
 					icon="chevron-down"
 					color={theme.primaryLight}
-					onPress={() => fullscreen.set(false)} />
+					onPress={() => setFullScreen(false)} />
 				<View style={styles.playerContainer}>
 					{
 						isPreview == preview.COVER &&

@@ -38,9 +38,6 @@ const Search = () => {
 			clearTimeout(timeout.current)
 			timeout.current = setTimeout(() => {
 				getSearch()
-				timeout.current = setTimeout(() => {
-					addHistory(query)
-				}, 10 * 1000)
 			}, 500)
 		}
 	}, [query])

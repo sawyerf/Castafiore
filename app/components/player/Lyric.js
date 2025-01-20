@@ -34,7 +34,9 @@ const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
 
 	React.useEffect(() => {
 		if (lyrics.length == 0) return
-		const index = lyrics.findIndex(ly => ly.time > time.position) - 1
+		let index = lyrics.findIndex(ly => ly.time > time.position) - 1
+		if (index === -1) index = 0
+		if (index === -2) index = lyrics.length - 1
 		if (index < 0) return
 		if (index !== indexCurrent) {
 			refScroll.current.scrollToIndex({ index, animated: true, viewOffset: 0, viewPosition: 0.5 })

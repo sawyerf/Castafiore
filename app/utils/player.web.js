@@ -44,16 +44,16 @@ export const initPlayer = async (songDispatch) => {
 		audio().play()
 	})
 	sound.addEventListener('playing', () => {
-		songDispatch({ type: 'setPlaying', state: State.Playing })
 		navigator.mediaSession.playbackState = 'playing'
+		songDispatch({ type: 'setPlaying', state: State.Playing })
 	})
 	sound.addEventListener('play', () => {
-		songDispatch({ type: 'setPlaying', state: State.Playing })
 		navigator.mediaSession.playbackState = 'playing'
+		songDispatch({ type: 'setPlaying', state: State.Playing })
 	})
 	sound.addEventListener('pause', () => {
-		songDispatch({ type: 'setPlaying', state: State.Paused })
 		navigator.mediaSession.playbackState = 'paused'
+		songDispatch({ type: 'setPlaying', state: State.Paused })
 	})
 	sound.addEventListener('ended', () => {
 		const songId = window.song.songInfo.id
@@ -120,7 +120,7 @@ export const initPlayer = async (songDispatch) => {
 	})
 }
 
-export const useEvent = (_songDispatch) => {}
+export const useEvent = (_songDispatch) => { }
 
 export const updateTime = () => {
 	const [time, setTime] = React.useState({
@@ -170,6 +170,10 @@ const loadSong = async (config, queue, index) => {
 
 	sound.src = urlStream(config, song.id)
 	sound.play()
+		.then(() => {
+			getApi(config, 'scrobble', `id=${song.id}&submission=false`)
+				.catch(() => { })
+		})
 		.catch((error) => {
 			console.error(error)
 		})
@@ -179,8 +183,6 @@ const loadSong = async (config, queue, index) => {
 		album: song.album,
 		artwork: [{ src: urlCover(config, song.albumId) }],
 	})
-	getApi(config, 'scrobble', `id=${song.id}&submission=false`)
-		.catch(() => { })
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {

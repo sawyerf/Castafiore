@@ -72,7 +72,7 @@ const Artist = ({ route }) => {
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
 					<Text style={presStyles.title(theme)}>{route.params.artist.name}</Text>
-					<Text style={presStyles.subTitle(theme)}>Artist</Text>
+					<Text style={presStyles.subTitle(theme)}>Artist {route.params.artist.id === undefined ? 'not found' : ''}</Text>
 				</View>
 				<IconButton
 					style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
@@ -88,7 +88,7 @@ const Artist = ({ route }) => {
 				/>
 				<FavoritedButton
 					id={route.params.artist.id}
-					isFavorited={artist.starred}
+					isFavorited={artist?.starred}
 					style={[presStyles.button, { paddingStart: 7.5 }]}
 					size={size.icon.medium}
 				/>

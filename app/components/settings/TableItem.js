@@ -6,7 +6,6 @@ import settingStyles from '~/styles/settings'
 import size from '~/styles/size';
 
 const objectToString = (obj) => {
-	console.log(obj, typeof obj)
 	if (obj === null || obj === undefined) {
 		return 'N/A'
 	} else if (typeof obj === 'object') {

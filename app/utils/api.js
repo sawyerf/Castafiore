@@ -65,6 +65,7 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 	const [data, setData] = React.useState(initialState)
 
 	React.useEffect(() => {
+		if (!config?.url || !config?.query) return
 		getCachedAndApi(config, path, query, (json) => {
 			setFunc(json, setData)
 		})

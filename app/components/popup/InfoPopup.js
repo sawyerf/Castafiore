@@ -12,20 +12,6 @@ const InfoPopup = ({ info, close }) => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 
-	const objectToString = (obj) => {
-		if (typeof obj === 'object') {
-			if (obj instanceof Array) {
-				return obj.map(value => objectToString(value)).join(', ')
-			} else {
-				return Object.keys(obj).map(key => `${key}: ${objectToString(obj[key])}`).join('\n')
-			}
-		} else if (typeof obj === 'boolean') {
-			return obj ? 'True' : 'False'
-		} else {
-			return obj
-		}
-	}
-
 	if (!info) return null;
 	return (
 		<Modal
@@ -88,7 +74,7 @@ const InfoPopup = ({ info, close }) => {
 								<TableItem
 									key={index}
 									title={key}
-									value={objectToString(info[key])}
+									value={info[key]}
 									isLast={index === Object.keys(info).length - 1}
 								/>
 							))

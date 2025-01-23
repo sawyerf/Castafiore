@@ -5,6 +5,23 @@ import { ThemeContext } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size';
 
+const objectToString = (obj) => {
+	console.log(obj, typeof obj)
+	if (obj === null || obj === undefined) {
+		return 'N/A'
+	} else if (typeof obj === 'object') {
+		if (obj instanceof Array) {
+			return obj.map(value => objectToString(value)).join(', ')
+		} else {
+			return Object.keys(obj).map(key => `${key}: ${objectToString(obj[key])}`).join('\n')
+		}
+	} else if (typeof obj === 'boolean') {
+		return obj ? 'True' : 'False'
+	} else {
+		return obj
+	}
+}
+
 const TableItem = ({ title, value, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isCopied, setIsCopied] = React.useState(false)
@@ -39,7 +56,7 @@ const TableItem = ({ title, value, isLast = false }) => {
 					textAlign: 'right',
 					flex: 1,
 				}}
-			>{isCopied ? 'Copied' : value}</Text>
+			>{isCopied ? 'Copied' : objectToString(value)}</Text>
 		</Pressable>
 	)
 }

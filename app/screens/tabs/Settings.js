@@ -95,6 +95,15 @@ const Settings = ({ navigation }) => {
 
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
+					title="Informations"
+					icon="info"
+					onPress={() => navigation.navigate('Settings/Informations')}
+					isLast={true}
+				/>
+			</View>
+
+			<View style={settingStyles.optionsContainer(theme)}>
+				<ButtonMenu
 					title="Reset Settings"
 					icon="undo"
 					onPress={() => {

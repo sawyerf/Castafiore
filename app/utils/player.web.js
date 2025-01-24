@@ -59,8 +59,14 @@ export const initPlayer = async (songDispatch) => {
 		const songId = window.song.songInfo.id
 
 		if (window.song.actionEndOfSong === 'repeat') {
-			setPosition(0)
-			resumeSong()
+			if (!audio().duration) {
+				reload()
+				// This return is necessary to avoid scrobble if a bug occurs
+				return
+			} else {
+				setPosition(0)
+				resumeSong()
+			}
 		} else {
 			nextSong(window.config, window.song, songDispatch)
 		}

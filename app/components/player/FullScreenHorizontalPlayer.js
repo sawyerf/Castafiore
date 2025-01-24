@@ -51,6 +51,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 		<Modal
 			visible={true}
 			transparent={true}
+			onRequestClose={() => setFullScreen(false)}
 		>
 			<Image
 				source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
@@ -58,6 +59,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 				blurRadius={5}
 			/>
 			<View style={{
+				flex: 1,
 				width: '100%',
 				height: '100%',
 				backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -248,11 +250,14 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 
 const styles = StyleSheet.create({
 	backgroundImage: {
+		flex: 1,
 		width: '100%',
 		height: '100%',
 		position: 'absolute',
 		top: 0,
 		left: 0,
+		bottom: 0,
+		right: 0,
 		zIndex: -1,
 		backgroundColor: '#000',
 	},

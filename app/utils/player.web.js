@@ -59,7 +59,7 @@ export const initPlayer = async (songDispatch) => {
 		const songId = window.song.songInfo.id
 
 		if (window.song.actionEndOfSong === 'repeat') {
-			if (!audio().duration) {
+			if (audio().duration < 1) {
 				reload()
 				// This return is necessary to avoid scrobble if a bug occurs
 				return

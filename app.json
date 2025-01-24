@@ -3,7 +3,7 @@
     "name": "Castafiore",
     "slug": "Castafiore",
     "description": "Mobile app for navidrome",
-    "version": "2025.01.23",
+    "version": "2025.01.24",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

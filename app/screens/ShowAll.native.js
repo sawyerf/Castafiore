@@ -39,8 +39,8 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 	}
 
 	const onPress = (item) => {
-		if (type === 'album') return navigation.navigate('Album', { album: item })
-		if (type === 'artist') return navigation.navigate('Artist', { artist: item })
+		if (type === 'album') return navigation.navigate('Album', item)
+		if (type === 'artist') return navigation.navigate('Artist', { id: item.id, name: item.name })
 	}
 
 	const ItemComponent = React.memo(function Item ({ item, index }) {

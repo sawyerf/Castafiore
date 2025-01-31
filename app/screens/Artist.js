@@ -17,20 +17,20 @@ import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
 import size from '~/styles/size';
 
-const Artist = ({ route }) => {
+const Artist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 	const allSongs = React.useRef([])
 
-	const artistInfo = useCachedAndApi([], 'getArtistInfo', `id=${route.params.artist.id}`, (json, setData) => {
+	const artistInfo = useCachedAndApi([], 'getArtistInfo', `id=${params.id}`, (json, setData) => {
 		setData(json.artistInfo)
-	}, [route.params.artist])
+	}, [params.id])
 
-	const artist = useCachedAndApi([], 'getArtist', `id=${route.params.artist.id}`, (json, setData) => {
+	const artist = useCachedAndApi([], 'getArtist', `id=${params.id}`, (json, setData) => {
 		setData(json.artist)
-	}, [route.params.artist])
+	}, [params.id])
 
 	const getRandomSongs = async () => {
 		if (!artist.album) return
@@ -48,7 +48,7 @@ const Artist = ({ route }) => {
 	}
 
 	const getTopSongs = () => {
-		getApiNetworkFirst(config, 'getTopSongs', { artist: route.params.artist.name, count: 50 })
+		getApiNetworkFirst(config, 'getTopSongs', { artist: params.name, count: 50 })
 			.then((json) => {
 				const songs = json.topSongs?.song
 				if (!songs) return
@@ -66,13 +66,13 @@ const Artist = ({ route }) => {
 			<Image
 				style={presStyles.cover}
 				source={{
-					uri: urlCover(config, route.params.artist.id),
+					uri: urlCover(config, params.id),
 				}}
 			/>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)}>{route.params.artist.name}</Text>
-					<Text style={presStyles.subTitle(theme)}>Artist {route.params.artist.id === undefined ? 'not found' : ''}</Text>
+					<Text style={presStyles.title(theme)}>{params.name}</Text>
+					<Text style={presStyles.subTitle(theme)}>Artist {params.id === undefined ? 'not found' : ''}</Text>
 				</View>
 				<IconButton
 					style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
@@ -87,7 +87,7 @@ const Artist = ({ route }) => {
 					onPress={getRandomSongs}
 				/>
 				<FavoritedButton
-					id={route.params.artist.id}
+					id={params.id}
 					isFavorited={artist?.starred}
 					style={[presStyles.button, { paddingStart: 7.5 }]}
 					size={size.icon.medium}

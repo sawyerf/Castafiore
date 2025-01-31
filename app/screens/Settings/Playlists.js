@@ -29,7 +29,7 @@ const orders = {
 	},
 }
 
-const CacheSettings = () => {
+const PlaylistsSettings = () => {
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -93,4 +93,4 @@ const CacheSettings = () => {
 	)
 }
 
-export default CacheSettings;
+export default PlaylistsSettings;

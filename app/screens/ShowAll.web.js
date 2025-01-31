@@ -39,8 +39,8 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 	}
 
 	const onPress = (item) => {
-		if (type === 'album') return navigation.navigate('Album', { album: item })
-		if (type === 'artist') return navigation.navigate('Artist', { artist: item })
+		if (type === 'album') return navigation.navigate('Album', item)
+		if (type === 'artist') return navigation.navigate('Artist', { id: item.id, name: item.name })
 	}
 
 	// I try to use FlatList instead of ScrollView but it glitched and numColumns can't be useState

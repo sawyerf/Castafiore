@@ -11,7 +11,7 @@ import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import SongsList from '~/components/lists/SongsList';
 
-const Playlist = ({ route }) => {
+const Playlist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -20,7 +20,7 @@ const Playlist = ({ route }) => {
 	const [title, setTitle] = React.useState(null)
 
 	const getPlaylist = () => {
-		getCachedAndApi(config, 'getPlaylist', `id=${route.params.playlist.id}`, (json) => {
+		getCachedAndApi(config, 'getPlaylist', `id=${params.playlist.id}`, (json) => {
 			setInfo(json?.playlist)
 			setSongs(json?.playlist?.entry)
 		})
@@ -28,7 +28,7 @@ const Playlist = ({ route }) => {
 
 	React.useEffect(() => {
 		if (config.query) getPlaylist()
-	}, [config, route.params.playlist])
+	}, [config, params.playlist])
 
 	return (
 		<ScrollView
@@ -39,7 +39,7 @@ const Playlist = ({ route }) => {
 			<Image
 				style={presStyles.cover}
 				source={{
-					uri: urlCover(config, route.params.playlist.id),
+					uri: urlCover(config, params.playlist.id),
 				}}
 			/>
 			<View style={presStyles.headerContainer}>
@@ -52,7 +52,7 @@ const Playlist = ({ route }) => {
 								onChangeText={text => setTitle(text)}
 								autoFocus={true}
 								onSubmitEditing={() => {
-									getApi(config, 'updatePlaylist', `playlistId=${route.params.playlist.id}&name=${title}`)
+									getApi(config, 'updatePlaylist', `playlistId=${params.playlist.id}&name=${title}`)
 										.then(() => {
 											setTitle(null)
 											getPlaylist()
@@ -69,11 +69,11 @@ const Playlist = ({ route }) => {
 								<Text style={presStyles.title(theme)} numberOfLines={2}>{info?.name}</Text>
 							</Pressable>
 					}
-					<Text style={presStyles.subTitle(theme)}>{((info ? info.duration : route.params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : route.params.playlist.songCount} songs</Text>
+					<Text style={presStyles.subTitle(theme)}>{((info ? info.duration : params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : params.playlist.songCount} songs</Text>
 				</View>
 				<RandomButton songList={songs} style={presStyles.button} />
 			</View>
-			<SongsList songs={songs} idPlaylist={route.params.playlist.id} onUpdate={() => {
+			<SongsList songs={songs} idPlaylist={params.playlist.id} onUpdate={() => {
 				getPlaylist()
 			}} />
 		</ScrollView>

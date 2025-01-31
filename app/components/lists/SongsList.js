@@ -93,7 +93,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 						name: 'Go to artist',
 						icon: 'user',
 						onPress: () => {
-							navigation.navigate('Artist', { artist: { id: songs[indexOptions].artistId, name: songs[indexOptions].artist } })
+							navigation.navigate('Artist', { id: songs[indexOptions].artistId, name: songs[indexOptions].artist })
 							setIndexOptions(-1)
 						}
 					},
@@ -101,7 +101,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 						name: 'Go to album',
 						icon: 'folder-open',
 						onPress: () => {
-							navigation.navigate('Album', { album: { id: songs[indexOptions].albumId, name: songs[indexOptions].album, artist: songs[indexOptions].artist } })
+							navigation.navigate('Album', { id: songs[indexOptions].albumId, name: songs[indexOptions].album, artist: songs[indexOptions].artist, artistId: songs[indexOptions].artistId })
 							setIndexOptions(-1)
 						}
 					},

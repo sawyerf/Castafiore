@@ -20,7 +20,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 			renderItem={({ item }) => (
 				<Pressable style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.artist])} key={item.id} onPress={() => {
 					onPress(item)
-					navigation.navigate('Artist', { artist: item })
+					navigation.navigate('Artist', { id: item.id, name: item.name })
 				}} >
 					<Image
 						style={styles.artistCover}

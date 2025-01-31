@@ -11,7 +11,7 @@ import RandomButton from '~/components/button/RandomButton';
 import BackButton from '~/components/button/BackButton';
 import size from '~/styles/size';
 
-const Favorited = ({ route }) => {
+const Favorited = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 
@@ -29,11 +29,11 @@ const Favorited = ({ route }) => {
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
 					<Text style={presStyles.title(theme)}><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> Favorited</Text>
-					<Text style={presStyles.subTitle(theme)}>{route.params.favorited?.length || 0} songs</Text>
+					<Text style={presStyles.subTitle(theme)}>{params.favorited?.length || 0} songs</Text>
 				</View>
-				<RandomButton songList={route.params.favorited} />
+				<RandomButton songList={params.favorited} />
 			</View>
-			<SongsList songs={route.params.favorited} />
+			<SongsList songs={params.favorited} />
 		</ScrollView>
 	)
 }

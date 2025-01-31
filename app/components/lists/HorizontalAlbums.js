@@ -29,7 +29,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 						delayLongPress={200}
 						onPress={() => {
 							onPress(item)
-							navigation.navigate('Album', { album: item })
+							navigation.navigate('Album', item)
 						}}>
 						<Image
 							style={styles.albumCover}

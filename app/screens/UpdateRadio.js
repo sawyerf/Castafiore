@@ -11,7 +11,7 @@ import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
 import ButtonText from '~/components/settings/ButtonText';
 
-const UpdateRadio = ({ navigation, route }) => {
+const UpdateRadio = ({ navigation, route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
@@ -21,14 +21,14 @@ const UpdateRadio = ({ navigation, route }) => {
 	const [error, setError] = React.useState('');
 
 	React.useEffect(() => {
-		if (route.params?.name) setName(route.params.name)
-		if (route.params?.streamUrl) setStreamUrl(route.params.streamUrl)
-		if (route.params?.homePageUrl) setHomePageUrl(route.params.homePageUrl)
+		if (params?.name) setName(params.name)
+		if (params?.streamUrl) setStreamUrl(params.streamUrl)
+		if (params?.homePageUrl) setHomePageUrl(params.homePageUrl)
 	}, [])
 
 	const updateRadio = () => {
 		if (!name || !streamUrl) return
-		if (!route.params?.id) {
+		if (!params?.id) {
 			getApi(config, 'createInternetRadioStation', { name, streamUrl, homepageUrl: homePageUrl, })
 				.then(() => { navigation.goBack() })
 				.catch((error) => {
@@ -36,7 +36,7 @@ const UpdateRadio = ({ navigation, route }) => {
 					else setError('Failed to connect to server')
 				})
 		} else {
-			getApi(config, 'updateInternetRadioStation', { id: route.params.id, name, streamUrl, homepageUrl: homePageUrl, })
+			getApi(config, 'updateInternetRadioStation', { id: params.id, name, streamUrl, homepageUrl: homePageUrl, })
 				.then(() => { navigation.goBack() })
 				.catch((error) => {
 					if (error.isApiError) setError(error.message)
@@ -50,7 +50,7 @@ const UpdateRadio = ({ navigation, route }) => {
 			mainStyles.mainContainer(theme),
 			mainStyles.contentMainContainer(insets)
 		]} >
-			<Header title={route.params?.id ? 'Update Radio' : 'Create Radio'} />
+			<Header title={params?.id ? 'Update Radio' : 'Create Radio'} />
 			<View style={settingStyles.contentMainContainer}>
 				<View
 					style={{
@@ -95,7 +95,7 @@ const UpdateRadio = ({ navigation, route }) => {
 					/>
 				</View>
 				<ButtonText
-					text={route.params?.id ? 'Update' : 'Create'}
+					text={params?.id ? 'Update' : 'Create'}
 					onPress={updateRadio}
 					disabled={!name || !streamUrl}
 				/>

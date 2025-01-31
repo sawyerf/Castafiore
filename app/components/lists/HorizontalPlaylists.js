@@ -77,7 +77,7 @@ const ItemPlaylist = ({ item }) => {
           ))
         }
       </View>
-    </View >
+    </View>
   )
 }
 

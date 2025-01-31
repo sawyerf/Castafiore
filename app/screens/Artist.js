@@ -94,7 +94,7 @@ const Artist = ({ route }) => {
 				/>
 			</View>
 			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>
-			<HorizontalAlbums albums={artist.album} year={true} />
+			<HorizontalAlbums albums={artist?.album} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
 					<>

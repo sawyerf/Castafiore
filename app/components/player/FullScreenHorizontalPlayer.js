@@ -218,22 +218,27 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						/>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }} >
-						<IconButton
-							icon={volume ? "volume-up" : "volume-off"}
-							size={17}
-							color={color.primary}
-							style={{ width: 27 }}
-							onPress={() => Player.setVolume(volume ? 0 : 1)}
-						/>
-						<SlideBar
-							progress={volume}
-							onStart={(progress) => Player.setVolume(progress)}
-							onChange={(progress) => Player.setVolume(progress)}
-							stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
-							styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
-							styleProgress={{ backgroundColor: theme.primaryTouch }}
-							isBitogno={true}
-						/>
+						{
+							Player.isVolumeSupported() &&
+							<>
+								<IconButton
+									icon={volume ? "volume-up" : "volume-off"}
+									size={17}
+									color={color.primary}
+									style={{ width: 27 }}
+									onPress={() => Player.setVolume(volume ? 0 : 1)}
+								/>
+								<SlideBar
+									progress={volume}
+									onStart={(progress) => Player.setVolume(progress)}
+									onChange={(progress) => Player.setVolume(progress)}
+									stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
+									styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
+									styleProgress={{ backgroundColor: theme.primaryTouch }}
+									isBitogno={true}
+								/>
+							</>
+						}
 						<IconButton
 							icon="expand"
 							size={17}

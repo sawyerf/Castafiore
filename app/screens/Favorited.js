@@ -24,7 +24,7 @@ const Favorited = ({ route }) => {
 			<View
 				style={styles.cover}
 			>
-				<Icon name="heart" size={100} color={theme.primaryTouch} />
+				<Icon name="heart" size={100} color={'#cd1921'} />
 			</View>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>

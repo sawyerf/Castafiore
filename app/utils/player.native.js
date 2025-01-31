@@ -174,6 +174,10 @@ export const updateTime = () => {
 	return useProgress(500)
 }
 
+export const isVolumeSupported = () => {
+	return false
+}
+
 export default {
 	initService,
 	initPlayer,
@@ -192,6 +196,7 @@ export default {
 	tuktuktuk,
 	updateVolume,
 	updateTime,
+	isVolumeSupported,
 	reload,
 	useEvent,
 	State,

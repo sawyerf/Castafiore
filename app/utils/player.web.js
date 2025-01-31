@@ -24,6 +24,7 @@ export const initService = async () => {
 
 export const initPlayer = async (songDispatch) => {
 	const sound = audio()
+	window.isVolumeSupported = false
 	songDispatch({ type: 'init' })
 	sound.addEventListener('error', () => {
 		songDispatch({ type: 'setPlaying', state: State.Error })
@@ -55,6 +56,11 @@ export const initPlayer = async (songDispatch) => {
 		navigator.mediaSession.playbackState = 'paused'
 		songDispatch({ type: 'setPlaying', state: State.Paused })
 	})
+	sound.addEventListener('volumechange', () => {
+		window.isVolumeSupported = true
+	})
+	sound.volume = 0.99
+	sound.volume = 1
 	sound.addEventListener('ended', () => {
 		const songId = window.song.songInfo.id
 
@@ -286,6 +292,10 @@ export const setRepeat = async (songdispatch, action) => {
 	songdispatch({ type: 'setActionEndOfSong', action })
 }
 
+const isVolumeSupported = () => {
+	return window.isVolumeSupported
+}
+
 export default {
 	initService,
 	initPlayer,
@@ -300,6 +310,7 @@ export default {
 	setPosition,
 	setVolume,
 	getVolume,
+	isVolumeSupported,
 	updateVolume,
 	secondToTime,
 	tuktuktuk,

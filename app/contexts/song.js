@@ -58,7 +58,7 @@ export const songReducer = (state, action) => {
 			})
 		}
 		case 'addQueue':
-			if (!state.sound || !state.songInfo || !state.queue.length || !action.queue.length) return state
+			if (!state.songInfo || !state.queue.length || !action.queue.length) return state
 			return newSong(state, {
 				queue: [...state.queue, ...action.queue],
 			})
@@ -74,13 +74,10 @@ export const songReducer = (state, action) => {
 }
 
 export const defaultSong = {
-	sound: null,
+	isInit: false,
 	songInfo: null,
 	queue: null,
 	index: 0,
 	actionEndOfSong: 'next',
 	state: Player.State.Stopped,
-	// Time
-	position: 0,
-	duration: 0,
 }

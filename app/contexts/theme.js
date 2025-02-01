@@ -47,7 +47,7 @@ export const themes = {
 	},
 	spotify: {
 		primaryDark: '#000000',
-		secondaryDark: '#191414',
+		secondaryDark: '#121212',
 		tertiaryDark: '#2e2e2e',
 		primaryLight: '#FFFFFF',
 		secondaryLight: '#B3B3B3',

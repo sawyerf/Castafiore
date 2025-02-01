@@ -60,6 +60,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 					setPlaylistList([])
 					setIndexOptions(-1)
 				}}
+				item={indexOptions >= 0 ? songs[indexOptions] : null}
 				options={[
 					{
 						name: 'Play similar songs',

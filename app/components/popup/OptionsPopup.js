@@ -1,18 +1,22 @@
 import React from 'react';
-import { Text, Modal, ScrollView, Animated, Pressable } from 'react-native';
+import { View, Text, Modal, ScrollView, Animated, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
+import { urlCover } from '~/utils/api';
+import ImageError from '~/components/ImageError';
 import InfoPopup from '~/components/popup/InfoPopup';
-import size from '~/styles/size';
 import mainStyles from '~/styles/main';
+import size from '~/styles/size';
 
-const OptionsPopup = ({ reff, visible, close, options }) => {
+const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const slide = React.useRef(new Animated.Value(-1000)).current
 	const isAnim = React.useRef(false)
+	const config = React.useContext(ConfigContext)
 	const [info, setInfo] = React.useState(null)
 
 	React.useImperativeHandle(reff, () => ({
@@ -70,14 +74,48 @@ const OptionsPopup = ({ reff, visible, close, options }) => {
 					onLayout={onLayout}
 					style={{
 						width: "100%",
-						paddingTop: 10,
-						paddingBottom: insets.bottom > 20 ? insets.bottom : 20,
-						backgroundColor: theme.primaryDark,
+						paddingTop: 15,
+						paddingBottom: insets.bottom > 15 ? insets.bottom : 15,
+						backgroundColor: theme.secondaryDark,
 						borderTopLeftRadius: 20,
 						borderTopRightRadius: 20,
 						transform: [{ translateY: slide }]
 					}}
 				>
+					{
+						item &&
+						<View
+							style={{
+								flexDirection: 'row',
+								justifyContent: 'start',
+								alignItems: 'center',
+								marginHorizontal: 20,
+								marginBottom: 10,
+								marginTop: 5,
+								borderColor: theme.secondaryLight,
+								borderBottomWidth: 1,
+								paddingBottom: 15,
+							}}
+						>
+							<ImageError
+								style={{
+									width: 50,
+									height: 50,
+									marginRight: 10,
+									borderRadius: 5,
+								}}
+								source={{ uri: urlCover(config, item.albumId || item.id, 100) }}
+							/>
+							<View style={{ flex: 1, flexDirection: 'column' }}>
+								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2 }}>
+									{item.track !== undefined ? `${item.track}. ` : null}{item.title || item.name}
+								</Text>
+								<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small }}>
+									{item.artist || item.homePageUrl}
+								</Text>
+							</View>
+						</View>
+					}
 					{[
 						...options,
 						{
@@ -92,14 +130,14 @@ const OptionsPopup = ({ reff, visible, close, options }) => {
 								style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 									flexDirection: 'row',
 									alignItems: 'center',
-									paddingHorizontal: 25,
-									height: 53,
+									paddingHorizontal: 20,
+									height: 45,
 									justifyContent: 'flex-start',
 									alignContent: 'center',
 								}])}
 								key={index}
 								onPress={option.onPress}>
-								<Icon name={option.icon} size={size.icon.tiny} color={theme.primaryLight} style={{
+								<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryLight} style={{
 									padding: 15 * (option.indent || 0),
 									width: 25,
 									textAlign: 'center'

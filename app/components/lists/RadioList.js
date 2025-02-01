@@ -137,6 +137,7 @@ const RadioList = ({ radios }) => {
 			<OptionsPopup
 				visible={optionRadio !== null}
 				close={() => { setOptionRadio(null) }}
+				item={optionRadio}
 				options={[
 					{
 						name: 'Open home page',

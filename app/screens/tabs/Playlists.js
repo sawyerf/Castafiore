@@ -22,7 +22,6 @@ const Playlists = ({ navigation }) => {
 	const [favorited, setFavorited] = React.useState([]);
 	const [playlists, setPlaylists] = React.useState([]);
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
-	const [isPublic, setIsPublic] = React.useState(false);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
 	const rotation = rotationValue.interpolate({
 		inputRange: [0, 1],
@@ -88,7 +87,6 @@ const Playlists = ({ navigation }) => {
 		getCachedAndApi(config, 'createPlaylist', `name=${newPlaylist}`, () => {
 			setNewPlaylist(null)
 			getPlaylists()
-			setIsPublic(false)
 		})
 	}
 
@@ -142,15 +140,10 @@ const Playlists = ({ navigation }) => {
 								value={newPlaylist}
 							/>
 							<IconButton
-								icon={isPublic ? 'globe' : 'lock'}
-								color={theme.primaryTouch}
-								onPress={() => setIsPublic(!isPublic)}
-								style={{ padding: 10, paddingStart: 15, width: 10 + 15 + 20 }} />
-							<IconButton
 								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
 								size={size.icon.tiny}
 								color={theme.secondaryLight}
-								style={{ padding: 10 }}
+								style={{ padding: 10, paddingStart: 20 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
 						<>

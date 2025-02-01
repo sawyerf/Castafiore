@@ -24,7 +24,7 @@ const ItemPlaylist = ({ item }) => {
 
   React.useEffect(() => {
     getCachedAndApi(config, 'getPlaylist', `id=${item.id}`, (json) => {
-      setSongList(json?.playlist?.entry)
+      setSongList(json?.playlist?.entry || [])
     })
   }, [item.id])
 

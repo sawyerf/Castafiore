@@ -46,6 +46,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 				reff={refOption}
 				visible={indexOptions >= 0}
 				close={() => { setIndexOptions(-1) }}
+				item={indexOptions >= 0 ? albums[indexOptions] : null}
 				options={[
 					{
 						name: 'Info',

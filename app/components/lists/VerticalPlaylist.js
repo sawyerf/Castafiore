@@ -78,7 +78,10 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 								}}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
-								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2 }}>{playlist.name}</Text>
+								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2 }}>
+									{playlist.name}
+									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryLight} style={{ paddingStart: 5 }} />}
+								</Text>
 								<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small }}>{(playlist.duration / 60) | 1} min · {playlist.songCount} songs</Text>
 							</View>
 							{playlist.comment?.includes(`#${config.username}-pin`) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryLight} style={{ paddingEnd: 5, paddingStart: 10 }} />}
@@ -90,6 +93,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 				reff={refOption}
 				visible={indexOption >= 0}
 				close={() => setIndexOption(-1)}
+				item={indexOption !== -1 ? playlists[indexOption] : null}
 				options={[
 					...(() => {
 						if (indexOption < 0) return []
@@ -110,6 +114,21 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							}
 						}]
 					})(),
+					{
+						name: (indexOption !== -1 && playlists[indexOption].public) ? 'Make Private' : 'Make Public',
+						icon: (indexOption !== -1 && playlists[indexOption].public) ? 'lock' : 'globe',
+						onPress: () => {
+							getApi(config, 'updatePlaylist', {
+								playlistId: playlists[indexOption].id,
+								public: !playlists[indexOption].public,
+							})
+								.then(() => {
+									onRefresh()
+									setIndexOption(-1)
+								})
+								.catch(() => { })
+						}
+					},
 					{
 						name: 'Delete Playlist',
 						icon: 'trash',

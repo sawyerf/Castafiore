@@ -49,6 +49,14 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 				item={indexOptions >= 0 ? albums[indexOptions] : null}
 				options={[
 					{
+						name: 'Go to artist',
+						icon: 'user',
+						onPress: () => {
+							refOption.current.close()
+							navigation.navigate('Artist', { id: albums[indexOptions].artistId, name: albums[indexOptions].artist })
+						}
+					},
+					{
 						name: 'Info',
 						icon: 'info',
 						onPress: () => {

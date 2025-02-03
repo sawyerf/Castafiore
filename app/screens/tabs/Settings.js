@@ -81,6 +81,11 @@ const Settings = ({ navigation }) => {
 					onPress={() => navigation.navigate('Settings/Playlists')}
 				/>
 				<ButtonMenu
+					title="Player"
+					icon="play"
+					onPress={() => navigation.navigate('Settings/Player')}
+				/>
+				<ButtonMenu
 					title="Theme"
 					icon="tint"
 					onPress={() => navigation.navigate('Settings/Theme')}

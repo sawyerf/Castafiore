@@ -167,7 +167,7 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
 		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-z0-9]*$/)) {
-			await fetch(urlStream(config, queue[index].id))
+			await fetch(urlStream(config, queue[index].id, window.streamFormat, window.maxBitRate))
 				.then(() => { queue[index].isDownloaded = true })
 				.catch(() => { })
 		}
@@ -180,7 +180,7 @@ const loadSong = async (config, queue, index) => {
 	const song = queue[index]
 	const sound = audio()
 
-	sound.src = urlStream(config, song.id)
+	sound.src = urlStream(config, song.id, window.streamFormat, window.maxBitRate)
 	sound.play()
 		.then(() => {
 			getApi(config, 'scrobble', `id=${song.id}&submission=false`)

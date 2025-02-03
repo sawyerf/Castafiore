@@ -88,6 +88,7 @@ export const stopSong = async () => {
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
+	// TODO: Add support to format and maxBitrate
 	const tracks = queue.map((track) => {
 		return {
 			...track,

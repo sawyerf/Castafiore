@@ -43,6 +43,14 @@ const App = () => {
 		setTheme(getTheme(settings))
 	}, [settings.theme])
 
+	React.useEffect(() => {
+		if (window) window.streamFormat = settings.streamFormat
+	}, [settings.streamFormat])
+
+	React.useEffect(() => {
+		if (window) window.maxBitRate = settings.maxBitRate
+	}, [settings.maxBitRate])
+
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)
 		AsyncStorage.setItem('settings', JSON.stringify(settings))

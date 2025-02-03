@@ -78,7 +78,7 @@ const CacheSettings = () => {
 						</View>
 					</View>
 				}
-				<Text style={settingStyles.titleContainer(theme)}>Auto Cache</Text >
+				<Text style={settingStyles.titleContainer(theme)}>Auto Cache</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
 						title="Cache next song"
@@ -88,7 +88,7 @@ const CacheSettings = () => {
 						isLast={true}
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>{'Auto download upcoming songs (default: 5)'}</Text >
+				<Text style={settingStyles.description(theme)}>{'Auto download upcoming songs (default: 5)'}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ButtonSwitch
 						title="Show if song is cached"
@@ -112,7 +112,7 @@ const CacheSettings = () => {
 						isLast={true}
 					/>
 				</View>
-				<Text style={settingStyles.titleContainer(theme)}>Cache Stats</Text >
+				<Text style={settingStyles.titleContainer(theme)}>Cache Stats</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ListMap
 						data={statCache}

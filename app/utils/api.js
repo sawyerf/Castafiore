@@ -131,7 +131,8 @@ export const urlCover = (config, id, size = null) => {
 	return `${config.url}/rest/getCoverArt?id=${id}&size=${size}&${config.query}`
 }
 
-export const urlStream = (config, id) => {
+export const urlStream = (config, id, format='raw', maxBitRate=0) => {
 	if (!id.match(/^[a-z0-9]*$/)) return id
-	return `${config.url}/rest/stream?id=${id}&${config.query}`
+	// if (format === 'raw' && maxBitRate === 0) return `${config.url}/rest/stream?id=${id}&${config.query}`
+	return `${config.url}/rest/stream?id=${id}&format=${format}&maxBitRate=${maxBitRate}&${config.query}`
 }

@@ -29,7 +29,8 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 					name={icon}
 					size={18}
 					color={theme.innerTouch}
-				/></View>
+				/>
+			</View>
 			<Text
 				numberOfLines={1}
 				style={settingStyles.primaryText(theme)}>{title}</Text>

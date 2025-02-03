@@ -33,6 +33,8 @@ export const defaultSettings = {
 	theme: 'castafiore',
 	scrollHelper: false,
 	showCache: false,
+	streamFormat: 'raw',
+	maxBitRate: 0,
 }
 
 export const getSettings = async () => {

@@ -29,7 +29,7 @@ const Cached = ({ song }) => {
 
 	const cached = async (song) => {
 		if (!settings.showCache) return false
-		const cache = await getCache('song', urlStream(config, song.id))
+		const cache = await getCache('song', urlStream(config, song.id, settings.streamFormat, settings.maxBitrate))
 		if (cache) return true
 		return false
 	}

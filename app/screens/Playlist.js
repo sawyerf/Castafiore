@@ -28,7 +28,7 @@ const Playlist = ({ route: { params } }) => {
 
 	React.useEffect(() => {
 		if (config.query) getPlaylist()
-	}, [config, params.playlist])
+	}, [config, params.playlist.id])
 
 	return (
 		<ScrollView
@@ -37,7 +37,7 @@ const Playlist = ({ route: { params } }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
-				style={presStyles.cover}
+				style={[presStyles.cover, { backgroundColor: theme.secondaryDark }]}
 				source={{
 					uri: urlCover(config, params.playlist.id),
 				}}
@@ -66,14 +66,14 @@ const Playlist = ({ route: { params } }) => {
 								style={mainStyles.opacity}
 								onLongPress={() => setTitle(info.name)} delayLongPress={200}
 							>
-								<Text style={presStyles.title(theme)} numberOfLines={2}>{info?.name}</Text>
+								<Text style={presStyles.title(theme)} numberOfLines={2}>{info?.name || params.playlist?.name}</Text>
 							</Pressable>
 					}
-					<Text style={presStyles.subTitle(theme)}>{((info ? info.duration : params.playlist.duration) / 60) | 1} minutes · {info ? info.songCount : params.playlist.songCount} songs</Text>
+					<Text style={presStyles.subTitle(theme)}>{((info?.duration || params?.playlist?.duration) / 60) | 1} minutes · {info?.songCount || params?.playlist?.songCount} songs</Text>
 				</View>
 				<RandomButton songList={songs} style={presStyles.button} />
 			</View>
-			<SongsList songs={songs} idPlaylist={params.playlist.id} onUpdate={() => {
+			<SongsList songs={songs} idPlaylist={params.playlist?.id} onUpdate={() => {
 				getPlaylist()
 			}} />
 		</ScrollView>

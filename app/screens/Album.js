@@ -39,7 +39,7 @@ const Album = ({ navigation, route: { params } }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
-				style={presStyles.cover}
+				style={[presStyles.cover, { backgroundColor: theme.secondaryDark }]}
 				source={{
 					uri: urlCover(config, params.id),
 				}}

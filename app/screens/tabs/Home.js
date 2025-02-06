@@ -82,9 +82,12 @@ const Home = () => {
 					<Text style={styles.textRandom(theme)}>Random Song</Text>
 				</Pressable>
 				{statusRefresh ?
-					<Text style={mainStyles.subTitle(theme)}>
-						{statusRefresh.count}°
-					</Text> :
+					<Pressable onPress={forceRefresh} style={mainStyles.opacity}
+					>
+						<Text style={mainStyles.subTitle(theme)}>
+							{statusRefresh.count}°
+						</Text>
+					</Pressable> :
 					<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 						<IconButton
 							icon="refresh"

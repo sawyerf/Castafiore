@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Platform, PanResponder, StyleSheet } from 'react-native'
+import { View, Platform, PanResponder, StyleSheet, Dimensions } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 
@@ -37,15 +37,22 @@ const SlideBar = ({
 		}
 	})
 
+	const upLayoutBar = React.useCallback(() => {
+		viewRef.current.measure((x, y, width, height, pageX) => {
+			layoutBar.current = { width, x: pageX }
+		})
+	}, [])
+
+	React.useEffect(() => {
+		const sub = Dimensions.addEventListener('change', upLayoutBar)
+		return () => sub.remove()
+	}, [])
+
 	return (
 		<View
 			style={[stylePress, { touchAction: 'none' }]}
 			ref={viewRef}
-			onLayout={() => {
-				viewRef.current.measure((x, y, width, height, pageX) => {
-					layoutBar.current = { width, height, x: pageX }
-				})
-			}}
+			onLayout={upLayoutBar}
 			pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}
 			{...panResponder.panHandlers}
 		>

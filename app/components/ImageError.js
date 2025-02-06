@@ -1,9 +1,14 @@
 import React from 'react'
-import { Image } from 'react-native'
+import { View, Image } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-const ImageError = ({ source, style = {}, children = null }) => {
+import size from '~/styles/size'
+import { ThemeContext } from '~/contexts/theme'
+
+const ImageError = ({ source, style = {}, children = null, iconError = null }) => {
 	const [isImage, setIsImage] = React.useState(true)
 	const lastSource = React.useRef(null)
+	const theme = React.useContext(ThemeContext)
 	const ImageMemo = React.useMemo(() => {
 		return <Image source={source} onError={() => setIsImage(false)} style={style} />
 	}, [source?.uri])
@@ -17,6 +22,11 @@ const ImageError = ({ source, style = {}, children = null }) => {
 
 	if (isImage) return ImageMemo
 	if (children) return children
+	if (iconError) return (
+		<View style={[{ justifyContent: 'center', alignItems: 'center' }, style]}>
+			<Icon name={iconError} size={size.icon.large} color={theme.primaryLight} />
+		</View>
+	)
 	return (
 		<Image
 			source={require('~/../assets/foreground-icon.png')}

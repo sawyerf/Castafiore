@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, Image, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
 import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import ImageError from '~/components/ImageError';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
@@ -68,11 +69,12 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
 							key={index}
 							onPress={() => onPress(item)}>
-							<Image
-								style={styles.albumCover(type)}
+							<ImageError
+								style={[styles.albumCover(type), { backgroundColor: theme.secondaryDark }]}
 								source={{
 									uri: urlCover(config, item.id),
 								}}
+								iconError={type === 'artist' ? 'user' : 'music'}
 							/>
 							<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
 							<Text numberOfLines={1} style={styles.artist(theme)}>{item.artist}</Text>

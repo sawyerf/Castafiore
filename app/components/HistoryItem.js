@@ -27,7 +27,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 		} else if (itemHist.mediaType === 'album') {
 			navigation.navigate('Album', itemHist)
 		} else if (itemHist.artistImageUrl) {
-			navigation.navigate('Artist', { id: itemHist, name: itemHist.artist.name })
+			navigation.navigate('Artist', itemHist)
 		}
 	}
 

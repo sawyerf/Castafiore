@@ -64,7 +64,7 @@ const Artist = ({ route: { params } }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
-				style={presStyles.cover}
+				style={[presStyles.cover, { backgroundColor: theme.secondaryDark }]}
 				source={{
 					uri: urlCover(config, params.id),
 				}}
@@ -94,7 +94,7 @@ const Artist = ({ route: { params } }) => {
 				/>
 			</View>
 			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>
-			<HorizontalAlbums albums={artist?.album} year={true} />
+			<HorizontalAlbums albums={artist?.album?.sort((a, b) => b.year - a.year)} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
 					<>

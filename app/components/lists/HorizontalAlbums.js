@@ -32,7 +32,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 							navigation.navigate('Album', item)
 						}}>
 						<Image
-							style={styles.albumCover}
+							style={[styles.albumCover, { backgroundColor: theme.secondaryDark }]}
 							source={{
 								uri: urlCover(config, item.id),
 							}}

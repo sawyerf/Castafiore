@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, Image, StyleSheet, Pressable } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
 import { ConfigContext } from '~/contexts/config';
 import { urlCover } from '~/utils/api';
+import ImageError from '~/components/ImageError';
 import CustomFlat from '~/components/lists/CustomFlat';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import size from '~/styles/size';
@@ -32,11 +33,10 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 						onLongPress={() => setIndexOptions(index)}
 						delayLongPress={200}
 					>
-						<Image
-							style={styles.artistCover}
-							source={{
-								uri: urlCover(config, item.id),
-							}}
+						<ImageError
+							style={[styles.artistCover, { backgroundColor: theme.secondaryDark }]}
+							source={{ uri: urlCover(config, item.id) }}
+							iconError='user'
 						/>
 						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
 					</Pressable>

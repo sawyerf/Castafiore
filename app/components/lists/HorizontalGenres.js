@@ -19,7 +19,6 @@ const HorizontalGenres = ({ genres }) => {
 			renderItem={({ item }) => (
 				<Pressable
 					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.genreBox(theme)])}
-					key={item?.value}
 					onPress={() => navigation.navigate('Genre', { genre: item })}>
 					<Text numberOfLines={1} style={styles.genreText(theme)}>{item.value}</Text>
 				</Pressable>

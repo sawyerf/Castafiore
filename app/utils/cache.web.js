@@ -5,7 +5,13 @@ export const getCache = async (cacheName, key) => {
 }
 
 export const clearCache = async () => {
-	const keys = await window.caches.keys()
+	const keys = [
+		'api',
+		'coverArt',
+		'images',
+		'lyrics',
+		'song',
+	]
 	keys.forEach(async (key) => {
 		await window.caches.delete(key)
 	})

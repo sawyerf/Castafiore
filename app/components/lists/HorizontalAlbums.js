@@ -24,7 +24,6 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 				renderItem={({ item, index }) => (
 					<Pressable
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
-						key={item.id}
 						onLongPress={() => setIndexOptions(index)}
 						delayLongPress={200}
 						onPress={() => {

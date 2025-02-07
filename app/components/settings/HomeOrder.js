@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, PanResponder, Animated } from 'react-native';
+import { View, Text, PanResponder, Animated, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
@@ -72,22 +72,32 @@ const HomeOrder = () => {
 									transform: [{ translateY: position }]
 								}
 							]}
-							{...panResponder.panHandlers}
 						>
-							<Icon
-								name={value.icon}
-								size={18}
-								color={value.enable ? theme.primaryTouch : theme.secondaryLight}
-								style={{ marginEnd: 10 }}
-							/>
-							<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryLight, flex: 1 }}>{value.title}</Text>
-							<Icon
-								name="bars"
-								size={18}
-								color={theme.secondaryLight}
-								style={{ marginEnd: 10 }}
-							/>
-						</Animated.View>
+							<Pressable
+								onPress={() => onPressHomeOrder(index)}
+								style={{ flex: 1, height: '100%', flexDirection: 'row', alignItems: 'center' }}
+							>
+								<View style={{ width: 22, marginEnd: 10, alignItems: 'center' }}>
+									<Icon
+										name={value.icon}
+										size={18}
+										color={value.enable ? theme.primaryTouch : theme.secondaryLight}
+									/>
+								</View>
+								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryLight, flex: 1 }}>{value.title}</Text>
+							</Pressable>
+							<View
+								style={{ height: '100%', justifyContent: 'center' }}
+								{...panResponder.panHandlers}
+							>
+								<Icon
+									name="bars"
+									size={18}
+									color={theme.secondaryLight}
+									style={{ marginEnd: 10 }}
+								/>
+							</View>
+						</Animated.View >
 					)
 				})
 			}

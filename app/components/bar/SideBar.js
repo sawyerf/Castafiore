@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { ConfigContext } from '~/contexts/config'
 import { ThemeContext } from '~/contexts/theme'
-import Player from '~/utils/player'
 import pkg from '~/../package.json'
 import size from '~/styles/size'
 import mainStyles from '~/styles/main'
@@ -17,8 +16,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 
 	return (
 		<View style={styles.container(insets, theme)}>
-			<Pressable
-				onPress={Player.tuktuktuk}
+			<View
 				style={{
 					flexDirection: 'row',
 					alignItems: 'center',
@@ -35,7 +33,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					<Text style={{ color: theme.primaryLight, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
 					<Text style={{ color: theme.secondaryLight, fontSize: size.text.small }}>Version {pkg.version}</Text>
 				</View>
-			</Pressable>
+			</View>
 			{state.routes.map((route, index) => {
 				const options = React.useMemo(() => descriptors[route.key].options, [])
 				const isFocused = React.useMemo(() => state.index === index, [state.index, index])

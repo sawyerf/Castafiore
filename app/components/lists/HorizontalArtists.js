@@ -24,7 +24,6 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 				data={artists}
 				renderItem={({ item, index }) => (
 					<Pressable
-						key={item.id}
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.artist])}
 						onPress={() => {
 							onPress(item)

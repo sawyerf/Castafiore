@@ -92,7 +92,7 @@ const InformationsSettings = () => {
 						value={convertDate(scan.lastScan)}
 					/>
 					<TableItem
-						title={'Folder Scanned'}
+						title={'Folders Scanned'}
 						value={scan.folderCount}
 					/>
 					<TableItem

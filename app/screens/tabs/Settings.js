@@ -1,6 +1,6 @@
 import React from 'react';
 import pkg from '~/../package.json';
-import { Text, View, Image, ScrollView, Pressable } from 'react-native';
+import { Text, View, Image, ScrollView, Pressable, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -103,6 +103,11 @@ const Settings = ({ navigation }) => {
 					title="Informations"
 					icon="info"
 					onPress={() => navigation.navigate('Settings/Informations')}
+				/>
+				<ButtonMenu
+					title="Github"
+					icon="github"
+					onPress={() => Linking.openURL('https://github.com/sawyerf/Castafiore')}
 					isLast={true}
 				/>
 			</View>
@@ -115,12 +120,16 @@ const Settings = ({ navigation }) => {
 						confirmAlert(
 							'Reset Settings',
 							'Are you sure you want to reset all settings?',
-							() => setSettings(defaultSettings)
+							() => setSettings({
+								...defaultSettings,
+								servers: setting.servers
+							})
 						)
 					}}
 					isLast={true}
 				/>
 			</View>
+
 		</ScrollView>
 	)
 }

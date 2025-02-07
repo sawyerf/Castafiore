@@ -15,13 +15,13 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 	const goRight = () => {
 		if (indexScroll.current + 3 >= data.length) indexScroll.current = data.length - 1
 		else indexScroll.current = indexScroll.current + 3
-		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 10 })
+		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 20 })
 	}
 
 	const goLeft = () => {
 		if (indexScroll.current < 3) indexScroll.current = 0
 		else indexScroll.current = indexScroll.current - 3
-		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 10 })
+		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 20 })
 	}
 
 	// View is necessary to show the scroll helper
@@ -35,7 +35,7 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 			<FlatList
 				ref={refScroll}
 				data={data}
-				keyExtractor={(_, index) => index}
+				keyExtractor={(item, index) => `${item.id}-${index}`}
 				renderItem={renderItem}
 				horizontal={true}
 				style={style}

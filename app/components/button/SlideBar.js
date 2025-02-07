@@ -17,23 +17,26 @@ const SlideBar = ({
 	const theme = React.useContext(ThemeContext)
 	const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
 	const viewRef = React.useRef(null)
+	const prog = React.useRef(0)
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
 		onPanResponderGrant: (_, gestureState) => {
-			const prog = (gestureState.x0 - layoutBar.current.x) / layoutBar.current.width
-			if (!prog || prog < 0) return onStart(0)
-			else if (prog > 1) return onStart(1)
-			onStart(prog)
+			prog.current = (gestureState.x0 - layoutBar.current.x) / layoutBar.current.width
+			if (!prog.current || prog.current < 0) return onStart(0)
+			else if (prog.current > 1) return onStart(1)
+			onStart(prog.current)
 		},
 		onPanResponderMove: (_, gestureState) => {
-			const prog = (gestureState.moveX - layoutBar.current.x) / layoutBar.current.width
-			if (!prog || prog < 0) return onChange(0)
-			else if (prog > 1) return onChange(1)
-			onChange(prog)
+			prog.current = (gestureState.moveX - layoutBar.current.x) / layoutBar.current.width
+			if (!prog.current || prog.current < 0) return onChange(0)
+			else if (prog.current > 1) return onChange(1)
+			onChange(prog.current)
 		},
 		onPanResponderRelease: () => {
-			onComplete(progress)
+			if (!prog.current || prog.current < 0) return onComplete(0)
+			else if (prog.current > 1) return onComplete(1)
+			onComplete(prog.current)
 		}
 	})
 

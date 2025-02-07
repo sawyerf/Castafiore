@@ -92,7 +92,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
 						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
 						onChange={(progress) => setFakeTime(progress)}
-						onComplete={() => Player.setPosition(fakeTime * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
+						onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
 						stylePress={{ flex: 1, height: 6 }}
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}

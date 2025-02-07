@@ -67,7 +67,6 @@ const HomeOrder = () => {
 							style={[
 								settingStyles.optionItem(theme, index == settings.homeOrder.length - 1),
 								{
-									touchAction: 'none',
 									cursor: 'pointer',
 									transform: [{ translateY: position }]
 								}
@@ -87,14 +86,18 @@ const HomeOrder = () => {
 								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryLight, flex: 1 }}>{value.title}</Text>
 							</Pressable>
 							<View
-								style={{ height: '100%', justifyContent: 'center' }}
+								style={{
+									height: '100%',
+									justifyContent: 'center',
+									touchAction: 'none',
+								}}
 								{...panResponder.panHandlers}
 							>
 								<Icon
 									name="bars"
 									size={18}
 									color={theme.secondaryLight}
-									style={{ marginEnd: 10 }}
+									style={{ marginEnd: 5 }}
 								/>
 							</View>
 						</Animated.View >

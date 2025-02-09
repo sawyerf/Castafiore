@@ -13,12 +13,12 @@ export const ThemeContext = React.createContext()
 export const themes = {
 	castafiore: {
 		// Use for background
-		primaryDark: '#121212',
-		secondaryDark: '#1e1e1e',
-		tertiaryDark: '#2e2e2e',
+		primaryBack: '#121212',
+		secondaryBack: '#1e1e1e',
+		tertiaryBack: '#2e2e2e',
 		// Use for text
-		primaryLight: '#f5f5dc',
-		secondaryLight: '#808080',
+		primaryText: '#f5f5dc',
+		secondaryText: '#808080',
 		// Use for button
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
@@ -32,11 +32,11 @@ export const themes = {
 		playerButton: '#cd1921'
 	},
 	deezer: {
-		primaryDark: '#000000',
-		secondaryDark: '#191414',
-		tertiaryDark: '#2e2e2e',
-		primaryLight: '#FFFFFF',
-		secondaryLight: '#B3B3B3',
+		primaryBack: '#000000',
+		secondaryBack: '#191414',
+		tertiaryBack: '#2e2e2e',
+		primaryText: '#FFFFFF',
+		secondaryText: '#B3B3B3',
 		primaryTouch: '#a238ff',
 		secondaryTouch: '#862ed4',
 		innerTouch: '#FFFFFF',
@@ -48,11 +48,11 @@ export const themes = {
 		playerButton: '#FFFFFF'
 	},
 	spotify: {
-		primaryDark: '#000000',
-		secondaryDark: '#121212',
-		tertiaryDark: '#2e2e2e',
-		primaryLight: '#FFFFFF',
-		secondaryLight: '#B3B3B3',
+		primaryBack: '#000000',
+		secondaryBack: '#121212',
+		tertiaryBack: '#2e2e2e',
+		primaryText: '#FFFFFF',
+		secondaryText: '#B3B3B3',
 		primaryTouch: '#1DB954',
 		secondaryTouch: '#1BAD4F',
 		innerTouch: '#FFFFFF',
@@ -64,11 +64,11 @@ export const themes = {
 		playerButton: '#1DB954'
 	},
 	appleMusic: {
-		primaryDark: '#000000',
-		secondaryDark: '#1C1C1E',
-		tertiaryDark: '#2e2e2e',
-		primaryLight: '#FFFFFF',
-		secondaryLight: '#B3B3B3',
+		primaryBack: '#000000',
+		secondaryBack: '#1C1C1E',
+		tertiaryBack: '#2e2e2e',
+		primaryText: '#FFFFFF',
+		secondaryText: '#B3B3B3',
 		primaryTouch: '#FF2D55',
 		secondaryTouch: '#C42341',
 		innerTouch: '#FFFFFF',
@@ -80,11 +80,11 @@ export const themes = {
 		playerButton: '#FF2D55'
 	},
 	reddit: {
-		primaryDark: '#1A1A1B',
-		secondaryDark: '#141415',
-		tertiaryDark: '#2e2e2e',
-		primaryLight: '#FFFFFF',
-		secondaryLight: '#D7DADC',
+		primaryBack: '#1A1A1B',
+		secondaryBack: '#141415',
+		tertiaryBack: '#2e2e2e',
+		primaryText: '#FFFFFF',
+		secondaryText: '#D7DADC',
 		primaryTouch: '#FF4500',
 		secondaryTouch: '#CF3800',
 		innerTouch: '#FFFFFF',
@@ -96,11 +96,11 @@ export const themes = {
 		playerButton: '#FF4500'
 	},
 	soundCloud: {
-		primaryDark: '#FFFFFF',
-		secondaryDark: '#f2f2f2',
-		tertiaryDark: '#f3f3f3',
-		primaryLight: '#000000',
-		secondaryLight: '#999999',
+		primaryBack: '#FFFFFF',
+		secondaryBack: '#f2f2f2',
+		tertiaryBack: '#f3f3f3',
+		primaryText: '#000000',
+		secondaryText: '#999999',
 		primaryTouch: '#FF7700',
 		secondaryTouch: '#FF8800',
 		innerTouch: '#FFFFFF',
@@ -112,12 +112,12 @@ export const themes = {
 		playerButton: '#FFFFFF'
 	},
 	lightMode: {
-		primaryDark: '#f2f2f6',
-		secondaryDark: '#fcfcfc',
-		tertiaryDark: '#dcdcd4',
+		primaryBack: '#f2f2f6',
+		secondaryBack: '#fcfcfc',
+		tertiaryBack: '#dcdcd4',
 
-		primaryLight: '#040208',
-		secondaryLight: '#8f8f93',
+		primaryText: '#040208',
+		secondaryText: '#8f8f93',
 
 		primaryTouch: '#fe3c30',
 		secondaryTouch: '#ee392e',

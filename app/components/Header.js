@@ -18,7 +18,7 @@ const Header = ({ title }) => {
 			<IconButton
 				icon="angle-left"
 				size={34}
-				color={theme.primaryLight}
+				color={theme.primaryText}
 				style={styles.backButton}
 				onPress={() => navigation.goBack()}
 			/>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		height: 70
 	},
 	title: theme => ({
-		color: theme.primaryLight,
+		color: theme.primaryText,
 		fontSize: size.text.large,
 		fontWeight: 'bold',
 		flex: 1,

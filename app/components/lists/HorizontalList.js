@@ -81,7 +81,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				{
 					['album', 'artist'].includes(type) && <Icon
 						name='angle-right'
-						color={theme.secondaryLight}
+						color={theme.secondaryText}
 						size={size.icon.medium}
 						style={mainStyles.titleSection(theme)}
 					/>

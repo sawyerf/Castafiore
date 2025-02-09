@@ -22,7 +22,7 @@ const BackButton = () => {
 			}} onPress={() => navigation.goBack()}
 			icon="chevron-left"
 			size={size.icon.small}
-			color={theme.primaryLight}
+			color={theme.primaryText}
 		/>
 	);
 }

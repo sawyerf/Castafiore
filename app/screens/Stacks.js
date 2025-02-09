@@ -33,8 +33,8 @@ export const HomeStack = () => {
 			screenOptions={{
 				headerShown: false,
 				tabBarStyle: {
-					backgroundColor: theme.secondaryDark,
-					borderTopColor: theme.secondaryDark,
+					backgroundColor: theme.secondaryBack,
+					borderTopColor: theme.secondaryBack,
 					tabBarActiveTintColor: theme.primaryTouch,
 				}
 			}}
@@ -58,8 +58,8 @@ export const SearchStack = () => {
 			screenOptions={{
 				headerShown: false,
 				tabBarStyle: {
-					backgroundColor: theme.secondaryDark,
-					borderTopColor: theme.secondaryDark,
+					backgroundColor: theme.secondaryBack,
+					borderTopColor: theme.secondaryBack,
 					tabBarActiveTintColor: theme.primaryTouch,
 				}
 			}}
@@ -79,8 +79,8 @@ export const PlaylistsStack = () => {
 			screenOptions={{
 				headerShown: false,
 				tabBarStyle: {
-					backgroundColor: theme.secondaryDark,
-					borderTopColor: theme.secondaryDark,
+					backgroundColor: theme.secondaryBack,
+					borderTopColor: theme.secondaryBack,
 					tabBarActiveTintColor: theme.primaryTouch,
 				}
 			}}
@@ -102,8 +102,8 @@ export const SettingsStack = () => {
 			screenOptions={{
 				headerShown: false,
 				tabBarStyle: {
-					backgroundColor: theme.secondaryDark,
-					borderTopColor: theme.secondaryDark,
+					backgroundColor: theme.secondaryBack,
+					borderTopColor: theme.secondaryBack,
 					tabBarActiveTintColor: theme.primaryTouch,
 				}
 			}}

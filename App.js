@@ -86,8 +86,8 @@ const App = () => {
 													headerShown: false,
 													tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
 													tabBarStyle: {
-														backgroundColor: theme.secondaryDark,
-														borderTopColor: theme.secondaryDark,
+														backgroundColor: theme.secondaryBack,
+														borderTopColor: theme.secondaryBack,
 														tabBarActiveTintColor: theme.primaryTouch,
 													}
 												}}

@@ -18,8 +18,8 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 	return (
 		<View style={{
 			flexDirection: 'row',
-			backgroundColor: theme.secondaryDark,
-			borderTopColor: theme.secondaryDark,
+			backgroundColor: theme.secondaryBack,
+			borderTopColor: theme.secondaryBack,
 			borderTopWidth: 1,
 			paddingLeft: insets.left,
 			paddingRight: insets.right,
@@ -31,8 +31,8 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 				const isFocused = React.useMemo(() => state.index === index, [state.index, index])
 				const color = React.useMemo(() => {
 					if (isFocused) return theme.primaryTouch
-					if (!config.query && route.name !== 'Settings') return theme.secondaryLight
-					return theme.primaryLight
+					if (!config.query && route.name !== 'Settings') return theme.secondaryText
+					return theme.primaryText
 				}, [isFocused, config.query, route.name, theme])
 
 				const onPress = () => {

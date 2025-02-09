@@ -45,8 +45,8 @@ const Settings = ({ navigation }) => {
 						style={mainStyles.icon}
 					/>
 					<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
-						<Text style={{ color: theme.secondaryLight, fontSize: size.text.small }}>Version {pkg.version}</Text>
+						<Text style={{ color: theme.primaryText, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
+						<Text style={{ color: theme.secondaryText, fontSize: size.text.small }}>Version {pkg.version}</Text>
 					</View>
 				</Pressable>
 			</View>

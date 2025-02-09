@@ -11,7 +11,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 	return (
 		<Pressable
 			style={settingStyles.optionItem(theme, isLast)}
-			color={theme.primaryLight}
+			color={theme.primaryText}
 			onPress={onPress}
 		>
 			{icon && <View
@@ -36,7 +36,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 				style={{
 					height: 30,
 					width: 50,
-					backgroundColor: value ? theme.primaryTouch : theme.secondaryLight,
+					backgroundColor: value ? theme.primaryTouch : theme.secondaryText,
 					borderRadius: 15,
 					justifyContent: 'center',
 				}}

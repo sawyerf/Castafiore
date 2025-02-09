@@ -29,8 +29,8 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
 		<View>
 			{settings?.scrollHelper &&
 			<View style={styles.scrollContainer}>
-				<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryLight} style={styles.scrollHelper(theme)} />
-				<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryLight} style={styles.scrollHelper(theme)} />
+				<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
+				<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
 			</View>}
 			<ScrollView
 				data={data}
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 		columnGap: 1,
 	},
 	scrollHelper: theme => ({
-		backgroundColor: theme.secondaryDark,
+		backgroundColor: theme.secondaryBack,
 		height: 30,
 		width: 30,
 		borderTopLeftRadius: 5,

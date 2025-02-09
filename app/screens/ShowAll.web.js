@@ -70,7 +70,7 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 							key={index}
 							onPress={() => onPress(item)}>
 							<ImageError
-								style={[styles.albumCover(type), { backgroundColor: theme.secondaryDark }]}
+								style={[styles.albumCover(type), { backgroundColor: theme.secondaryBack }]}
 								source={{
 									uri: urlCover(config, item.id),
 								}}
@@ -97,14 +97,14 @@ const styles = StyleSheet.create({
 		borderRadius: type === 'artist' ? size.radius.circle : 0,
 	}),
 	titleAlbum: (theme) => ({
-		color: theme.primaryLight,
+		color: theme.primaryText,
 		fontSize: size.text.small,
 		width: '100%',
 		marginBottom: 3,
 		marginTop: 3,
 	}),
 	artist: theme => ({
-		color: theme.secondaryLight,
+		color: theme.secondaryText,
 		fontSize: size.text.small,
 		width: '100%',
 	}),

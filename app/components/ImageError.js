@@ -24,7 +24,7 @@ const ImageError = ({ source, style = {}, children = null, iconError = null }) =
 	if (children) return children
 	if (iconError) return (
 		<View style={[{ justifyContent: 'center', alignItems: 'center' }, style]}>
-			<Icon name={iconError} size={size.icon.large} color={theme.primaryLight} />
+			<Icon name={iconError} size={size.icon.large} color={theme.primaryText} />
 		</View>
 	)
 	return (

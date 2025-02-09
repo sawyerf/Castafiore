@@ -108,7 +108,7 @@ const Connect = ({ navigation }) => {
 						</View>
 						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
 							{!error.length && <Icon name="circle" size={10} color={info ? 'green' : 'red'} />}
-							<Text style={{ color: error.length ? '#ff0000' : theme.primaryLight, fontSize: size.text.medium, marginStart: 5 }}>
+							<Text style={{ color: error.length ? '#ff0000' : theme.primaryText, fontSize: size.text.medium, marginStart: 5 }}>
 								{(() => {
 									if (error.length) return error
 									else if (info) return `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} ${info.serverVersion}`
@@ -123,7 +123,7 @@ const Connect = ({ navigation }) => {
 						title="Name"
 						placeholder="Name"
 						value={name}
-						placeholderTextColor={theme.primaryLight}
+						placeholderTextColor={theme.primaryText}
 						onChangeText={name => setName(name)}
 					/>
 					<OptionInput
@@ -131,7 +131,7 @@ const Connect = ({ navigation }) => {
 						placeholder="Server Url"
 						value={url}
 						inputMode="url"
-						placeholderTextColor={theme.primaryLight}
+						placeholderTextColor={theme.primaryText}
 						onChangeText={url => setUrl(url)}
 					/>
 					<OptionInput
@@ -139,7 +139,7 @@ const Connect = ({ navigation }) => {
 						placeholder="Username"
 						value={username}
 						inputMode="text"
-						placeholderTextColor={theme.primaryLight}
+						placeholderTextColor={theme.primaryText}
 						onChangeText={username => setUsername(username)}
 						autoComplete="username"
 					/>
@@ -148,7 +148,7 @@ const Connect = ({ navigation }) => {
 						placeholder="Password"
 						value={password}
 						inputMode="text"
-						placeholderTextColor={theme.primaryLight}
+						placeholderTextColor={theme.primaryText}
 						onChangeText={password => setPassword(password)}
 						isPassword={true}
 						autoComplete="current-password"
@@ -172,8 +172,8 @@ const Connect = ({ navigation }) => {
 									upConfig({ name: server.name, url: server.url, username: server.username, query: server.query })
 									setPassword('')
 								}}>
-								<Icon name="server" size={size.icon.tiny} color={theme.secondaryLight} style={{ marginEnd: 10 }} />
-								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
+								<Icon name="server" size={size.icon.tiny} color={theme.secondaryText} style={{ marginEnd: 10 }} />
+								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
 									{server.name?.length ? server.name : server.url}
 								</Text>
 								{(server.query === config.query && server.url === config.url && config.name === server.name) && <Icon name="check" size={size.icon.tiny} color={theme.primaryTouch} />}

@@ -102,7 +102,7 @@ const Playlists = ({ navigation }) => {
 					<IconButton
 						icon="refresh"
 						size={size.icon.large}
-						color={theme.primaryLight}
+						color={theme.primaryText}
 						style={{ paddingHorizontal: 10 }}
 						onPress={onRefresh}
 					/>
@@ -114,8 +114,8 @@ const Playlists = ({ navigation }) => {
 			>
 				<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
 				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>Favorited</Text>
-				<Text style={{ color: theme.secondaryLight, fontWeight: 'bold', fontSize: 15 }}>
-					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryLight} />
+				<Text style={{ color: theme.secondaryText, fontWeight: 'bold', fontSize: 15 }}>
+					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryText} />
 				</Text>
 			</Pressable>
 			<SongsList songs={favorited?.slice(0, settings.previewFavorited)} listToPlay={favorited} />
@@ -130,7 +130,7 @@ const Playlists = ({ navigation }) => {
 									borderColor: 'gray',
 									borderWidth: 1,
 									borderRadius: 6,
-									color: theme.primaryLight,
+									color: theme.primaryText,
 									flex: 1,
 									paddingHorizontal: 10
 								}}
@@ -142,7 +142,7 @@ const Playlists = ({ navigation }) => {
 							<IconButton
 								icon={newPlaylist?.length > 0 ? 'plus' : 'times'}
 								size={size.icon.tiny}
-								color={theme.secondaryLight}
+								color={theme.secondaryText}
 								style={{ padding: 10, paddingStart: 20 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist(null)} />
 						</> :
@@ -152,7 +152,7 @@ const Playlists = ({ navigation }) => {
 							<IconButton
 								icon="plus"
 								size={size.icon.tiny}
-								color={theme.secondaryLight}
+								color={theme.secondaryText}
 								style={{ padding: 10 }}
 								onPress={() => newPlaylist?.length > 0 ? addPlaylist() : setNewPlaylist('')} />
 						</>

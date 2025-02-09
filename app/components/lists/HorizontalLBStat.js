@@ -29,7 +29,7 @@ const HorizontalLBStat = ({ stats }) => {
 								alignItems: 'center',
 								flex: 1,
 							}}>
-							<Text style={{ color: theme.primaryLight, fontSize: 12, textAlign: 'center' }}>{time.getDate()}</Text>
+							<Text style={{ color: theme.primaryText, fontSize: 12, textAlign: 'center' }}>{time.getDate()}</Text>
 							<View
 								style={{
 									height: (item.listen_count / maxCount) * 120,
@@ -37,7 +37,7 @@ const HorizontalLBStat = ({ stats }) => {
 									backgroundColor: theme.primaryTouch,
 								}}
 							/>
-							<Text style={{ color: theme.secondaryLight, fontSize: 10, textAlign: 'center' }}>{item.listen_count}</Text>
+							<Text style={{ color: theme.secondaryText, fontSize: 10, textAlign: 'center' }}>{item.listen_count}</Text>
 						</View>
 					)
 				})

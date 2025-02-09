@@ -30,7 +30,7 @@ const RandomButton = ({ songList, size = 23 }) => {
 			onPress={shuffleSong}
 			icon="random"
 			size={size}
-			color={theme.primaryLight}
+			color={theme.primaryText}
 		/>
 	);
 }

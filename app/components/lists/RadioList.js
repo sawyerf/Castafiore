@@ -68,12 +68,12 @@ const RadioList = ({ radios }) => {
 									alignItems: 'center',
 									justifyContent: 'center',
 								}]} >
-								<Icon name="plus" size={32} color={theme.primaryLight} />
+								<Icon name="plus" size={32} color={theme.primaryText} />
 							</View>
 							<Text
 								numberOfLines={1}
 								style={{
-									color: theme.primaryLight,
+									color: theme.primaryText,
 									fontSize: size.text.medium,
 									fontWeight: 'bold',
 									overflow: 'hidden',
@@ -104,7 +104,7 @@ const RadioList = ({ radios }) => {
 										name="feed"
 										size={32}
 										style={{ marginTop: 2 }}
-										color={theme.primaryLight}
+										color={theme.primaryText}
 									/>
 								</View>
 							</ImageError>
@@ -112,7 +112,7 @@ const RadioList = ({ radios }) => {
 								<Text
 									numberOfLines={1}
 									style={{
-										color: theme.primaryLight,
+										color: theme.primaryText,
 										fontSize: size.text.medium,
 										flex: 1,
 										fontWeight: 'bold',
@@ -123,7 +123,7 @@ const RadioList = ({ radios }) => {
 								{item.homePageUrl && <Text
 									numberOfLines={1}
 									style={{
-										color: theme.secondaryLight,
+										color: theme.secondaryText,
 										fontSize: size.text.medium,
 									}}
 								>
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
 		height: 60,
 		width: 300,
 		padding: 10,
-		backgroundColor: theme.secondaryDark,
+		backgroundColor: theme.secondaryBack,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'flex-start',

@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	}),
 	genreText: theme => ({
-		color: theme.primaryLight,
+		color: theme.primaryText,
 		fontSize: size.text.large,
 		fontWeight: 'bold',
 	}),

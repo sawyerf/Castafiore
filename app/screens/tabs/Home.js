@@ -92,7 +92,7 @@ const Home = () => {
 						<IconButton
 							icon="refresh"
 							size={size.icon.large}
-							color={theme.primaryLight}
+							color={theme.primaryText}
 							style={{ paddingHorizontal: 10 }}
 							onLongPress={refreshServer}
 							delayLongPress={200}

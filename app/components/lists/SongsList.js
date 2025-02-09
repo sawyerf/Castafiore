@@ -34,9 +34,9 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 					<View key={index}>
 						{
 							isIndex && isMultiCD && (index === 0 || songs[index - 1].discNumber !== item.discNumber) &&
-							<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 5, marginBottom: 15, marginTop: 10, color: theme.primaryLight }}>
-								<Icon name="circle-o" size={size.icon.small} color={theme.secondaryLight} />
-								<Text style={{ color: theme.secondaryLight, fontSize: size.text.large, marginBottom: 2, marginStart: 10 }}>Disc {item.discNumber}</Text>
+							<View style={{ flexDirection: 'row', alignItems: 'center', marginStart: 5, marginBottom: 15, marginTop: 10, color: theme.primaryText }}>
+								<Icon name="circle-o" size={size.icon.small} color={theme.secondaryText} />
+								<Text style={{ color: theme.secondaryText, fontSize: size.text.large, marginBottom: 2, marginStart: 10 }}>Disc {item.discNumber}</Text>
 							</View>
 						}
 						<SongItem

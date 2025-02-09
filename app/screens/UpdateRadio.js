@@ -61,7 +61,7 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 						alignItems: 'center',
 					}}
 				>
-					<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryLight}>{error}</Text>
+					<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryText}>{error}</Text>
 				</View>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput

@@ -35,12 +35,12 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					style={styles.boxPlayerImage}
 				>
 					<View style={styles.boxPlayerImage} >
-						<Icon name="music" size={size.icon.small} color={theme.primaryLight} />
+						<Icon name="music" size={size.icon.small} color={theme.primaryText} />
 					</View>
 				</ImageError>
 				<View style={{ justifyContent: 'center', gap: 2, flex: 'min-content', maxWidth: 'min-content' }}>
-					<Text numberOfLines={1} style={{ color: theme.primaryLight, fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
-					<Text numberOfLines={1} style={{ color: theme.secondaryLight, maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
+					<Text numberOfLines={1} style={{ color: theme.primaryText, fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+					<Text numberOfLines={1} style={{ color: theme.secondaryText, maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
 				<FavoritedButton
 					id={song?.songInfo?.id}
@@ -55,7 +55,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						icon="repeat"
 						style={{ width: 22, alignItems: 'end' }}
 						size={19}
-						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
+						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
 						onPress={() => {
 							Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 						}}
@@ -64,30 +64,30 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						icon="step-backward"
 						style={{ width: 10, alignItems: 'end' }}
 						size={17}
-						color={theme.primaryLight}
+						color={theme.primaryText}
 						onPress={() => Player.previousSong(config, song, songDispatch)}
 					/>
 					<PlayButton
 						style={{ width: 22, alignItems: 'center' }}
 						size={19}
-						color={theme.primaryLight}
+						color={theme.primaryText}
 					/>
 					<IconButton
 						icon="step-forward"
 						style={{ width: 10, alignItems: 'start' }}
 						size={17}
-						color={theme.primaryLight}
+						color={theme.primaryText}
 						onPress={() => Player.nextSong(config, song, songDispatch)}
 					/>
 					<IconButton
 						icon="bars"
 						size={19}
 						style={{ width: 22, alignItems: 'start' }}
-						color={theme.secondaryLight}
+						color={theme.secondaryText}
 					/>
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>
-					<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
+					<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
 					<SlideBar
 						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
 						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
@@ -97,14 +97,14 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 					/>
-					<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
+					<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
 				</View>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
 				<IconButton
 					icon={volume ? "volume-up" : "volume-off"}
 					size={17}
-					color={theme.primaryLight}
+					color={theme.primaryText}
 					style={{ width: 27 }}
 					onPress={() => Player.setVolume(volume ? 0 : 1)}
 				/>
@@ -121,7 +121,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					icon="expand"
 					size={17}
 					style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
-					color={theme.primaryLight}
+					color={theme.primaryText}
 					onPress={() => setFullScreen(true)}
 				/>
 			</View>
@@ -137,11 +137,11 @@ const styles = StyleSheet.create({
 		right: 0,
 		width: '100vw',
 		flexDirection: 'row',
-		backgroundColor: theme.secondaryDark,
+		backgroundColor: theme.secondaryBack,
 		padding: 10,
 		paddingLeft: 15,
 		borderTopWidth: 1,
-		borderTopColor: theme.tertiaryDark,
+		borderTopColor: theme.tertiaryBack,
 	}),
 	boxPlayerImage: {
 		height: 56,

@@ -7,7 +7,7 @@ export default StyleSheet.create({
 		height: 300,
 	},
 	title: theme => ({
-		color: theme.primaryLight,
+		color: theme.primaryText,
 		fontSize: size.title.medium,
 		fontWeight: 'bold',
 		margin: 20,
@@ -15,7 +15,7 @@ export default StyleSheet.create({
 		marginTop: 13,
 	}),
 	subTitle: theme => ({
-		color: theme.secondaryLight,
+		color: theme.secondaryText,
 		fontSize: size.text.large,
 		marginBottom: 30,
 		marginStart: 20,

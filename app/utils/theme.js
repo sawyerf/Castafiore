@@ -1,8 +1,8 @@
 export default {
-	primaryDark: '#121212',
-	secondaryDark: '#1e1e1e',
-	primaryLight: '#f5f5dc',
-	secondaryLight: 'gray',
+	primaryBack: '#121212',
+	secondaryBack: '#1e1e1e',
+	primaryText: '#f5f5dc',
+	secondaryText: 'gray',
 	primaryTouch: '#cd1921',
 	secondaryTouch: '#891116',
 

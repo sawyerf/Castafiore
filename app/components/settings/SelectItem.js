@@ -15,11 +15,11 @@ const SelectItem = ({ text, onPress, icon, colorIcon = null, isSelect = false, d
 			disabled={disabled}
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, true)])}
 			onPress={onPress}>
-			<Icon name={icon} size={size.icon.tiny} color={colorIcon || theme.primaryLight} style={{ marginEnd: 10, opacity: disabled ? 0.5 : 1 }} />
+			<Icon name={icon} size={size.icon.tiny} color={colorIcon || theme.primaryText} style={{ marginEnd: 10, opacity: disabled ? 0.5 : 1 }} />
 			<Text
 				numberOfLines={1}
 				style={{
-					color: theme.primaryLight,
+					color: theme.primaryText,
 					fontSize: size.text.medium,
 					marginRight: 10,
 					textTransform: 'uppercase',

@@ -47,8 +47,8 @@ const ErrorPopup = ({ message, close }) => {
 					transform: [{ translateY: slide }],
 				}}
 			>
-				<Text style={{ fontSize: size.text.medium, color: theme.primaryLight, fontWeight: 'bold' }}>Error</Text>
-				<Text style={[presStyles.text, { color: theme.primaryLight }]}>{message}</Text>
+				<Text style={{ fontSize: size.text.medium, color: theme.primaryText, fontWeight: 'bold' }}>Error</Text>
+				<Text style={[presStyles.text, { color: theme.primaryText }]}>{message}</Text>
 			</Animated.View>
 		</Modal >
 	)

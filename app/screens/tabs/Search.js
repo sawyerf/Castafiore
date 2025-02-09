@@ -82,16 +82,16 @@ const Search = () => {
 				<TextInput
 					style={{
 						flex: 1,
-						color: theme.primaryLight,
+						color: theme.primaryText,
 						fontSize: size.text.large,
 						padding: 8,
 						paddingLeft: 36,
 						borderRadius: 10,
 						marginEnd: 10,
-						backgroundColor: theme.secondaryDark,
+						backgroundColor: theme.secondaryBack,
 					}}
 					placeholder="Search"
-					placeholderTextColor={theme.secondaryLight}
+					placeholderTextColor={theme.secondaryText}
 					value={query}
 					onChangeText={(query) => setQuery(query)}
 					autoFocus={settings?.isDesktop}
@@ -104,7 +104,7 @@ const Search = () => {
 							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>Clear</Text>
 						</Pressable> : null
 				}
-				<Icon name="search" size={size.icon.tiny} color={theme.secondaryLight} style={{ position: 'absolute', left: 0, margin: 9 }} />
+				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, margin: 9 }} />
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ flexDirection: 'column', paddingBottom: 80, gap: 10 }}>
 				{
@@ -115,7 +115,7 @@ const Search = () => {
 					query.length && results && !results.artist && !results.album && !results.song ? (
 						<Text style={{
 							margin: 20,
-							color: theme.secondaryLight,
+							color: theme.secondaryText,
 							fontSize: size.text.large,
 							textAlign: 'center',
 						}}>No results</Text>

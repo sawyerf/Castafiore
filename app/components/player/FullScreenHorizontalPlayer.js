@@ -185,7 +185,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							icon="repeat"
 							style={{ width: 30, alignItems: 'end' }}
 							size={size.icon.medium}
-							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
+							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 							}}
@@ -213,7 +213,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							icon="bars"
 							size={size.icon.medium}
 							style={{ width: 30, alignItems: 'start' }}
-							color={theme.secondaryLight}
+							color={theme.secondaryText}
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
 					</View>

@@ -17,7 +17,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				style={{
 					flex: 1,
 					textAlign: 'right',
-					color: theme.primaryLight,
+					color: theme.primaryText,
 					fontSize: size.text.medium,
 					height: '100%',
 					...Platform.select({
@@ -27,7 +27,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				}}
 				multiline={false}
 				placeholder={placeholder}
-				placeholderTextColor={theme.secondaryLight}
+				placeholderTextColor={theme.secondaryText}
 				autoFocus={false}
 				autoCorrect={false}
 				autoComplete={autoComplete}

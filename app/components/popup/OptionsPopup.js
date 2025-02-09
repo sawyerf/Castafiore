@@ -76,7 +76,7 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 						width: "100%",
 						paddingTop: 15,
 						paddingBottom: insets.bottom > 15 ? insets.bottom : 15,
-						backgroundColor: theme.secondaryDark,
+						backgroundColor: theme.secondaryBack,
 						borderTopLeftRadius: 20,
 						borderTopRightRadius: 20,
 						transform: [{ translateY: slide }]
@@ -92,7 +92,7 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 								marginHorizontal: 20,
 								marginBottom: 10,
 								marginTop: 5,
-								borderColor: theme.secondaryLight,
+								borderColor: theme.secondaryText,
 								borderBottomWidth: 1,
 								paddingBottom: 15,
 							}}
@@ -107,10 +107,10 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 								source={{ uri: urlCover(config, item.albumId || item.id, 100) }}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
-								<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2 }}>
+								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2 }}>
 									{item.track !== undefined ? `${item.track}. ` : null}{item.title || item.name}
 								</Text>
-								<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small }}>
+								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
 									{item.artist || item.homePageUrl}
 								</Text>
 							</View>
@@ -137,13 +137,13 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 								}])}
 								key={index}
 								onPress={option.onPress}>
-								<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryLight} style={{
+								<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryText} style={{
 									padding: 15 * (option.indent || 0),
 									width: 25,
 									textAlign: 'center'
 								}} />
 								<Text
-									style={{ color: theme.primaryLight, fontSize: size.text.large, marginStart: 10 }}
+									style={{ color: theme.primaryText, fontSize: size.text.large, marginStart: 10 }}
 									numberOfLines={1}
 								>{option.name}</Text>
 							</Pressable>

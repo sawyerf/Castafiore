@@ -64,7 +64,7 @@ const Artist = ({ route: { params } }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<BackButton />
 			<Image
-				style={[presStyles.cover, { backgroundColor: theme.secondaryDark }]}
+				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 				source={{
 					uri: urlCover(config, params.id),
 				}}

@@ -31,7 +31,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 							navigation.navigate('Album', item)
 						}}>
 						<Image
-							style={[styles.albumCover, { backgroundColor: theme.secondaryDark }]}
+							style={[styles.albumCover, { backgroundColor: theme.secondaryBack }]}
 							source={{
 								uri: urlCover(config, item.id),
 							}}
@@ -81,14 +81,14 @@ const styles = StyleSheet.create({
 		marginBottom: 6,
 	},
 	titleAlbum: (theme) => ({
-		color: theme.primaryLight,
+		color: theme.primaryText,
 		fontSize: size.text.small,
 		width: size.image.large,
 		marginBottom: 3,
 		marginTop: 3,
 	}),
 	artist: theme => ({
-		color: theme.secondaryLight,
+		color: theme.secondaryText,
 		fontSize: size.text.small,
 		width: size.image.large,
 	}),

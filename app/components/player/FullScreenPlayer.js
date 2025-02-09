@@ -52,7 +52,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						paddingHorizontal: 25,
 					}}
 					icon="chevron-down"
-					color={theme.primaryLight}
+					color={theme.primaryText}
 					onPress={() => setFullScreen(false)} />
 				<View style={styles.playerContainer}>
 					{
@@ -61,7 +61,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							<ImageError
 								source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
 								style={[styles.albumImage(), {
-									backgroundColor: theme.secondaryDark,
+									backgroundColor: theme.secondaryBack,
 								}]}
 							/>
 						</SlideControl>
@@ -94,8 +94,8 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.title.small, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.large, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
+							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.large, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
@@ -111,26 +111,26 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					/>
 
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-						<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
-						<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
+						<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
+						<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
 						<IconButton
 							icon="step-backward"
 							size={size.icon.large}
-							color={theme.primaryLight}
+							color={theme.primaryText}
 							style={{ paddingHorizontal: 10 }}
 							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
 						<PlayButton
 							size={size.icon.large}
-							color={theme.primaryLight}
+							color={theme.primaryText}
 							style={{ paddingHorizontal: 10 }}
 						/>
 						<IconButton
 							icon="step-forward"
 							size={size.icon.large}
-							color={theme.primaryLight}
+							color={theme.primaryText}
 							style={{ paddingHorizontal: 10 }}
 							onPress={() => Player.nextSong(config, song, songDispatch)}
 						/>
@@ -139,7 +139,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						<IconButton
 							icon="repeat"
 							size={19}
-							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryLight}
+							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingEnd: 20 }}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
@@ -148,14 +148,14 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						<IconButton
 							icon="comment-o"
 							size={19}
-							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryLight}
+							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10 }}
 							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
 						<IconButton
 							icon="bars"
 							size={19}
-							color={isPreview == preview.QUEUE ? theme.primaryTouch : theme.secondaryLight}
+							color={isPreview == preview.QUEUE ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingStart: 20 }}
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		paddingBottom: insets.bottom,
-		backgroundColor: theme.primaryDark,
+		backgroundColor: theme.primaryBack,
 		alignItems: 'center',
 	}),
 	playerContainer: {

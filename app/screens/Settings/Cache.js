@@ -126,7 +126,7 @@ const CacheSettings = () => {
 						)}
 						ListEmptyComponent={(
 							<View style={settingStyles.optionItem(theme, true)}>
-								<Text style={{ color: theme.primaryLight, fontSize: size.text.medium, fontWeight: '400' }}>No Cache</Text>
+								<Text style={{ color: theme.primaryText, fontSize: size.text.medium, fontWeight: '400' }}>No Cache</Text>
 							</View>
 						)}
 					/>

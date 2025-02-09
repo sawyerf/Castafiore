@@ -39,7 +39,7 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 				style={{
 					flex: 1,
 					textAlign: 'right',
-					color: theme.secondaryLight,
+					color: theme.secondaryText,
 					fontSize: size.text.medium,
 					overflow: 'hidden',
 				}}>
@@ -49,7 +49,7 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 				name="angle-right"
 				size={size.icon.tiny}
 				style={{ marginStart: 10 }}
-				color={theme.secondaryLight}
+				color={theme.secondaryText}
 			/>
 		</Pressable>
 	)

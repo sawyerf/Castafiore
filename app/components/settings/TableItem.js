@@ -50,7 +50,7 @@ const TableItem = ({ title, value, isLast = false }) => {
 			<Text
 				numberOfLines={1}
 				style={{
-					color: isCopied ? theme.primaryLight : theme.secondaryLight,
+					color: isCopied ? theme.primaryText : theme.secondaryText,
 					fontSize: size.text.medium,
 					textAlign: 'right',
 					flex: 1,

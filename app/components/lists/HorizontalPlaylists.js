@@ -29,7 +29,7 @@ const ItemPlaylist = ({ item }) => {
   }, [item.id])
 
   return (
-    <View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryDark }} >
+    <View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryBack }} >
       <Pressable
         style={(pressed) => ([mainStyles.opacity(pressed), { flexDirection: 'row', alignItems: 'center', width: '100%' }])}
         onPress={() => navigation.navigate('Playlist', { playlist: item })}
@@ -39,10 +39,10 @@ const ItemPlaylist = ({ item }) => {
           style={{ width: size.image.small, height: size.image.small, marginEnd: 10, borderRadius: 4 }}
         />
         <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-          <Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, width: '100%' }}>
+          <Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, width: '100%' }}>
             {item.name}
           </Text>
-          <Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.medium, width: '100%' }}>
+          <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.medium, width: '100%' }}>
             {(item.duration / 60) | 1} min · {item.songCount} songs
           </Text>
         </View>
@@ -65,10 +65,10 @@ const ItemPlaylist = ({ item }) => {
                 style={{ width: size.image.tiny, height: size.image.tiny, marginEnd: 10, borderRadius: 4 }}
               />
               <View style={{ flexDirection: 'column', flex: 1, marginEnd: 10 }}>
-                <Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.small, width: '100%' }}>
+                <Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, width: '100%' }}>
                   {item.title}
                 </Text>
-                <Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small, width: '100%' }}>
+                <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small, width: '100%' }}>
                   {item.artist}
                 </Text>
               </View>

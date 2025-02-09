@@ -99,7 +99,7 @@ const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
 					>
 						<Text
 							style={{
-								color: index === indexCurrent ? color?.active || theme.primaryLight : color?.inactive || theme.secondaryLight,
+								color: index === indexCurrent ? color?.active || theme.primaryText : color?.inactive || theme.secondaryText,
 								fontSize: sizeText,
 								textAlign: 'center',
 							}}>

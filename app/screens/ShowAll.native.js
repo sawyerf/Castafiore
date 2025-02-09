@@ -95,14 +95,14 @@ const styles = StyleSheet.create({
 		borderRadius: type === 'artist' ? size.radius.circle : 0,
 	}),
 	titleAlbum: (theme) => ({
-		color: theme.primaryLight,
+		color: theme.primaryText,
 		fontSize: size.text.small,
 		width: '100%',
 		marginBottom: 3,
 		marginTop: 3,
 	}),
 	artist: theme => ({
-		color: theme.secondaryLight,
+		color: theme.secondaryText,
 		fontSize: size.text.small,
 		width: '100%',
 	}),

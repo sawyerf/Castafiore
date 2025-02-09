@@ -33,11 +33,11 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 						delayLongPress={200}
 					>
 						<ImageError
-							style={[styles.artistCover, { backgroundColor: theme.secondaryDark }]}
+							style={[styles.artistCover, { backgroundColor: theme.secondaryBack }]}
 							source={{ uri: urlCover(config, item.id) }}
 							iconError='user'
 						/>
-						<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
+						<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
 					</Pressable>
 				)}
 			/>

@@ -80,10 +80,10 @@ const HomeOrder = () => {
 									<Icon
 										name={value.icon}
 										size={18}
-										color={value.enable ? theme.primaryTouch : theme.secondaryLight}
+										color={value.enable ? theme.primaryTouch : theme.secondaryText}
 									/>
 								</View>
-								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryLight, flex: 1 }}>{value.title}</Text>
+								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryText, flex: 1 }}>{value.title}</Text>
 							</Pressable>
 							<View
 								style={{
@@ -96,7 +96,7 @@ const HomeOrder = () => {
 								<Icon
 									name="bars"
 									size={18}
-									color={theme.secondaryLight}
+									color={theme.secondaryText}
 									style={{ marginEnd: 5 }}
 								/>
 							</View>

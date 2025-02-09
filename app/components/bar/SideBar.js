@@ -30,8 +30,8 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					style={mainStyles.icon}
 				/>
 				<View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-					<Text style={{ color: theme.primaryLight, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
-					<Text style={{ color: theme.secondaryLight, fontSize: size.text.small }}>Version {pkg.version}</Text>
+					<Text style={{ color: theme.primaryText, fontSize: size.text.large, marginBottom: 0 }}>Castafiore</Text>
+					<Text style={{ color: theme.secondaryText, fontSize: size.text.small }}>Version {pkg.version}</Text>
 				</View>
 			</View>
 			{state.routes.map((route, index) => {
@@ -39,8 +39,8 @@ const SideBar = ({ state, descriptors, navigation }) => {
 				const isFocused = React.useMemo(() => state.index === index, [state.index, index])
 				const color = React.useMemo(() => {
 					if (isFocused) return theme.primaryTouch
-					if (!config.query && route.name !== 'Settings') return theme.secondaryLight
-					return theme.primaryLight
+					if (!config.query && route.name !== 'Settings') return theme.secondaryText
+					return theme.primaryText
 				}, [isFocused, config.query, route.name, theme])
 
 				const onPress = () => {
@@ -70,7 +70,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 							flexDirection: 'row',
 							alignItems: 'center',
-							backgroundColor: isFocused ? theme.secondaryDark : undefined,
+							backgroundColor: isFocused ? theme.secondaryBack : undefined,
 							marginHorizontal: 10,
 							paddingVertical: 4,
 							paddingLeft: 10,
@@ -93,13 +93,13 @@ const SideBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
 	container: (insets, theme) => ({
 		flexDirection: 'column',
-		backgroundColor: theme.primaryDark,
+		backgroundColor: theme.primaryBack,
 		height: '100%',
 		width: 250,
 		paddingLeft: insets.left,
 		paddingRight: insets.right,
 		borderEndWidth: 1,
-		borderEndColor: theme.tertiaryDark,
+		borderEndColor: theme.tertiaryBack,
 	}),
 })
 

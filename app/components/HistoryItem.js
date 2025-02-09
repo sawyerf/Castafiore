@@ -48,25 +48,25 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 								height: 45,
 								borderRadius: itemHist.mediaType ? 3 : size.radius.circle,
 								marginEnd: 10,
-								backgroundColor: theme.secondaryDark,
+								backgroundColor: theme.secondaryBack,
 							}}
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryLight, fontSize: size.text.small, marginBottom: 2 }}> {itemHist.name || itemHist.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryLight, fontSize: size.text.small }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
+							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, marginBottom: 2 }}> {itemHist.name || itemHist.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
 						</View>
 					</>
 				) : (
 					<>
-						<Icon name="eye" size={17} color={theme.secondaryLight} style={{ width: 45, marginEnd: 10, textAlign: 'center' }} />
-						<Text style={{ color: theme.secondaryLight, fontSize: size.text.medium }}>{itemHist}</Text>
+						<Icon name="eye" size={17} color={theme.secondaryText} style={{ width: 45, marginEnd: 10, textAlign: 'center' }} />
+						<Text style={{ color: theme.secondaryText, fontSize: size.text.medium }}>{itemHist}</Text>
 					</>
 				)
 			}
 			<IconButton
 				icon="times"
 				size={14}
-				color={theme.secondaryLight}
+				color={theme.secondaryText}
 				style={{ position: 'absolute', top: 0, right: 0, height: '100%', justifyContent: 'center', paddingHorizontal: 10 }}
 				onPress={() => delItemHistory(index)}
 			/>

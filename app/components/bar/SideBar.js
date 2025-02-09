@@ -70,7 +70,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 							flexDirection: 'row',
 							alignItems: 'center',
-							backgroundColor: isFocused ? theme.primaryDark : undefined,
+							backgroundColor: isFocused ? theme.secondaryDark : undefined,
 							marginHorizontal: 10,
 							paddingVertical: 4,
 							paddingLeft: 10,
@@ -93,9 +93,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
 	container: (insets, theme) => ({
 		flexDirection: 'column',
-		backgroundColor: theme.secondaryDark,
-		borderTopColor: theme.secondaryDark,
-		borderTopWidth: 1,
+		backgroundColor: theme.primaryDark,
 		height: '100%',
 		width: 250,
 		paddingLeft: insets.left,

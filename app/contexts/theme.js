@@ -23,6 +23,7 @@ export const themes = {
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
 		innerTouch: '#f5f5dc',
+		backgroundTouch: '#f5f5dc',
 
 		// Color of the player
 		playerBackground: '#1e1e1e',
@@ -39,6 +40,7 @@ export const themes = {
 		primaryTouch: '#a238ff',
 		secondaryTouch: '#862ed4',
 		innerTouch: '#FFFFFF',
+		backgroundTouch: '#FFFFFF',
 
 		playerBackground: '#155faa',
 		playerPrimaryText: '#FFFFFF',
@@ -54,6 +56,7 @@ export const themes = {
 		primaryTouch: '#1DB954',
 		secondaryTouch: '#1BAD4F',
 		innerTouch: '#FFFFFF',
+		backgroundTouch: '#FFFFFF',
 
 		playerBackground: '#191414',
 		playerPrimaryText: '#FFFFFF',
@@ -69,6 +72,7 @@ export const themes = {
 		primaryTouch: '#FF2D55',
 		secondaryTouch: '#C42341',
 		innerTouch: '#FFFFFF',
+		backgroundTouch: '#FFFFFF',
 
 		playerBackground: '#1C1C1E',
 		playerPrimaryText: '#FFFFFF',
@@ -84,6 +88,7 @@ export const themes = {
 		primaryTouch: '#FF4500',
 		secondaryTouch: '#CF3800',
 		innerTouch: '#FFFFFF',
+		backgroundTouch: '#FFFFFF',
 
 		playerBackground: '#141415',
 		playerPrimaryText: '#FFFFFF',
@@ -99,6 +104,7 @@ export const themes = {
 		primaryTouch: '#FF7700',
 		secondaryTouch: '#FF8800',
 		innerTouch: '#FFFFFF',
+		backgroundTouch: '#FFFFFF',
 
 		playerBackground: '#FF7700',
 		playerPrimaryText: '#FFFFFF',
@@ -106,20 +112,21 @@ export const themes = {
 		playerButton: '#FFFFFF'
 	},
 	lightMode: {
-		primaryDark: '#fdfcfe',
-		secondaryDark: '#f6f2f8',
+		primaryDark: '#f2f2f6',
+		secondaryDark: '#fcfcfc',
 		tertiaryDark: '#dcdcd4',
 
 		primaryLight: '#040208',
-		secondaryLight: '#a09fa0',
+		secondaryLight: '#8f8f93',
 
-		primaryTouch: '#cd1921',
-		secondaryTouch: '#891116',
+		primaryTouch: '#fe3c30',
+		secondaryTouch: '#ee392e',
 		innerTouch: '#f6f6ef',
+		backgroundTouch: '#d0d0d0',
 
-		playerBackground: '#eaeae1',
+		playerBackground: '#ffffff',
 		playerPrimaryText: '#121212',
 		playerSecondaryText: '#1e1e1e',
-		playerButton: '#cd1921'
+		playerButton: '#fe3c30'
 	},
 }

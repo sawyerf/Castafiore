@@ -45,7 +45,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 					style={{
 						height: 24,
 						width: 24,
-						backgroundColor: theme.primaryLight,
+						backgroundColor: theme.innerTouch,
 						borderRadius: 12,
 						position: 'absolute',
 						...(value ? { right: 3 } : { left: 3 }),

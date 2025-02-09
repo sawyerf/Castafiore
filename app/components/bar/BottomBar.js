@@ -61,13 +61,13 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 						onLongPress={onLongPress}
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 							flex: 1,
-							paddingBottom: insets.bottom ? insets.bottom : 10,
+							paddingBottom: insets.bottom ? insets.bottom : 13,
 							paddingTop: 10,
 						}])}
 						disabled={(!config.query && route.name !== 'Settings')}
 					>
-						<Icon name={options.icon} size={size.icon.tiny} color={color} style={{ alignSelf: 'center', marginBottom: 5 }} />
-						<Text style={{ color: color, textAlign: 'center' }}>
+						<Icon name={options.icon} size={size.icon.tiny} color={color} style={{ alignSelf: 'center', marginBottom: 2, height: 24 }} />
+						<Text style={{ color: color, textAlign: 'center', height: 19, fontSize: 14 }}>
 							{options.title}
 						</Text>
 					</Pressable>

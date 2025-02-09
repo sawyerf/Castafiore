@@ -105,7 +105,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						onChange={(progress) => setFakeTime(progress)}
 						onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
 						stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
+						styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 						isBitogno={true}
 					/>

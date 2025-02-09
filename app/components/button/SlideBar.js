@@ -59,7 +59,7 @@ const SlideBar = ({
 			pressRetentionOffset={{ top: 20, left: 0, right: 0, bottom: 20 }}
 			{...panResponder.panHandlers}
 		>
-			<View style={[{ borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }, styleBar]}>
+			<View style={[{ borderRadius: 3, backgroundColor: theme.backgroundTouch, overflow: 'hidden' }, styleBar]}>
 				<View
 					style={[{ width: `${progress * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }, styleProgress]}
 				/>

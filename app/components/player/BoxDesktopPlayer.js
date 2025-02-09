@@ -94,7 +94,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						onChange={(progress) => setFakeTime(progress)}
 						onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
 						stylePress={{ flex: 1, height: 6 }}
-						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
+						styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 					/>
 					<Text style={{ color: theme.primaryLight, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
@@ -113,7 +113,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					onStart={(progress) => Player.setVolume(progress)}
 					onChange={(progress) => Player.setVolume(progress)}
 					stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
-					styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: theme.primaryLight, overflow: 'hidden' }}
+					styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
 					styleProgress={{ backgroundColor: theme.primaryTouch }}
 					isBitogno={true}
 				/>

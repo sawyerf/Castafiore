@@ -11,7 +11,7 @@ const ImageError = ({ source, style = {}, children = null, iconError = null }) =
 	const theme = React.useContext(ThemeContext)
 	const ImageMemo = React.useMemo(() => {
 		return <Image source={source} onError={() => setIsImage(false)} style={style} />
-	}, [source?.uri])
+	}, [source?.uri, style])
 
 	React.useEffect(() => {
 		if (lastSource.current === source?.uri) return

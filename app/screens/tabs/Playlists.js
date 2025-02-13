@@ -132,7 +132,8 @@ const Playlists = ({ navigation }) => {
 									borderRadius: 6,
 									color: theme.primaryText,
 									flex: 1,
-									paddingHorizontal: 10
+									paddingHorizontal: 10,
+									outline: 'none',
 								}}
 								onSubmitEditing={() => addPlaylist()}
 								autoFocus={true}

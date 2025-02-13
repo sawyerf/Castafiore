@@ -89,6 +89,7 @@ const Search = () => {
 						borderRadius: 10,
 						marginEnd: 10,
 						backgroundColor: theme.secondaryBack,
+						outline: 'none',
 					}}
 					placeholder="Search"
 					placeholderTextColor={theme.secondaryText}

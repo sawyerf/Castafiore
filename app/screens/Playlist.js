@@ -47,7 +47,7 @@ const Playlist = ({ route: { params } }) => {
 					{
 						title != null ?
 							<TextInput
-								style={presStyles.title(theme)}
+								style={[presStyles.title(theme), { outline: 'none' }]}
 								value={title}
 								onChangeText={text => setTitle(text)}
 								autoFocus={true}

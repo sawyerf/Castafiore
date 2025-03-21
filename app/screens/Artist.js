@@ -15,6 +15,7 @@ import FavoritedButton from '~/components/button/FavoritedButton';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
+import SongsList from '~/components/lists/SongsList';
 import size from '~/styles/size';
 
 const Artist = ({ route: { params } }) => {
@@ -30,6 +31,10 @@ const Artist = ({ route: { params } }) => {
 
 	const artist = useCachedAndApi([], 'getArtist', `id=${params.id}`, (json, setData) => {
 		setData(json.artist)
+	}, [params.id])
+
+	const favorited = useCachedAndApi([], 'getStarred', null, (json, setData) => {
+		setData(json.starred.song.filter(song => song.artistId === params.id))
 	}, [params.id])
 
 	const getRandomSongs = async () => {
@@ -100,6 +105,14 @@ const Artist = ({ route: { params } }) => {
 					<>
 						<Text style={mainStyles.titleSection(theme)}>Similar Artist</Text>
 						<HorizontalArtists artists={artistInfo.similarArtist} />
+					</>
+				)
+			}
+			{
+				favorited?.length && (
+					<>
+						<Text style={mainStyles.titleSection(theme)}>Favorited Songs</Text>
+						<SongsList songs={favorited} />
 					</>
 				)
 			}

@@ -7,17 +7,18 @@ import { ThemeContext } from '~/contexts/theme'
 
 const ImageError = ({ source, style = {}, children = null, iconError = null }) => {
 	const [isImage, setIsImage] = React.useState(true)
-	const lastSource = React.useRef(null)
+	// const lastSource = React.useRef(null)
+	const [lastSource, setLastSource] = React.useState({ uri: null })
 	const theme = React.useContext(ThemeContext)
 	const ImageMemo = React.useMemo(() => {
-		return <Image source={source} onError={() => setIsImage(false)} style={style} />
-	}, [source?.uri, style])
+		return <Image source={lastSource} onError={() => setIsImage(false)} style={style} />
+	}, [lastSource?.uri, style])
 
 	React.useEffect(() => {
-		if (lastSource.current === source?.uri) return
+		if (lastSource.uri === source?.uri) return
+		setLastSource(source)
 		if (!source?.uri) setIsImage(false)
 		else setIsImage(true)
-		lastSource.current = source?.uri
 	}, [source, source?.uri])
 
 	if (isImage) return ImageMemo

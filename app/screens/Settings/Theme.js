@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
-import { themes } from '~/contexts/theme';
+import { themes, themesPlayer } from '~/contexts/theme';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
@@ -35,6 +35,23 @@ const Theme = () => {
 								isSelect={themeName == settings.theme}
 								onPress={() => {
 									setSettings({ ...settings, theme: themeName })
+								}}
+							/>
+						))
+					}
+				</View>
+				<Text style={settingStyles.titleContainer(theme)}>Player Theme</Text>
+				<View style={settingStyles.optionsContainer(theme)}>
+					{
+						Object.keys(themesPlayer).map((themeName, index) => (
+							<SelectItem
+								key={index}
+								text={themeName}
+								icon="tint"
+								colorIcon={themesPlayer[themeName].playerBackground}
+								isSelect={themeName == settings.themePlayer}
+								onPress={() => {
+									setSettings({ ...settings, themePlayer: themeName })
 								}}
 							/>
 						))

@@ -41,7 +41,7 @@ const App = () => {
 
 	React.useEffect(() => {
 		setTheme(getTheme(settings))
-	}, [settings.theme])
+	}, [settings.theme, settings.themePlayer])
 
 	React.useEffect(() => {
 		if (window) window.streamFormat = settings.streamFormat

@@ -4,7 +4,10 @@ export const getTheme = (settings = undefined) => {
 	const listTheme = Object.keys(themes)
 
 	if (!settings?.theme) return themes.castafiore
-	else if (listTheme.includes(settings.theme)) return themes[settings.theme]
+	else if (listTheme.includes(settings.theme)) return {
+		...themes[settings.theme],
+		...themesPlayer[settings.themePlayer]
+	}
 	else return themes.castafiore
 }
 
@@ -128,5 +131,69 @@ export const themes = {
 		playerPrimaryText: '#121212',
 		playerSecondaryText: '#1e1e1e',
 		playerButton: '#fe3c30'
+	},
+}
+
+export const themesPlayer = {
+	default: {},
+	blue: {
+		playerBackground: '#155faa',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	red: {
+		playerBackground: '#cd1921',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	green: {
+		playerBackground: '#1DB954',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	orange: {
+		playerBackground: '#FF2D55',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	gray: {
+		playerBackground: '#808080',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	purple: {
+		playerBackground: '#a238ff',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	yellow: {
+		playerBackground: '#FFCC00',
+		playerPrimaryText: '#000000',
+		playerSecondaryText: '#000000',
+		playerButton: '#000000'
+	},
+	brown: {
+		playerBackground: '#633731',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	black: {
+		playerBackground: '#000000',
+		playerPrimaryText: '#FFFFFF',
+		playerSecondaryText: '#FFFFFF',
+		playerButton: '#FFFFFF'
+	},
+	white: {
+		playerBackground: '#FFFFFF',
+		playerPrimaryText: '#000000',
+		playerSecondaryText: '#000000',
+		playerButton: '#000000'
 	},
 }

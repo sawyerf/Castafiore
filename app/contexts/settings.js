@@ -31,6 +31,7 @@ export const defaultSettings = {
 	],
 	cacheNextSong: 5,
 	theme: 'castafiore',
+	themePlayer: 'default',
 	scrollHelper: false,
 	showCache: false,
 	streamFormat: 'raw',

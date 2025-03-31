@@ -150,9 +150,9 @@ export const themesPlayer = {
 	},
 	green: {
 		playerBackground: '#1DB954',
-		playerPrimaryText: '#FFFFFF',
-		playerSecondaryText: '#FFFFFF',
-		playerButton: '#FFFFFF'
+		playerPrimaryText: '#000',
+		playerSecondaryText: '#000',
+		playerButton: '#000'
 	},
 	orange: {
 		playerBackground: '#FF2D55',

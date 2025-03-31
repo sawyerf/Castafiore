@@ -109,12 +109,12 @@ const Artist = ({ route: { params } }) => {
 				)
 			}
 			{
-				favorited?.length && (
+				favorited?.length ? (
 					<>
 						<Text style={mainStyles.titleSection(theme)}>Favorited Songs</Text>
 						<SongsList songs={favorited} />
 					</>
-				)
+				) : null
 			}
 		</ScrollView >
 	)

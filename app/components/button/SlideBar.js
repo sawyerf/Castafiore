@@ -41,6 +41,7 @@ const SlideBar = ({
 	})
 
 	const upLayoutBar = React.useCallback(() => {
+		if (!viewRef.current) return
 		viewRef.current.measure((x, y, width, height, pageX) => {
 			layoutBar.current = { width, x: pageX }
 		})

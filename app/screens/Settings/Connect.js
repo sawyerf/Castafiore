@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Pressable } from 'react-native';
+import { Text, View, ScrollView, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -62,7 +62,7 @@ const Connect = ({ navigation }) => {
 		const salt = Math.random().toString(36).substring(2, 15)
 		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
 
-		if (uri.startsWith('http://')) {
+		if (Platform.OS !== 'android' && uri.startsWith('http://')) {
 			setError('Only https is allowed')
 			return
 		}

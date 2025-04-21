@@ -132,7 +132,26 @@ export const themes = {
 		playerSecondaryText: '#1e1e1e',
 		playerButton: '#fe3c30'
 	},
+	'blue lightMode': {
+		primaryBack: '#ffffff',
+		secondaryBack: '#f2f1f3',
+		tertiaryBack: '#f3f3f4',
+
+		primaryText: '#060608',
+		secondaryText: '#7c7c7d',
+
+		primaryTouch: '#4a65f0',
+		secondaryTouch: '#5ba8ff',
+		innerTouch: '#fff',
+		backgroundTouch: '#d2e7ff',
+
+		playerBackground: '#f3f3f4',
+		playerPrimaryText: '#121212',
+		playerSecondaryText: '#1e1e1e',
+		playerButton: '#4a65f0'
+	},
 }
+
 
 export const themesPlayer = {
 	default: {},

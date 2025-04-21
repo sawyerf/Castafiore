@@ -1,6 +1,7 @@
 import React from "react"
 import { ConfigContext } from "~/contexts/config"
 import { getJsonCache, setJsonCache } from "~/utils/cache"
+import { SetUpdateApiContext, UpdateApiContext } from "~/contexts/updateApi"
 
 const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''
@@ -50,10 +51,10 @@ export const getCachedAndApi = async (config, path, query = '', setData = () => 
 	let json = null
 	const key = getUrl(config, path, query)
 	json = await getJsonCache('api', key)
-	if (json) setData(json)
+	if (json) setData(json, 'cache')
 	json = await getApi(config, path, query, true)
 		.then((json) => {
-			setData(json)
+			setData(json, 'api')
 			return json
 		})
 		.catch(() => { return null })
@@ -62,16 +63,42 @@ export const getCachedAndApi = async (config, path, query = '', setData = () => 
 
 export const useCachedAndApi = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
 	const config = React.useContext(ConfigContext)
+	const updateApi = React.useContext(UpdateApiContext)
+	const setUpdateApi = React.useContext(SetUpdateApiContext)
 	const [data, setData] = React.useState(initialState)
+	const uid = React.useRef(Date.now())
+
+	const refresh = React.useCallback(() => {
+		if (!config?.url || !config?.query) return
+		uid.current = Date.now()
+		getApi(config, path, query)
+			.then((json) => {
+				setFunc(json, setData)
+				setUpdateApi({ path, query, uid: uid.current })
+			})
+	}, [config, path, query, setFunc, setUpdateApi])
 
 	React.useEffect(() => {
 		if (!config?.url || !config?.query) return
-		getCachedAndApi(config, path, query, (json) => {
+		getCachedAndApi(config, path, query, (json, mode) => {
 			setFunc(json, setData)
+			if (mode === 'api') setUpdateApi({ path, query, uid: uid.current })
 		})
 	}, [config, ...deps])
 
-	return data
+	React.useEffect(() => {
+		if (!config?.url || !config?.query) return
+		if (updateApi.path !== path) return
+		if (updateApi.uid === uid.current) return
+
+		const key = getUrl(config, path, query)
+		getJsonCache('api', key)
+			.then((json) => {
+				if (json) setFunc(json, setData)
+			})
+	}, [updateApi])
+
+	return [data, refresh, setData]
 }
 
 export const getApiCacheFirst = (config, path, query = '') => {
@@ -131,7 +158,7 @@ export const urlCover = (config, id, size = null) => {
 	return `${config.url}/rest/getCoverArt?id=${id}&size=${size}&${config.query}`
 }
 
-export const urlStream = (config, id, format='raw', maxBitRate=0) => {
+export const urlStream = (config, id, format = 'raw', maxBitRate = 0) => {
 	if (!id.match(/^[a-zA-Z0-9]*$/)) return id
 	if (format === 'raw') return `${config.url}/rest/stream?id=${id}&${config.query}`
 	return `${config.url}/rest/stream?id=${id}&format=${format}&maxBitRate=${maxBitRate}&${config.query}`

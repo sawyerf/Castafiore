@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ConfigContext } from '~/contexts/config'
 import { SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import { urlCover, getCachedAndApi } from '~/utils/api'
+import { urlCover, useCachedAndApi } from '~/utils/api'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import mainStyles from '~/styles/main'
 import CustomFlat from '~/components/lists/CustomFlat'
@@ -20,12 +20,9 @@ const ItemPlaylist = ({ item }) => {
   const config = React.useContext(ConfigContext)
   const navigation = useNavigation()
   const songDispatch = React.useContext(SongDispatchContext)
-  const [songList, setSongList] = React.useState([])
 
-  React.useEffect(() => {
-    getCachedAndApi(config, 'getPlaylist', `id=${item.id}`, (json) => {
-      setSongList(json?.playlist?.entry || [])
-    })
+  const [songList] = useCachedAndApi([], 'getPlaylist', `id=${item.id}`, (json, setData) => {
+    setData(json?.playlist?.entry || [])
   }, [item.id])
 
   return (

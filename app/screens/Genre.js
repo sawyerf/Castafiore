@@ -23,11 +23,11 @@ const Genre = ({ route: { params } }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 
-	const albums = useCachedAndApi([], 'getAlbumList', { type: 'byGenre', genre: params.genre.value }, (json, setData) => {
+	const [albums] = useCachedAndApi([], 'getAlbumList', { type: 'byGenre', genre: params.genre.value }, (json, setData) => {
 		setData(json?.albumList?.album)
 	})
 
-	const songs = useCachedAndApi([], 'getSongsByGenre', { genre: params.genre.value, count: 50 }, (json, setData) => {
+	const [songs] = useCachedAndApi([], 'getSongsByGenre', { genre: params.genre.value, count: 50 }, (json, setData) => {
 		setData(json?.songsByGenre?.song)
 	})
 

@@ -32,7 +32,7 @@ const InformationsSettings = () => {
 	const config = React.useContext(ConfigContext)
 	const [server, setServer] = React.useState({})
 
-	const user = useCachedAndApi([], 'getUser', {}, (json, setData) => {
+	const [user] = useCachedAndApi([], 'getUser', {}, (json, setData) => {
 			setServer({
 				version: json.serverVersion,
 				name: json.type,
@@ -41,7 +41,7 @@ const InformationsSettings = () => {
 			})
 			setData(json.user)
 		})
-	const scan = useCachedAndApi([], 'getScanStatus', {}, (json, setData) => {
+	const [scan] = useCachedAndApi([], 'getScanStatus', {}, (json, setData) => {
 		setData(json.scanStatus)
 	})
 

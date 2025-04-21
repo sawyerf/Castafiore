@@ -25,15 +25,15 @@ const Artist = ({ route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
 	const allSongs = React.useRef([])
 
-	const artistInfo = useCachedAndApi([], 'getArtistInfo', `id=${params.id}`, (json, setData) => {
+	const [artistInfo] = useCachedAndApi([], 'getArtistInfo', `id=${params.id}`, (json, setData) => {
 		setData(json.artistInfo)
 	}, [params.id])
 
-	const artist = useCachedAndApi([], 'getArtist', `id=${params.id}`, (json, setData) => {
+	const [artist] = useCachedAndApi([], 'getArtist', `id=${params.id}`, (json, setData) => {
 		setData(json.artist)
 	}, [params.id])
 
-	const favorited = useCachedAndApi([], 'getStarred', null, (json, setData) => {
+	const [favorited] = useCachedAndApi([], 'getStarred', null, (json, setData) => {
 		setData(json.starred.song.filter(song => song.artistId === params.id))
 	}, [params.id])
 
@@ -111,7 +111,7 @@ const Artist = ({ route: { params } }) => {
 			{
 				favorited?.length ? (
 					<>
-						<Text style={mainStyles.titleSection(theme)}>Favorited Songs</Text>
+						<Text style={[mainStyles.titleSection(theme), { marginBottom: 15 }]}>Favorited Songs</Text>
 						<SongsList songs={favorited} />
 					</>
 				) : null

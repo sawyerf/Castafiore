@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
-import { getCachedAndApi } from '~/utils/api';
+import { useCachedAndApi, getApi } from '~/utils/api';
 import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import IconButton from '~/components/button/IconButton';
@@ -19,8 +19,6 @@ const Playlists = ({ navigation }) => {
 	const insets = useSafeAreaInsets();
 	const settings = React.useContext(SettingsContext)
 	const theme = React.useContext(ThemeContext)
-	const [favorited, setFavorited] = React.useState([]);
-	const [playlists, setPlaylists] = React.useState([]);
 	const [newPlaylist, setNewPlaylist] = React.useState(null);
 	const rotationValue = React.useRef(new Animated.Value(0)).current;
 	const rotation = rotationValue.interpolate({
@@ -28,12 +26,13 @@ const Playlists = ({ navigation }) => {
 		outputRange: ['0deg', '360deg']
 	})
 
-	React.useEffect(() => {
-		if (config.query) {
-			getFavorited()
-			getPlaylists()
-		}
-	}, [config])
+	const [favorited, refreshFavorited] = useCachedAndApi([], 'getStarred', null, (json, setData) => {
+		setData(json.starred.song)
+	}, [])
+
+	const [playlists, refreshPlaylists, setPlaylists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
+		setData([...json.playlists.playlist].sort(sortPlaylist))
+	}, [])
 
 	React.useEffect(() => {
 		setPlaylists([...playlists].sort(sortPlaylist))
@@ -46,8 +45,8 @@ const Playlists = ({ navigation }) => {
 			duration: 1000,
 			useNativeDriver: true,
 		}).start()
-		getFavorited()
-		getPlaylists()
+		refreshFavorited()
+		refreshPlaylists()
 	}
 
 	const isPin = (item) => {
@@ -70,24 +69,13 @@ const Playlists = ({ navigation }) => {
 		}
 	}
 
-	const getFavorited = () => {
-		getCachedAndApi(config, 'getStarred', null, (json) => {
-			setFavorited(json.starred.song)
-		})
-	}
-
-	const getPlaylists = () => {
-		getCachedAndApi(config, 'getPlaylists', null, (json) => {
-			setPlaylists([...json.playlists.playlist].sort(sortPlaylist))
-		})
-	}
-
 	const addPlaylist = () => {
 		if (!newPlaylist?.length) return
-		getCachedAndApi(config, 'createPlaylist', `name=${newPlaylist}`, () => {
-			setNewPlaylist(null)
-			getPlaylists()
-		})
+		getApi(config, 'createPlaylist', `name=${newPlaylist}`)
+			.then(() => {
+				setNewPlaylist(null)
+				refreshPlaylists()
+			})
 	}
 
 	return (
@@ -159,7 +147,7 @@ const Playlists = ({ navigation }) => {
 						</>
 				}
 			</View>
-			<VerticalPlaylist playlists={playlists} onRefresh={getPlaylists} />
+			<VerticalPlaylist playlists={playlists} onRefresh={refreshPlaylists} />
 		</ScrollView>
 	)
 }

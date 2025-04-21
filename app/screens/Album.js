@@ -20,7 +20,7 @@ const Album = ({ navigation, route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isStarred, setStarred] = React.useState(params.starred || false)
 
-	const songs = useCachedAndApi([], 'getAlbum', `id=${params.id}`, (json, setData) => {
+	const [songs] = useCachedAndApi([], 'getAlbum', `id=${params.id}`, (json, setData) => {
 		setStarred(json?.album?.starred)
 		setData(json?.album?.song.sort((a, b) => {
 			// sort by discNumber and track

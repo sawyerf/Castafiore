@@ -18,7 +18,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 	const [hoverIndex, setHoverIndex] = React.useState(-1)
 	const [refresh, setRefresh] = React.useState(0)
 
-	const playlists = useCachedAndApi([], 'getPlaylists', '', (json, setData) => {
+	const [playlists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
 		setData(json.playlists.playlist)
 	}, [refresh])
 
@@ -103,13 +103,13 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					marginTop: 16,
 				}}>
 				{
-					playlists.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)).length ?
+					playlists?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)).length ?
 						<Pressable onPress={() => setRefresh(refresh + 1)}>
 							<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>Playlists</Text>
 						</Pressable> : null
 				}
 				{
-					playlists.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)).map((item, index) => {
+					playlists?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`))?.map((item, index) => {
 						return (
 							<Pressable
 								key={index}

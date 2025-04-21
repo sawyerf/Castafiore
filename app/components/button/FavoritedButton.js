@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { SetUpdateApiContext } from '~/contexts/updateApi';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { getApi } from '~/utils/api';
@@ -9,6 +10,7 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 	const [favorited, setFavorited] = React.useState(isFavorited)
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
+	const setUpdateApi = React.useContext(SetUpdateApiContext)
 
 	React.useEffect(() => {
 		setFavorited(isFavorited)
@@ -18,6 +20,10 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 		getApi(config, favorited ? 'unstar' : 'star', `id=${id}`)
 			.then(() => {
 				setFavorited(!favorited)
+				getApi(config, 'getStarred', null)
+					.then(() => {
+						setUpdateApi({ path: 'getStarred', query: null, uid: 0 })
+					})
 			})
 			.catch(() => { })
 	}

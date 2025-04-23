@@ -17,11 +17,16 @@
     #root {
       width: 100%;
       /* To smooth any scrolling behavior */
-      -webkit-overflow-scrolling: touch;
+      -webkit-overflow-scrolling: auto;
       margin: 0px;
       padding: 0px;
       /* Allows content to fill the viewport and go beyond the bottom */
       min-height: 100%;
+      /* Prevents the body from being scrollable on iOS */
+      overflow: hidden;
+      overscroll-behavior: none;
+      height: 100%;
+      position: relative;
     }
 
     #root {

@@ -45,9 +45,13 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 
 		if (type == 'album') nquery += '&size=' + settings.sizeOfList
 		if (type == 'listenbrainz') {
+			if (!settings.listenBrainzUser) return setList('No ListenBrainz user set')
 			fetch(`https://api.listenbrainz.org/1/stats/user/${encodeURIComponent(settings.listenBrainzUser)}/listening-activity?range=this_week`, { mode: 'cors' })
 				.then(response => response.json())
 				.then(data => {
+					if (data.error) return (
+						setList(data.error)
+					)
 					if (!data?.payload?.listening_activity?.length) return
 					setList(data.payload.listening_activity)
 				})

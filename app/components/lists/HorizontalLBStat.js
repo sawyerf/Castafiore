@@ -2,12 +2,14 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
 import { ThemeContext } from '~/contexts/theme';
+import size from '~/styles/size';
 
 const HorizontalLBStat = ({ stats }) => {
 	const theme = React.useContext(ThemeContext)
 	const [maxCount, setMaxCount] = React.useState(0)
 
 	React.useEffect(() => {
+		if (typeof stats === 'string') return
 		let maxCount = 1;
 		stats?.forEach((stat) => {
 			if (stat.listen_count > maxCount) maxCount = stat.listen_count
@@ -15,6 +17,14 @@ const HorizontalLBStat = ({ stats }) => {
 		setMaxCount(maxCount)
 	}, [stats])
 
+	if (typeof stats === 'string') return (
+		<Text style={{
+			color: theme.primaryText,
+			fontSize: size.text.large,
+			textAlign: 'center',
+			marginVertical: 50
+		}}>{stats}</Text>
+	)
 	return (
 		<View style={styles.scrollContainer(stats?.length)} >
 			{

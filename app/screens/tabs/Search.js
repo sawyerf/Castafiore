@@ -14,6 +14,82 @@ import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import HistoryItem from '~/components/HistoryItem';
 import size from '~/styles/size';
+import { ActivityIndicator } from 'react-native-web';
+
+const STATES = {
+	INIT: 'init',
+	TYPING: 'typing',
+	LOADING: 'loading',
+	LOADED: 'loaded',
+	API_ERROR: 'api_error',
+	NETWORK_ERROR: 'network_error',
+}
+
+const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory }) => {
+	const theme = React.useContext(ThemeContext)
+
+	const delItemHistory = async (index) => {
+		const hist = [...history]
+		hist.splice(index, 1)
+		setHistory(hist)
+		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
+	}
+
+	if (query.length === 0 || state === STATES.INIT) return history.map((item, index) => (
+		<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />
+	))
+	else if (state === STATES.LOADING) return (<ActivityIndicator size={'large'} color={theme.primaryTouch} />)
+	else if (state === STATES.LOADED) {
+		if (results && !results.artist && !results.album && !results.song) return (
+			<Text style={{
+				margin: 20,
+				color: theme.secondaryText,
+				fontSize: size.text.large,
+				textAlign: 'center',
+			}}>No results</Text>
+		)
+		else if (results) return (
+			<>
+				{
+					results.artist &&
+					<>
+						<Text style={mainStyles.titleSection(theme)}>Artists</Text>
+						<HorizontalArtists artists={results.artist} onPress={addHistory} />
+					</>
+				}
+				{
+					results.album &&
+					<>
+						<Text style={mainStyles.titleSection(theme)}>Albums</Text>
+						<HorizontalAlbums albums={results.album} onPress={addHistory} />
+					</>
+				}
+				{
+					results.song &&
+					<>
+						<Text style={mainStyles.titleSection(theme)}>Songs</Text>
+						<SongsList songs={results.song} onPress={addHistory} />
+					</>
+				}
+			</>)
+	} else if (state === STATES.API_ERROR) return (
+		<Text style={{
+			margin: 20,
+			color: theme.secondaryText,
+			fontSize: size.text.large,
+			textAlign: 'center',
+		}}>API Error</Text>
+	)
+	else if (state === STATES.NETWORK_ERROR) return (
+		<Text style={{
+			margin: 20,
+			color: theme.secondaryText,
+			fontSize: size.text.large,
+			textAlign: 'center',
+		}}>Network Error</Text>
+	)
+	return null
+}
 
 const Search = () => {
 	const insets = useSafeAreaInsets();
@@ -23,6 +99,7 @@ const Search = () => {
 	const [history, setHistory] = React.useState([]);
 	const [query, setQuery] = React.useState('');
 	const [results, setResults] = React.useState();
+	const [state, setState] = React.useState(STATES.INIT);
 	const timeout = React.useRef(null);
 
 	React.useEffect(() => {
@@ -34,7 +111,9 @@ const Search = () => {
 	}, [])
 
 	React.useEffect(() => {
-		if (query.length > 1) {
+		if (query.length === 0) {
+			setState(STATES.INIT)
+		} else if (query.length > 1) {
 			clearTimeout(timeout.current)
 			timeout.current = setTimeout(() => {
 				getSearch()
@@ -54,19 +133,17 @@ const Search = () => {
 		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
 	}
 
-	const delItemHistory = async (index) => {
-		const hist = [...history]
-		hist.splice(index, 1)
-		setHistory(hist)
-		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
-	}
 
 	const getSearch = () => {
+		setState(STATES.LOADING)
 		getApiNetworkFirst(config, 'search2', { query })
 			.then((json) => {
 				setResults(json.searchResult2)
+				setState(STATES.LOADED)
 			})
-			.catch(() => {
+			.catch((err) => {
+				if (err.isApiError) setState(STATES.API_ERROR)
+				else setState(STATES.NETWORK_ERROR)
 				setResults(undefined)
 			})
 	}
@@ -108,45 +185,15 @@ const Search = () => {
 				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, margin: 9 }} />
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ flexDirection: 'column', paddingBottom: 80, gap: 10 }}>
-				{
-					!query.length &&
-					history.map((item, index) => (<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />))
-				}
-				{
-					query.length && results && !results.artist && !results.album && !results.song ? (
-						<Text style={{
-							margin: 20,
-							color: theme.secondaryText,
-							fontSize: size.text.large,
-							textAlign: 'center',
-						}}>No results</Text>
-					) : null
-				}
-				{query.length && results ? (
-					<>
-						{
-							results.artist &&
-							<>
-								<Text style={mainStyles.titleSection(theme)}>Artists</Text>
-								<HorizontalArtists artists={results.artist} onPress={addHistory} />
-							</>
-						}
-						{
-							results.album &&
-							<>
-								<Text style={mainStyles.titleSection(theme)}>Albums</Text>
-								<HorizontalAlbums albums={results.album} onPress={addHistory} />
-							</>
-						}
-						{
-							results.song &&
-							<>
-								<Text style={mainStyles.titleSection(theme)}>Songs</Text>
-								<SongsList songs={results.song} onPress={addHistory} />
-							</>
-						}
-					</>) : null
-				}
+				<SearchResult
+					state={state}
+					query={query}
+					results={results}
+					history={history}
+					setHistory={setHistory}
+					setQuery={setQuery}
+					addHistory={addHistory}
+				/>
 			</ScrollView>
 		</View>
 	)

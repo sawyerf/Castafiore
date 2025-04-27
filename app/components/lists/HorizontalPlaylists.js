@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ConfigContext } from '~/contexts/config'
 import { SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
+import { SettingsContext } from '~/contexts/settings'
 import { urlCover, useCachedAndApi } from '~/utils/api'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import mainStyles from '~/styles/main'
@@ -18,12 +19,14 @@ import size from '~/styles/size'
 const ItemPlaylist = ({ item }) => {
   const theme = React.useContext(ThemeContext)
   const config = React.useContext(ConfigContext)
+  const settings = React.useContext(SettingsContext)
   const navigation = useNavigation()
   const songDispatch = React.useContext(SongDispatchContext)
 
   const [songList] = useCachedAndApi([], 'getPlaylist', `id=${item.id}`, (json, setData) => {
-    setData(json?.playlist?.entry || [])
-  }, [item.id])
+    if (settings.reversePlaylist) setData(json?.playlist?.entry.reverse() || [])
+    else setData(json?.playlist?.entry || [])
+  }, [item.id, settings.reversePlaylist])
 
   return (
     <View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryBack }} >

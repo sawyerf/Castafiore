@@ -142,7 +142,7 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 								name: 'Remove from playlist',
 								icon: 'trash-o',
 								onPress: () => {
-									getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${indexOptions}`)
+									getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${songs[indexOptions].index}`)
 										.then(() => {
 											setIndexOptions(-1)
 											setPlaylistList([])

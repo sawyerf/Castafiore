@@ -9,6 +9,7 @@ import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
 import SelectItem from '~/components/settings/SelectItem';
+import ButtonSwitch from '~/components/settings/ButtonSwitch'
 
 const orders = {
 	'title': {
@@ -57,7 +58,7 @@ const PlaylistsSettings = () => {
 		>
 			<Header title="Playlists" />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text >
+				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
 						title="Song preview favorited"
@@ -70,9 +71,9 @@ const PlaylistsSettings = () => {
 						isLast={true}
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>Number of songs to preview in favorited playlist (default: 3)</Text >
+				<Text style={settingStyles.description(theme)}>Number of songs to preview in favorited playlist (default: 3)</Text>
 
-				<Text style={settingStyles.titleContainer(theme)}>Order Playlists</Text >
+				<Text style={settingStyles.titleContainer(theme)}>Order Playlists</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(orders).map((name, index) => (
@@ -88,8 +89,18 @@ const PlaylistsSettings = () => {
 						))
 					}
 				</View>
+				<Text style={settingStyles.titleContainer(theme)}>Playlist Page</Text>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
+					<ButtonSwitch
+						title="Reverse playlist tracks"
+						value={settings.reversePlaylist}
+						onPress={() => setSettings({ ...settings, reversePlaylist: !settings.reversePlaylist })}
+						isLast={true}
+					/>
+				</View>
+				<Text style={settingStyles.description(theme)}>If enabled, recently added tracks will be shown first.</Text>
 			</View>
-		</View >
+		</View>
 	)
 }
 

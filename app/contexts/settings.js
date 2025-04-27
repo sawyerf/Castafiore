@@ -36,6 +36,7 @@ export const defaultSettings = {
 	showCache: false,
 	streamFormat: 'raw',
 	maxBitRate: 0,
+	reversePlaylist: false,
 }
 
 export const getSettings = async () => {

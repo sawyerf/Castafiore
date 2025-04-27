@@ -2,8 +2,9 @@ import React from 'react';
 import { Text, View, TextInput, Image, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
-import { getApi, urlCover, getCachedAndApi } from '~/utils/api';
+import { getApi, urlCover, useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
@@ -15,20 +16,15 @@ const Playlist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
+	const settings = React.useContext(SettingsContext)
 	const [info, setInfo] = React.useState(null)
-	const [songs, setSongs] = React.useState([]);
 	const [title, setTitle] = React.useState(null)
 
-	const getPlaylist = () => {
-		getCachedAndApi(config, 'getPlaylist', `id=${params.playlist.id}`, (json) => {
-			setInfo(json?.playlist)
-			setSongs(json?.playlist?.entry)
-		})
-	}
-
-	React.useEffect(() => {
-		if (config.query) getPlaylist()
-	}, [config, params.playlist.id])
+	const [songs, refresh] = useCachedAndApi([], 'getPlaylist', `id=${params.playlist.id}`, (json, setData) => {
+		setInfo(json?.playlist)
+		if (settings.reversePlaylist) setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })).reverse() || [])
+		else setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })) || [])
+	}, [params.playlist.id, settings.reversePlaylist])
 
 	return (
 		<ScrollView
@@ -55,7 +51,7 @@ const Playlist = ({ route: { params } }) => {
 									getApi(config, 'updatePlaylist', `playlistId=${params.playlist.id}&name=${title}`)
 										.then(() => {
 											setTitle(null)
-											getPlaylist()
+											refresh()
 										})
 										.catch(() => { })
 								}}
@@ -73,9 +69,7 @@ const Playlist = ({ route: { params } }) => {
 				</View>
 				<RandomButton songList={songs} style={presStyles.button} />
 			</View>
-			<SongsList songs={songs} idPlaylist={params.playlist?.id} onUpdate={() => {
-				getPlaylist()
-			}} />
+			<SongsList songs={songs} idPlaylist={params.playlist?.id} onUpdate={() => refresh()} />
 		</ScrollView>
 	)
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform } from 'react-native';
+import { Text, View, Platform, Share } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { playSong } from '~/utils/player';
@@ -175,6 +175,21 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 							}
 						}])
 					})(),
+					{
+						name: 'Share',
+						icon: 'share',
+						onPress: () => {
+							getApi(config, 'createShare', { id: songs[indexOptions].id })
+								.then((json) => {
+									if (json.shares.share.length > 0) {
+										if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
+										else Share.share({ url: json.shares.share[0].url })
+									}
+								})
+								.catch(() => { })
+							reffOption.current.close()
+						}
+					},
 					{
 						name: 'Info',
 						icon: 'info',

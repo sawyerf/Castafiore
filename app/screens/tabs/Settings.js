@@ -98,12 +98,23 @@ const Settings = ({ navigation }) => {
 				/>
 			</View>
 
+			{config.query && (
+				<View style={settingStyles.optionsContainer(theme)}>
+					<ButtonMenu
+						title="Shares"
+						icon="link"
+						onPress={() => navigation.navigate('Settings/Shares')}
+					/>
+					<ButtonMenu
+						title="Informations"
+						icon="info"
+						onPress={() => navigation.navigate('Settings/Informations')}
+						isLast={true}
+					/>
+				</View>
+			)}
+
 			<View style={settingStyles.optionsContainer(theme)}>
-				<ButtonMenu
-					title="Informations"
-					icon="info"
-					onPress={() => navigation.navigate('Settings/Informations')}
-				/>
 				<ButtonMenu
 					title="Github"
 					icon="github"

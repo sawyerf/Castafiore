@@ -21,13 +21,13 @@ const objectToString = (obj) => {
 	}
 }
 
-const TableItem = ({ title, value, isLast = false }) => {
+const TableItem = ({ title, value, toCopy = null, onLongPress = () => {}, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isCopied, setIsCopied] = React.useState(false)
 
 	const onPress = () => {
 		if (Platform.OS === 'web') {
-			navigator.clipboard.writeText(value)
+			navigator.clipboard.writeText(toCopy || value)
 			setIsCopied(true)
 			setTimeout(() => setIsCopied(false), 1000)
 		}
@@ -39,6 +39,7 @@ const TableItem = ({ title, value, isLast = false }) => {
 				justifyContent: 'space-between'
 			}]}
 			onPress={onPress}
+			onLongPress={onLongPress}
 		>
 			<Text
 				numberOfLines={1}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, StyleSheet, Pressable } from 'react-native';
+import { Text, View, Image, StyleSheet, Pressable, Platform, Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -139,6 +139,21 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 								() => deletePlaylist(playlists[indexOption].id),
 								() => setIndexOption(-1),
 							)
+						}
+					},
+					{
+						name: 'Share',
+						icon: 'share',
+						onPress: () => {
+							getApi(config, 'createShare', { id: playlists[indexOption].id })
+								.then((json) => {
+									if (json.shares.share.length > 0) {
+										if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
+										else Share.share({ url: json.shares.share[0].url })
+									}
+								})
+								.catch(() => { })
+							refOption.current.close()
 						}
 					},
 					{

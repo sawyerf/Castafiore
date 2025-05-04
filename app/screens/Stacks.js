@@ -19,6 +19,7 @@ import CacheSettings from '~/screens/Settings/Cache';
 import InformationsSettings from '~/screens/Settings/Informations';
 import ThemeSettings from '~/screens/Settings/Theme';
 import PlayerSettings from '~/screens/Settings/Player';
+import SharesSettings from '~/screens/Settings/Shares';
 import ShowAll from '~/screens/ShowAll';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -116,6 +117,7 @@ export const SettingsStack = () => {
 			<Stack.Screen name="Settings/Theme" component={ThemeSettings} />
 			<Stack.Screen name="Settings/Informations" component={InformationsSettings} />
 			<Stack.Screen name="Settings/Player" component={PlayerSettings} />
+			<Stack.Screen name="Settings/Shares" component={SharesSettings} />
 		</Stack.Navigator>
 	)
 }

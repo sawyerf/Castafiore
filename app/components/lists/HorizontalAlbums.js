@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, Image, StyleSheet, Pressable } from 'react-native';
+import { Text, Image, StyleSheet, Pressable, Platform, Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover, getApi } from '~/utils/api';
 import { ConfigContext } from '~/contexts/config';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import CustomFlat from '~/components/lists/CustomFlat';
@@ -53,6 +53,21 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 						onPress: () => {
 							refOption.current.close()
 							navigation.navigate('Artist', { id: albums[indexOptions].artistId, name: albums[indexOptions].artist })
+						}
+					},
+					{
+						name: 'Share',
+						icon: 'share',
+						onPress: () => {
+							getApi(config, 'createShare', { id: albums[indexOptions].id })
+								.then((json) => {
+									if (json.shares.share.length > 0) {
+										if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
+										else Share.share({ url: json.shares.share[0].url })
+									}
+								})
+								.catch(() => { })
+							refOption.current.close()
 						}
 					},
 					{

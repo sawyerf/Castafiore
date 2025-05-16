@@ -24,6 +24,7 @@ const Artist = ({ route: { params } }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 	const allSongs = React.useRef([])
+	const [sortAlbum, setSortAlbum] = React.useState([])
 
 	const [artistInfo] = useCachedAndApi([], 'getArtistInfo', `id=${params.id}`, (json, setData) => {
 		setData(json.artistInfo)
@@ -31,6 +32,7 @@ const Artist = ({ route: { params } }) => {
 
 	const [artist] = useCachedAndApi([], 'getArtist', `id=${params.id}`, (json, setData) => {
 		setData(json.artist)
+		setSortAlbum(json.artist?.album?.sort((a, b) => b.year - a.year))
 	}, [params.id])
 
 	const [favorited] = useCachedAndApi([], 'getStarred', null, (json, setData) => {
@@ -99,7 +101,7 @@ const Artist = ({ route: { params } }) => {
 				/>
 			</View>
 			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>
-			<HorizontalAlbums albums={artist?.album?.sort((a, b) => b.year - a.year)} year={true} />
+			<HorizontalAlbums albums={sortAlbum} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
 					<>

@@ -85,6 +85,7 @@ const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
 		<FlatList
 			ref={refScroll}
 			style={[style, { borderRadius: null }]}
+			contentContainerStyle={{ gap: 30 }}
 			showsVerticalScrollIndicator={false}
 			onScrollToIndexFailed={() => { }}
 			initialNumToRender={lyrics.length}

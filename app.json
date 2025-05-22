@@ -32,6 +32,7 @@
       }
     },
     "web": {
+      "favicon": "./assets/icon.png",
       "shortName": "Castafiore",
       "startUrl": "./index.html",
       "backgroundColor": "#121212",

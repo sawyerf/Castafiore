@@ -92,7 +92,7 @@ const SharesSettings = () => {
 						icon: 'share',
 						onPress: () => {
 							if (Platform.OS === 'web') navigator.clipboard.writeText(shares[indexOptions].url)
-							else Share.share({ url: shares[indexOptions].url })
+							else Share.share({ message: shares[indexOptions].url })
 							refOption.current.close()
 						}
 					},

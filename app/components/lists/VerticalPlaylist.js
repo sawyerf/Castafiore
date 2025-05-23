@@ -149,7 +149,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 								.then((json) => {
 									if (json.shares.share.length > 0) {
 										if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
-										else Share.share({ url: json.shares.share[0].url })
+										else Share.share({ message: json.shares.share[0].url })
 									}
 								})
 								.catch(() => { })

@@ -3,7 +3,7 @@ import { ConfigContext } from "~/contexts/config"
 import { getJsonCache, setJsonCache } from "~/utils/cache"
 import { SetUpdateApiContext, UpdateApiContext } from "~/contexts/updateApi"
 
-const getUrl = (config, path, query = '') => {
+export const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''
 	if (typeof query === 'string') {
 		encodedQuery = query
@@ -73,8 +73,12 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 		uid.current = Date.now()
 		getApi(config, path, query)
 			.then((json) => {
+				const key = getUrl(config, path, query)
+				setJsonCache('api', key, json)
+					.then(() => {
+						setUpdateApi({ path, query, uid: uid.current })
+					})
 				setFunc(json, setData)
-				setUpdateApi({ path, query, uid: uid.current })
 			})
 	}, [config, path, query, setFunc, setUpdateApi])
 

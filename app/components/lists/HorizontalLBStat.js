@@ -42,7 +42,7 @@ const HorizontalLBStat = ({ stats }) => {
 							<Text style={{ color: theme.primaryText, fontSize: 12, textAlign: 'center' }}>{time.getDate()}</Text>
 							<View
 								style={{
-									height: (item.listen_count / maxCount) * 120,
+									height: maxCount && (item.listen_count / maxCount) * 120,
 									width: '100%',
 									backgroundColor: theme.primaryTouch,
 								}}

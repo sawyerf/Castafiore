@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, Pressable } from 'react-native';
+import { Text, View, TextInput, ScrollView, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -38,7 +38,19 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 	if (query.length === 0 || state === STATES.INIT) return history.map((item, index) => (
 		<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />
 	))
-	else if (state === STATES.LOADING) return (<ActivityIndicator size={'large'} color={theme.primaryTouch} />)
+	else if (state === STATES.LOADING) {
+		if (Platform.OS === 'web') return (
+			<ActivityIndicator size={'large'} color={theme.primaryTouch} />
+		)
+		return (
+			<Text style={{
+				margin: 20,
+				color: theme.secondaryText,
+				fontSize: size.text.large,
+				textAlign: 'center',
+			}}>{query} <Text style={{ fontStyle: 'italic' }}>Searching...</Text></Text>
+		)
+	}
 	else if (state === STATES.LOADED) {
 		if (results && !results.artist && !results.album && !results.song) return (
 			<Text style={{

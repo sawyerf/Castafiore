@@ -10,7 +10,7 @@
     "android": "expo start --android --dev-client",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "export:web": "expo export -p web",
+    "export:web": "expo export -p web && workbox generateSW workbox-config.js",
     "eslint": "eslint app index.js App.js -c eslint.config.mjs"
   },
   "dependencies": {
@@ -39,13 +39,7 @@
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
-    "webpack-bundle-analyzer": "^4.10.1",
-    "workbox-core": "^6.1.5",
-    "workbox-expiration": "^6.1.5",
-    "workbox-precaching": "^6.1.5",
-    "workbox-routing": "^6.1.5",
-    "workbox-strategies": "^6.1.5",
-    "workbox-webpack-plugin": "^6.1.5"
+    "workbox-cli": "^7.3.0"
   },
   "private": true
 }

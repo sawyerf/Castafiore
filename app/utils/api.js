@@ -105,7 +105,6 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 		if (!isUpdatable(updateApi, path, query)) return
 		if (updateApi.uid === uid.current) return
 
-		console.log(`useCachedAndApi: ${path} updated`)
 		const key = getUrl(config, path, query)
 		getJsonCache('api', key)
 			.then((json) => {

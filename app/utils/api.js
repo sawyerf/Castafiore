@@ -61,13 +61,12 @@ export const getCachedAndApi = async (config, path, query = '', setData = () => 
 	await setJsonCache('api', key, json)
 }
 
-export const refreshApi = (config, path, query = '', uid = 0, setUpdateApi) => {
+export const refreshApi = (config, path, query = '') => {
 	return new Promise((resolve, reject) => {
 		getApi(config, path, query)
-			.then(async (json) => {
-				await setJsonCache('api', getUrl(config, path, query), json)
-					.then(() => setUpdateApi({ path, query, uid }))
-				resolve(json)
+			.then((json) => {
+				setJsonCache('api', getUrl(config, path, query), json)
+					.then(() => resolve(json))
 			})
 			.catch((error) => {
 				console.error(`refreshApi[/rest/${path}]: ${error}`)
@@ -86,8 +85,9 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 	const refresh = React.useCallback(() => {
 		if (!config?.url || !config?.query) return
 		uid.current = Date.now()
-		refreshApi(config, path, query, uid.current, setUpdateApi)
+		refreshApi(config, path, query)
 			.then((json) => {
+				setUpdateApi({ path, query, uid: uid.current })
 				setFunc(json, setData)
 			})
 	}, [config, path, query, setFunc, setUpdateApi])
@@ -103,7 +103,9 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 	React.useEffect(() => {
 		if (!config?.url || !config?.query) return
 		if (!isUpdatable(updateApi, path, query)) return
+		if (updateApi.uid === uid.current) return
 
+		console.log(`useCachedAndApi: ${path} updated`)
 		const key = getUrl(config, path, query)
 		getJsonCache('api', key)
 			.then((json) => {

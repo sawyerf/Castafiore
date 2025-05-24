@@ -20,9 +20,12 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 		getApi(config, favorited ? 'unstar' : 'star', `id=${id}`)
 			.then(() => {
 				setFavorited(!favorited)
-				refreshApi(config, 'getStarred', null, 0, setUpdateApi)
+				refreshApi(config, 'getStarred', null)
+					.then(() => {
+						setUpdateApi({ path: 'getStarred', query: null, uid: 1 })
+					})
 			})
-			.catch(() => { })
+			.catch((e) => console.error(`FavoritedButton: ${e}`))
 	}
 
 	return (

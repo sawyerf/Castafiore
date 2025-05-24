@@ -3,10 +3,12 @@ import { Pressable, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { getCachedAndApi } from '~/utils/api';
+import { getCachedAndApi, getUrl } from '~/utils/api';
+import { getJsonCache } from '~/utils/cache';
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
+import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import HorizontalGenres from '~/components/lists/HorizontalGenres';
@@ -22,6 +24,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 	const settings = React.useContext(SettingsContext)
 	const navigation = useNavigation();
 	const config = React.useContext(ConfigContext)
+	const updateApi = React.useContext(UpdateApiContext)
 
 	React.useEffect(() => {
 		if (!enable) return
@@ -29,6 +32,27 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 			getList()
 		}
 	}, [config, refresh, type, query, enable, settings.listenBrainzUser])
+
+	React.useEffect(() => {
+		const path = getPath()
+		let nquery = query ? query : ''
+
+		if (type == 'album') nquery += '&size=' + settings.sizeOfList
+
+		if (isUpdatable(updateApi, path, nquery)) {
+			getJsonCache('api', getUrl(config, path, query))
+				.then(setListByType)
+		}
+	}, [updateApi])
+
+	const setListByType = (json) => {
+		if (!json) return
+		if (type == 'album') return setList(json?.albumList?.album)
+		if (type == 'artist') return setList(json?.starred?.artist)
+		if (type == 'genre') return setList(json?.genres?.genre)
+		if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
+		if (type == 'playlist') return setList(json?.playlists?.playlist)
+	}
 
 	const getPath = () => {
 		if (type === 'album') return 'getAlbumList'
@@ -57,13 +81,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				})
 				.catch(error => console.error(error))
 		} else {
-			getCachedAndApi(config, path, nquery, (json) => {
-				if (type == 'album') return setList(json?.albumList?.album)
-				if (type == 'artist') return setList(json?.starred?.artist)
-				if (type == 'genre') return setList(json?.genres?.genre)
-				if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
-				if (type == 'playlist') return setList(json?.playlists?.playlist)
-			})
+			getCachedAndApi(config, path, nquery, setListByType)
 		}
 	}
 

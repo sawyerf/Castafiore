@@ -1,7 +1,7 @@
 import React from "react"
 import { ConfigContext } from "~/contexts/config"
 import { getJsonCache, setJsonCache } from "~/utils/cache"
-import { SetUpdateApiContext, UpdateApiContext } from "~/contexts/updateApi"
+import { SetUpdateApiContext, UpdateApiContext, isUpdatable } from "~/contexts/updateApi"
 
 export const getUrl = (config, path, query = '') => {
 	let encodedQuery = ''
@@ -61,6 +61,21 @@ export const getCachedAndApi = async (config, path, query = '', setData = () => 
 	await setJsonCache('api', key, json)
 }
 
+export const refreshApi = (config, path, query = '', uid = 0, setUpdateApi) => {
+	return new Promise((resolve, reject) => {
+		getApi(config, path, query)
+			.then(async (json) => {
+				await setJsonCache('api', getUrl(config, path, query), json)
+					.then(() => setUpdateApi({ path, query, uid }))
+				resolve(json)
+			})
+			.catch((error) => {
+				console.error(`refreshApi[/rest/${path}]: ${error}`)
+				reject({ ...error, isApiError: false })
+			})
+	})
+}
+
 export const useCachedAndApi = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
 	const config = React.useContext(ConfigContext)
 	const updateApi = React.useContext(UpdateApiContext)
@@ -71,13 +86,8 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 	const refresh = React.useCallback(() => {
 		if (!config?.url || !config?.query) return
 		uid.current = Date.now()
-		getApi(config, path, query)
+		refreshApi(config, path, query, uid.current, setUpdateApi)
 			.then((json) => {
-				const key = getUrl(config, path, query)
-				setJsonCache('api', key, json)
-					.then(() => {
-						setUpdateApi({ path, query, uid: uid.current })
-					})
 				setFunc(json, setData)
 			})
 	}, [config, path, query, setFunc, setUpdateApi])
@@ -92,8 +102,7 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 
 	React.useEffect(() => {
 		if (!config?.url || !config?.query) return
-		if (updateApi.path !== path) return
-		if (updateApi.uid === uid.current) return
+		if (!isUpdatable(updateApi, path, query)) return
 
 		const key = getUrl(config, path, query)
 		getJsonCache('api', key)

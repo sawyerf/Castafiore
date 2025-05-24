@@ -48,7 +48,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				color: theme.secondaryText,
 				fontSize: size.text.large,
 				textAlign: 'center',
-			}}>{query} <Text style={{ fontStyle: 'italic' }}>Searching...</Text></Text>
+			}}>Searching...</Text>
 		)
 	}
 	else if (state === STATES.LOADED) {

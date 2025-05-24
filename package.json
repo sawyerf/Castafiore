@@ -1,16 +1,15 @@
 {
   "name": "castafiore",
-  "version": "2025.05.23",
+  "version": "2025.05.24",
   "main": "index.js",
   "homepage": ".",
   "scripts": {
-    "start": "expo start",
     "export:android": "eas build --platform android --profile production --local",
+    "export:google": "eas build --platform android --profile google --local",
     "build-dev": "eas build --platform android --profile development --local",
     "android": "expo start --android --dev-client",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "export:web": "expo export -p web && workbox generateSW workbox-config.js",
+    "web": "cross-env PLATFORM=web expo start --web",
+    "export:web": "cross-env PLATFORM=web expo export -p web && workbox generateSW workbox-config.js",
     "eslint": "eslint app index.js App.js -c eslint.config.mjs"
   },
   "dependencies": {
@@ -36,6 +35,7 @@
     "@babel/core": "^7.20.0",
     "@eslint/js": "^9.17.0",
     "babel-plugin-root-import": "^6.6.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",

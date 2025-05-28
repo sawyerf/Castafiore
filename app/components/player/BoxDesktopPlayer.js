@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text, View, StyleSheet } from 'react-native';
+import { Pressable, Text, View, StyleSheet, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -38,7 +38,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						<Icon name="music" size={size.icon.small} color={theme.primaryText} />
 					</View>
 				</ImageError>
-				<View style={{ justifyContent: 'center', gap: 2, flex: 'min-content', maxWidth: 'min-content' }}>
+				<View style={{ justifyContent: 'center', gap: 2, flex: Platform.select({ web: 1, default: 0 }), maxWidth: 'min-content' }}>
 					<Text numberOfLines={1} style={{ color: theme.primaryText, fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
 					<Text numberOfLines={1} style={{ color: theme.secondaryText, maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
@@ -101,22 +101,29 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 				</View>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
-				<IconButton
-					icon={volume ? "volume-up" : "volume-off"}
-					size={17}
-					color={theme.primaryText}
-					style={{ width: 27 }}
-					onPress={() => Player.setVolume(volume ? 0 : 1)}
-				/>
-				<SlideBar
-					progress={volume}
-					onStart={(progress) => Player.setVolume(progress)}
-					onChange={(progress) => Player.setVolume(progress)}
-					stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
-					styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
-					styleProgress={{ backgroundColor: theme.primaryTouch }}
-					isBitogno={true}
-				/>
+
+				{
+					Player.isVolumeSupported() && (
+						<>
+							<IconButton
+								icon={volume ? "volume-up" : "volume-off"}
+								size={17}
+								color={theme.primaryText}
+								style={{ width: 27 }}
+								onPress={() => Player.setVolume(volume ? 0 : 1)}
+							/>
+							<SlideBar
+								progress={volume}
+								onStart={(progress) => Player.setVolume(progress)}
+								onChange={(progress) => Player.setVolume(progress)}
+								stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
+								styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
+								styleProgress={{ backgroundColor: theme.primaryTouch }}
+								isBitogno={true}
+							/>
+						</>
+					)
+				}
 				<IconButton
 					icon="expand"
 					size={17}

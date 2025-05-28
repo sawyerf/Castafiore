@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TabBar from '~/components/bar/TabBar';
@@ -22,7 +22,7 @@ const App = () => {
 	const [settings, setSettings] = React.useState({});
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 	const [theme, setTheme] = React.useState(getTheme())
-	const [updateApi, setUpdateApi] = React.useState({path: '', query: ''})
+	const [updateApi, setUpdateApi] = React.useState({ path: '', query: '' })
 	Player.useEvent(dispatch)
 
 	React.useEffect(() => {
@@ -71,7 +71,7 @@ const App = () => {
 								<ThemeContext.Provider value={theme}>
 									<SongContext.Provider value={song}>
 										<UpdateApiContext.Provider value={updateApi}>
-											<SafeAreaProvider>
+											<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 												<NavigationContainer
 													documentTitle={{
 														formatter: () => {

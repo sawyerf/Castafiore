@@ -125,7 +125,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 									borderRadius: 8,
 									marginBottom: 3,
 								}}
-								onPress={async() => {
+								onPress={async () => {
 									await navigation.navigate('PlaylistsStack', { screen: 'Playlists' })
 									await navigation.navigate('PlaylistsStack', { screen: 'Playlist', params: { playlist: item } })
 								}}
@@ -135,7 +135,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 									source={{ uri: urlCover(config, item.id, 100) }}
 									style={{ backgroundColor: theme.secondaryBack, width: 40, height: 40, borderRadius: 5 }}
 								/>
-								<View>
+								<View style={{ flexDirection: 'column', flex: 1 }}>
 									<Text
 										style={{
 											color: theme.primaryText,

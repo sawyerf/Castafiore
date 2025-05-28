@@ -78,10 +78,12 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 								}}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
-								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2 }}>
-									{playlist.name}
-									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} style={{ paddingStart: 5 }} />}
-								</Text>
+								<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+									<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2 }}>
+										{playlist.name}
+									</Text>
+									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} />}
+								</View>
 								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{(playlist.duration / 60) | 1} min · {playlist.songCount} songs</Text>
 							</View>
 							{playlist.comment?.includes(`#${config.username}-pin`) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryText} style={{ paddingEnd: 5, paddingStart: 10 }} />}

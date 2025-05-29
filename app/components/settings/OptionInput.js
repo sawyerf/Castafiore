@@ -31,6 +31,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				autoFocus={false}
 				autoCorrect={false}
 				autoComplete={autoComplete}
+				autoCapitalize="none"
 				value={value}
 				inputMode={inputMode}
 				secureTextEntry={isPassword}

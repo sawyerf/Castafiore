@@ -161,7 +161,7 @@ export const tuktuktuk = async (songDispatch) => {
 			url: urlTuk,
 			title: 'Tuk Tuk Tuk',
 			artist: 'Sawyerf',
-			artwork: require('~/../assets/icon.png')
+			artwork: require('~/../assets/foreground-icon.png')
 		}]
 		await TrackPlayer.setQueue(queue)
 		await TrackPlayer.play()

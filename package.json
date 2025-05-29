@@ -6,7 +6,7 @@
   "scripts": {
     "export:android": "eas build --platform android --profile production --local",
     "export:google": "eas build --platform android --profile google --local",
-    "build-dev": "eas build --platform android --profile development --local",
+    "export:dev": "eas build --platform android --profile development --local",
     "android": "expo start --android --dev-client",
     "web": "cross-env PLATFORM=web expo start --web",
     "export:web": "cross-env PLATFORM=web expo export -p web && workbox generateSW workbox-config.js",

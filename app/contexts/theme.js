@@ -32,7 +32,9 @@ export const themes = {
 		playerBackground: '#1e1e1e',
 		playerPrimaryText: '#f5f5dc',
 		playerSecondaryText: '#808080',
-		playerButton: '#cd1921'
+		playerButton: '#cd1921',
+
+		barStyle: 'light-content',
 	},
 	deezer: {
 		primaryBack: '#000000',
@@ -48,7 +50,9 @@ export const themes = {
 		playerBackground: '#155faa',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#FFFFFF',
-		playerButton: '#FFFFFF'
+		playerButton: '#FFFFFF',
+
+		barStyle: 'light-content',
 	},
 	spotify: {
 		primaryBack: '#000000',
@@ -64,7 +68,9 @@ export const themes = {
 		playerBackground: '#191414',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#B3B3B3',
-		playerButton: '#1DB954'
+		playerButton: '#1DB954',
+
+		barStyle: 'light-content',
 	},
 	appleMusic: {
 		primaryBack: '#000000',
@@ -80,7 +86,9 @@ export const themes = {
 		playerBackground: '#1C1C1E',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#B3B3B3',
-		playerButton: '#FF2D55'
+		playerButton: '#FF2D55',
+
+		barStyle: 'light-content',
 	},
 	reddit: {
 		primaryBack: '#1A1A1B',
@@ -96,7 +104,9 @@ export const themes = {
 		playerBackground: '#141415',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#D7DADC',
-		playerButton: '#FF4500'
+		playerButton: '#FF4500',
+
+		barStyle: 'light-content',
 	},
 	soundCloud: {
 		primaryBack: '#FFFFFF',
@@ -107,12 +117,14 @@ export const themes = {
 		primaryTouch: '#FF7700',
 		secondaryTouch: '#FF8800',
 		innerTouch: '#FFFFFF',
-		backgroundTouch: '#FFFFFF',
+		backgroundTouch: '#ffe7d3',
 
 		playerBackground: '#FF7700',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#f3e3d6',
-		playerButton: '#FFFFFF'
+		playerButton: '#FFFFFF',
+
+		barStyle: 'dark-content',
 	},
 	lightMode: {
 		primaryBack: '#f2f2f6',
@@ -130,7 +142,9 @@ export const themes = {
 		playerBackground: '#ffffff',
 		playerPrimaryText: '#121212',
 		playerSecondaryText: '#1e1e1e',
-		playerButton: '#fe3c30'
+		playerButton: '#fe3c30',
+
+		barStyle: 'dark-content',
 	},
 	'blue lightMode': {
 		primaryBack: '#ffffff',
@@ -148,7 +162,9 @@ export const themes = {
 		playerBackground: '#f3f3f4',
 		playerPrimaryText: '#121212',
 		playerSecondaryText: '#1e1e1e',
-		playerButton: '#4a65f0'
+		playerButton: '#4a65f0',
+
+		barStyle: 'dark-content',
 	},
 }
 

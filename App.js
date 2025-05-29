@@ -82,12 +82,13 @@ const App = () => {
 													<StatusBar
 														backgroundColor={'rgba(0, 0, 0, 0)'}
 														translucent={true}
-														barStyle={'light-content'}
+														barStyle={theme.barStyle}
 													/>
 													<Tab.Navigator
 														tabBar={(props) => <TabBar {...props} />}
 														screenOptions={{
 															headerShown: false,
+															navigationBarColor: theme.primaryBack,
 															tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
 															tabBarStyle: {
 																backgroundColor: theme.secondaryBack,

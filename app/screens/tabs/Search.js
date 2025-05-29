@@ -183,6 +183,7 @@ const Search = () => {
 					placeholder="Search"
 					placeholderTextColor={theme.secondaryText}
 					value={query}
+					autoCapitalize='none'
 					onChangeText={(query) => setQuery(query)}
 					autoFocus={settings?.isDesktop}
 				/>

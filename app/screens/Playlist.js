@@ -84,11 +84,11 @@ const Playlist = ({ route: { params } }) => {
 						</View>
 					</>
 				}
-				renderItem={({ item }) => (
+				renderItem={({ item, index }) => (
 					<SongItem
 						song={item}
 						queue={songs}
-						index={item.index}
+						index={index}
 						setIndexOptions={setIndexOptions}
 						style={{
 							paddingHorizontal: 20,

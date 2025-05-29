@@ -31,7 +31,7 @@ const Playlists = ({ navigation }) => {
 	}, [])
 
 	const [playlists, refreshPlaylists, setPlaylists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
-		setData([...json.playlists.playlist].sort(sortPlaylist))
+		setData([...(json?.playlists?.playlist || [])].sort(sortPlaylist))
 	}, [])
 
 	React.useEffect(() => {

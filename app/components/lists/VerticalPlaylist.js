@@ -72,21 +72,23 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							delayLongPress={200}
 							onPress={() => navigation.navigate('Playlist', { playlist: playlist })}>
 							<Image
-								style={[mainStyles.coverSmall(theme), { marginRight: 10 }]}
+								style={mainStyles.coverSmall(theme)}
 								source={{
 									uri: urlCover(config, playlist.id, 100),
 								}}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
-								<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-									<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2 }}>
+								<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 7 }}>
+									<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium }}>
 										{playlist.name}
 									</Text>
-									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} />}
+									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} style={{marginTop: 3}} />}
 								</View>
-								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{(playlist.duration / 60) | 1} min · {playlist.songCount} songs</Text>
+								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
+									{(playlist.duration / 60) | 1} min · {playlist.songCount} songs
+								</Text>
 							</View>
-							{playlist.comment?.includes(`#${config.username}-pin`) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryText} style={{ paddingEnd: 5, paddingStart: 10 }} />}
+							{playlist.comment?.includes(`#${config.username}-pin`) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryText} style={{ paddingEnd: 5 }} />}
 						</Pressable>
 					)
 				})
@@ -174,6 +176,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 
 const styles = StyleSheet.create({
 	favoritedSong: {
+		gap: 10,
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 10,

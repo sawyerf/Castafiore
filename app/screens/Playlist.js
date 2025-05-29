@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Image, ScrollView, Pressable } from 'react-native';
+import { Text, View, TextInput, Image, FlatList, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SettingsContext } from '~/contexts/settings';
@@ -10,7 +10,8 @@ import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
-import SongsList from '~/components/lists/SongsList';
+import SongItem from '~/components/lists/SongItem';
+import OptionsSongsList from '../components/options/OptionsSongsList';
 
 const Playlist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
@@ -19,6 +20,7 @@ const Playlist = ({ route: { params } }) => {
 	const settings = React.useContext(SettingsContext)
 	const [info, setInfo] = React.useState(null)
 	const [title, setTitle] = React.useState(null)
+	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const [songs, refresh] = useCachedAndApi([], 'getPlaylist', `id=${params.playlist.id}`, (json, setData) => {
 		setInfo(json?.playlist)
@@ -26,52 +28,83 @@ const Playlist = ({ route: { params } }) => {
 		else setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })) || [])
 	}, [params.playlist.id, settings.reversePlaylist])
 
+
 	return (
-		<ScrollView
-			vertical={true}
-			style={mainStyles.mainContainer(theme)}
-			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
-			<BackButton />
-			<Image
-				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
-				source={{
-					uri: urlCover(config, params.playlist.id),
-				}}
+		<>
+			<FlatList
+				data={songs}
+				keyExtractor={(item, index) => item.id || index.toString()}
+				style={mainStyles.mainContainer(theme)}
+				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+				ListHeaderComponent={
+					<>
+						<BackButton />
+						<Image
+							style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
+							source={{
+								uri: urlCover(config, params.playlist.id),
+							}}
+						/>
+						<View style={presStyles.headerContainer}>
+							<View style={{ flex: 1 }}>
+								{
+									title != null ? (
+										<TextInput
+											style={[presStyles.title(theme), { outline: 'none' }]}
+											value={title}
+											onChangeText={text => setTitle(text)}
+											autoFocus={true}
+											onSubmitEditing={() => {
+												getApi(config, 'updatePlaylist', `playlistId=${params.playlist.id}&name=${title}`)
+													.then(() => {
+														setTitle(null);
+														refresh();
+													})
+													.catch(() => { });
+											}}
+											onBlur={() => setTitle(null)}
+										/>
+									) : (
+										<Pressable
+											style={mainStyles.opacity}
+											onLongPress={() => setTitle(info.name)}
+											delayLongPress={200}
+										>
+											<Text style={presStyles.title(theme)} numberOfLines={2}>
+												{info?.name || params.playlist?.name}
+											</Text>
+										</Pressable>
+									)
+								}
+								<Text style={presStyles.subTitle(theme)}>
+									{((info?.duration || params?.playlist?.duration) / 60) | 1} minutes · {info?.songCount || params?.playlist?.songCount} songs
+								</Text>
+							</View>
+							<RandomButton songList={songs} style={presStyles.button} />
+						</View>
+					</>
+				}
+				renderItem={({ item }) => (
+					<SongItem
+						song={item}
+						queue={songs}
+						index={item.index}
+						setIndexOptions={setIndexOptions}
+						style={{
+							paddingHorizontal: 20,
+						}}
+					/>
+				)}
 			/>
-			<View style={presStyles.headerContainer}>
-				<View style={{ flex: 1 }}>
-					{
-						title != null ?
-							<TextInput
-								style={[presStyles.title(theme), { outline: 'none' }]}
-								value={title}
-								onChangeText={text => setTitle(text)}
-								autoFocus={true}
-								onSubmitEditing={() => {
-									getApi(config, 'updatePlaylist', `playlistId=${params.playlist.id}&name=${title}`)
-										.then(() => {
-											setTitle(null)
-											refresh()
-										})
-										.catch(() => { })
-								}}
-								onBlur={() => setTitle(null)}
-							/>
-							:
-							<Pressable
-								style={mainStyles.opacity}
-								onLongPress={() => setTitle(info.name)} delayLongPress={200}
-							>
-								<Text style={presStyles.title(theme)} numberOfLines={2}>{info?.name || params.playlist?.name}</Text>
-							</Pressable>
-					}
-					<Text style={presStyles.subTitle(theme)}>{((info?.duration || params?.playlist?.duration) / 60) | 1} minutes · {info?.songCount || params?.playlist?.songCount} songs</Text>
-				</View>
-				<RandomButton songList={songs} style={presStyles.button} />
-			</View>
-			<SongsList songs={songs} idPlaylist={params.playlist?.id} onUpdate={() => refresh()} />
-		</ScrollView>
-	)
+			<OptionsSongsList
+				songs={songs}
+				onUpdate={refresh}
+				indexOptions={indexOptions}
+				setIndexOptions={setIndexOptions}
+				idPlaylist={params.playlist.id}
+				/>
+		</>
+	);
 }
 
 export default Playlist;

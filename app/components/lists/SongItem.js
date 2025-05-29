@@ -45,14 +45,14 @@ const Cached = ({ song }) => {
 	return null
 }
 
-const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => { } }) => {
+const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => { }, style={} }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
 
 	return (
 		<Pressable
-			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song])}
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song, style])}
 			key={song.id}
 			onLongPress={() => setIndexOptions(index)}
 			onContextMenu={() => setIndexOptions(index)}

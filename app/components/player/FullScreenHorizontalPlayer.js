@@ -121,7 +121,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 								onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
 								style={{ height: '100%' }}
 								contentContainerStyle={{ width: '100%', minHeight: '100%', justifyContent: 'flex-end' }}
-								initialNumToRender={song.queue.length}
+								getItemLayout={(data, index) => ({ length: size.image.small + 10, offset: (size.image.small + 10) * index, index })}
 								showsVerticalScrollIndicator={false}
 								onScrollToIndexFailed={() => { }}
 								data={song.queue}

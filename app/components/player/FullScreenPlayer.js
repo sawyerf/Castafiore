@@ -44,7 +44,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 			statusBarTranslucent={true}
 			onRequestClose={() => setFullScreen(false)}
 		>
-			<View style={[ mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>
+			<View style={[mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>
 				<IconButton
 					style={{
 						width: '100%',
@@ -74,9 +74,9 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							ref={scroll}
 							data={song.queue}
 							keyExtractor={(item, index) => index}
-							initialNumToRender={song.queue.length}
 							showsVerticalScrollIndicator={false}
 							onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
+							getItemLayout={(data, index) => ({ length: size.image.small + 10, offset: (size.image.small + 10) * index, index })}
 							onScrollToIndexFailed={() => { }}
 							renderItem={({ item, index }) => (
 								<SongItem

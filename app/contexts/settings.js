@@ -9,7 +9,8 @@ export const defaultSettings = {
 		{ icon: 'flask', title: 'Genre', type: 'genre', query: '', enable: false },
 		{ icon: 'feed', title: 'Radio', type: 'radio', query: '', enable: false },
 		{ icon: 'book', title: 'Pin Playlist', type: 'playlist', query: '', enable: false },
-		{ icon: 'heart', title: 'Favorited', type: 'album', query: 'type=starred', enable: true },
+		{ icon: 'group', title: 'Artists', type: 'artist_all', query: '', enable: false },
+		{ icon: 'heart', title: 'Favorited', type: 'album_star', query: '', enable: true },
 		{ icon: 'plus', title: 'Recently Added', type: 'album', query: 'type=newest', enable: true },
 		{ icon: 'trophy', title: 'Most Played', type: 'album', query: 'type=frequent', enable: true },
 		{ icon: 'play', title: 'Recently Played', type: 'album', query: 'type=recent', enable: true },
@@ -17,7 +18,7 @@ export const defaultSettings = {
 		{ icon: 'arrow-up', title: 'Highest', type: 'album', query: 'type=highest', enable: false },
 	],
 	listenBrainzUser: '',
-	sizeOfList: 10,
+	sizeOfList: 15,
 	orderPlaylist: 'title',
 	previewFavorited: 3,
 	isDesktop: false,
@@ -55,3 +56,24 @@ export const getSettings = async () => {
 
 export const SettingsContext = React.createContext()
 export const SetSettingsContext = React.createContext()
+
+export const getPathByType = (type) => {
+	if (type === 'album') return 'getAlbumList'
+	if (type === 'artist' || type === 'album_star') return 'getStarred'
+	if (type === 'genre') return 'getGenres'
+	if (type === 'artist_all') return 'getArtists'
+	if (type === 'radio') return 'getInternetRadioStations'
+	if (type === 'playlist') return 'getPlaylists'
+	return type
+}
+
+export const setListByType = (json, type, setList) => {
+	if (!json) return
+	if (type == 'album') return setList(json?.albumList?.album)
+	if (type == 'album_star') return setList(json?.starred?.album)
+	if (type == 'artist') return setList(json?.starred?.artist)
+	if (type == 'artist_all') return setList(json?.artists?.index.map((item) => item.artist).flat())
+	if (type == 'genre') return setList(json?.genres?.genre)
+	if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
+	if (type == 'playlist') return setList(json?.playlists?.playlist)
+}

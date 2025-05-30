@@ -149,7 +149,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 										{item.name}
 									</Text>
 									<Text style={{ color: theme.secondaryText, fontSize: size.text.small, marginLeft: 10 }} numberOfLines={1}>
-										Playlists
+										Playlist
 									</Text>
 								</View>
 							</Pressable>

@@ -82,7 +82,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 									<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium }}>
 										{playlist.name}
 									</Text>
-									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} style={{marginTop: 3}} />}
+									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} style={{ marginTop: 3 }} />}
 								</View>
 								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
 									{(playlist.duration / 60) | 1} min · {playlist.songCount} songs

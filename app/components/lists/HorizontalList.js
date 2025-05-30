@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { getCachedAndApi, getUrl } from '~/utils/api';
 import { getJsonCache } from '~/utils/cache';
 import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext } from '~/contexts/settings';
+import { SettingsContext, getPathByType, setListByType } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
 import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
@@ -34,37 +34,19 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 	}, [config, refresh, type, query, enable, settings.listenBrainzUser])
 
 	React.useEffect(() => {
-		const path = getPath()
+		const path = getPathByType(type)
 		let nquery = query ? query : ''
 
 		if (type == 'album') nquery += '&size=' + settings.sizeOfList
 
 		if (isUpdatable(updateApi, path, nquery)) {
 			getJsonCache('api', getUrl(config, path, query))
-				.then(setListByType)
+				.then(json => setListByType(json, type, setList))
 		}
 	}, [updateApi])
 
-	const setListByType = (json) => {
-		if (!json) return
-		if (type == 'album') return setList(json?.albumList?.album)
-		if (type == 'artist') return setList(json?.starred?.artist)
-		if (type == 'genre') return setList(json?.genres?.genre)
-		if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
-		if (type == 'playlist') return setList(json?.playlists?.playlist)
-	}
-
-	const getPath = () => {
-		if (type === 'album') return 'getAlbumList'
-		if (type === 'artist') return 'getStarred'
-		if (type === 'genre') return 'getGenres'
-		if (type === 'radio') return 'getInternetRadioStations'
-		if (type === 'playlist') return 'getPlaylists'
-		return type
-	}
-
 	const getList = async () => {
-		const path = getPath()
+		const path = getPathByType(type)
 		let nquery = query ? query : ''
 
 		if (type == 'album') nquery += '&size=' + settings.sizeOfList
@@ -81,9 +63,13 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				})
 				.catch(error => console.error(error))
 		} else {
-			getCachedAndApi(config, path, nquery, setListByType)
+			getCachedAndApi(config, path, nquery, (json) => setListByType(json, type, setList))
 		}
 	}
+
+	const isShowAllType = React.useCallback((type) => {
+		return ['album', 'artist', 'album_star', 'artist_all'].includes(type)
+	}, [])
 
 	if (!enable) return null
 	if (!list) return null
@@ -96,12 +82,12 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 					alignItems: 'center',
 					width: '100%',
 				}}
-				disabled={type !== 'album' && type !== 'artist'}
+				disabled={!isShowAllType(type)}
 				onPress={() => { navigation.navigate('ShowAll', { title, type, query }) }}
 			>
 				<Text style={mainStyles.titleSection(theme)}>{title}</Text>
 				{
-					['album', 'artist'].includes(type) && <Icon
+					isShowAllType(type) && <Icon
 						name='angle-right'
 						color={theme.secondaryText}
 						size={size.icon.medium}
@@ -110,7 +96,9 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				}
 			</Pressable>
 			{type === 'album' && <HorizontalAlbums albums={list} />}
+			{type === 'album_star' && <HorizontalAlbums albums={list} />}
 			{type === 'artist' && <HorizontalArtists artists={list} />}
+			{type === 'artist_all' && <HorizontalArtists artists={list} />}
 			{type === 'genre' && <HorizontalGenres genres={list} />}
 			{type === 'radio' && <RadioList radios={list} />}
 			{type === 'listenbrainz' && <HorizontalLBStat stats={list} />}

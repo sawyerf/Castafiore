@@ -6,6 +6,7 @@ import { ConfigContext } from '~/contexts/config';
 import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import { getPathByType, setListByType } from '~/contexts/settings';
 import ImageError from '~/components/ImageError';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
@@ -22,45 +23,41 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 		getList();
 	}, [type, query])
 
-	const getPath = () => {
-		if (type === 'album') return 'getAlbumList'
-		if (type === 'artist') return 'getStarred'
-		return type
-	}
-
 	const getList = async () => {
-		const path = getPath()
+		const path = getPathByType(type)
 		let nquery = query ? query : ''
 
 		if (type == 'album') nquery += '&size=' + 100
 		getCachedAndApi(config, path, nquery, (json) => {
-			if (type == 'album') return setList(json?.albumList?.album)
-			if (type == 'artist') return setList(json?.starred?.artist)
+			setListByType(json, type, setList);
 		})
 	}
 
 	const onPress = (item) => {
 		if (type === 'album') return navigation.navigate('Album', item)
+		if (type === 'album_star') return navigation.navigate('Album', item)
 		if (type === 'artist') return navigation.navigate('Artist', { id: item.id, name: item.name })
+		if (type === 'artist_all') return navigation.navigate('Artist', { id: item.id, name: item.name })
 	}
 
-	const ItemComponent = React.memo(function Item ({ item, index }) {
+	const ItemComponent = React.memo(function Item({ item, index }) {
 		return (
-		<Pressable
-			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
-			key={index}
-			onPress={() => onPress(item)}>
-			<ImageError
-				style={styles.albumCover(type)}
-				source={{
-					uri: urlCover(config, item.id),
-				}}
-				iconError={type === 'artist' ? 'user' : 'music'}
-			/>
-			<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
-			<Text numberOfLines={1} style={styles.artist(theme)}>{item.artist}</Text>
-		</Pressable>
-	)})
+			<Pressable
+				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
+				key={index}
+				onPress={() => onPress(item)}>
+				<ImageError
+					style={styles.albumCover(type)}
+					source={{
+						uri: urlCover(config, item.id),
+					}}
+					iconError={['artist', 'artist_all'].includes(type) ? 'user' : 'music'}
+				/>
+				<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
+				<Text numberOfLines={1} style={styles.artist(theme)}>{item.artist}</Text>
+			</Pressable>
+		)
+	})
 
 	return (
 		<FlatList
@@ -92,7 +89,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		aspectRatio: 1,
 		marginBottom: 6,
-		borderRadius: type === 'artist' ? size.radius.circle : 0,
+		borderRadius: ['artist', 'artist_all'].includes(type) ? size.radius.circle : 0,
 	}),
 	titleAlbum: (theme) => ({
 		color: theme.primaryText,

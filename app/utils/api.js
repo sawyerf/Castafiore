@@ -26,8 +26,19 @@ export const getApi = (config, path, query = '') => {
 		}
 		const url = getUrl(config, path, query)
 		fetch(url)
-			.then((response) => response.json())
-			.then((json) => {
+			.then(res => {
+				if (res.status !== 200) {
+					reject({ message: `Connection failed (HTTP ${res.status})`, isApiError: false })
+					return null
+				} else {
+					return res.json()
+				}
+			})
+			.then(json => {
+				if (!json) {
+					reject({ message: 'Connection failed (no response)', isApiError: false })
+					return
+				}
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
 					resolve(json['subsonic-response'])
 				} else {
@@ -37,7 +48,7 @@ export const getApi = (config, path, query = '') => {
 			})
 			.catch((error) => {
 				console.error(`getApi[/rest/${path}]: ${error}`)
-				reject({ ...error, isApiError: false })
+				reject({ message: error.message, error, isApiError: false })
 			})
 	})
 }

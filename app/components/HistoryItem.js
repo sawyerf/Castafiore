@@ -52,7 +52,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 							}}
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, marginBottom: 2 }}> {itemHist.name || itemHist.title}</Text>
+							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, marginBottom: 2 }}>{itemHist.name || itemHist.title}</Text>
 							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
 						</View>
 					</>

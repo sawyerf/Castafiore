@@ -5,7 +5,7 @@ import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 
-const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false }) => {
+const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false, secureTextEntry = undefined }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -34,7 +34,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				autoCapitalize="none"
 				value={value}
 				inputMode={inputMode}
-				secureTextEntry={isPassword}
+				secureTextEntry={secureTextEntry === undefined ? isPassword : secureTextEntry}
 				onChangeText={value => onChangeText(value)}
 			/>
 		</View>

@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import * as NavigationBar from 'expo-navigation-bar';
 
 import TabBar from '~/components/bar/TabBar';
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
@@ -16,6 +17,9 @@ import { ThemeContext, getTheme } from '~/contexts/theme';
 import { SetUpdateApiContext, UpdateApiContext } from './app/contexts/updateApi';
 
 const Tab = createBottomTabNavigator();
+
+global.maxBitRate = 0;
+global.streamFormat = 'mp3';
 
 const App = () => {
 	const [config, setConfig] = React.useState({});
@@ -46,11 +50,17 @@ const App = () => {
 	}, [settings.theme, settings.themePlayer])
 
 	React.useEffect(() => {
+		NavigationBar.setBackgroundColorAsync(theme.secondaryBack)
+	}, [theme])
+
+	React.useEffect(() => {
 		if (window) window.streamFormat = settings.streamFormat
+		else global.streamFormat = settings.streamFormat
 	}, [settings.streamFormat])
 
 	React.useEffect(() => {
 		if (window) window.maxBitRate = settings.maxBitRate
+		else global.maxBitRate = settings.maxBitRate
 	}, [settings.maxBitRate])
 
 	const saveSettings = React.useCallback((settings) => {

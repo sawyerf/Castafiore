@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Pressable } from 'react-native'
+import { Text, View, Pressable, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -61,7 +61,7 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 						onLongPress={onLongPress}
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 							flex: 1,
-							paddingBottom: insets.bottom ? insets.bottom : 13,
+							paddingBottom: insets.bottom ? insets.bottom : Platform.select({ default: 13, android: 10 }),
 							paddingTop: 10,
 						}])}
 						disabled={(!config.query && route.name !== 'Settings')}

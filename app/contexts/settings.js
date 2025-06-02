@@ -9,7 +9,7 @@ export const defaultSettings = {
 		{ icon: 'flask', title: 'Genre', type: 'genre', query: '', enable: false },
 		{ icon: 'feed', title: 'Radio', type: 'radio', query: '', enable: false },
 		{ icon: 'book', title: 'Pin Playlist', type: 'playlist', query: '', enable: false },
-		{ icon: 'group', title: 'Artists', type: 'artist_all', query: '', enable: false },
+		// { icon: 'group', title: 'Artists', type: 'artist_all', query: '', enable: false },
 		{ icon: 'heart', title: 'Favorited', type: 'album_star', query: '', enable: true },
 		{ icon: 'plus', title: 'Recently Added', type: 'album', query: 'type=newest', enable: true },
 		{ icon: 'trophy', title: 'Most Played', type: 'album', query: 'type=frequent', enable: true },

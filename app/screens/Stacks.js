@@ -22,6 +22,7 @@ import PlayerSettings from '~/screens/Settings/Player';
 import SharesSettings from '~/screens/Settings/Shares';
 import AddServer from '~/screens/Settings/AddServer';
 import ShowAll from '~/screens/ShowAll';
+import ArtistExplorer from '~/screens/ArtistExplorer';
 
 import { ThemeContext } from '~/contexts/theme';
 
@@ -69,6 +70,7 @@ export const SearchStack = () => {
 			<Stack.Screen name="Search" component={Search} />
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
+			<Stack.Screen name="ArtistExplorer" component={ArtistExplorer} />
 		</Stack.Navigator>
 	)
 }

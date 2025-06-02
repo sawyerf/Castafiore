@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, TextInput, ScrollView, Pressable, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -27,6 +28,7 @@ const STATES = {
 
 const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory }) => {
 	const theme = React.useContext(ThemeContext)
+	const navigation = useNavigation();
 
 	const delItemHistory = async (index) => {
 		const hist = [...history]
@@ -35,9 +37,43 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
 	}
 
-	if (query.length === 0 || state === STATES.INIT) return history.map((item, index) => (
-		<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />
-	))
+	if (query.length === 0 || state === STATES.INIT) return (
+		<>
+			<Pressable
+				onPress={() => {
+					navigation.navigate('ArtistExplorer');
+				}}
+				style={{
+					marginHorizontal: 20,
+					paddingHorizontal: 10,
+					paddingVertical: 15,
+					flexDirection: 'row',
+					alignItems: 'center',
+					justifyContent: 'center',
+					borderRadius: 10,
+					backgroundColor: theme.secondaryBack,
+					maxWidth: 400,
+				}}>
+				<Text style={{
+					color: theme.primaryText,
+					fontSize: size.text.large,
+					fontWeight: 'bold',
+				}}
+				>Artists explorer</Text>
+			</Pressable>
+			{
+				history.length === 0 ? null : (
+					<>
+						<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>History</Text>
+						{
+							history.map((item, index) => (
+								<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />
+							))
+						}
+					</>
+				)}
+		</>
+	)
 	else if (state === STATES.LOADING) {
 		if (Platform.OS === 'web') return (
 			<ActivityIndicator size={'large'} color={theme.primaryTouch} />

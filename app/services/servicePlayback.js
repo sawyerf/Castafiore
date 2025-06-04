@@ -9,6 +9,10 @@ module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext())
 	TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
+	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
+		if (event.paused) Player.pauseSong()
+		else Player.resumeSong()
+	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
 		if (event.track?.id === 'tuktuktukend') {
 			await TrackPlayer.remove([0, 1])

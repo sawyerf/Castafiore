@@ -13,7 +13,8 @@ export const initPlayer = async (songDispatch) => {
 		})
 	await TrackPlayer.updateOptions({
 		android: {
-			appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification
+			appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+			alwaysPauseOnInterruption: true,
 		},
 		capabilities: [
 			Capability.Play,

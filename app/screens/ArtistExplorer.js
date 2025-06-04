@@ -34,6 +34,12 @@ const ArtistExplorer = () => {
 		return favorited.some(fav => fav.id === id);
 	}, [favorited]);
 
+	const urlImage = React.useCallback((urlImg) => {
+		const url = new URL(urlImg);
+		url.searchParams.set('size', '200');
+		return url.toString();
+	}, []);
+
 	return (
 		<>
 			<SectionList
@@ -41,6 +47,7 @@ const ArtistExplorer = () => {
 				keyExtractor={(item, index) => item.id || index.toString()}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+				maxToRenderPerBatch={20}
 				ListHeaderComponent={
 					<>
 						<BackButton />
@@ -68,7 +75,7 @@ const ArtistExplorer = () => {
 							gap: 10,
 						}}>
 						<ImageError
-							source={{ uri: item.artistImageUrl }}
+							source={{ uri: urlImage(item.artistImageUrl) }}
 							iconError="user"
 							style={{
 								width: 70,

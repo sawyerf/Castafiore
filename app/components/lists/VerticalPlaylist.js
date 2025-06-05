@@ -35,7 +35,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 	const pinToComment = (index) => {
 		getApi(config, 'updatePlaylist', {
 			playlistId: playlists[index].id,
-			comment: `${playlists[index].comment || ''}\n#${config.username}-pin`,
+			comment: `${playlists[index].comment || ''}#${config.username}-pin`,
 		})
 			.then(() => {
 				onRefresh()
@@ -45,7 +45,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 
 	const unPinToComment = (index) => {
 		if (!playlists[index].comment) return
-		if (!playlists[index].comment.includes(`\n#${config.username}-pin`)) return
+		if (!playlists[index].comment.includes(`#${config.username}-pin`)) return
 		getApi(config, 'updatePlaylist', {
 			playlistId: playlists[index].id,
 			comment: playlists[index].comment.replaceAll(`#${config.username}-pin`, ''),
@@ -79,7 +79,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
 								<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 7 }}>
-									<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium }}>
+									<Text numberOfLines={1} style={{ flex: Platform.select({ web: undefined, default: 0 }), color: theme.primaryText, fontSize: size.text.medium }}>
 										{playlist.name}
 									</Text>
 									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} style={{ marginTop: 3 }} />}
@@ -105,7 +105,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							name: 'Pin Playlist',
 							icon: 'bookmark',
 							onPress: () => {
-								setIndexOption(-1)
+								refOption.current.close()
 								pinToComment(indexOption)
 							}
 						}]
@@ -113,11 +113,19 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							name: 'Unpin Playlist',
 							icon: 'bookmark',
 							onPress: () => {
-								setIndexOption(-1)
+								refOption.current.close()
 								unPinToComment(indexOption)
 							}
 						}]
 					})(),
+					{
+						name: 'Edit Playlist',
+						icon: 'pencil',
+						onPress: () => {
+							navigation.navigate('EditPlaylist', { playlist: playlists[indexOption] })
+							refOption.current.close()
+						}
+					},
 					{
 						name: (indexOption !== -1 && playlists[indexOption].public) ? 'Make Private' : 'Make Public',
 						icon: (indexOption !== -1 && playlists[indexOption].public) ? 'lock' : 'globe',
@@ -128,7 +136,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							})
 								.then(() => {
 									onRefresh()
-									setIndexOption(-1)
+									refOption.current.close()
 								})
 								.catch(() => { })
 						}
@@ -141,7 +149,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 								'Delete Playlist',
 								`Are you sure you want to delete playlist: '${playlists[indexOption].name}' ?`,
 								() => deletePlaylist(playlists[indexOption].id),
-								() => setIndexOption(-1),
+								() => refOption.current.close(),
 							)
 						}
 					},
@@ -165,7 +173,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 						icon: 'info',
 						onPress: () => {
 							refOption.current.setInfo(playlists[indexOption])
-							setIndexOption(-1)
+							refOption.current.close()
 						}
 					},
 				]}

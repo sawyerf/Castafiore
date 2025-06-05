@@ -23,6 +23,7 @@ import SharesSettings from '~/screens/Settings/Shares';
 import AddServer from '~/screens/Settings/AddServer';
 import ShowAll from '~/screens/ShowAll';
 import ArtistExplorer from '~/screens/ArtistExplorer';
+import EditPlaylist from '~/screens/EditPlaylist';
 
 import { ThemeContext } from '~/contexts/theme';
 
@@ -94,6 +95,7 @@ export const PlaylistsStack = () => {
 			<Stack.Screen name="Favorited" component={Favorited} />
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
+			<Stack.Screen name="EditPlaylist" component={EditPlaylist} />
 		</Stack.Navigator>
 	)
 }

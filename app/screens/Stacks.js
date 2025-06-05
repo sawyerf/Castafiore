@@ -22,8 +22,9 @@ import PlayerSettings from '~/screens/Settings/Player';
 import SharesSettings from '~/screens/Settings/Shares';
 import AddServer from '~/screens/Settings/AddServer';
 import ShowAll from '~/screens/ShowAll';
-import ArtistExplorer from '~/screens/ArtistExplorer';
 import EditPlaylist from '~/screens/EditPlaylist';
+import ArtistExplorer from '~/screens/ArtistExplorer';
+import AlbumExplorer from '~/screens/AlbumExplorer';
 
 import { ThemeContext } from '~/contexts/theme';
 
@@ -72,6 +73,7 @@ export const SearchStack = () => {
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
 			<Stack.Screen name="ArtistExplorer" component={ArtistExplorer} />
+			<Stack.Screen name="AlbumExplorer" component={AlbumExplorer} />
 		</Stack.Navigator>
 	)
 }

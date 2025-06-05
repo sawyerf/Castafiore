@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, Pressable, Platform } from 'react-native';
+import { Text, View, TextInput, ScrollView, Pressable, Platform, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,7 +15,6 @@ import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import HistoryItem from '~/components/HistoryItem';
 import size from '~/styles/size';
-import { ActivityIndicator } from 'react-native-web';
 
 const STATES = {
 	INIT: 'init',
@@ -39,28 +38,36 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 
 	if (query.length === 0 || state === STATES.INIT) return (
 		<>
-			<Pressable
-				onPress={() => {
-					navigation.navigate('ArtistExplorer');
-				}}
-				style={{
-					marginHorizontal: 20,
-					paddingHorizontal: 10,
-					paddingVertical: 15,
-					flexDirection: 'row',
-					alignItems: 'center',
-					justifyContent: 'center',
-					borderRadius: 10,
-					backgroundColor: theme.secondaryBack,
-					maxWidth: 400,
-				}}>
-				<Text style={{
-					color: theme.primaryText,
-					fontSize: size.text.large,
-					fontWeight: 'bold',
-				}}
-				>Artists explorer</Text>
-			</Pressable>
+			<View style={{
+				display: 'flex',
+				marginHorizontal: 20,
+				flexDirection: 'row',
+				alignItems: 'center',
+				gap: 10,
+			}}>
+				<Pressable
+					style={styles.explorer(theme)}
+					onPress={() => {
+						navigation.navigate('ArtistExplorer');
+					}}>
+					<Text style={{
+						color: theme.primaryText,
+						fontSize: size.text.large,
+						fontWeight: 'bold',
+					}}>Artists</Text>
+				</Pressable>
+				<Pressable
+					style={styles.explorer(theme)}
+					onPress={() => {
+						navigation.navigate('AlbumExplorer');
+					}}>
+					<Text style={{
+						color: theme.primaryText,
+						fontSize: size.text.large,
+						fontWeight: 'bold',
+					}}>Albums</Text>
+				</Pressable>
+			</View>
 			{
 				history.length === 0 ? null : (
 					<>
@@ -203,7 +210,7 @@ const Search = () => {
 				paddingBottom: 0,
 			}]}>
 			<Text style={mainStyles.mainTitle(theme)}>Search</Text>
-			<View style={[mainStyles.stdVerticalMargin, { marginBottom: 20, flexDirection: 'row' }]}>
+			<View style={[mainStyles.stdVerticalMargin, { marginBottom: 20, flexDirection: 'row', gap: 10 }]}>
 				<TextInput
 					style={{
 						flex: 1,
@@ -212,7 +219,6 @@ const Search = () => {
 						padding: 8,
 						paddingLeft: 36,
 						borderRadius: 10,
-						marginEnd: 10,
 						backgroundColor: theme.secondaryBack,
 						outline: 'none',
 					}}
@@ -247,5 +253,19 @@ const Search = () => {
 		</View>
 	)
 }
+
+const styles = StyleSheet.create({
+	explorer: theme => ({
+		flex: 1,
+		paddingHorizontal: 10,
+		paddingVertical: 15,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 10,
+		backgroundColor: theme.secondaryBack,
+		maxWidth: 400,
+	}),
+})
 
 export default Search;

@@ -74,12 +74,8 @@ const AlbumExplorer = () => {
 						</View>
 						<View style={presStyles.headerContainer}>
 							<View style={{ flex: 1 }}>
-								<Text style={[presStyles.title(theme),]} numberOfLines={2}>
-									Albums
-								</Text>
-								<Text style={presStyles.subTitle(theme)}>
-									Explore
-								</Text>
+								<Text style={[presStyles.title(theme),]}>Albums</Text>
+								<Text style={presStyles.subTitle(theme)}>Explore</Text>
 							</View>
 						</View>
 

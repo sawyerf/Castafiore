@@ -56,9 +56,8 @@ const ArtistExplorer = () => {
 						</View>
 						<View style={presStyles.headerContainer}>
 							<View style={{ flex: 1 }}>
-								<Text style={[presStyles.title(theme), { marginBottom: 20 }]} numberOfLines={2}>
-									Artists
-								</Text>
+								<Text style={presStyles.title(theme)}>Artists</Text>
+								<Text style={presStyles.subTitle(theme)}>Explore</Text>
 							</View>
 						</View>
 					</>

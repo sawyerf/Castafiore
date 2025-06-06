@@ -159,7 +159,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate=() =>
 					icon: 'info',
 					onPress: () => {
 						setIndexOptions(-1)
-						reffOption.current.setInfo(songs[indexOptions])
+						reffOption.current.showInfo(songs[indexOptions])
 					}
 				},
 			]} />

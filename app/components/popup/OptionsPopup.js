@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Modal, ScrollView, Animated, Pressable } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
 import ImageError from '~/components/ImageError';
-import InfoPopup from '~/components/popup/InfoPopup';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
@@ -17,11 +17,14 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 	const slide = React.useRef(new Animated.Value(-1000)).current
 	const isAnim = React.useRef(false)
 	const config = React.useContext(ConfigContext)
-	const [info, setInfo] = React.useState(null)
+	const navigation = useNavigation();
 
 	React.useImperativeHandle(reff, () => ({
 		close: close,
-		setInfo: setInfo,
+		showInfo: (info) => {
+			navigation.navigate('Info', { info });
+			close();
+		}
 	}), [close])
 
 	React.useEffect(() => {
@@ -40,9 +43,6 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 		}).start()
 	}
 
-	if (info) return (
-		<InfoPopup info={info} close={() => setInfo(null)} />
-	)
 	if (!visible) return null;
 	return (
 		<Modal
@@ -106,13 +106,16 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 								}}
 								source={{ uri: urlCover(config, item.albumId || item.id, 100) }}
 							/>
-							<View style={{ flex: 1, flexDirection: 'column' }}>
-								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2 }}>
+							<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
+								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium }}>
 									{item.track !== undefined ? `${item.track}. ` : null}{item.title || item.name}
 								</Text>
-								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
-									{item.artist || item.homePageUrl}
-								</Text>
+								{
+									(item.artist || item.homePageUrl) ?
+									<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
+										{item.artist || item.homePageUrl}
+									</Text> : null
+								}
 							</View>
 						</View>
 					}

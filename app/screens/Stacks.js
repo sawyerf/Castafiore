@@ -25,6 +25,7 @@ import ShowAll from '~/screens/ShowAll';
 import EditPlaylist from '~/screens/EditPlaylist';
 import ArtistExplorer from '~/screens/ArtistExplorer';
 import AlbumExplorer from '~/screens/AlbumExplorer';
+import Info from '~/screens/Info';
 
 import { ThemeContext } from '~/contexts/theme';
 
@@ -51,6 +52,7 @@ export const HomeStack = () => {
 			<Stack.Screen name="UpdateRadio" component={UpdateRadio} />
 			<Stack.Screen name="ShowAll" component={ShowAll} />
 			<Stack.Screen name="Playlist" component={Playlist} />
+			<Stack.Screen name="Info" component={Info} />
 		</Stack.Navigator>
 	)
 }
@@ -74,6 +76,7 @@ export const SearchStack = () => {
 			<Stack.Screen name="Artist" component={Artist} />
 			<Stack.Screen name="ArtistExplorer" component={ArtistExplorer} />
 			<Stack.Screen name="AlbumExplorer" component={AlbumExplorer} />
+			<Stack.Screen name="Info" component={Info} />
 		</Stack.Navigator>
 	)
 }
@@ -98,6 +101,7 @@ export const PlaylistsStack = () => {
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
 			<Stack.Screen name="EditPlaylist" component={EditPlaylist} />
+			<Stack.Screen name="Info" component={Info} />
 		</Stack.Navigator>
 	)
 }

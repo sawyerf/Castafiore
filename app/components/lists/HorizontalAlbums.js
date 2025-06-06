@@ -74,7 +74,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 						name: 'Info',
 						icon: 'info',
 						onPress: () => {
-							refOption.current.setInfo(albums[indexOptions])
+							refOption.current.showInfo(albums[indexOptions])
 							setIndexOptions(-1)
 						}
 					}

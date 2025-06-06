@@ -25,8 +25,8 @@ const Selector = ({ current, items, setData }) => {
 		<ScrollView
 			horizontal={true}
 			showsHorizontalScrollIndicator={false}
-			style={{ marginHorizontal: 20, marginBottom: 30, flex: 1 }}
-			contentContainerStyle={{ flexDirection: 'row', gap: 10, }}
+			style={{ marginBottom: 30, flex: 1 }}
+			contentContainerStyle={{ flexDirection: 'row', gap: 10, paddingHorizontal: 20 }}
 		>
 			{items.map((item, index) => (
 				<Pressable
@@ -70,7 +70,7 @@ const AlbumExplorer = () => {
 					<>
 						<BackButton />
 						<View style={styles.cover}>
-							<Icon name="group" size={100} color={'#cd1921'} />
+							<Icon name="book" size={100} color={'#cd1921'} />
 						</View>
 						<View style={presStyles.headerContainer}>
 							<View style={{ flex: 1 }}>

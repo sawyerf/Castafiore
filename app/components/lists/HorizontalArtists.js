@@ -52,7 +52,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 						name: 'Info',
 						icon: 'info',
 						onPress: () => {
-							refOption.current.setInfo(artists[indexOptions])
+							refOption.current.showInfo(artists[indexOptions])
 							setIndexOptions(-1)
 						}
 					}

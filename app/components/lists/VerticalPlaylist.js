@@ -172,7 +172,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 						name: 'Info',
 						icon: 'info',
 						onPress: () => {
-							refOption.current.setInfo(playlists[indexOption])
+							refOption.current.showInfo(playlists[indexOption])
 							refOption.current.close()
 						}
 					},

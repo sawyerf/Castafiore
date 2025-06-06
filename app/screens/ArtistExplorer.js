@@ -4,8 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { ConfigContext } from '~/contexts/config';
 import { useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
+import { urlCover } from '~/utils/api';
 import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
@@ -17,6 +19,7 @@ const ArtistExplorer = () => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
+	const config = React.useContext(ConfigContext);
 
 	const [artists] = useCachedAndApi([], 'getArtists', null, (json, setData) => {
 		setData(json?.artists?.index.map(item => ({
@@ -33,12 +36,6 @@ const ArtistExplorer = () => {
 	const isFavorited = React.useCallback((id) => {
 		return favorited.some(fav => fav.id === id);
 	}, [favorited]);
-
-	const urlImage = React.useCallback((urlImg) => {
-		const url = new URL(urlImg);
-		url.searchParams.set('size', '200');
-		return url.toString();
-	}, []);
 
 	return (
 		<>
@@ -74,7 +71,7 @@ const ArtistExplorer = () => {
 							gap: 10,
 						}}>
 						<ImageError
-							source={{ uri: urlImage(item.artistImageUrl) }}
+							source={{ uri: urlCover(config, item.id, 100) }}
 							iconError="user"
 							style={{
 								width: 70,

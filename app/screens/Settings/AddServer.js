@@ -144,19 +144,25 @@ const AddServer = ({ navigation }) => {
 						isLast={true}
 					/>
 				</View>
-				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10 }]}>
+				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
 					<ButtonSwitch
 						title="Show Password"
 						value={showPassword}
 						onPress={() => setShowPassword(!showPassword)}
+						isLast
 					/>
+				</View>
+				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
 					<ButtonSwitch
-						title="Use low security"
+						title="Legacy authentication"
 						value={lowSecurity}
 						onPress={() => setLowSecurity(!lowSecurity)}
 						isLast={true}
 					/>
 				</View>
+				<Text style={settingStyles.description(theme)}>
+					Legacy authentication sends the password in plain text without any hashing.
+				</Text>
 				<ButtonText
 					text="Connect"
 					onPress={connect}

@@ -30,6 +30,7 @@ const AddServer = ({ navigation }) => {
 	const [error, setError] = React.useState('');
 	const [info, setInfo] = React.useState(null)
 	const [showPassword, setShowPassword] = React.useState(false)
+	const [lowSecurity, setLowSecurity] = React.useState(false)
 
 	const upConfig = (conf) => {
 		AsyncStorage.setItem('config', JSON.stringify(conf))
@@ -40,7 +41,13 @@ const AddServer = ({ navigation }) => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
-		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
+
+		let query;
+		if (lowSecurity) {
+			query = `u=${encodeURI(username)}&p=${encodeURI(password)}&v=1.16.1&c=castafiore`
+		} else {
+			query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
+		}
 
 		if (Platform.OS !== 'android' && uri.startsWith('http://')) {
 			setError('Only https is allowed')
@@ -50,7 +57,7 @@ const AddServer = ({ navigation }) => {
 			.then((json) => {
 				if (json?.status == 'ok') {
 					setInfo(json)
-					const conf = { name, url: uri, username, query }
+					const conf = { name, url: uri, username, query, type: json.type }
 					upConfig(conf)
 					setError('')
 					setSettings({ ...settings, servers: [...settings.servers, conf] })
@@ -137,14 +144,25 @@ const AddServer = ({ navigation }) => {
 						isLast={true}
 					/>
 				</View>
-				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10 }]}>
+				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
 					<ButtonSwitch
 						title="Show Password"
 						value={showPassword}
 						onPress={() => setShowPassword(!showPassword)}
+						isLast
+					/>
+				</View>
+				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
+					<ButtonSwitch
+						title="Legacy authentication"
+						value={lowSecurity}
+						onPress={() => setLowSecurity(!lowSecurity)}
 						isLast={true}
 					/>
 				</View>
+				<Text style={settingStyles.description(theme)}>
+					Legacy authentication sends the password in plain text without any hashing.
+				</Text>
 				<ButtonText
 					text="Connect"
 					onPress={connect}

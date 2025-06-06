@@ -32,7 +32,7 @@ const Info = ({ route: { params: { info } } }) => {
 					borderRadius: 5,
 					marginTop: 20,
 				}}
-				source={{ uri: urlCover(config, info.albumId || info.id) }}
+				source={{ uri: urlCover(config, info) }}
 			/>
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<View style={settingStyles.optionsContainer(theme)}>

@@ -26,8 +26,8 @@ const Playlists = ({ navigation }) => {
 		outputRange: ['0deg', '360deg']
 	})
 
-	const [favorited, refreshFavorited] = useCachedAndApi([], 'getStarred', null, (json, setData) => {
-		setData(json.starred.song)
+	const [favorited, refreshFavorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
+		setData(json?.starred2?.song)
 	}, [])
 
 	const [playlists, refreshPlaylists, setPlaylists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {

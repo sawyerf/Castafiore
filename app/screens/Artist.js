@@ -35,8 +35,8 @@ const Artist = ({ route: { params } }) => {
 		setSortAlbum(json.artist?.album?.sort((a, b) => b.year - a.year))
 	}, [params.id])
 
-	const [favorited] = useCachedAndApi([], 'getStarred', null, (json, setData) => {
-		setData(json.starred.song.filter(song => song.artistId === params.id))
+	const [favorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
+		setData(json.starred2.song.filter(song => song.artistId === params.id))
 	}, [params.id])
 
 	const getRandomSongs = async () => {
@@ -72,9 +72,7 @@ const Artist = ({ route: { params } }) => {
 			<BackButton />
 			<Image
 				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
-				source={{
-					uri: urlCover(config, params.id),
-				}}
+				source={{ uri: urlCover(config, artist || params) }}
 			/>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>

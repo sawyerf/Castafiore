@@ -74,7 +74,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							<Image
 								style={mainStyles.coverSmall(theme)}
 								source={{
-									uri: urlCover(config, playlist.id, 100),
+									uri: urlCover(config, playlist, 100),
 								}}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>

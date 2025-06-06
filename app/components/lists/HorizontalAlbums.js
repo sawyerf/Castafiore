@@ -33,10 +33,10 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 						<Image
 							style={[styles.albumCover, { backgroundColor: theme.secondaryBack }]}
 							source={{
-								uri: urlCover(config, item.id),
+								uri: urlCover(config, item),
 							}}
 						/>
-						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
+						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album}</Text>
 						<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : item.artist}</Text>
 					</Pressable>
 				)} />

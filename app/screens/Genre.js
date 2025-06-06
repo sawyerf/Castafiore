@@ -23,8 +23,8 @@ const Genre = ({ route: { params } }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 
-	const [albums] = useCachedAndApi([], 'getAlbumList', { type: 'byGenre', genre: params.genre.value }, (json, setData) => {
-		setData(json?.albumList?.album)
+	const [albums] = useCachedAndApi([], 'getAlbumList2', { type: 'byGenre', genre: params.genre.value }, (json, setData) => {
+		setData(json?.albumList2?.album)
 	})
 
 	const [songs] = useCachedAndApi([], 'getSongsByGenre', { genre: params.genre.value, count: 50 }, (json, setData) => {
@@ -65,9 +65,9 @@ const Genre = ({ route: { params } }) => {
 					onPress={getRandomSongs}
 				/>
 			</View>
-			<Text style={[mainStyles.subTitle(theme), mainStyles.stdVerticalMargin]}>Albums</Text>
+			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>
 			<HorizontalAlbums albums={albums} />
-			<Text style={[mainStyles.subTitle(theme), mainStyles.stdVerticalMargin, { marginBottom: 14, marginTop: 20 }]}>Songs</Text>
+			<Text style={mainStyles.titleSection(theme)}>Songs</Text>
 			<SongsList songs={songs} />
 		</ScrollView>
 	)

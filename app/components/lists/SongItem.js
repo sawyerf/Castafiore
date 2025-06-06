@@ -64,7 +64,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 			<ImageError
 				style={[mainStyles.coverSmall(theme), { marginRight: 10 }]}
 				source={{
-					uri: urlCover(config, song.albumId, 100),
+					uri: urlCover(config, song, 100),
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>

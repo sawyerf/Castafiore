@@ -94,7 +94,7 @@ export const playSong = async (config, songDispatch, queue, index) => {
 			...track,
 			id: track.id,
 			url: urlStream(config, track.id, global.streamFormat, global.maxBitRate),
-			atwork: urlCover(config, track.albumId),
+			atwork: urlCover(config, track),
 			artist: track.artist,
 			title: track.title,
 			album: track.album,

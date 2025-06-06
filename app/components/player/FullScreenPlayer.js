@@ -59,7 +59,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						isPreview == preview.COVER &&
 						<SlideControl style={styles.albumImage()}>
 							<ImageError
-								source={{ uri: urlCover(config, song?.songInfo?.albumId) }}
+								source={{ uri: urlCover(config, song?.songInfo) }}
 								style={[styles.albumImage(), {
 									backgroundColor: theme.secondaryBack,
 								}]}

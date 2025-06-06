@@ -55,8 +55,8 @@ const AlbumExplorer = () => {
 	const [type, setType] = React.useState('newest');
 	const [parSize, setParSize] = React.useState(20);
 
-	const [albums] = useCachedAndApi([], 'getAlbumList', { type, size: parSize }, (json, setData) => {
-		setData(json?.albumList?.album || []);
+	const [albums] = useCachedAndApi([], 'getAlbumList2', { type, size: parSize }, (json, setData) => {
+		setData(json?.albumList2?.album || []);
 	}, [type, parSize])
 
 	return (
@@ -119,7 +119,7 @@ const AlbumExplorer = () => {
 							gap: 15,
 						}}>
 						<ImageError
-							source={{ uri: urlCover(config, item.id, 100) }}
+							source={{ uri: urlCover(config, item, 100) }}
 							style={{
 								width: 70,
 								height: 70,
@@ -140,7 +140,7 @@ const AlbumExplorer = () => {
 								}}
 								numberOfLines={1}
 							>
-								{item.title}
+								{item.name || item.album}
 							</Text>
 							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
 								{item.artist}

@@ -166,7 +166,7 @@ const downloadNextSong = async (config, queue, currentIndex) => {
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
-		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-zA-Z0-9]*$/)) {
+		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-zA-Z0-9-]*$/)) {
 			await fetch(urlStream(config, queue[index].id, window.streamFormat, window.maxBitRate))
 				.then(() => { queue[index].isDownloaded = true })
 				.catch(() => { })
@@ -193,7 +193,7 @@ const loadSong = async (config, queue, index) => {
 		title: song.title,
 		artist: song.artist,
 		album: song.album,
-		artwork: [{ src: urlCover(config, song.albumId) }],
+		artwork: [{ src: urlCover(config, song) }],
 	})
 }
 

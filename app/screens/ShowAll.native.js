@@ -49,11 +49,11 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 				<ImageError
 					style={styles.albumCover(type)}
 					source={{
-						uri: urlCover(config, item.id),
+						uri: urlCover(config, item),
 					}}
 					iconError={['artist', 'artist_all'].includes(type) ? 'user' : 'music'}
 				/>
-				<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name}</Text>
+				<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album }</Text>
 				<Text numberOfLines={1} style={styles.artist(theme)}>{item.artist}</Text>
 			</Pressable>
 		)

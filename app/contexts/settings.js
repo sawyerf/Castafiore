@@ -35,7 +35,7 @@ export const defaultSettings = {
 			type: 'lms',
 			url: 'https://lms-demo.poupon.dev',
 			username: 'demo',
-			query: `u=${encodeURI('demo')}&t=${encodeURI('7e5da62f-e4a2-f946-a790-9872352f82ae')}&v=1.16.1&c=castafiore`
+			query: `u=${encodeURI('demo')}&p=${encodeURI('7e5da62f-e4a2-f946-a790-9872352f82ae')}&v=1.16.1&c=castafiore`
 		}
 	],
 	cacheNextSong: 5,

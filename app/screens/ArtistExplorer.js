@@ -28,8 +28,8 @@ const ArtistExplorer = () => {
 		})) || []);
 	})
 
-	const [favorited] = useCachedAndApi([], 'getStarred', null, (json, setData) => {
-		setData(json?.starred?.artist || []);
+	const [favorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
+		setData(json?.starred2?.artist || []);
 	}, []);
 
 
@@ -71,7 +71,7 @@ const ArtistExplorer = () => {
 							gap: 10,
 						}}>
 						<ImageError
-							source={{ uri: urlCover(config, item.id, 100) }}
+							source={{ uri: urlCover(config, item, 100) }}
 							iconError="user"
 							style={{
 								width: 70,

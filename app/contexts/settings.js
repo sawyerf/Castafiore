@@ -25,9 +25,17 @@ export const defaultSettings = {
 	servers: [
 		{
 			name: 'Demo',
+			type: 'navidrome',
 			url: 'https://demo.navidrome.org',
 			username: 'demo',
 			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
+		},
+		{
+			name: 'Demo LMS',
+			type: 'lms',
+			url: 'https://lms-demo.poupon.dev',
+			username: 'demo',
+			query: `u=${encodeURI('demo')}&t=${encodeURI('7e5da62f-e4a2-f946-a790-9872352f82ae')}&v=1.16.1&c=castafiore`
 		}
 	],
 	cacheNextSong: 5,
@@ -58,8 +66,8 @@ export const SettingsContext = React.createContext()
 export const SetSettingsContext = React.createContext()
 
 export const getPathByType = (type) => {
-	if (type === 'album') return 'getAlbumList'
-	if (type === 'artist' || type === 'album_star') return 'getStarred'
+	if (type === 'album') return 'getAlbumList2'
+	if (type === 'artist' || type === 'album_star') return 'getStarred2'
 	if (type === 'genre') return 'getGenres'
 	if (type === 'artist_all') return 'getArtists'
 	if (type === 'radio') return 'getInternetRadioStations'
@@ -69,9 +77,9 @@ export const getPathByType = (type) => {
 
 export const setListByType = (json, type, setList) => {
 	if (!json) return
-	if (type == 'album') return setList(json?.albumList?.album)
-	if (type == 'album_star') return setList(json?.starred?.album)
-	if (type == 'artist') return setList(json?.starred?.artist)
+	if (type == 'album') return setList(json?.albumList2?.album)
+	if (type == 'album_star') return setList(json?.starred2?.album)
+	if (type == 'artist') return setList(json?.starred2?.artist)
 	if (type == 'artist_all') return setList(json?.artists?.index.map((item) => item.artist).flat())
 	if (type == 'genre') return setList(json?.genres?.genre)
 	if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)

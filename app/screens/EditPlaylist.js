@@ -65,7 +65,7 @@ const Playlist = ({ route: { params } }) => {
 			<Image
 				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 				source={{
-					uri: urlCover(config, params.playlist.id),
+					uri: urlCover(config, params.playlist),
 				}}
 			/>
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>

@@ -33,7 +33,7 @@ const Playlist = ({ route: { params } }) => {
 		<>
 			<FlatList
 				data={songs}
-				keyExtractor={(item, index) => item.id || index.toString()}
+				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
 				ListHeaderComponent={
@@ -42,7 +42,7 @@ const Playlist = ({ route: { params } }) => {
 						<Image
 							style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 							source={{
-								uri: urlCover(config, params.playlist.id),
+								uri: urlCover(config, params.playlist),
 							}}
 						/>
 						<View style={presStyles.headerContainer}>

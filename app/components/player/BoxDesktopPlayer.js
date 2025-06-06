@@ -31,7 +31,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 				style={{ flexDirection: 'row', flex: 1 }}
 			>
 				<ImageError
-					source={{ uri: urlCover(config, song?.songInfo?.albumId, 100), }}
+					source={{ uri: urlCover(config, song?.songInfo, 100), }}
 					style={styles.boxPlayerImage}
 				>
 					<View style={styles.boxPlayerImage} >

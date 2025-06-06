@@ -17,12 +17,12 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 	}, [id, isFavorited])
 
 	const onPressFavorited = () => {
-		getApi(config, favorited ? 'unstar' : 'star', `id=${id}`)
+		getApi(config, favorited ? 'unstar' : 'star', { id, albumId: id, artistId: id, })
 			.then(() => {
 				setFavorited(!favorited)
-				refreshApi(config, 'getStarred', null)
+				refreshApi(config, 'getStarred2', null)
 					.then(() => {
-						setUpdateApi({ path: 'getStarred', query: null, uid: 1 })
+						setUpdateApi({ path: 'getStarred2', query: null, uid: 1 })
 					})
 			})
 			.catch((e) => console.error(`FavoritedButton: ${e}`))

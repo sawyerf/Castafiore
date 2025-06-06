@@ -132,7 +132,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 
 							>
 								<ImageError
-									source={{ uri: urlCover(config, item.id, 100) }}
+									source={{ uri: urlCover(config, item, 100) }}
 									style={{ backgroundColor: theme.secondaryBack, width: 40, height: 40, borderRadius: 5 }}
 								/>
 								<View style={{ flexDirection: 'column', flex: 1 }}>

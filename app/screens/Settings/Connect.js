@@ -95,7 +95,7 @@ const Connect = ({ navigation }) => {
 								delayLongPress={200}
 								onLongPress={() => setServerOption({ ...server, index })}
 								onPress={() => {
-									upConfig({ name: server.name, url: server.url, username: server.username, query: server.query })
+									upConfig(server)
 								}}>
 								<Icon name="server" size={size.icon.tiny} color={theme.secondaryText} style={{ marginEnd: 10 }} />
 								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>

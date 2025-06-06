@@ -41,10 +41,10 @@ const AddServer = ({ navigation }) => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
-		
+
 		let query;
 		if (lowSecurity) {
-			query = `u=${encodeURI(username)}&p=${password}&v=1.16.1&c=castafiore`
+			query = `u=${encodeURI(username)}&p=${encodeURI(password)}&v=1.16.1&c=castafiore`
 		} else {
 			query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
 		}
@@ -57,7 +57,7 @@ const AddServer = ({ navigation }) => {
 			.then((json) => {
 				if (json?.status == 'ok') {
 					setInfo(json)
-					const conf = { name, url: uri, username, query }
+					const conf = { name, url: uri, username, query, type: json.type }
 					upConfig(conf)
 					setError('')
 					setSettings({ ...settings, servers: [...settings.servers, conf] })

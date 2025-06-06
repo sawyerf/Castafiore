@@ -20,7 +20,7 @@ const Album = ({ navigation, route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isStarred, setStarred] = React.useState(params.starred || false)
 
-	const [songs] = useCachedAndApi([], 'getAlbum', `id=${params.id}`, (json, setData) => {
+	const [songs] = useCachedAndApi([], 'getAlbum', { id: params.id}, (json, setData) => {
 		setStarred(json?.album?.starred)
 		setData(json?.album?.song.sort((a, b) => {
 			// sort by discNumber and track
@@ -41,12 +41,12 @@ const Album = ({ navigation, route: { params } }) => {
 			<Image
 				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 				source={{
-					uri: urlCover(config, params.id),
+					uri: urlCover(config, params),
 				}}
 			/>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)} numberOfLines={2}>{params.name}</Text>
+					<Text style={presStyles.title(theme)} numberOfLines={2}>{params.name || params.album}</Text>
 					<Pressable
 						style={mainStyles.opacity}
 						onPress={() => navigation.navigate('Artist', { id: params.artistId, name: params.artist })}

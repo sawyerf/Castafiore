@@ -104,7 +104,7 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 									marginRight: 10,
 									borderRadius: 5,
 								}}
-								source={{ uri: urlCover(config, item.albumId || item.id, 100) }}
+								source={{ uri: urlCover(config, item, 100) }}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
 								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium }}>

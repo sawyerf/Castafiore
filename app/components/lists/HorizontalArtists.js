@@ -34,7 +34,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 					>
 						<ImageError
 							style={[styles.artistCover, { backgroundColor: theme.secondaryBack }]}
-							source={{ uri: urlCover(config, item.id) }}
+							source={{ uri: urlCover(config, item) }}
 							iconError='user'
 						/>
 						<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>

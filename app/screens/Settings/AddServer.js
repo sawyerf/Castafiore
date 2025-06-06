@@ -30,6 +30,7 @@ const AddServer = ({ navigation }) => {
 	const [error, setError] = React.useState('');
 	const [info, setInfo] = React.useState(null)
 	const [showPassword, setShowPassword] = React.useState(false)
+	const [lowSecurity, setLowSecurity] = React.useState(false)
 
 	const upConfig = (conf) => {
 		AsyncStorage.setItem('config', JSON.stringify(conf))
@@ -40,7 +41,13 @@ const AddServer = ({ navigation }) => {
 		const uri = url.replace(/\/$/, '')
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
-		const query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
+		
+		let query;
+		if (lowSecurity) {
+			query = `u=${encodeURI(username)}&p=${password}&v=1.16.1&c=castafiore`
+		} else {
+			query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
+		}
 
 		if (Platform.OS !== 'android' && uri.startsWith('http://')) {
 			setError('Only https is allowed')
@@ -142,6 +149,11 @@ const AddServer = ({ navigation }) => {
 						title="Show Password"
 						value={showPassword}
 						onPress={() => setShowPassword(!showPassword)}
+					/>
+					<ButtonSwitch
+						title="Use low security"
+						value={lowSecurity}
+						onPress={() => setLowSecurity(!lowSecurity)}
 						isLast={true}
 					/>
 				</View>

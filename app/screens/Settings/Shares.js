@@ -39,7 +39,7 @@ const SharesSettings = () => {
 							<TableItem
 								title="No shares found"
 								value=""
-								isLast={true}
+								isLast
 							/>
 						)
 					}

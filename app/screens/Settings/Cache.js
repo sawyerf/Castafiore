@@ -85,7 +85,7 @@ const CacheSettings = () => {
 						value={cacheNextSong}
 						onChangeText={(text) => setCacheNextSong(text.replace(/[^0-9]/g, ''))}
 						inputMode="numeric"
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>{'Auto download upcoming songs (default: 5)'}</Text>
@@ -94,7 +94,7 @@ const CacheSettings = () => {
 						title="Show if song is cached"
 						value={settings.showCache}
 						onPress={() => setSettings({ ...settings, showCache: !settings.showCache })}
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<View style={settingStyles.optionsContainer(theme)}>
@@ -109,7 +109,7 @@ const CacheSettings = () => {
 								getStat()
 							}
 						)}
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<Text style={settingStyles.titleContainer(theme)}>Cache Stats</Text>

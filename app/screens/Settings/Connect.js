@@ -81,7 +81,7 @@ const Connect = ({ navigation }) => {
 						<View style={settingStyles.optionsContainer(theme)}>
 							<TableItem title="Name" value={config.name} />
 							<TableItem title="Url" value={config.url} />
-							<TableItem title="Username" value={config.username} isLast={true} />
+							<TableItem title="Username" value={config.username} isLast />
 						</View>
 					</>
 				)}
@@ -143,7 +143,7 @@ const Connect = ({ navigation }) => {
 				close={() => setServerOption(null)}
 			/>
 
-		</ScrollView >
+		</ScrollView>
 	)
 }
 

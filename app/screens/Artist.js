@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SongDispatchContext } from '~/contexts/song';
@@ -10,13 +10,13 @@ import { urlCover, useCachedAndApi, getApiNetworkFirst } from '~/utils/api';
 import { shuffle } from '~/utils/tools';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
-import BackButton from '~/components/button/BackButton';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import IconButton from '~/components/button/IconButton';
 import SongsList from '~/components/lists/SongsList';
 import size from '~/styles/size';
+import PresHeader from '~/components/PresHeader';
 
 const Artist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
@@ -69,16 +69,11 @@ const Artist = ({ route: { params } }) => {
 			style={mainStyles.mainContainer(theme)}
 			vertical={true}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
-			<BackButton />
-			<Image
-				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
-				source={{ uri: urlCover(config, artist || params) }}
-			/>
-			<View style={presStyles.headerContainer}>
-				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)}>{params.name}</Text>
-					<Text style={presStyles.subTitle(theme)}>Artist {params.id === undefined ? 'not found' : ''}</Text>
-				</View>
+			<PresHeader
+				title={params.name}
+				subTitle={'Artist'}
+				imgSrc={urlCover(config, params)}
+			>
 				<IconButton
 					style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
 					icon="arrow-up"
@@ -97,8 +92,7 @@ const Artist = ({ route: { params } }) => {
 					style={[presStyles.button, { paddingStart: 7.5 }]}
 					size={size.icon.medium}
 				/>
-			</View>
-			<Text style={[mainStyles.titleSection(theme), { marginTop: 0 }]}>Albums</Text>
+			</PresHeader>
 			<HorizontalAlbums albums={sortAlbum} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
@@ -116,7 +110,7 @@ const Artist = ({ route: { params } }) => {
 					</>
 				) : null
 			}
-		</ScrollView >
+		</ScrollView>
 	)
 }
 

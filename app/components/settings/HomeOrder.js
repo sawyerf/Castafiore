@@ -27,7 +27,6 @@ const HomeOrder = () => {
 		setSettings({ ...settings, homeOrder: newHomeOrder })
 	}
 
-
 	const onPressHomeOrder = (index) => {
 		const newHomeOrder = [...settings.homeOrder]
 		newHomeOrder[index].enable = !newHomeOrder[index].enable
@@ -100,7 +99,7 @@ const HomeOrder = () => {
 									style={{ marginEnd: 5 }}
 								/>
 							</View>
-						</Animated.View >
+						</Animated.View>
 					)
 				})
 			}

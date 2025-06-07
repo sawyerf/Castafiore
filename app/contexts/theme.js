@@ -168,7 +168,6 @@ export const themes = {
 	},
 }
 
-
 export const themesPlayer = {
 	default: {},
 	blue: {

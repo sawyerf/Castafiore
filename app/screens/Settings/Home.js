@@ -42,18 +42,18 @@ const HomeSettings = () => {
 			<View
 				style={[settingStyles.contentMainContainer, { marginTop: 30 }]}
 			>
-				<Text style={settingStyles.titleContainer(theme)}> Home Page</Text >
+				<Text style={settingStyles.titleContainer(theme)}> Home Page</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<HomeOrder />
 				</View>
-				<Text style={settingStyles.description(theme)}>	{'Select what you want to see on the home page'}</Text >
+				<Text style={settingStyles.description(theme)}>	{'Select what you want to see on the home page'}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
 						title="Size of album list"
 						value={sizeOfList}
 						onChangeText={(text) => setSizeOfList(text.replace(/[^0-9]/g, ''))}
 						inputMode="numeric"
-						isLast={true}
+						isLast
 					/>
 				</View>
 
@@ -63,10 +63,10 @@ const HomeSettings = () => {
 						title={'Show scroll helper'}
 						onPress={() => setSettings({ ...settings, scrollHelper: !settings.scrollHelper })}
 						value={settings.scrollHelper}
-						isLast={true}
+						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>	{'It\'s recommanded to activate scroll helper on desktop'}</Text >
+				<Text style={settingStyles.description(theme)}>	{'It\'s recommanded to activate scroll helper on desktop'}</Text>
 
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
@@ -74,7 +74,7 @@ const HomeSettings = () => {
 						value={LBUser}
 						onChangeText={(text) => setLBUser(text)}
 						placeholder="user"
-						isLast={true}
+						isLast
 					/>
 				</View>
 			</View>

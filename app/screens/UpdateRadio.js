@@ -49,7 +49,7 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 		<View style={[
 			mainStyles.mainContainer(theme),
 			mainStyles.contentMainContainer(insets)
-		]} >
+		]}>
 			<Header title={params?.id ? 'Update Radio' : 'Create Radio'} />
 			<View style={settingStyles.contentMainContainer}>
 				<View
@@ -91,7 +91,7 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 						inputMode="url"
 						autoCorrect={false}
 						onSubmitEditing={updateRadio}
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<ButtonText

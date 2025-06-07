@@ -1,17 +1,14 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
 import { getCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
 import { getPathByType, setListByType } from '~/contexts/settings';
-import ImageError from '~/components/ImageError';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
-import size from '~/styles/size';
-
+import AllItem from '../components/item/AllItem';
 
 const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 	const insets = useSafeAreaInsets();
@@ -61,49 +58,16 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 				}}>
 				{
 					list.map((item, index) => (
-						<Pressable
-							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
+						<AllItem
 							key={index}
-							onPress={() => onPress(item)}>
-							<ImageError
-								style={[styles.albumCover(type), { backgroundColor: theme.secondaryBack }]}
-								source={{
-									uri: urlCover(config, item),
-								}}
-								iconError={['artist', 'artist_all'].includes(type) ? 'user' : 'music'}
-							/>
-							<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album}</Text>
-							<Text numberOfLines={1} style={styles.artist(theme)}>{item.artist}</Text>
-						</Pressable>
+							item={item}
+							type={type}
+							onPress={onPress}
+						/>
 					))}
 			</View>
 		</ScrollView>
 	);
 }
-
-const styles = StyleSheet.create({
-	album: {
-		minWidth: size.image.large,
-		maxWidth: 245,
-	},
-	albumCover: (type) => ({
-		width: "100%",
-		aspectRatio: 1,
-		marginBottom: 6,
-		borderRadius: ['artist', 'artist_all'].includes(type) ? size.radius.circle : 0,
-	}),
-	titleAlbum: (theme) => ({
-		color: theme.primaryText,
-		fontSize: size.text.small,
-		width: '100%',
-		marginBottom: 3,
-		marginTop: 3,
-	}),
-	artist: theme => ({
-		color: theme.secondaryText,
-		fontSize: size.text.small,
-		width: '100%',
-	}),
-})
 
 export default ShowAll;

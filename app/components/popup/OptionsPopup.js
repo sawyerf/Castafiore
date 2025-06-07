@@ -154,7 +154,7 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 					})}
 				</Animated.View>
 			</ScrollView>
-		</Modal >
+		</Modal>
 	)
 }
 

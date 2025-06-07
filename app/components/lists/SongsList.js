@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
-import SongItem from '~/components/lists/SongItem';
+import SongItem from '~/components/item/SongItem';
 import size from '~/styles/size';
 import OptionsSongsList from '~/components/options/OptionsSongsList';
 

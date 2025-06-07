@@ -77,5 +77,4 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 	)
 }
 
-
 export default BottomBar

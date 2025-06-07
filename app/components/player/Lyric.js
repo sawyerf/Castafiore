@@ -8,7 +8,6 @@ import { parseLrc } from '~/utils/lrc'
 import Player from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-
 const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
 	const [indexCurrent, setIndex] = React.useState(0)
 	const [lyrics, setLyrics] = React.useState([])

@@ -26,7 +26,7 @@ const HorizontalLBStat = ({ stats }) => {
 		}}>{stats}</Text>
 	)
 	return (
-		<View style={styles.scrollContainer(stats?.length)} >
+		<View style={styles.scrollContainer(stats?.length)}>
 			{
 				stats.map((item, index) => {
 					const time = new Date(item.time_range)

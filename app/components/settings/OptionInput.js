@@ -9,7 +9,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<View style={settingStyles.optionItem(theme, isLast)} >
+		<View style={settingStyles.optionItem(theme, isLast)}>
 			<Text
 				numberOfLines={1}
 				style={settingStyles.primaryText(theme, { flex: undefined })}>{title}</Text>

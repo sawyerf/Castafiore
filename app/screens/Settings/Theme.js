@@ -58,7 +58,7 @@ const Theme = () => {
 					}
 				</View>
 			</View>
-		</ScrollView >
+		</ScrollView>
 	)
 }
 

@@ -67,7 +67,7 @@ const RadioList = ({ radios }) => {
 								style={[styles.image, {
 									alignItems: 'center',
 									justifyContent: 'center',
-								}]} >
+								}]}>
 								<Icon name="plus" size={32} color={theme.primaryText} />
 							</View>
 							<Text
@@ -99,7 +99,7 @@ const RadioList = ({ radios }) => {
 									style={[styles.image, {
 										alignItems: 'center',
 										justifyContent: 'center',
-									}]} >
+									}]}>
 									<Icon
 										name="feed"
 										size={32}
@@ -108,7 +108,7 @@ const RadioList = ({ radios }) => {
 									/>
 								</View>
 							</ImageError>
-							<View style={{ flexDirection: 'column', flex: 1 }} >
+							<View style={{ flexDirection: 'column', flex: 1 }}>
 								<Text
 									numberOfLines={1}
 									style={{

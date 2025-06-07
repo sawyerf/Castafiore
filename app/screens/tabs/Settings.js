@@ -56,7 +56,7 @@ const Settings = ({ navigation }) => {
 					endText={config.query ? (config.name?.length ? config.name : 'Connected') : 'Not connected'}
 					icon="server"
 					onPress={() => navigation.navigate('Connect')}
-					isLast={true}
+					isLast
 				/>
 			</View>
 
@@ -66,7 +66,7 @@ const Settings = ({ navigation }) => {
 					icon="desktop"
 					value={setting.isDesktop}
 					onPress={() => setSettings({ ...setting, isDesktop: !setting.isDesktop })}
-					isLast={true} />
+					isLast />
 			</View>
 
 			<View style={settingStyles.optionsContainer(theme)}>
@@ -94,7 +94,7 @@ const Settings = ({ navigation }) => {
 					title="Cache"
 					icon="database"
 					onPress={() => navigation.navigate('Settings/Cache')}
-					isLast={true}
+					isLast
 				/>
 			</View>
 
@@ -109,7 +109,7 @@ const Settings = ({ navigation }) => {
 						title="Informations"
 						icon="info"
 						onPress={() => navigation.navigate('Settings/Informations')}
-						isLast={true}
+						isLast
 					/>
 				</View>
 			)}
@@ -119,7 +119,7 @@ const Settings = ({ navigation }) => {
 					title="Github"
 					icon="github"
 					onPress={() => Linking.openURL('https://github.com/sawyerf/Castafiore')}
-					isLast={true}
+					isLast
 				/>
 			</View>
 
@@ -137,7 +137,7 @@ const Settings = ({ navigation }) => {
 							})
 						)
 					}}
-					isLast={true}
+					isLast
 				/>
 			</View>
 

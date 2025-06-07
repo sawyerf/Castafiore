@@ -157,7 +157,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					})
 				}
 			</ScrollView>
-		</View >
+		</View>
 	)
 }
 

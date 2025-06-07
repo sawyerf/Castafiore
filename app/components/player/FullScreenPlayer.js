@@ -13,7 +13,7 @@ import Lyric from '~/components/player/Lyric';
 import mainStyles from '~/styles/main';
 import SlideBar from '~/components/button/SlideBar';
 import SlideControl from '~/components/button/SlideControl';
-import SongItem from '~/components/lists/SongItem';
+import SongItem from '~/components/item/SongItem';
 import ImageError from '~/components/ImageError';
 import size from '~/styles/size';
 import PlayButton from '~/components/button/PlayButton';
@@ -162,7 +162,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					</View>
 				</View>
 			</View>
-		</Modal >
+		</Modal>
 	)
 }
 

@@ -64,7 +64,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 
 const styles = StyleSheet.create({
 	artist: {
-		flexDirection: 'collumn',
+		flexDirection: 'column',
 		alignItems: 'center',
 	},
 	artistCover: {

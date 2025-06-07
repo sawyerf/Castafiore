@@ -13,7 +13,7 @@ import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
 import HorizontalArtists from '~/components/lists/HorizontalArtists';
 import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
-import HistoryItem from '~/components/HistoryItem';
+import HistoryItem from '~/components/item/HistoryItem';
 import size from '~/styles/size';
 
 const STATES = {
@@ -187,7 +187,6 @@ const Search = () => {
 		setHistory(hist)
 		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
 	}
-
 
 	const getSearch = () => {
 		setState(STATES.LOADING)

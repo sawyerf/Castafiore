@@ -50,7 +50,7 @@ const ErrorPopup = ({ message, close }) => {
 				<Text style={{ fontSize: size.text.medium, color: theme.primaryText, fontWeight: 'bold' }}>Error</Text>
 				<Text style={[presStyles.text, { color: theme.primaryText }]}>{message}</Text>
 			</Animated.View>
-		</Modal >
+		</Modal>
 	)
 }
 

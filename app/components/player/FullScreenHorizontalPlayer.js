@@ -67,10 +67,10 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 				paddingStart: insets.left + 10 < 50 ? 50 : insets.left + 10,
 				paddingEnd: insets.right + 10 < 50 ? 50 : insets.right + 10,
 				gap: 20,
-			}} >
+			}}>
 				{
 					isPreview == preview.LYRICS &&
-					<View style={{ flex: 1, alignItems: 'center' }}>
+					<View style={{ flex: 2, alignItems: 'center' }}>
 						<Lyric
 							song={song}
 							time={time}
@@ -179,7 +179,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
 					</View>
-					<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', gap: 25 }} >
+					<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', gap: 25 }}>
 						<IconButton
 							icon="repeat"
 							style={{ width: 30, alignItems: 'end' }}
@@ -216,7 +216,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
 					</View>
-					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }} >
+					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }}>
 						{
 							Player.isVolumeSupported() &&
 							<>
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
 	imageCover: {
 		height: 200,
 		maxHeight: '100%',
+		width: 'auto',
 		aspectRatio: 1,
 		borderRadius: 5,
 		backgroundColor: 'rgba(0, 0, 0, 0.5)',

@@ -13,7 +13,6 @@ import SongsList from '~/components/lists/SongsList';
 import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 import size from '~/styles/size';
 
-
 const Playlists = ({ navigation }) => {
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();

@@ -68,7 +68,7 @@ const PlaylistsSettings = () => {
 							setPreviewFavorited(text.replace(/[^0-9]/g, ''))
 						}}
 						inputMode="numeric"
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>Number of songs to preview in favorited playlist (default: 3)</Text>
@@ -95,7 +95,7 @@ const PlaylistsSettings = () => {
 						title="Reverse playlist tracks"
 						value={settings.reversePlaylist}
 						onPress={() => setSettings({ ...settings, reversePlaylist: !settings.reversePlaylist })}
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>If enabled, recently added tracks will be shown first.</Text>

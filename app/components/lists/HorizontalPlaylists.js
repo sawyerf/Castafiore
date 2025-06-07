@@ -29,7 +29,7 @@ const ItemPlaylist = ({ item }) => {
   }, [item.id, settings.reversePlaylist])
 
   return (
-    <View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryBack }} >
+    <View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryBack }}>
       <Pressable
         style={(pressed) => ([mainStyles.opacity(pressed), { flexDirection: 'row', alignItems: 'center', width: '100%' }])}
         onPress={() => navigation.navigate('Playlist', { playlist: item })}
@@ -47,7 +47,7 @@ const ItemPlaylist = ({ item }) => {
           </Text>
         </View>
       </Pressable>
-      <View style={{ flexDirection: 'column', gap: 7, marginTop: 10, paddingStart: 10, width: '100%' }} >
+      <View style={{ flexDirection: 'column', gap: 7, marginTop: 10, paddingStart: 10, width: '100%' }}>
         {
           songList.slice(0, 3).map((item, index) => (
             <Pressable

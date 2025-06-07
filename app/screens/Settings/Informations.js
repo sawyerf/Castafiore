@@ -59,7 +59,7 @@ const InformationsSettings = () => {
 			<Header title="Informations" />
 
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Server</Text >
+				<Text style={settingStyles.titleContainer(theme)}>Server</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem
 						title={'Status'}
@@ -80,12 +80,12 @@ const InformationsSettings = () => {
 					<TableItem
 						title={'Url'}
 						value={config.url}
-						isLast={true}
+						isLast
 					/>
 				</View>
 			</View>
 			<View style={[settingStyles.contentMainContainer]}>
-				<Text style={settingStyles.titleContainer(theme)}>Scan</Text >
+				<Text style={settingStyles.titleContainer(theme)}>Scan</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem
 						title={'Last Scan'}
@@ -98,12 +98,12 @@ const InformationsSettings = () => {
 					<TableItem
 						title={'Files Scanned'}
 						value={scan.count}
-						isLast={true}
+						isLast
 					/>
 				</View>
 			</View>
 			<View style={[settingStyles.contentMainContainer]}>
-				<Text style={settingStyles.titleContainer(theme)}>User</Text >
+				<Text style={settingStyles.titleContainer(theme)}>User</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem
 						title={'Username'}
@@ -112,12 +112,12 @@ const InformationsSettings = () => {
 					<TableItem
 						title={'Email'}
 						value={user.email}
-						isLast={true}
+						isLast
 					/>
 				</View>
 			</View>
 			<View style={[settingStyles.contentMainContainer]}>
-				<Text style={settingStyles.titleContainer(theme)}>User Role</Text >
+				<Text style={settingStyles.titleContainer(theme)}>User Role</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						ROLES.map((role, index) => {

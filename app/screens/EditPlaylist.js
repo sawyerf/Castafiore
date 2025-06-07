@@ -84,7 +84,7 @@ const Playlist = ({ route: { params } }) => {
 									title="Public"
 									value={isPublic}
 									onPress={() => setIsPublic(!isPublic)}
-									isLast={true}
+									isLast
 								/>
 							</View>
 							<Text style={settingStyles.titleContainer(theme)}>Description</Text>
@@ -94,7 +94,7 @@ const Playlist = ({ route: { params } }) => {
 									value={comment}
 									placeholderTextColor={theme.primaryText}
 									onChangeText={comment => setComment(comment)}
-									isLast={true}
+									isLast
 								/>
 							</View>
 							<ButtonText
@@ -105,7 +105,7 @@ const Playlist = ({ route: { params } }) => {
 					)
 				}
 			</View>
-		</ScrollView >
+		</ScrollView>
 	);
 }
 

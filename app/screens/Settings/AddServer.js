@@ -141,7 +141,7 @@ const AddServer = ({ navigation }) => {
 						isPassword={true}
 						secureTextEntry={!showPassword}
 						autoComplete="current-password"
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
@@ -157,7 +157,7 @@ const AddServer = ({ navigation }) => {
 						title="Legacy authentication"
 						value={lowSecurity}
 						onPress={() => setLowSecurity(!lowSecurity)}
-						isLast={true}
+						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>

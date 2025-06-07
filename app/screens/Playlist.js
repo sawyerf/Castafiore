@@ -10,8 +10,8 @@ import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
-import SongItem from '~/components/lists/SongItem';
-import OptionsSongsList from '../components/options/OptionsSongsList';
+import SongItem from '~/components/item/SongItem';
+import OptionsSongsList from '~/components/options/OptionsSongsList';
 
 const Playlist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
@@ -27,7 +27,6 @@ const Playlist = ({ route: { params } }) => {
 		if (settings.reversePlaylist) setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })).reverse() || [])
 		else setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })) || [])
 	}, [params.playlist.id, settings.reversePlaylist])
-
 
 	return (
 		<>

@@ -1,25 +1,19 @@
 import React from 'react';
-import { Text, View, SectionList, StyleSheet, Pressable } from 'react-native';
+import { Text, SectionList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ConfigContext } from '~/contexts/config';
 import { useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
-import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
-import presStyles from '~/styles/pres';
-import ImageError from '~/components/ImageError';
+import PresHeaderIcon from '~/components/PresHeaderIcon';
+import ExplorerItem from '../components/item/ExplorerItem';
 import size from '~/styles/size';
-import FavoritedButton from '~/components/button/FavoritedButton';
 
 const ArtistExplorer = () => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
-	const config = React.useContext(ConfigContext);
 
 	const [artists] = useCachedAndApi([], 'getArtists', null, (json, setData) => {
 		setData(json?.artists?.index.map(item => ({
@@ -31,7 +25,6 @@ const ArtistExplorer = () => {
 	const [favorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
 		setData(json?.starred2?.artist || []);
 	}, []);
-
 
 	const isFavorited = React.useCallback((id) => {
 		return favorited.some(fav => fav.id === id);
@@ -46,68 +39,12 @@ const ArtistExplorer = () => {
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
 				maxToRenderPerBatch={20}
 				ListHeaderComponent={
-					<>
-						<BackButton />
-						<View style={styles.cover}>
-							<Icon name="group" size={100} color={'#cd1921'} />
-						</View>
-						<View style={presStyles.headerContainer}>
-							<View style={{ flex: 1 }}>
-								<Text style={presStyles.title(theme)}>Artists</Text>
-								<Text style={presStyles.subTitle(theme)}>Explore</Text>
-							</View>
-						</View>
-					</>
+					<PresHeaderIcon
+						title="Artists"
+						subTitle="Explore"
+						icon="group"
+					/>
 				}
-				renderItem={({ item }) => (
-					<Pressable
-						onPress={() => {
-							navigation.navigate('Artist', { id: item.id, name: item.name });
-						}}
-						style={{
-							marginHorizontal: 20,
-							marginBottom: 10,
-							flexDirection: 'row',
-							gap: 10,
-						}}>
-						<ImageError
-							source={{ uri: urlCover(config, item, 100) }}
-							iconError="user"
-							style={{
-								width: 70,
-								height: 70,
-								backgroundColor: theme.secondaryBack,
-								borderRadius: size.radius.circle,
-							}}
-						/>
-						<View style={{
-							flex: 1,
-							flexDirection: 'column',
-							justifyContent: 'center',
-						}}>
-							<Text
-								style={{
-									color: theme.primaryText,
-									fontSize: size.text.medium,
-									overflow: 'hidden',
-									marginBottom: 2,
-								}}
-								numberOfLines={1}
-							>
-								{item.name}
-							</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
-								{item.albumCount} albums
-							</Text>
-						</View>
-						<FavoritedButton
-							id={item.id}
-							isFavorited={isFavorited(item.id)}
-							style={{ padding: 5, paddingStart: 10 }}
-							size={size.icon.medium}
-						/>
-					</Pressable>
-				)}
 				renderSectionHeader={({ section }) => (
 					<Text style={[mainStyles.titleSection(theme), {
 						marginTop: 10,
@@ -115,20 +52,20 @@ const ArtistExplorer = () => {
 						marginHorizontal: 20,
 					}]}>{section.title}</Text>
 				)}
+				renderItem={({ item }) => (
+					<ExplorerItem
+						item={item}
+						title={item.name}
+						subTitle={`${item.albumCount} albums`}
+						onPress={() => navigation.navigate('Artist', { id: item.id, name: item.name })}
+						borderRadius={size.radius.circle}
+						iconError="group"
+						isFavorited={isFavorited(item.id)}
+					/>
+				)}
 			/>
 		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	cover: {
-		width: "100%",
-		height: 300,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#c68588',
-	},
-})
 
 export default ArtistExplorer;

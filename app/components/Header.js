@@ -22,7 +22,7 @@ const Header = ({ title }) => {
 				style={styles.backButton}
 				onPress={() => navigation.goBack()}
 			/>
-		</View >
+		</View>
 	)
 }
 

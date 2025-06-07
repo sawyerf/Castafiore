@@ -34,7 +34,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					source={{ uri: urlCover(config, song?.songInfo, 100), }}
 					style={styles.boxPlayerImage}
 				>
-					<View style={styles.boxPlayerImage} >
+					<View style={styles.boxPlayerImage}>
 						<Icon name="music" size={size.icon.small} color={theme.primaryText} />
 					</View>
 				</ImageError>
@@ -100,7 +100,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
 				</View>
 			</View>
-			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }} >
+			<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginEnd: 20, gap: 5 }}>
 
 				{
 					Player.isVolumeSupported() && (
@@ -132,7 +132,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					onPress={() => setFullScreen(true)}
 				/>
 			</View>
-		</View >
+		</View>
 	)
 }
 

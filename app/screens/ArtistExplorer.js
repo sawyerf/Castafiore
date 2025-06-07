@@ -30,6 +30,25 @@ const ArtistExplorer = () => {
 		return favorited.some(fav => fav.id === id);
 	}, [favorited]);
 
+	const renderItem = React.useCallback(({ item }) => (
+		<ExplorerItem
+			item={item}
+			title={item.name}
+			subTitle={`${item.albumCount} albums`}
+			onPress={() => navigation.navigate('Artist', { id: item.id, name: item.name })}
+			borderRadius={size.radius.circle}
+			iconError="group"
+			isFavorited={isFavorited(item.id)}
+		/>
+	), [navigation, isFavorited]);
+
+	const renderSectionHeader = React.useCallback(({ section }) => (
+		<Text style={[mainStyles.titleSection(theme), {
+			marginTop: 10,
+			marginBottom: 10,
+			marginHorizontal: 20,
+		}]}>{section.title}</Text>
+	), [theme]);
 	return (
 		<>
 			<SectionList
@@ -45,24 +64,8 @@ const ArtistExplorer = () => {
 						icon="group"
 					/>
 				}
-				renderSectionHeader={({ section }) => (
-					<Text style={[mainStyles.titleSection(theme), {
-						marginTop: 10,
-						marginBottom: 10,
-						marginHorizontal: 20,
-					}]}>{section.title}</Text>
-				)}
-				renderItem={({ item }) => (
-					<ExplorerItem
-						item={item}
-						title={item.name}
-						subTitle={`${item.albumCount} albums`}
-						onPress={() => navigation.navigate('Artist', { id: item.id, name: item.name })}
-						borderRadius={size.radius.circle}
-						iconError="group"
-						isFavorited={isFavorited(item.id)}
-					/>
-				)}
+				renderSectionHeader={renderSectionHeader}
+				renderItem={renderItem}
 			/>
 		</>
 	);

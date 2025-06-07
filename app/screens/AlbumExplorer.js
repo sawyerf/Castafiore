@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, FlatList, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { LegendList } from '@legendapp/list';
 
 import { ThemeContext } from '~/contexts/theme';
 import { useCachedAndApi } from '~/utils/api';
@@ -25,13 +26,25 @@ const AlbumExplorer = () => {
 		setData(json?.albumList2?.album || []);
 	}, [type, parSize])
 
+	const renderItem = React.useCallback(({ item }) => (
+		<ExplorerItem
+			item={item}
+			title={item.name || item.album}
+			subTitle={`${item.artist} - ${item.year}`}
+			onPress={() => navigation.navigate('Album', item)}
+			iconError="album"
+			isFavorited={item.starred}
+		/>
+	), [navigation])
+
 	return (
 		<>
-			<FlatList
+			<LegendList
 				data={albums}
 				keyExtractor={(item, index) => item.id || index.toString()}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+				waitForInitialLayout={false}
 				ListHeaderComponent={
 					<>
 						<PresHeaderIcon
@@ -47,16 +60,7 @@ const AlbumExplorer = () => {
 						<Selector current={parSize} items={SIZES} setData={setParSize} />
 					</>
 				}
-				renderItem={({ item }) => (
-					<ExplorerItem
-						item={item}
-						title={item.name || item.album}
-						subTitle={`${item.artist} - ${item.year}`}
-						onPress={() => navigation.navigate('Album', item)}
-						iconError="album"
-						isFavorited={item.starred}
-					/>
-				)}
+				renderItem={renderItem}
 			/>
 		</>
 	);

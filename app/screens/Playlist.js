@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, TextInput, Image, FlatList, Pressable } from 'react-native';
+import { Text, View, TextInput, Image, Pressable } from 'react-native';
+import { LegendList } from "@legendapp/list"
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SettingsContext } from '~/contexts/settings';
@@ -28,13 +29,27 @@ const Playlist = ({ route: { params } }) => {
 		else setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })) || [])
 	}, [params.playlist.id, settings.reversePlaylist])
 
+	const renderItem = React.useCallback(({ item, index }) => (
+		<SongItem
+			song={item}
+			queue={songs}
+			index={index}
+			setIndexOptions={setIndexOptions}
+			style={{
+				paddingHorizontal: 20,
+			}}
+		/>
+	), [songs]);
+
 	return (
 		<>
-			<FlatList
+			<LegendList
 				data={songs}
 				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+				recycleItems={true}
+				waitForInitialLayout={false}
 				ListHeaderComponent={
 					<>
 						<BackButton />
@@ -83,17 +98,7 @@ const Playlist = ({ route: { params } }) => {
 						</View>
 					</>
 				}
-				renderItem={({ item, index }) => (
-					<SongItem
-						song={item}
-						queue={songs}
-						index={index}
-						setIndexOptions={setIndexOptions}
-						style={{
-							paddingHorizontal: 20,
-						}}
-					/>
-				)}
+				renderItem={renderItem}
 			/>
 			<OptionsSongsList
 				songs={songs}

@@ -35,7 +35,7 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 			<FlatList
 				ref={refScroll}
 				data={data}
-				keyExtractor={(item, index) => `${item.id}-${index}`}
+				keyExtractor={(item, index) => index}
 				renderItem={renderItem}
 				horizontal={true}
 				style={style}

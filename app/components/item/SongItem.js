@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
 	song: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		height: size.image.small,
 		marginBottom: 10,
 	},
 })

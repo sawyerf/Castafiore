@@ -1,6 +1,6 @@
 import React from 'react';
-import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LegendList } from "@legendapp/list"
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -16,9 +16,21 @@ const Favorited = ({ route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1);
 
+	const renderItem = React.useCallback(({ item, index }) => (
+		<SongItem
+			song={item}
+			queue={params.favorited}
+			index={index}
+			setIndexOptions={setIndexOptions}
+			style={{
+				paddingHorizontal: 20,
+			}}
+		/>
+	), []);
+
 	return (
 		<>
-			<FlatList
+			<LegendList
 				data={params.favorited}
 				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
@@ -34,17 +46,7 @@ const Favorited = ({ route: { params } }) => {
 						<RandomButton songList={params.favorited} />
 					</PresHeaderIcon>
 				}
-				renderItem={({ item, index }) => (
-					<SongItem
-						song={item}
-						queue={params.favorited}
-						index={index}
-						setIndexOptions={setIndexOptions}
-						style={{
-							paddingHorizontal: 20,
-						}}
-					/>
-				)}
+				renderItem={renderItem}
 			/>
 			<OptionsSongsList
 				songs={params.favorited}

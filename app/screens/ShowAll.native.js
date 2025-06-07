@@ -8,7 +8,7 @@ import { ThemeContext } from '~/contexts/theme';
 import { getPathByType, setListByType } from '~/contexts/settings';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
-import AllItem from '../components/item/AllItem';
+import AllItem from '~/components/item/AllItem';
 
 const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 	const insets = useSafeAreaInsets();

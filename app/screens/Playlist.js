@@ -101,7 +101,7 @@ const Playlist = ({ route: { params } }) => {
 				indexOptions={indexOptions}
 				setIndexOptions={setIndexOptions}
 				idPlaylist={params.playlist.id}
-				/>
+			/>
 		</>
 	);
 }

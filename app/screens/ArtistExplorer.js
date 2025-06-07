@@ -7,7 +7,7 @@ import { useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import PresHeaderIcon from '~/components/PresHeaderIcon';
-import ExplorerItem from '../components/item/ExplorerItem';
+import ExplorerItem from '~/components/item/ExplorerItem';
 import size from '~/styles/size';
 
 const ArtistExplorer = () => {

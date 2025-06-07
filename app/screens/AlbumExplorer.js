@@ -9,7 +9,7 @@ import mainStyles from '~/styles/main';
 import PresHeaderIcon from '~/components/PresHeaderIcon';
 import Selector from '~/components/Selector';
 import size from '~/styles/size';
-import ExplorerItem from '../components/item/ExplorerItem';
+import ExplorerItem from '~/components/item/ExplorerItem';
 
 const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random'];
 const SIZES = [20, 50, 100, 200, 500];

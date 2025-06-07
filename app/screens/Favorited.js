@@ -35,6 +35,8 @@ const Favorited = ({ route: { params } }) => {
 				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={mainStyles.contentMainContainer(insets, false)}
+				recycleItems={true}
+				waitForInitialLayout={false}
 				ListHeaderComponent={
 					<PresHeaderIcon
 						title={<>

@@ -45,6 +45,7 @@ const AlbumExplorer = () => {
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
 				waitForInitialLayout={false}
+				recycleItems={true}
 				ListHeaderComponent={
 					<>
 						<PresHeaderIcon

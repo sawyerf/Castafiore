@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, SectionList } from 'react-native';
+import { Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { LegendList } from '@legendapp/list';
 
 import { useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
@@ -16,10 +17,10 @@ const ArtistExplorer = () => {
 	const navigation = useNavigation();
 
 	const [artists] = useCachedAndApi([], 'getArtists', null, (json, setData) => {
-		setData(json?.artists?.index.map(item => ({
-			title: item.name,
-			data: item.artist
-		})) || []);
+		setData(json?.artists?.index?.map(item => ([
+			item.name,
+			...item.artist,
+		])).flat() || [])
 	})
 
 	const [favorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
@@ -30,33 +31,36 @@ const ArtistExplorer = () => {
 		return favorited.some(fav => fav.id === id);
 	}, [favorited]);
 
-	const renderItem = React.useCallback(({ item }) => (
-		<ExplorerItem
-			item={item}
-			title={item.name}
-			subTitle={`${item.albumCount} albums`}
-			onPress={() => navigation.navigate('Artist', { id: item.id, name: item.name })}
-			borderRadius={size.radius.circle}
-			iconError="group"
-			isFavorited={isFavorited(item.id)}
-		/>
-	), [navigation, isFavorited]);
+	const renderItem = React.useCallback(({ item }) => {
+		if (typeof item === 'string') return (
+			<Text style={[mainStyles.titleSection(theme), {
+				marginTop: 10,
+				marginBottom: 10,
+				marginHorizontal: 20,
+			}]}>{item}</Text>
+		)
+		return (
+			<ExplorerItem
+				item={item}
+				title={item.name}
+				subTitle={`${item.albumCount} albums`}
+				onPress={() => navigation.navigate('Artist', { id: item.id, name: item.name })}
+				borderRadius={size.radius.circle}
+				iconError="group"
+				isFavorited={isFavorited(item.id)}
+			/>
+		)
+	}, [theme, navigation, isFavorited]);
 
-	const renderSectionHeader = React.useCallback(({ section }) => (
-		<Text style={[mainStyles.titleSection(theme), {
-			marginTop: 10,
-			marginBottom: 10,
-			marginHorizontal: 20,
-		}]}>{section.title}</Text>
-	), [theme]);
 	return (
 		<>
-			<SectionList
-				sections={artists}
-				keyExtractor={(item, index) => item.id || index.toString()}
+			<LegendList
+				data={artists}
+				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
-				maxToRenderPerBatch={20}
+				waitForInitialLayout={false}
+				recycleItems={true}
 				ListHeaderComponent={
 					<PresHeaderIcon
 						title="Artists"
@@ -64,7 +68,6 @@ const ArtistExplorer = () => {
 						icon="group"
 					/>
 				}
-				renderSectionHeader={renderSectionHeader}
 				renderItem={renderItem}
 			/>
 		</>

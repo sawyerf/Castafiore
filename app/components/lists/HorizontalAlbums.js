@@ -17,29 +17,31 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	const refOption = React.useRef()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
+	const renderItem = React.useCallback(({ item, index }) => (
+		<Pressable
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
+			onLongPress={() => setIndexOptions(index)}
+			delayLongPress={200}
+			onPress={() => {
+				onPress(item)
+				navigation.navigate('Album', item)
+			}}>
+			<Image
+				style={[styles.albumCover, { backgroundColor: theme.secondaryBack }]}
+				source={{
+					uri: urlCover(config, item),
+				}}
+			/>
+			<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album || item.title}</Text>
+			<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : (item.artist || '-')}</Text>
+		</Pressable>
+	), [theme, config, navigation, onPress]);
+
 	return (
 		<>
 			<CustomFlat
 				data={albums}
-				renderItem={({ item, index }) => (
-					<Pressable
-						style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
-						onLongPress={() => setIndexOptions(index)}
-						delayLongPress={200}
-						onPress={() => {
-							onPress(item)
-							navigation.navigate('Album', item)
-						}}>
-						<Image
-							style={[styles.albumCover, { backgroundColor: theme.secondaryBack }]}
-							source={{
-								uri: urlCover(config, item),
-							}}
-						/>
-						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album || item.title}</Text>
-						<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : (item.artist || '-')}</Text>
-					</Pressable>
-				)} />
+				renderItem={renderItem} />
 
 			<OptionsPopup
 				reff={refOption}

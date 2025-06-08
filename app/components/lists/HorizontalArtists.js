@@ -18,28 +18,30 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 	const refOption = React.useRef()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
+	const renderItem = React.useCallback(({ item, index }) => (
+		<Pressable
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.artist])}
+			onPress={() => {
+				onPress(item)
+				navigation.navigate('Artist', { id: item.id, name: item.name })
+			}}
+			onLongPress={() => setIndexOptions(index)}
+			delayLongPress={200}
+		>
+			<ImageError
+				style={[styles.artistCover, { backgroundColor: theme.secondaryBack }]}
+				source={{ uri: urlCover(config, item) }}
+				iconError='user'
+			/>
+			<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
+		</Pressable>
+	), [theme, config, navigation, onPress]);
+
 	return (
 		<>
 			<CustomFlat
 				data={artists}
-				renderItem={({ item, index }) => (
-					<Pressable
-						style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.artist])}
-						onPress={() => {
-							onPress(item)
-							navigation.navigate('Artist', { id: item.id, name: item.name })
-						}}
-						onLongPress={() => setIndexOptions(index)}
-						delayLongPress={200}
-					>
-						<ImageError
-							style={[styles.artistCover, { backgroundColor: theme.secondaryBack }]}
-							source={{ uri: urlCover(config, item) }}
-							iconError='user'
-						/>
-						<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
-					</Pressable>
-				)}
+				renderItem={renderItem}
 			/>
 
 			<OptionsPopup

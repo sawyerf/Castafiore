@@ -40,7 +40,7 @@ const AlbumExplorer = () => {
 		<>
 			<LegendList
 				data={albums}
-				keyExtractor={(item, index) => item.id || index.toString()}
+				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
 				waitForInitialLayout={false}

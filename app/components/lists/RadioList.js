@@ -42,6 +42,84 @@ const RadioList = ({ radios }) => {
 		return origin + '/favicon.ico'
 	})
 
+	const renderItem = React.useCallback(({ item, index }) => {
+		if (item.lastItem) return (
+			<Pressable
+				onPress={() => navigation.navigate('UpdateRadio')}
+				delayLongPress={200}
+				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
+			>
+				<View
+					style={[styles.image, {
+						alignItems: 'center',
+						justifyContent: 'center',
+					}]}>
+					<Icon name="plus" size={32} color={theme.primaryText} />
+				</View>
+				<Text
+					numberOfLines={1}
+					style={{
+						color: theme.primaryText,
+						fontSize: size.text.medium,
+						fontWeight: 'bold',
+						overflow: 'hidden',
+					}}
+				>
+					Add radio
+				</Text>
+			</Pressable>
+		)
+
+		return (
+			<Pressable
+				key={index}
+				onPress={() => playRadio(index)}
+				onLongPress={() => setOptionRadio(item)}
+				delayLongPress={200}
+				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
+			>
+				<ImageError
+					source={{ uri: getUrlFavicon(item.homePageUrl) }}
+					style={styles.image}>
+					<View
+						style={[styles.image, {
+							alignItems: 'center',
+							justifyContent: 'center',
+						}]}>
+						<Icon
+							name="feed"
+							size={32}
+							style={{ marginTop: 2 }}
+							color={theme.primaryText}
+						/>
+					</View>
+				</ImageError>
+				<View style={{ flexDirection: 'column', flex: 1 }}>
+					<Text
+						numberOfLines={1}
+						style={{
+							color: theme.primaryText,
+							fontSize: size.text.medium,
+							flex: 1,
+							fontWeight: 'bold',
+						}}
+					>
+						{item.name}
+					</Text>
+					{item.homePageUrl && <Text
+						numberOfLines={1}
+						style={{
+							color: theme.secondaryText,
+							fontSize: size.text.medium,
+						}}
+					>
+						{item.homePageUrl}
+					</Text>}
+				</View>
+			</Pressable>
+		)
+	}, [theme, config, navigation, playRadio])
+
 	if (!radios) return null
 	return (
 		<>
@@ -56,83 +134,7 @@ const RadioList = ({ radios }) => {
 					rowGap: 10,
 				}}
 				data={[...radios, { lastItem: true }]}
-				renderItem={({ item, index }) => {
-					if (item.lastItem) return (
-						<Pressable
-							onPress={() => navigation.navigate('UpdateRadio')}
-							delayLongPress={200}
-							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
-						>
-							<View
-								style={[styles.image, {
-									alignItems: 'center',
-									justifyContent: 'center',
-								}]}>
-								<Icon name="plus" size={32} color={theme.primaryText} />
-							</View>
-							<Text
-								numberOfLines={1}
-								style={{
-									color: theme.primaryText,
-									fontSize: size.text.medium,
-									fontWeight: 'bold',
-									overflow: 'hidden',
-								}}
-							>
-								Add radio
-							</Text>
-						</Pressable>
-					)
-
-					return (
-						<Pressable
-							key={index}
-							onPress={() => playRadio(index)}
-							onLongPress={() => setOptionRadio(item)}
-							delayLongPress={200}
-							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
-						>
-							<ImageError
-								source={{ uri: getUrlFavicon(item.homePageUrl) }}
-								style={styles.image}>
-								<View
-									style={[styles.image, {
-										alignItems: 'center',
-										justifyContent: 'center',
-									}]}>
-									<Icon
-										name="feed"
-										size={32}
-										style={{ marginTop: 2 }}
-										color={theme.primaryText}
-									/>
-								</View>
-							</ImageError>
-							<View style={{ flexDirection: 'column', flex: 1 }}>
-								<Text
-									numberOfLines={1}
-									style={{
-										color: theme.primaryText,
-										fontSize: size.text.medium,
-										flex: 1,
-										fontWeight: 'bold',
-									}}
-								>
-									{item.name}
-								</Text>
-								{item.homePageUrl && <Text
-									numberOfLines={1}
-									style={{
-										color: theme.secondaryText,
-										fontSize: size.text.medium,
-									}}
-								>
-									{item.homePageUrl}
-								</Text>}
-							</View>
-						</Pressable>
-					)
-				}}
+				renderItem={renderItem}
 			/>
 			<OptionsPopup
 				visible={optionRadio !== null}

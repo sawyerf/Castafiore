@@ -26,8 +26,10 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 			playSong(config, songDispatch, [itemHist], 0)
 		} else if (itemHist.mediaType === 'album') {
 			navigation.navigate('Album', itemHist)
-		} else if (itemHist.artistImageUrl) {
+		} else if (itemHist.mediaType === 'artist') {
 			navigation.navigate('Artist', itemHist)
+		} else {
+			delItemHistory(index)
 		}
 	}
 
@@ -46,20 +48,20 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 							style={{
 								width: 45,
 								height: 45,
-								borderRadius: itemHist.mediaType ? 3 : size.radius.circle,
+								borderRadius: itemHist.mediaType === 'artist' ? size.radius.circle : 3,
 								marginEnd: 10,
 								backgroundColor: theme.secondaryBack,
 							}}
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
 							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, marginBottom: 2 }}>{itemHist.name || itemHist.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{itemHist.mediaType || 'artist'} · {itemHist.artist}</Text>
+							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{itemHist.mediaType} · {itemHist.artist}</Text>
 						</View>
 					</>
 				) : (
 					<>
 						<Icon name="eye" size={17} color={theme.secondaryText} style={{ width: 45, marginEnd: 10, textAlign: 'center' }} />
-						<Text style={{ color: theme.secondaryText, fontSize: size.text.medium }}>{itemHist}</Text>
+						<Text style={{ color: theme.secondaryText, fontSize: size.text.medium, flex: 1 }}>{itemHist}</Text>
 					</>
 				)
 			}
@@ -67,7 +69,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 				icon="times"
 				size={14}
 				color={theme.secondaryText}
-				style={{ position: 'absolute', top: 0, right: 0, height: '100%', justifyContent: 'center', paddingHorizontal: 10 }}
+				style={{ justifyContent: 'center', paddingHorizontal: 10 }}
 				onPress={() => delItemHistory(index)}
 			/>
 		</Pressable>

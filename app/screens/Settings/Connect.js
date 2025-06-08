@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
 import { getApi } from '~/utils/api';
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { SettingsContext, SetSettingsContext, demoServers } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
@@ -107,8 +107,19 @@ const Connect = ({ navigation }) => {
 					}
 					<Pressable
 						style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, true)])}
-						delayLongPress={200}
-						onPress={() => { navigation.navigate('Settings/AddServer') }}>
+						delayLongPress={3000}
+						onPress={() => { navigation.navigate('Settings/AddServer') }}
+						// Add demo server for testing purposes
+						onLongPress={() => {
+							setSettings({
+								...settings,
+								servers: [
+									...settings.servers,
+									...demoServers.filter((server) => !settings.servers.some((s) => s.name === server.name))
+								]
+							})
+						}}
+					>
 						<Icon name="plus" size={size.icon.tiny} color={theme.secondaryText} style={{ marginEnd: 10 }} />
 						<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
 							Add server

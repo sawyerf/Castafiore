@@ -109,21 +109,21 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 					results.artist &&
 					<>
 						<Text style={mainStyles.titleSection(theme)}>Artists</Text>
-						<HorizontalArtists artists={results.artist} onPress={addHistory} />
+						<HorizontalArtists artists={results.artist} onPress={(item) => addHistory({...item, mediaType: 'artist'})} />
 					</>
 				}
 				{
 					results.album &&
 					<>
 						<Text style={mainStyles.titleSection(theme)}>Albums</Text>
-						<HorizontalAlbums albums={results.album} onPress={addHistory} />
+						<HorizontalAlbums albums={results.album} onPress={(item) => addHistory({...item, mediaType: 'album'})} />
 					</>
 				}
 				{
 					results.song &&
 					<>
 						<Text style={mainStyles.titleSection(theme)}>Songs</Text>
-						<SongsList songs={results.song} onPress={addHistory} />
+						<SongsList songs={results.song} onPress={(item) => addHistory({...item, mediaType: 'song'})} />
 					</>
 				}
 			</>)
@@ -190,9 +190,9 @@ const Search = () => {
 
 	const getSearch = () => {
 		setState(STATES.LOADING)
-		getApiNetworkFirst(config, 'search2', { query })
+		getApiNetworkFirst(config, 'search3', { query })
 			.then((json) => {
-				setResults(json.searchResult2)
+				setResults(json.searchResult3)
 				setState(STATES.LOADED)
 			})
 			.catch((err) => {

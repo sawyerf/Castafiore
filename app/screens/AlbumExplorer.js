@@ -29,10 +29,9 @@ const AlbumExplorer = () => {
 	const renderItem = React.useCallback(({ item }) => (
 		<ExplorerItem
 			item={item}
-			title={item.name || item.album}
-			subTitle={`${item.artist} - ${item.year}`}
+			title={item.name || item.album || item.title}
+			subTitle={`${item.artist || 'Unknown Artist'} · ${item.year || ''}`}
 			onPress={() => navigation.navigate('Album', item)}
-			iconError="album"
 			isFavorited={item.starred}
 		/>
 	), [navigation])

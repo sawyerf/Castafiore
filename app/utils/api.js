@@ -80,7 +80,7 @@ export const refreshApi = (config, path, query = '') => {
 					.then(() => resolve(json))
 			})
 			.catch((error) => {
-				console.error(`refreshApi[/rest/${path}]: ${error}`)
+				console.error(`refreshApi[/rest/${path}]: `, error)
 				reject({ ...error, isApiError: false })
 			})
 	})
@@ -188,16 +188,17 @@ export const urlCover = (config, id, size = null) => {
 		const item = id
 
 		if (['artist', 'album', 'playlist'].includes(item.mediaType)) {
-			if (config?.type === 'navidrome' || !config?.type) return realCover(config, item.id || item.coverArt, size)
+			if (['navidrome', 'ampache'].includes(config?.type) || !config?.type) return realCover(config, item.id || item.coverArt, size)
 			else return realCover(config, item.coverArt || item.id, size)
 		} else if (item.mediaType === 'song') {
-			if (config?.type === 'navidrome' || !config?.type) return realCover(config, item.albumId || item.coverArt, size)
-			else return realCover(config, item.coverArt, size)
+			if (['navidrome', 'ampache'].includes(config?.type) || !config?.type) return realCover(config, item.albumId || item.coverArt, size)
+			else return realCover(config, item.coverArt || item.albumId || item.id, size)
 		} else {
-			if (config?.type === 'navidrome' || !config?.type) return realCover(config, item.albumId || item.id || item.coverArt, size)
+			if (['navidrome', 'ampache'].includes(config?.type) || !config?.type) return realCover(config, item.albumId || item.id || item.coverArt, size)
 			else return realCover(config, item.coverArt || item.albumId || item.id, size)
 		}
 	} else {
+		if (id.startsWith('http://') || id.startsWith('https://')) return id
 		return realCover(config, id, size)
 	}
 }

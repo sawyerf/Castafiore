@@ -36,8 +36,8 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 								uri: urlCover(config, item),
 							}}
 						/>
-						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album}</Text>
-						<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : item.artist}</Text>
+						<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album || item.title}</Text>
+						<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : (item.artist || '-')}</Text>
 					</Pressable>
 				)} />
 

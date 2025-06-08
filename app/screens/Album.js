@@ -38,10 +38,10 @@ const Album = ({ navigation, route: { params } }) => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<PresHeader
-				title={params.name || params.album}
-				subTitle={params.artist}
+				title={params.name || params.album || params.title}
+				subTitle={params.artist || '-'}
 				imgSrc={urlCover(config, params)}
-				onPressTitle={() => navigation.navigate('Artist', { id: params.artistId, name: params.artist })}
+				onPressTitle={() => params.artistId && navigation.navigate('Artist', { id: params.artistId, name: params.artist })}
 			>
 				<FavoritedButton id={params.id} isFavorited={isStarred} style={[presStyles.button, { paddingEnd: 0 }]} size={size.icon.medium} />
 				<RandomButton songList={songs} size={size.icon.medium} />

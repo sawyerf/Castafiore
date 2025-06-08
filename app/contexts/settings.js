@@ -2,6 +2,23 @@ import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import md5 from 'md5';
 
+export const demoServers = [
+	{
+		name: 'Demo LMS',
+		type: 'lms',
+		url: 'https://lms-demo.poupon.dev',
+		username: 'demo',
+		query: `u=${encodeURI('demo')}&p=${encodeURI('7e5da62f-e4a2-f946-a790-9872352f82ae')}&v=1.16.1&c=castafiore`
+	},
+	{
+		name: 'Demo Ampache',
+		type: 'ampache',
+		url: 'https://demo.ampache.dev',
+		username: 'demo',
+		query: `u=${encodeURI('demo')}&t=${md5('demodemo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
+	}
+]
+
 export const defaultSettings = {
 	homeOrder: [
 		{ icon: 'bar-chart', title: 'Week Activity', type: 'listenbrainz', query: '', enable: false },
@@ -30,13 +47,6 @@ export const defaultSettings = {
 			username: 'demo',
 			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
 		},
-		{
-			name: 'Demo LMS',
-			type: 'lms',
-			url: 'https://lms-demo.poupon.dev',
-			username: 'demo',
-			query: `u=${encodeURI('demo')}&p=${encodeURI('7e5da62f-e4a2-f946-a790-9872352f82ae')}&v=1.16.1&c=castafiore`
-		}
 	],
 	cacheNextSong: 5,
 	theme: 'castafiore',

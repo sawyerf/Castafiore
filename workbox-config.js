@@ -30,7 +30,7 @@ module.exports = {
       },
     },
     {
-      urlPattern: ({ url }) => url.pathname.match(/\/rest\/(getAlbumList2|getAlbum|favorited|getAlbum|getStarred2|getPlaylists|getArtist|getPlaylist|getTopSongs|getArtistInfo|getRandomSongs|search2)$/),
+      urlPattern: ({ url }) => url.pathname.match(/\/rest\/(getAlbumList2|getAlbum|favorited|getAlbum|getStarred2|getPlaylists|getArtist|getPlaylist|getTopSongs|getArtistInfo|getRandomSongs|search3)$/),
       handler: 'NetworkFirst',
       options: {
         cacheName: 'api',

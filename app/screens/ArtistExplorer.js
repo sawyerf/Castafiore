@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { LegendList } from '@legendapp/list';
@@ -33,11 +33,17 @@ const ArtistExplorer = () => {
 
 	const renderItem = React.useCallback(({ item }) => {
 		if (typeof item === 'string') return (
-			<Text style={[mainStyles.titleSection(theme), {
-				marginTop: 10,
+			<View style={{
+				flex: 1,
+				flexDirection: 'row',
+				alignItems: 'flex-end',
+				gap: 10,
+				height: 70,
 				marginBottom: 10,
 				marginHorizontal: 20,
-			}]}>{item}</Text>
+			}}>
+				<Text style={mainStyles.titleSection(theme)}>{item}</Text>
+			</View>
 		)
 		return (
 			<ExplorerItem
@@ -50,27 +56,26 @@ const ArtistExplorer = () => {
 				isFavorited={isFavorited(item.id)}
 			/>
 		)
-	}, [theme, navigation, isFavorited]);
+	}, [theme, isFavorited]);
 
 	return (
-		<>
-			<LegendList
-				data={artists}
-				keyExtractor={(item, index) => index}
-				style={mainStyles.mainContainer(theme)}
-				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
-				waitForInitialLayout={false}
-				recycleItems={true}
-				ListHeaderComponent={
-					<PresHeaderIcon
-						title="Artists"
-						subTitle="Explore"
-						icon="group"
-					/>
-				}
-				renderItem={renderItem}
-			/>
-		</>
+		<LegendList
+			data={artists}
+			keyExtractor={(item, index) => index}
+			style={mainStyles.mainContainer(theme)}
+			contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+			waitForInitialLayout={false}
+			recycleItems={true}
+			estimatedItemSize={80}
+			ListHeaderComponent={
+				<PresHeaderIcon
+					title="Artists"
+					subTitle="Explore"
+					icon="group"
+				/>
+			}
+			renderItem={renderItem}
+		/>
 	);
 }
 

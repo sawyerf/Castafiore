@@ -118,7 +118,7 @@ const RadioList = ({ radios }) => {
 				</View>
 			</Pressable>
 		)
-	}, [theme, config, navigation, playRadio])
+	}, [theme, config, playRadio])
 
 	if (!radios) return null
 	return (

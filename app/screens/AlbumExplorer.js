@@ -34,35 +34,34 @@ const AlbumExplorer = () => {
 			onPress={() => navigation.navigate('Album', item)}
 			isFavorited={item.starred}
 		/>
-	), [navigation])
+	), [])
 
 	return (
-		<>
-			<LegendList
-				data={albums}
-				keyExtractor={(item, index) => index}
-				style={mainStyles.mainContainer(theme)}
-				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
-				waitForInitialLayout={false}
-				recycleItems={true}
-				ListHeaderComponent={
-					<>
-						<PresHeaderIcon
-							title="Albums"
-							subTitle="Explore"
-							icon="book"
-						/>
+		<LegendList
+			data={albums}
+			keyExtractor={(item, index) => index}
+			style={mainStyles.mainContainer(theme)}
+			contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+			waitForInitialLayout={false}
+			recycleItems={true}
+			estimatedItemSize={80}
+			ListHeaderComponent={
+				<>
+					<PresHeaderIcon
+						title="Albums"
+						subTitle="Explore"
+						icon="book"
+					/>
 
-						<Text style={styles.titleSelector(theme)}>Type</Text>
-						<Selector current={type} items={TYPES} setData={setType} />
+					<Text style={styles.titleSelector(theme)}>Type</Text>
+					<Selector current={type} items={TYPES} setData={setType} />
 
-						<Text style={styles.titleSelector(theme)}>Size</Text>
-						<Selector current={parSize} items={SIZES} setData={setParSize} />
-					</>
-				}
-				renderItem={renderItem}
-			/>
-		</>
+					<Text style={styles.titleSelector(theme)}>Size</Text>
+					<Selector current={parSize} items={SIZES} setData={setParSize} />
+				</>
+			}
+			renderItem={renderItem}
+		/>
 	);
 }
 

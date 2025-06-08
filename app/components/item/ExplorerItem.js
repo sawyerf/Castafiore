@@ -17,6 +17,7 @@ const ExplorerItem = ({ item, title, subTitle, onPress, borderRadius = 0, iconEr
 			onPress={onPress}
 			style={{
 				marginHorizontal: 20,
+				minHeight: 70,
 				marginBottom: 10,
 				flexDirection: 'row',
 				gap: 10,

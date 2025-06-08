@@ -35,7 +35,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 			<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album || item.title}</Text>
 			<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : (item.artist || '-')}</Text>
 		</Pressable>
-	), [theme, config, navigation, onPress]);
+	), [theme, config, onPress]);
 
 	return (
 		<>

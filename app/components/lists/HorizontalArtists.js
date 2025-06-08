@@ -35,7 +35,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 			/>
 			<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
 		</Pressable>
-	), [theme, config, navigation, onPress]);
+	), [theme, config, onPress]);
 
 	return (
 		<>

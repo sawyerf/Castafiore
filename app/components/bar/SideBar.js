@@ -29,9 +29,9 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					flexDirection: 'row',
 					alignItems: 'center',
 					width: '100%',
-					marginHorizontal: 10,
-					marginTop: 15,
-					marginBottom: 15,
+					paddingHorizontal: 10,
+					paddingTop: 15 + insets.top,
+					paddingBottom: 15,
 				}}>
 				<Image
 					source={require('~/../assets/icon.png')}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { LegendList } from '@legendapp/list';
@@ -41,12 +41,16 @@ const AlbumExplorer = () => {
 			data={albums}
 			keyExtractor={(item, index) => index}
 			style={mainStyles.mainContainer(theme)}
-			contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 678 }]}
 			waitForInitialLayout={false}
 			recycleItems={true}
 			estimatedItemSize={80}
+			maintainVisibleContentPosition={{
+				minIndexForVisible: 0,
+				itemVisiblePercentThreshold: 50,
+			}}
 			ListHeaderComponent={
-				<>
+				<View style={{ flex: 1}}>
 					<PresHeaderIcon
 						title="Albums"
 						subTitle="Explore"
@@ -58,7 +62,7 @@ const AlbumExplorer = () => {
 
 					<Text style={styles.titleSelector(theme)}>Size</Text>
 					<Selector current={parSize} items={SIZES} setData={setParSize} />
-				</>
+</View>
 			}
 			renderItem={renderItem}
 		/>

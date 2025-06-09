@@ -38,8 +38,8 @@ const ArtistExplorer = () => {
 				flexDirection: 'row',
 				alignItems: 'flex-end',
 				gap: 10,
-				height: 70,
-				marginBottom: 10,
+				minHeight: 80,
+				paddingBottom: 8,
 				marginHorizontal: 20,
 			}}>
 				<Text style={mainStyles.titleSection(theme)}>{item}</Text>
@@ -63,7 +63,7 @@ const ArtistExplorer = () => {
 			data={artists}
 			keyExtractor={(item, index) => index}
 			style={mainStyles.mainContainer(theme)}
-			contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
+			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * artists.length + 490 }]}
 			waitForInitialLayout={false}
 			recycleItems={true}
 			estimatedItemSize={80}

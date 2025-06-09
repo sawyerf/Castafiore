@@ -79,12 +79,12 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
 								<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 7 }}>
-									<Text numberOfLines={1} style={{ flex: Platform.select({ web: undefined, default: 0 }), color: theme.primaryText, fontSize: size.text.medium }}>
+									<Text numberOfLines={1} style={[mainStyles.mediumText(theme.primaryText), { flex: Platform.select({ web: undefined, default: 0 }) }]}>
 										{playlist.name}
 									</Text>
 									{!playlist.public && <Icon name='lock' size={10} color={theme.secondaryText} style={{ marginTop: 3 }} />}
 								</View>
-								<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
+								<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
 									{(playlist.duration / 60) | 1} min · {playlist.songCount} songs
 								</Text>
 							</View>

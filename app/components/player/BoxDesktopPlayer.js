@@ -39,8 +39,8 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					</View>
 				</ImageError>
 				<View style={{ justifyContent: 'center', gap: 2, flex: Platform.select({ web: 1, default: 0 }), maxWidth: 'min-content' }}>
-					<Text numberOfLines={1} style={{ color: theme.primaryText, fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
-					<Text numberOfLines={1} style={{ color: theme.secondaryText, maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
+					<Text numberOfLines={1} style={{ color: theme.primaryText, textAlign: 'left', fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+					<Text numberOfLines={1} style={{ color: theme.secondaryText, textAlign: 'left', maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
 				<FavoritedButton
 					id={song?.songInfo?.id}

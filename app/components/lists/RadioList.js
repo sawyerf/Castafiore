@@ -97,21 +97,16 @@ const RadioList = ({ radios }) => {
 				<View style={{ flexDirection: 'column', flex: 1 }}>
 					<Text
 						numberOfLines={1}
-						style={{
-							color: theme.primaryText,
-							fontSize: size.text.medium,
+						style={[mainStyles.mediumText(theme.primaryText), {
 							flex: 1,
 							fontWeight: 'bold',
-						}}
+						}]}
 					>
 						{item.name}
 					</Text>
 					{item.homePageUrl && <Text
 						numberOfLines={1}
-						style={{
-							color: theme.secondaryText,
-							fontSize: size.text.medium,
-						}}
+						style={mainStyles.mediumText(theme.secondaryText)}
 					>
 						{item.homePageUrl}
 					</Text>}

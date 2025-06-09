@@ -98,7 +98,7 @@ const Connect = ({ navigation }) => {
 									upConfig(server)
 								}}>
 								<Icon name="server" size={size.icon.tiny} color={theme.secondaryText} style={{ marginEnd: 10 }} />
-								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
+								<Text numberOfLines={1} style={[mainStyles.mediumText(theme.primaryText), { marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }]}>
 									{server.name?.length ? server.name : server.url}
 								</Text>
 								{(server.query === config.query && server.url === config.url && config.name === server.name) && <Icon name="check" size={size.icon.tiny} color={theme.primaryTouch} />}

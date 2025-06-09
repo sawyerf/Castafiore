@@ -37,6 +37,7 @@ const Favorited = ({ route: { params } }) => {
 				contentContainerStyle={mainStyles.contentMainContainer(insets, false)}
 				recycleItems={true}
 				waitForInitialLayout={false}
+				estimatedItemSize={60}
 				ListHeaderComponent={
 					<PresHeaderIcon
 						title={<>

@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     color: theme.secondaryText,
     fontSize: size.text.small,
     width: '100%',
+    textAlign: 'left',
   }),
 })
 

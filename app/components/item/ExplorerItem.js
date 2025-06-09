@@ -7,6 +7,7 @@ import { urlCover } from '~/utils/api';
 import ImageError from '~/components/ImageError';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import size from '~/styles/size';
+import mainStyles from '~/styles/main';
 
 const ExplorerItem = ({ item, title, subTitle, onPress, borderRadius = 0, iconError = null, isFavorited = null }) => {
 	const theme = React.useContext(ThemeContext);
@@ -37,18 +38,10 @@ const ExplorerItem = ({ item, title, subTitle, onPress, borderRadius = 0, iconEr
 				flexDirection: 'column',
 				justifyContent: 'center',
 			}}>
-				<Text
-					style={{
-						color: theme.primaryText,
-						fontSize: size.text.medium,
-						overflow: 'hidden',
-						marginBottom: 2,
-					}}
-					numberOfLines={1}
-				>
+				<Text style={[mainStyles.mediumText(theme.primaryText), { marginBottom: 2 }]} numberOfLines={1}>
 					{title}
 				</Text>
-				<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
+				<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
 					{subTitle}
 				</Text>
 			</View>

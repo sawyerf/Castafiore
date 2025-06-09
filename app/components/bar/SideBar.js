@@ -137,13 +137,10 @@ const SideBar = ({ state, descriptors, navigation }) => {
 								/>
 								<View style={{ flexDirection: 'column', flex: 1 }}>
 									<Text
-										style={{
-											color: theme.primaryText,
-											textAlign: 'left',
-											fontSize: size.text.medium,
+										style={[mainStyles.mediumText(theme.primaryText), {
 											fontWeight: '600',
 											marginLeft: 10,
-										}}
+										}]}
 										numberOfLines={1}
 									>
 										{item.name}

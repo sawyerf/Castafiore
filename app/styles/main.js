@@ -58,4 +58,19 @@ export default StyleSheet.create({
 	opacity: ({ pressed }) => ({
 		opacity: pressed ? 0.5 : 1,
 	}),
+	smallText: color => ({
+		color: color,
+		fontSize: size.text.small,
+		textAlign: 'left',
+	}),
+	mediumText: color => ({
+		color: color,
+		fontSize: size.text.medium,
+		textAlign: 'left',
+	}),
+	largeText: color => ({
+		color: color,
+		fontSize: size.text.large,
+		textAlign: 'left',
+	}),
 })

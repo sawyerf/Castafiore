@@ -94,8 +94,8 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, fontWeight: 'bold' }}>{song.songInfo.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.large, }}>{song.songInfo.artist} · {song.songInfo.album}</Text>
+							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+							<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>

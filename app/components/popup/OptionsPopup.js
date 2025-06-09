@@ -107,12 +107,12 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 								source={{ uri: urlCover(config, item, 100) }}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
-								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium }}>
+								<Text numberOfLines={1} style={mainStyles.mediumText(theme.primaryText)}>
 									{item.track !== undefined ? `${item.track}. ` : null}{item.title || item.name}
 								</Text>
 								{
 									(item.artist || item.homePageUrl) ?
-									<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>
+									<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
 										{item.artist || item.homePageUrl}
 									</Text> : null
 								}

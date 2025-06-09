@@ -215,6 +215,7 @@ const Search = () => {
 						flex: 1,
 						color: theme.primaryText,
 						fontSize: size.text.large,
+						textAlign: 'left',
 						padding: 8,
 						paddingLeft: 36,
 						borderRadius: 10,

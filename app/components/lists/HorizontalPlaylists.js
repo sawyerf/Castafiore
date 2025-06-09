@@ -38,8 +38,8 @@ const ItemPlaylist = ({ item }) => {
           source={{ uri: urlCover(config, item) }}
           style={{ width: size.image.small, height: size.image.small, marginEnd: 10, borderRadius: 4 }}
         />
-        <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
-          <Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, width: '100%' }}>
+        <View style={{ flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+          <Text numberOfLines={1} style={mainStyles.mediumText(theme.primaryText)}>
             {item.name}
           </Text>
           <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.medium, width: '100%' }}>
@@ -65,10 +65,10 @@ const ItemPlaylist = ({ item }) => {
                 style={{ width: size.image.tiny, height: size.image.tiny, marginEnd: 10, borderRadius: 4 }}
               />
               <View style={{ flexDirection: 'column', flex: 1, marginEnd: 10 }}>
-                <Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, width: '100%' }}>
+                <Text numberOfLines={1} style={mainStyles.smallText(theme.primaryText)}>
                   {item.title}
                 </Text>
-                <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small, width: '100%' }}>
+                <Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
                   {item.artist}
                 </Text>
               </View>

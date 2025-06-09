@@ -45,7 +45,7 @@ const Cached = ({ song }) => {
 	return null
 }
 
-const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => { }, style={} }) => {
+const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => { }, style = {} }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
@@ -68,10 +68,10 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 				}}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
-				<Text numberOfLines={1} style={{ color: isPlaying ? theme.primaryTouch : theme.primaryText, fontSize: size.text.medium, marginBottom: 2 }}>
+				<Text numberOfLines={1} style={[mainStyles.mediumText(isPlaying ? theme.primaryTouch : theme.primaryText), { marginBottom: 2 }]}>
 					{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
 				</Text>
-				<Text numberOfLines={1} style={{ color: isPlaying ? theme.secondaryTouch : theme.secondaryText, fontSize: size.text.small }}>
+				<Text numberOfLines={1} style={mainStyles.smallText(isPlaying ? theme.secondaryTouch : theme.secondaryText)}>
 					{song.artist}
 				</Text>
 			</View>

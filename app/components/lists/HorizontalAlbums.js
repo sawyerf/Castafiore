@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
 	titleAlbum: (theme) => ({
 		color: theme.primaryText,
 		fontSize: size.text.small,
+		textAlign: 'left',
 		width: size.image.large,
 		marginBottom: 3,
 		marginTop: 3,
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
 		color: theme.secondaryText,
 		fontSize: size.text.small,
 		width: size.image.large,
+		textAlign: 'left',
 	}),
 })
 

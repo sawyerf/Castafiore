@@ -54,14 +54,14 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 							}}
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.small, marginBottom: 2 }}>{itemHist.name || itemHist.title}</Text>
-							<Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.small }}>{itemHist.mediaType} · {itemHist.artist}</Text>
+							<Text numberOfLines={1} style={[mainStyles.smallText(theme.primaryText), { marginBottom: 2 }]}>{itemHist.name || itemHist.title}</Text>
+							<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>{itemHist.mediaType} · {itemHist.artist}</Text>
 						</View>
 					</>
 				) : (
 					<>
 						<Icon name="eye" size={17} color={theme.secondaryText} style={{ width: 45, marginEnd: 10, textAlign: 'center' }} />
-						<Text style={{ color: theme.secondaryText, fontSize: size.text.medium, flex: 1 }}>{itemHist}</Text>
+						<Text style={[mainStyles.mediumText(theme.secondaryText), { flex: 1 }]}>{itemHist}</Text>
 					</>
 				)
 			}

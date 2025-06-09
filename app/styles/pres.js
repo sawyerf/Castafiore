@@ -13,12 +13,14 @@ export default StyleSheet.create({
 		margin: 20,
 		marginBottom: 0,
 		marginTop: 13,
+		textAlign: 'left',
 	}),
 	subTitle: theme => ({
 		color: theme.secondaryText,
 		fontSize: size.text.large,
 		marginBottom: 30,
 		marginStart: 20,
+		textAlign: 'left',
 	}),
 	button: {
 		padding: 20,

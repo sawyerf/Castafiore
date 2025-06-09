@@ -269,11 +269,13 @@ const styles = StyleSheet.create({
 		color: color.primary,
 		fontSize: size.title.medium,
 		fontWeight: 'bold',
+		textAlign: 'left',
 		marginHorizontal: 20,
 	},
 	artist: {
 		color: color.primary,
 		fontSize: size.text.large,
+		textAlign: 'left',
 		margin: 20,
 		marginTop: 0,
 	},

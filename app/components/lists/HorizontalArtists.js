@@ -2,20 +2,19 @@ import React from 'react';
 import { Text, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { ThemeContext } from '~/contexts/theme';
 import { ConfigContext } from '~/contexts/config';
+import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
-import ImageError from '~/components/ImageError';
 import CustomFlat from '~/components/lists/CustomFlat';
-import OptionsPopup from '~/components/popup/OptionsPopup';
-import size from '~/styles/size';
+import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
+import OptionsArtist from '~/components/options/OptionsArtist';
+import size from '~/styles/size';
 
 const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 	const navigation = useNavigation();
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
-	const refOption = React.useRef()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const renderItem = React.useCallback(({ item, index }) => (
@@ -44,21 +43,10 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 				renderItem={renderItem}
 			/>
 
-			<OptionsPopup
-				reff={refOption}
-				visible={indexOptions >= 0}
-				close={() => { setIndexOptions(-1) }}
-				item={indexOptions >= 0 ? artists[indexOptions] : null}
-				options={[
-					{
-						name: 'Info',
-						icon: 'info',
-						onPress: () => {
-							refOption.current.showInfo(artists[indexOptions])
-							setIndexOptions(-1)
-						}
-					}
-				]}
+			<OptionsArtist
+				artists={artists}
+				indexOptions={indexOptions}
+				setIndexOptions={setIndexOptions}
 			/>
 		</>
 	)

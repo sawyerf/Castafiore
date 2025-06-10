@@ -6,26 +6,29 @@ import Playlists from '~/screens/tabs/Playlists';
 import Search from '~/screens/tabs/Search';
 import Settings from '~/screens/tabs/Settings';
 
-import Album from '~/screens/Album';
-import Artist from '~/screens/Artist';
-import Favorited from '~/screens/Favorited';
-import Genre from '~/screens/Genre';
-import Playlist from '~/screens/Playlist';
+import Album from '~/screens/Pres/Album';
+import Artist from '~/screens/Pres/Artist';
+import Favorited from '~/screens/Pres/Favorited';
+import Genre from '~/screens/Pres/Genre';
+import Playlist from '~/screens/Pres/Playlist';
+
+import EditPlaylist from '~/screens/EditPlaylist';
 import UpdateRadio from '~/screens/UpdateRadio';
+
+import AlbumExplorer from '~/screens/AlbumExplorer';
+import ArtistExplorer from '~/screens/ArtistExplorer';
+import Info from '~/screens/Info';
+import ShowAll from '~/screens/ShowAll';
+
+import AddServer from '~/screens/Settings/AddServer';
+import CacheSettings from '~/screens/Settings/Cache';
 import Connect from '~/screens/Settings/Connect';
 import HomeSettings from '~/screens/Settings/Home';
-import PlaylistsSettings from '~/screens/Settings/Playlists';
-import CacheSettings from '~/screens/Settings/Cache';
 import InformationsSettings from '~/screens/Settings/Informations';
-import ThemeSettings from '~/screens/Settings/Theme';
 import PlayerSettings from '~/screens/Settings/Player';
+import PlaylistsSettings from '~/screens/Settings/Playlists';
 import SharesSettings from '~/screens/Settings/Shares';
-import AddServer from '~/screens/Settings/AddServer';
-import ShowAll from '~/screens/ShowAll';
-import EditPlaylist from '~/screens/EditPlaylist';
-import ArtistExplorer from '~/screens/ArtistExplorer';
-import AlbumExplorer from '~/screens/AlbumExplorer';
-import Info from '~/screens/Info';
+import ThemeSettings from '~/screens/Settings/Theme';
 
 import { ThemeContext } from '~/contexts/theme';
 

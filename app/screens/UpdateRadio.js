@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
@@ -10,6 +11,7 @@ import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
 import ButtonText from '~/components/settings/ButtonText';
+import size from '~/styles/size';
 
 const UpdateRadio = ({ navigation, route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
@@ -51,17 +53,28 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 			mainStyles.contentMainContainer(insets)
 		]}>
 			<Header title={params?.id ? 'Update Radio' : 'Create Radio'} />
-			<View style={settingStyles.contentMainContainer}>
-				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent: 'center',
-						width: '100%',
-						minHeight: 60,
-						alignItems: 'center',
-					}}
-				>
-					<Text style={{ color: theme.primaryTouch, paddingBottom: 20 }} color={theme.primaryText}>{error}</Text>
+
+			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+				<View style={settingStyles.optionsContainer(theme)}>
+					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
+						<View
+							style={{
+								aspectRatio: 1,
+								backgroundColor: theme.primaryTouch,
+								borderRadius: 5,
+								alignItems: 'center',
+								justifyContent: 'center',
+								padding: 10,
+							}}>
+							<Icon name="feed" size={size.icon.large} color={theme.innerTouch} />
+						</View>
+						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+							{/* {!error.length && <Icon name="circle" size={10} color={info ? 'green' : 'red'} />} */}
+							<Text style={{ color: error.length ? '#ff0000' : theme.primaryText, fontSize: size.text.medium, marginStart: 5 }}>
+								{error || 'Enter radio details'}
+							</Text>
+						</View>
+					</View>
 				</View>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput

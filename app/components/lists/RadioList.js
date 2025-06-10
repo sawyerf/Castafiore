@@ -10,9 +10,9 @@ import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme'
 import CustomFlat from '~/components/lists/CustomFlat';
 import ImageError from '~/components/ImageError';
+import mainStyles from '~/styles/main';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 import size from '~/styles/size';
-import mainStyles from '~/styles/main';
 
 const RadioList = ({ radios }) => {
 	const theme = React.useContext(ThemeContext)

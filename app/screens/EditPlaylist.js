@@ -44,7 +44,7 @@ const Playlist = ({ route: { params } }) => {
 			playlistId: params.playlist.id,
 			name: name,
 			public: isPublic,
-			comment: comment,
+			comment: comment || '\n',
 		})
 			.then(() => {
 				refreshApi(config, 'getPlaylists', null)

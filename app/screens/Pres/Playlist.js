@@ -70,7 +70,7 @@ const Playlist = ({ route: { params } }) => {
 											onChangeText={text => setTitle(text)}
 											autoFocus={true}
 											onSubmitEditing={() => {
-												getApi(config, 'updatePlaylist', `playlistId=${params.playlist.id}&name=${title}`)
+												getApi(config, 'updatePlaylist', { playlistId: params.playlist.id, name: title })
 													.then(() => {
 														setTitle(null);
 														refresh();

@@ -20,9 +20,10 @@ const OptionInput = ({ placeholder, value, onChangeText, isPassword, autoComplet
 					flex: 1,
 					color: theme.primaryText,
 					fontSize: size.text.medium,
-					height: '100%',
 					maxHeight: 150,
+					minHeight: 100,
 					lineHeight: 25,
+					textAlign: 'left',
 					width: '100%',
 					marginVertical: 13,
 					...Platform.select({

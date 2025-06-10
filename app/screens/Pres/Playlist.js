@@ -56,9 +56,7 @@ const Playlist = ({ route: { params } }) => {
 						<BackButton />
 						<Image
 							style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
-							source={{
-								uri: urlCover(config, params.playlist),
-							}}
+							source={{ uri: urlCover(config, params.playlist) }}
 						/>
 						<View style={presStyles.headerContainer}>
 							<View style={{ flex: 1 }}>

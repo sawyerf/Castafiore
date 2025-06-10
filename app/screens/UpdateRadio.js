@@ -31,14 +31,14 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 	const updateRadio = () => {
 		if (!name || !streamUrl) return
 		if (!params?.id) {
-			getApi(config, 'createInternetRadioStation', { name, streamUrl, homepageUrl: homePageUrl, })
+			getApi(config, 'createInternetRadioStation', { name, streamUrl, homepageUrl: homePageUrl })
 				.then(() => { navigation.goBack() })
 				.catch((error) => {
 					if (error.isApiError) setError(error.message)
 					else setError('Failed to connect to server')
 				})
 		} else {
-			getApi(config, 'updateInternetRadioStation', { id: params.id, name, streamUrl, homepageUrl: homePageUrl, })
+			getApi(config, 'updateInternetRadioStation', { id: params.id, name, streamUrl, homepageUrl: homePageUrl })
 				.then(() => { navigation.goBack() })
 				.catch((error) => {
 					if (error.isApiError) setError(error.message)

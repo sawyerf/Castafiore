@@ -34,9 +34,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							onPress={() => navigation.navigate('Playlist', { playlist: playlist })}>
 							<Image
 								style={mainStyles.coverSmall(theme)}
-								source={{
-									uri: urlCover(config, playlist, 100),
-								}}
+								source={{ uri: urlCover(config, playlist, 100) }}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column' }}>
 								<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 7 }}>

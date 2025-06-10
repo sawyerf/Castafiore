@@ -63,9 +63,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 			}}>
 			<ImageError
 				style={[mainStyles.coverSmall(theme), { marginRight: 10 }]}
-				source={{
-					uri: urlCover(config, song, 100),
-				}}
+				source={{ uri: urlCover(config, song, 100) }}
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
 				<Text numberOfLines={1} style={[mainStyles.mediumText(isPlaying ? theme.primaryTouch : theme.primaryText), { marginBottom: 2 }]}>

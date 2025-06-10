@@ -17,7 +17,7 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 	}, [id, isFavorited])
 
 	const onPressFavorited = () => {
-		getApi(config, favorited ? 'unstar' : 'star', { id, albumId: id, artistId: id, })
+		getApi(config, favorited ? 'unstar' : 'star', { id, albumId: id, artistId: id })
 			.then(() => {
 				setFavorited(!favorited)
 				refreshApi(config, 'getStarred2', null)

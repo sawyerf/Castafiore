@@ -147,9 +147,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 										</View>
 										<ImageError
 											style={[mainStyles.coverSmall(theme), { marginStart: 10 }]}
-											source={{
-												uri: urlCover(config, item, 100),
-											}}
+											source={{ uri: urlCover(config, item, 100) }}
 										/>
 									</Pressable>
 								)}

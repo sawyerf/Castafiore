@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Dimensions, Modal, FlatList, StyleSheet } from 'react-native';
+import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ConfigContext } from '~/contexts/config';
@@ -34,6 +34,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const time = Player.updateTime()
 	const [fakeTime, setFakeTime] = React.useState(-1)
 	const scroll = React.useRef(null)
+	const { width } = useWindowDimensions();
 
 	React.useEffect(() => {
 		setIsPreview(preview.COVER)
@@ -57,7 +58,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 				<View style={styles.playerContainer}>
 					{
 						isPreview == preview.COVER &&
-						<SlideControl style={styles.albumImage()}>
+						<SlideControl style={styles.albumImage(width)}>
 							<ImageError
 								source={{ uri: urlCover(config, song?.songInfo) }}
 								style={[styles.albumImage(), {
@@ -69,7 +70,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					{
 						isPreview == preview.QUEUE &&
 						<FlatList
-							style={[styles.albumImage(), { borderRadius: null }]}
+							style={[styles.albumImage(width), { borderRadius: null }]}
 							contentContainerStyle={{ width: '100%' }}
 							ref={scroll}
 							data={song.queue}
@@ -90,7 +91,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					}
 					{
 						isPreview == preview.LYRICS &&
-						<Lyric song={song} time={time} style={styles.albumImage()} />
+						<Lyric song={song} time={time} style={styles.albumImage(width)} />
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
@@ -184,9 +185,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 	},
-	albumImage: () => {
+	albumImage: (width) => {
 		// it shitcode but it dosn't work with just width and aspectRatio for the songlist (queue)
-		let width = Dimensions.get('window').width
 		if (width > 500) width = 500
 		return {
 			maxWidth: width - 50,

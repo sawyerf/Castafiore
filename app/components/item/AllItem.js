@@ -8,7 +8,7 @@ import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
-const AllItem = ({ item, type, onPress, }) => {
+const AllItem = ({ item, type, onPress }) => {
   const config = React.useContext(ConfigContext);
   const theme = React.useContext(ThemeContext);
 
@@ -18,9 +18,7 @@ const AllItem = ({ item, type, onPress, }) => {
       onPress={() => onPress(item)}>
       <ImageError
         style={styles.cover(type)}
-        source={{
-          uri: urlCover(config, item),
-        }}
+        source={{ uri: urlCover(config, item) }}
         iconError={['artist', 'artist_all'].includes(type) ? 'user' : 'music'}
       />
       <Text numberOfLines={1} style={styles.title(theme, type)}>{item.name || item.album || item.title}</Text>

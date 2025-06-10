@@ -5,7 +5,7 @@ import { ConfigContext } from '~/contexts/config';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import Player from '~/utils/player';
 
-const SlideControl = ({ children, style, }) => {
+const SlideControl = ({ children, style }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)

@@ -25,20 +25,32 @@ const preview = {
 }
 
 const FullScreenPlayer = ({ setFullScreen }) => {
-	const [isPreview, setIsPreview] = React.useState(preview.COVER)
-	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
-	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
+	const song = React.useContext(SongContext)
+	const insets = useSafeAreaInsets();
 	const time = Player.updateTime()
+	const { width } = useWindowDimensions();
+	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const [fakeTime, setFakeTime] = React.useState(-1)
 	const scroll = React.useRef(null)
-	const { width } = useWindowDimensions();
 
 	React.useEffect(() => {
 		setIsPreview(preview.COVER)
 	}, [song.songInfo])
+
+	const albumImage = React.useMemo(() => {
+		const size = Math.min(width, 500) - 50
+		return {
+			maxWidth: size,
+			width: size,
+			maxHeight: size,
+			height: size,
+			aspectRatio: 1,
+			borderRadius: 10,
+		}
+	}, [width]);
 
 	return (
 		<Modal
@@ -58,19 +70,17 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 				<View style={styles.playerContainer}>
 					{
 						isPreview == preview.COVER &&
-						<SlideControl style={styles.albumImage(width)}>
+						<SlideControl style={albumImage}>
 							<ImageError
 								source={{ uri: urlCover(config, song?.songInfo) }}
-								style={[styles.albumImage(), {
-									backgroundColor: theme.secondaryBack,
-								}]}
+								style={[albumImage, { backgroundColor: theme.secondaryBack }]}
 							/>
 						</SlideControl>
 					}
 					{
 						isPreview == preview.QUEUE &&
 						<FlatList
-							style={[styles.albumImage(width), { borderRadius: null }]}
+							style={[albumImage, { borderRadius: null }]}
 							contentContainerStyle={{ width: '100%' }}
 							ref={scroll}
 							data={song.queue}
@@ -91,7 +101,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					}
 					{
 						isPreview == preview.LYRICS &&
-						<Lyric song={song} time={time} style={styles.albumImage(width)} />
+						<Lyric song={song} time={time} style={albumImage} />
 					}
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
@@ -184,18 +194,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		flex: 1,
 		justifyContent: 'center',
-	},
-	albumImage: (width) => {
-		// it shitcode but it dosn't work with just width and aspectRatio for the songlist (queue)
-		if (width > 500) width = 500
-		return {
-			maxWidth: width - 50,
-			width: width - 50,
-			maxHeight: width - 50,
-			height: width - 50,
-			aspectRatio: 1,
-			borderRadius: 10,
-		}
 	},
 })
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,6 +8,7 @@ import { getApi, urlCover } from '~/utils/api';
 import { refreshApi } from '~/utils/api';
 import { SetUpdateApiContext } from '~/contexts/updateApi';
 import { ThemeContext } from '~/contexts/theme';
+import ImageError from '~/components/ImageError';
 import BackButton from '~/components/button/BackButton';
 import ButtonSwitch from '~/components/settings/ButtonSwitch';
 import ButtonText from '~/components/settings/ButtonText';
@@ -62,7 +63,7 @@ const Playlist = ({ route: { params } }) => {
 			contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
 		>
 			<BackButton />
-			<Image
+			<ImageError
 				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 				source={{ uri: urlCover(config, params.playlist) }}
 			/>

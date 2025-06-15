@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, Image, StyleSheet, Pressable } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import ImageError from '~/components/ImageError';
 import CustomFlat from '~/components/lists/CustomFlat';
 import mainStyles from '~/styles/main';
 import OptionsAlbum from '~/components/options/OptionsAlbum';
@@ -25,7 +26,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 				onPress(item)
 				navigation.navigate('Album', item)
 			}}>
-			<Image
+			<ImageError
 				style={[styles.albumCover, { backgroundColor: theme.secondaryBack }]}
 				source={{ uri: urlCover(config, item) }}
 			/>

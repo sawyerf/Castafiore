@@ -1,9 +1,11 @@
 import React from 'react';
-import { Text, View, Image, Pressable } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import { ThemeContext } from '~/contexts/theme';
+
 import BackButton from '~/components/button/BackButton';
 import mainStyles from '~/styles/main';
 import presStyles from '~/styles/pres';
+import ImageError from '~/components/ImageError';
 
 const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, children = null }) => {
 	const theme = React.useContext(ThemeContext);
@@ -11,7 +13,7 @@ const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, children = n
 	return (
 		<>
 			<BackButton />
-			<Image
+			<ImageError
 				style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 				source={{ uri: imgSrc }}
 			/>

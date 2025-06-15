@@ -1,18 +1,19 @@
 import React from 'react';
-import { Text, View, TextInput, Image, Pressable } from 'react-native';
+import { Text, View, TextInput, Pressable } from 'react-native';
 import { LegendList } from "@legendapp/list"
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { SettingsContext } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
 import { getApi, urlCover, useCachedAndApi } from '~/utils/api';
+import { SettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import BackButton from '~/components/button/BackButton';
+import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
+import OptionsSongsList from '~/components/options/OptionsSongsList';
 import presStyles from '~/styles/pres';
 import RandomButton from '~/components/button/RandomButton';
 import SongItem from '~/components/item/SongItem';
-import OptionsSongsList from '~/components/options/OptionsSongsList';
 
 const Playlist = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
@@ -54,7 +55,7 @@ const Playlist = ({ route: { params } }) => {
 				ListHeaderComponent={
 					<>
 						<BackButton />
-						<Image
+						<ImageError
 							style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
 							source={{ uri: urlCover(config, params.playlist) }}
 						/>

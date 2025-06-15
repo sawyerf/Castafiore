@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View, Image, StyleSheet, Pressable, Platform } from 'react-native';
+import { Text, View, StyleSheet, Pressable, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
 import { urlCover } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
+import ImageError from '~/components/ImageError';
 import OptionsPlaylist from '~/components/options/OptionsPlaylist';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
@@ -32,7 +33,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 							onLongPress={() => setIndexOption(index)}
 							delayLongPress={200}
 							onPress={() => navigation.navigate('Playlist', { playlist: playlist })}>
-							<Image
+							<ImageError
 								style={mainStyles.coverSmall(theme)}
 								source={{ uri: urlCover(config, playlist, 100) }}
 							/>

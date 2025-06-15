@@ -64,7 +64,7 @@ const ArtistExplorer = () => {
 			keyExtractor={(item, index) => index}
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * artists.length + 490 }]}
-			waitForInitialLayout={false}
+			// waitForInitialLayout={false}
 			recycleItems={true}
 			estimatedItemSize={80}
 			ListHeaderComponent={

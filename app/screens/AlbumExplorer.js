@@ -42,7 +42,7 @@ const AlbumExplorer = () => {
 			keyExtractor={(item, index) => index}
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 678 }]}
-			waitForInitialLayout={false}
+			// waitForInitialLayout={false}
 			recycleItems={true}
 			estimatedItemSize={80}
 			maintainVisibleContentPosition={{

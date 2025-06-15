@@ -1,6 +1,6 @@
 {
   "name": "castafiore",
-  "version": "2025.06.15b",
+  "version": "2025.06.15",
   "main": "index.js",
   "homepage": ".",
   "scripts": {
@@ -13,7 +13,7 @@
     "eslint": "eslint app index.js App.js -c eslint.config.mjs"
   },
   "dependencies": {
-    "@legendapp/list": "^1.0.15",
+    "@legendapp/list": "^1.0.20",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^7.3.13",
     "@react-navigation/native": "^7.1.9",

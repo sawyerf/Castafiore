@@ -49,7 +49,7 @@ const Playlist = ({ route: { params } }) => {
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
 				recycleItems={true}
-				waitForInitialLayout={false}
+				// waitForInitialLayout={false}
 				estimatedItemSize={60}
 				ListHeaderComponent={
 					<>

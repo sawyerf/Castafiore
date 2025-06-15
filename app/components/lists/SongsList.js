@@ -10,7 +10,7 @@ import OptionsSongsList from '~/components/options/OptionsSongsList';
 const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
 	const theme = React.useContext(ThemeContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
-	const isMultiCD = React.useMemo(() => songs?.filter(item => item.discNumber !== songs[0].discNumber).length > 0, [songs])
+	const isMultiCD = React.useMemo(() => songs?.some(item => item.discNumber !== songs[0].discNumber), [songs])
 
 	return (
 		<View style={{

@@ -4,17 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as NavigationBar from 'expo-navigation-bar';
 
-import TabBar from '~/components/bar/TabBar';
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
+import TabBar from '~/components/bar/TabBar';
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import Player from '~/utils/player';
+import { setNavigationBarColor } from '~/utils/navigationBar';
+import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song';
 import { ThemeContext, getTheme } from '~/contexts/theme';
-import { SetUpdateApiContext, UpdateApiContext } from './app/contexts/updateApi';
+import Player from '~/utils/player';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +50,7 @@ const App = () => {
 	}, [settings.theme, settings.themePlayer])
 
 	React.useEffect(() => {
-		NavigationBar.setBackgroundColorAsync(theme.secondaryBack)
+		setNavigationBarColor(theme.secondaryBack)
 	}, [theme])
 
 	React.useEffect(() => {

@@ -24,21 +24,11 @@ const preview = {
 	LYRICS: 2
 }
 
-const FullScreenPlayer = ({ setFullScreen }) => {
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
-	const song = React.useContext(SongContext)
-	const insets = useSafeAreaInsets();
-	const time = Player.updateTime()
-	const { width } = useWindowDimensions();
-	const [isPreview, setIsPreview] = React.useState(preview.COVER)
-	const [fakeTime, setFakeTime] = React.useState(-1)
+const CoverItem = ({ isPreview, song }) => {
 	const scroll = React.useRef(null)
-
-	React.useEffect(() => {
-		setIsPreview(preview.COVER)
-	}, [song.songInfo])
+	const config = React.useContext(ConfigContext);
+	const theme = React.useContext(ThemeContext);
+	const { width } = useWindowDimensions();
 
 	const albumImage = React.useMemo(() => {
 		const size = Math.min(width, 500) - 50
@@ -47,10 +37,84 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 			width: size,
 			maxHeight: size,
 			height: size,
+			minwidth: size,
+			minHeight: size,
 			aspectRatio: 1,
 			borderRadius: 10,
 		}
 	}, [width]);
+
+	if (isPreview === preview.COVER) return (
+		<SlideControl style={albumImage}>
+			<ImageError
+				source={{ uri: urlCover(config, song?.songInfo) }}
+				style={[albumImage, { backgroundColor: theme.secondaryBack }]}
+			/>
+		</SlideControl>
+	)
+	if (isPreview === preview.QUEUE) return (
+		<FlatList
+			style={[albumImage, { borderRadius: null }]}
+			contentContainerStyle={{ width: '100%' }}
+			ref={scroll}
+			data={song.queue}
+			keyExtractor={(_, index) => index}
+			showsVerticalScrollIndicator={false}
+			onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
+			getItemLayout={(_, index) => ({ length: size.image.small + 10, offset: (size.image.small + 10) * index, index })}
+			onScrollToIndexFailed={() => { }}
+			renderItem={({ item, index }) => (
+				<SongItem
+					song={item}
+					queue={song.queue}
+					index={index}
+					isPlaying={song.index === index}
+				/>
+			)}
+		/>
+	)
+	if (isPreview === preview.LYRICS) return (
+		<Lyric song={song} style={albumImage} />
+	)
+}
+
+const TimeBar = () => {
+	const [fakeTime, setFakeTime] = React.useState(-1)
+	const theme = React.useContext(ThemeContext)
+	const time = Player.updateTime()
+
+	return (
+		<>
+			<SlideBar
+				progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
+				onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
+				onChange={(progress) => setFakeTime(progress)}
+				onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
+				stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
+				styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
+				styleProgress={{ backgroundColor: theme.primaryTouch }}
+				isBitogno={true}
+			/>
+
+			<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+				<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
+				<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
+			</View>
+		</>
+	)
+}
+
+const FullScreenPlayer = ({ setFullScreen }) => {
+	const songDispatch = React.useContext(SongDispatchContext)
+	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
+	const song = React.useContext(SongContext)
+	const insets = useSafeAreaInsets();
+	const [isPreview, setIsPreview] = React.useState(preview.COVER)
+
+	React.useEffect(() => {
+		setIsPreview(preview.COVER)
+	}, [song.songInfo])
 
 	return (
 		<Modal
@@ -68,41 +132,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					color={theme.primaryText}
 					onPress={() => setFullScreen(false)} />
 				<View style={styles.playerContainer}>
-					{
-						isPreview == preview.COVER &&
-						<SlideControl style={albumImage}>
-							<ImageError
-								source={{ uri: urlCover(config, song?.songInfo) }}
-								style={[albumImage, { backgroundColor: theme.secondaryBack }]}
-							/>
-						</SlideControl>
-					}
-					{
-						isPreview == preview.QUEUE &&
-						<FlatList
-							style={[albumImage, { borderRadius: null }]}
-							contentContainerStyle={{ width: '100%' }}
-							ref={scroll}
-							data={song.queue}
-							keyExtractor={(item, index) => index}
-							showsVerticalScrollIndicator={false}
-							onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
-							getItemLayout={(data, index) => ({ length: size.image.small + 10, offset: (size.image.small + 10) * index, index })}
-							onScrollToIndexFailed={() => { }}
-							renderItem={({ item, index }) => (
-								<SongItem
-									song={item}
-									queue={song.queue}
-									index={index}
-									isPlaying={song.index === index}
-								/>
-							)}
-						/>
-					}
-					{
-						isPreview == preview.LYRICS &&
-						<Lyric song={song} time={time} style={albumImage} />
-					}
+					<CoverItem isPreview={isPreview} song={song} />
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
 							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
@@ -110,21 +140,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
-					<SlideBar
-						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
-						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
-						onChange={(progress) => setFakeTime(progress)}
-						onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
-						stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-						styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
-						styleProgress={{ backgroundColor: theme.primaryTouch }}
-						isBitogno={true}
-					/>
-
-					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-						<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
-						<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
-					</View>
+					<TimeBar />
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
 						<IconButton
 							icon="step-backward"

@@ -73,7 +73,6 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 					<View style={{ flex: 2, alignItems: 'center' }}>
 						<Lyric
 							song={song}
-							time={time}
 							sizeText={30}
 							color={{
 								active: color.primary,

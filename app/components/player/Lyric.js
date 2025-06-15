@@ -8,12 +8,13 @@ import { parseLrc } from '~/utils/lrc'
 import Player from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Lyric = ({ song, time, style, color = null, sizeText = 23 }) => {
+const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 	const [indexCurrent, setIndex] = React.useState(0)
 	const [lyrics, setLyrics] = React.useState([])
 	const config = React.useContext(ConfigContext)
 	const refScroll = React.useRef(null)
 	const theme = React.useContext(ThemeContext)
+	const time = Player.updateTime()
 
 	React.useEffect(() => {
 		getLyrics()

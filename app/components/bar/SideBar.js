@@ -11,6 +11,90 @@ import size from '~/styles/size'
 import mainStyles from '~/styles/main'
 import ImageError from '~/components/ImageError'
 
+const FavoritedItem = ({ navigation }) => {
+	const theme = React.useContext(ThemeContext)
+	const [isHover, setIsHover] = React.useState(false)
+
+	return (
+		<Pressable
+			onHoverIn={() => setIsHover(true)}
+			onHoverOut={() => setIsHover(false)}
+			style={{
+				flexDirection: 'row',
+				alignItems: 'center',
+				backgroundColor: isHover ? theme.secondaryBack : undefined,
+				marginHorizontal: 10,
+				paddingVertical: 5,
+				paddingHorizontal: 10,
+				borderRadius: 8,
+			}}
+			onPress={async () => {
+				await navigation.navigate('PlaylistsStack', { screen: 'Playlists' })
+				await navigation.navigate('PlaylistsStack', { screen: 'Favorited' })
+			}}
+		>
+			<View style={{ backgroundColor: '#c68588', width: 40, height: 40, borderRadius: 5, alignItems: 'center', justifyContent: 'center' }}>
+				<Icon name="heart" size={size.icon.tiny} color={'#cd1921'} />
+			</View>
+			<View style={{ flexDirection: 'column', flex: 1 }}>
+				<Text
+					style={[mainStyles.mediumText(theme.primaryText), {
+						fontWeight: '600',
+						marginLeft: 10,
+					}]}
+					numberOfLines={1}
+				>Favorited</Text>
+			</View>
+		</Pressable>
+	)
+}
+
+const PlaylistItem = ({ item, navigation }) => {
+	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
+	const [isHover, setIsHover] = React.useState(false)
+
+	return (
+		<Pressable
+			onHoverIn={() => setIsHover(true)}
+			onHoverOut={() => setIsHover(false)}
+			style={{
+				flexDirection: 'row',
+				alignItems: 'center',
+				backgroundColor: isHover ? theme.secondaryBack : undefined,
+				marginHorizontal: 10,
+				paddingVertical: 4,
+				paddingHorizontal: 10,
+				borderRadius: 8,
+				marginBottom: 3,
+			}}
+			onPress={async () => {
+				await navigation.navigate('PlaylistsStack', { screen: 'Playlists' })
+				await navigation.navigate('PlaylistsStack', { screen: 'Playlist', params: { playlist: item } })
+			}}
+		>
+			<ImageError
+				source={{ uri: urlCover(config, item, 100) }}
+				style={{ backgroundColor: theme.secondaryBack, width: 40, height: 40, borderRadius: 5 }}
+			/>
+			<View style={{ flexDirection: 'column', flex: 1 }}>
+				<Text
+					style={[mainStyles.mediumText(theme.primaryText), {
+						fontWeight: '600',
+						marginLeft: 10,
+					}]}
+					numberOfLines={1}
+				>
+					{item.name}
+				</Text>
+				<Text style={{ color: theme.secondaryText, fontSize: size.text.small, marginLeft: 10 }} numberOfLines={1}>
+					Playlist
+				</Text>
+			</View>
+		</Pressable>
+	)
+}
+
 const SideBar = ({ state, descriptors, navigation }) => {
 	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
@@ -19,7 +103,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 	const [refresh, setRefresh] = React.useState(0)
 
 	const [playlists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
-		setData(json.playlists.playlist)
+		setData(json.playlists.playlist?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)) || [])
 	}, [refresh])
 
 	return (
@@ -102,56 +186,18 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					flex: 1,
 					marginTop: 16,
 				}}>
+				<Pressable onPress={() => setRefresh(refresh + 1)}>
+					<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>Playlists</Text>
+				</Pressable>
+				<FavoritedItem navigation={navigation} />
 				{
-					playlists?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)).length ?
-						<Pressable onPress={() => setRefresh(refresh + 1)}>
-							<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>Playlists</Text>
-						</Pressable> : null
-				}
-				{
-					playlists?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`))?.map((item, index) => {
-						return (
-							<Pressable
-								key={index}
-								onHoverIn={() => setHoverIndex(index + 4)}
-								onHoverOut={() => setHoverIndex(-1)}
-								style={{
-									flexDirection: 'row',
-									alignItems: 'center',
-									backgroundColor: (hoverIndex === index + 4) ? theme.secondaryBack : undefined,
-									marginHorizontal: 10,
-									paddingVertical: 4,
-									paddingLeft: 10,
-									borderRadius: 8,
-									marginBottom: 3,
-								}}
-								onPress={async () => {
-									await navigation.navigate('PlaylistsStack', { screen: 'Playlists' })
-									await navigation.navigate('PlaylistsStack', { screen: 'Playlist', params: { playlist: item } })
-								}}
-
-							>
-								<ImageError
-									source={{ uri: urlCover(config, item, 100) }}
-									style={{ backgroundColor: theme.secondaryBack, width: 40, height: 40, borderRadius: 5 }}
-								/>
-								<View style={{ flexDirection: 'column', flex: 1 }}>
-									<Text
-										style={[mainStyles.mediumText(theme.primaryText), {
-											fontWeight: '600',
-											marginLeft: 10,
-										}]}
-										numberOfLines={1}
-									>
-										{item.name}
-									</Text>
-									<Text style={{ color: theme.secondaryText, fontSize: size.text.small, marginLeft: 10 }} numberOfLines={1}>
-										Playlist
-									</Text>
-								</View>
-							</Pressable>
-						)
-					})
+					playlists.map((item, index) => (
+						<PlaylistItem
+							key={index}
+							item={item}
+							navigation={navigation}
+						/>
+					))
 				}
 			</ScrollView>
 		</View>

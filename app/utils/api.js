@@ -126,6 +126,33 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 	return [data, refresh, setData]
 }
 
+export const useCachedFirst = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
+	const config = React.useContext(ConfigContext)
+	const updateApi = React.useContext(UpdateApiContext)
+	const [data, setData] = React.useState(initialState)
+
+	React.useEffect(() => {
+		if (!config?.url || !config?.query) return
+		getApiCacheFirst(config, path, query)
+			.then((json) => {
+				setFunc(json, setData)
+			})
+	}, [config, ...deps])
+
+	React.useEffect(() => {
+		if (!config?.url || !config?.query) return
+		if (!isUpdatable(updateApi, path, query)) return
+
+		const key = getUrl(config, path, query)
+		getJsonCache('api', key)
+			.then((json) => {
+				if (json) setFunc(json, setData)
+			})
+	}, [updateApi])
+
+	return [data, setData]
+}
+
 export const getApiCacheFirst = (config, path, query = '') => {
 	return new Promise((resolve, reject) => {
 		const key = getUrl(config, path, query)

@@ -159,7 +159,7 @@ export const getApiCacheFirst = (config, path, query = '') => {
 		getJsonCache('api', key)
 			.then((json) => {
 				if (json) return resolve(json)
-				getApi(config, path, query)
+				else getApi(config, path, query)
 					.then((json) => {
 						setJsonCache('api', key, json)
 							.then(() => {
@@ -190,7 +190,7 @@ export const getApiNetworkFirst = (config, path, query = '') => {
 					.then(() => resolve(json))
 			})
 			.catch((error) => {
-				getJsonCache('api', getUrl(config, path, query))
+				getJsonCache('api', key)
 					.then((json) => {
 						if (json) resolve(json)
 						else reject(error)

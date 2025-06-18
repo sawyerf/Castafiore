@@ -179,6 +179,11 @@ export const isVolumeSupported = () => {
 	return false
 }
 
+export const resetAudio = (songDispatch) => {
+	songDispatch({ type: 'reset' })
+	TrackPlayer.reset()
+}
+
 export default {
 	initService,
 	initPlayer,
@@ -200,5 +205,6 @@ export default {
 	isVolumeSupported,
 	reload,
 	useEvent,
+	resetAudio,
 	State,
 }

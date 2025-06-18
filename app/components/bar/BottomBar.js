@@ -15,6 +15,7 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const keyboardIsOpen = useKeyboardIsOpen()
 
+	if (!config.url) return null
 	return (
 		<View style={{
 			flexDirection: 'row',

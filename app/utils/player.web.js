@@ -292,8 +292,17 @@ export const setRepeat = async (songdispatch, action) => {
 	songdispatch({ type: 'setActionEndOfSong', action })
 }
 
-const isVolumeSupported = () => {
+export const isVolumeSupported = () => {
 	return window.isVolumeSupported
+}
+
+export const resetAudio = (songDispatch) => {
+	songDispatch({ type: 'reset' })
+	const sound = audio()
+	sound.src = ''
+	sound.load()
+	sound.pause()
+	sound.currentTime = 0
 }
 
 export default {
@@ -316,5 +325,6 @@ export default {
 	tuktuktuk,
 	setRepeat,
 	reload,
+	resetAudio,
 	State,
 }

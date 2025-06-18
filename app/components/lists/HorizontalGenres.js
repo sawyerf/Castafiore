@@ -11,18 +11,21 @@ const HorizontalGenres = ({ genres }) => {
 	const navigation = useNavigation();
 	const theme = React.useContext(ThemeContext)
 
+	const renderItem = React.useCallback(({ item }) => (
+		<Pressable
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.genreBox(theme)])}
+			onPress={() => navigation.navigate('Genre', { genre: item })}
+		>
+			<Text numberOfLines={1} style={styles.genreText(theme)}>{item.value}</Text>
+		</Pressable>
+	), [theme])
+
 	return (
 		<CustomFlat
 			style={styles.genreList}
 			contentContainerStyle={styles.scrollContainer}
 			data={genres}
-			renderItem={({ item }) => (
-				<Pressable
-					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.genreBox(theme)])}
-					onPress={() => navigation.navigate('Genre', { genre: item })}>
-					<Text numberOfLines={1} style={styles.genreText(theme)}>{item.value}</Text>
-				</Pressable>
-			)}
+			renderItem={renderItem}
 		/>
 	)
 }
@@ -50,7 +53,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	}),
 	genreText: theme => ({
-		color: theme.primaryText,
+		color: theme.innerTouch,
 		fontSize: size.text.large,
 		fontWeight: 'bold',
 	}),

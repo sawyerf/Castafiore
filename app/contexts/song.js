@@ -67,6 +67,11 @@ export const songReducer = (state, action) => {
 			return newSong(state, {
 				actionEndOfSong: action.action,
 			})
+		case 'reset':
+			return newSong(state, {
+				...defaultSong,
+				isInit: true,
+			})
 		default:
 			console.error('Unknown action', action)
 			return state

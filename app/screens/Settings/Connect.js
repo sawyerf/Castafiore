@@ -8,14 +8,16 @@ import { ConfigContext, SetConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
 import { getApi } from '~/utils/api';
 import { SettingsContext, SetSettingsContext, demoServers } from '~/contexts/settings';
+import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
+import ButtonText from '~/components/settings/ButtonText';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import OptionsPopup from '~/components/popup/OptionsPopup';
-import TableItem from '~/components/settings/TableItem';
-import ButtonText from '~/components/settings/ButtonText';
 import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
+import TableItem from '~/components/settings/TableItem';
+import Player from '~/utils/player';
 
 const Connect = ({ navigation }) => {
 	const insets = useSafeAreaInsets()
@@ -24,6 +26,7 @@ const Connect = ({ navigation }) => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
+	const songDispatch = React.useContext(SongDispatchContext)
 	const [error, setError] = React.useState('');
 	const [serverOption, setServerOption] = React.useState(null)
 	const [info, setInfo] = React.useState(null)
@@ -31,6 +34,7 @@ const Connect = ({ navigation }) => {
 	const upConfig = (conf) => {
 		AsyncStorage.setItem('config', JSON.stringify(conf))
 		setConfig(conf)
+		Player.resetAudio(songDispatch)
 	}
 
 	React.useEffect(() => {

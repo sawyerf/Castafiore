@@ -27,11 +27,14 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 	// View is necessary to show the scroll helper
 	return (
 		<View>
-			{settings?.scrollHelper &&
-				<View style={styles.scrollContainer}>
-					<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
-					<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
-				</View>}
+			{
+				settings?.scrollHelper && (
+					<View style={styles.scrollContainer}>
+						<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
+						<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
+					</View>
+				)
+			}
 			<FlatList
 				ref={refScroll}
 				data={data}

@@ -18,12 +18,19 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 	const isAnim = React.useRef(false)
 	const config = React.useContext(ConfigContext)
 	const navigation = useNavigation();
+	const [virtualOptions, setVirtualOptions] = React.useState();
 
 	React.useImperativeHandle(reff, () => ({
 		close: close,
 		showInfo: (info) => {
 			navigation.navigate('Info', { info });
 			close();
+		},
+		setVirtualOptions: (opt) => {
+			setVirtualOptions(opt);
+		},
+		clearVirtualOptions: () => {
+			setVirtualOptions(null);
 		}
 	}), [close])
 
@@ -112,21 +119,18 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 								</Text>
 								{
 									(item.artist || item.homePageUrl) ?
-									<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
-										{item.artist || item.homePageUrl}
-									</Text> : null
+										<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
+											{item.artist || item.homePageUrl}
+										</Text> : null
 								}
 							</View>
 						</View>
 					}
-					{[
-						...options,
-						{
-							name: 'Cancel',
-							icon: 'close',
-							onPress: close
-						}
-					].map((option, index) => {
+					{[...(virtualOptions || options), {
+						name: 'Cancel',
+						icon: 'close',
+						onPress: close
+					}].map((option, index) => {
 						if (!option) return null
 						return (
 							<Pressable
@@ -134,19 +138,37 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 									flexDirection: 'row',
 									alignItems: 'center',
 									paddingHorizontal: 20,
+									paddingStart: 20 + 15 * (option.indent || 0),
 									height: 45,
 									justifyContent: 'flex-start',
 									alignContent: 'center',
+									gap: 10,
 								}])}
 								key={index}
-								onPress={option.onPress}>
-								<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryText} style={{
-									padding: 15 * (option.indent || 0),
-									width: 25,
-									textAlign: 'center'
-								}} />
+								onPress={option.onPress}
+							>
+								{
+									option.icon && (
+										<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryText} style={{
+											width: 25,
+											textAlign: 'center'
+										}} />
+									)
+								}
+								{
+									option.image && (
+										<ImageError
+											style={{
+												width: 35,
+												height: 35,
+												borderRadius: 5,
+											}}
+											source={{ uri: option.image }}
+										/>
+									)
+								}
 								<Text
-									style={{ color: theme.primaryText, fontSize: size.text.large, marginStart: 10 }}
+									style={{ color: theme.primaryText, fontSize: size.text.large }}
 									numberOfLines={1}
 								>{option.name}</Text>
 							</Pressable>

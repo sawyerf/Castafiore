@@ -19,7 +19,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
   const deletePlaylist = (id) => {
     getApi(config, 'deletePlaylist', `id=${id}`)
       .then(() => {
-        setIndexOption(-1)
+        refOption.current.close()
         setDeletePlaylists([...deletePlaylists, id])
       })
       .catch(() => { })

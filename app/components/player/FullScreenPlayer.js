@@ -30,6 +30,10 @@ const CoverItem = ({ isPreview, song }) => {
 	const theme = React.useContext(ThemeContext);
 	const { width } = useWindowDimensions();
 
+	React.useEffect(() => {
+		if (isPreview === preview.QUEUE) scroll.current.scrollToIndex({ index: song.index, animated: true, viewOffset: 0, viewPosition: 0.5 });
+	}, [song.index]);
+
 	const albumImage = React.useMemo(() => {
 		const size = Math.min(width, 500) - 50
 		return {
@@ -112,9 +116,9 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const insets = useSafeAreaInsets();
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 
-	React.useEffect(() => {
-		setIsPreview(preview.COVER)
-	}, [song.songInfo])
+	// React.useEffect(() => {
+	// 	setIsPreview(preview.COVER)
+	// }, [song.songInfo])
 
 	return (
 		<Modal

@@ -43,7 +43,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const { height } = useWindowDimensions()
 
 	React.useEffect(() => {
-		if (isPreview == preview.LYRICS) setIsPreview(preview.COVER)
+		// if (isPreview == preview.LYRICS) setIsPreview(preview.COVER)
 		if (isPreview == preview.QUEUE) scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })
 	}, [song.index, song.songInfo])
 

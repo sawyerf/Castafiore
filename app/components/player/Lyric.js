@@ -17,6 +17,7 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 	const time = Player.updateTime()
 
 	React.useEffect(() => {
+		setLyrics([{ time: 0, text: 'Loading lyrics...' }])
 		getLyrics()
 	}, [song.songInfo])
 

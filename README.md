@@ -27,6 +27,10 @@
   <b>Castafiore</b> is a music player that support Subsonic API. It is available on the following platforms: <b>Web</b> (PWA), <b>Android</b>.
   </br>
   </br>
+
+
+
+  <a href="https://play.google.com/store/apps/details?id=com.sawyerf.castafiore"><img src="https://github.com/user-attachments/assets/b6f3a981-e88d-43ad-be25-ef556d991269" alt="Google Play"></a>
   <a href="https://github.com/sawyerf/Castafiore/releases/latest"><img src="https://github.com/user-attachments/assets/9f773ff9-07fc-47e4-8bd3-9a232fd97413" alt="DOWNLOAD APK"></a>
   <a href="https://sawyerf.github.io/Castafiore/"><img src="https://github.com/user-attachments/assets/9c697790-cc75-4195-b7f4-4f74c0aeb9ac" alt="PWA"></a>
 </div>

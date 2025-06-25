@@ -24,6 +24,9 @@ const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentCont
 		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 20 })
 	}
 
+	// https://github.com/facebook/react-native/issues/39421
+	if (!data || data.length === 0) return null;
+
 	// View is necessary to show the scroll helper
 	return (
 		<View>

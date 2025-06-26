@@ -89,12 +89,20 @@ export const stopSong = async () => {
 	await TrackPlayer.stop()
 }
 
+export const getCacheSong = async (id) => {
+	const fileUri = FileSystem.documentDirectory + id + '.' + global.streamFormat
+	if ((await FileSystem.getInfoAsync(fileUri)).exists) {
+		return fileUri
+	}
+	return null
+}
+
 const downloadSong = async (urlStream, id) => {
 	const fileUri = FileSystem.documentDirectory + id + '.' + global.streamFormat
 
-	console.log(fileUri)
 	if ((await FileSystem.getInfoAsync(fileUri)).exists) return fileUri
 	try {
+		console.log('downloadSong: ', id)
 		await FileSystem.downloadAsync(urlStream, fileUri)
 		return fileUri
 	} catch (error) {
@@ -103,18 +111,13 @@ const downloadSong = async (urlStream, id) => {
 	}
 }
 
-const downloadNextSong = async (queue, currentIndex) => {
+export const downloadNextSong = async (queue, currentIndex) => {
 	const maxIndex = Math.min(global.cacheNextSong, queue.length)
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
 		if (currentIndex !== index && queue[index].url.startsWith('http')) {
-			const fileUri = await downloadSong(queue[index].url, queue[index].id)
-			// updateMetadataForTrack not working with url
-			await TrackPlayer.updateMetadataForTrack(index, {
-				...queue[index],
-				url: fileUri,
-			})
+			await downloadSong(queue[index].url, queue[index].id)
 		}
 	}
 }

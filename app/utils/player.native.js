@@ -1,5 +1,6 @@
 import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress, Event, useTrackPlayerEvents } from 'react-native-track-player';
 import { urlCover, urlStream } from '~/utils/api';
+import * as FileSystem from 'expo-file-system';
 
 export const initService = async () => {
 	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'));
@@ -88,12 +89,46 @@ export const stopSong = async () => {
 	await TrackPlayer.stop()
 }
 
+const downloadSong = async (urlStream, id) => {
+	const fileUri = FileSystem.documentDirectory + id + '.' + global.streamFormat
+
+	console.log(fileUri)
+	if ((await FileSystem.getInfoAsync(fileUri)).exists) return fileUri
+	try {
+		await FileSystem.downloadAsync(urlStream, fileUri)
+		return fileUri
+	} catch (error) {
+		console.error('downloadSong: ', error)
+		return urlStream
+	}
+}
+
+const downloadNextSong = async (queue, currentIndex) => {
+	const maxIndex = Math.min(global.cacheNextSong, queue.length)
+
+	for (let i = -1; i < maxIndex; i++) {
+		const index = (currentIndex + queue.length + i) % queue.length
+		if (currentIndex !== index && queue[index].url.startsWith('http')) {
+			const fileUri = await downloadSong(queue[index].url, queue[index].id)
+			// updateMetadataForTrack not working with url
+			await TrackPlayer.updateMetadataForTrack(index, {
+				...queue[index],
+				url: fileUri,
+			})
+		}
+	}
+}
+
 export const playSong = async (config, songDispatch, queue, index) => {
-	const tracks = queue.map((track) => {
+	const fileUri = downloadSong(
+		urlStream(config, queue[index].id, global.streamFormat, global.maxBitRate),
+		queue[index].id)
+
+	let tracks = queue.map(async (track, indexTrack) => {
 		return {
 			...track,
 			id: track.id,
-			url: urlStream(config, track.id, global.streamFormat, global.maxBitRate),
+			url: indexTrack === index ? await fileUri : urlStream(config, track.id, global.streamFormat, global.maxBitRate),
 			atwork: urlCover(config, track),
 			artist: track.artist,
 			title: track.title,
@@ -108,11 +143,13 @@ export const playSong = async (config, songDispatch, queue, index) => {
 			config
 		}
 	})
+	tracks = await Promise.all(tracks)
 	await TrackPlayer.setQueue(tracks)
 	await TrackPlayer.skip(index)
 	await TrackPlayer.play()
 	songDispatch({ type: 'setSong', queue, index })
 	setRepeat(songDispatch, 'next')
+	await downloadNextSong(tracks, index)
 }
 
 export const secondToTime = (second) => {

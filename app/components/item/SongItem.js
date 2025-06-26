@@ -67,7 +67,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 			/>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
 				<Text numberOfLines={1} style={[mainStyles.mediumText(isPlaying ? theme.primaryTouch : theme.primaryText), { marginBottom: 2 }]}>
-					{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
+					{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.url || song.title}
 				</Text>
 				<Text numberOfLines={1} style={mainStyles.smallText(isPlaying ? theme.secondaryTouch : theme.secondaryText)}>
 					{song.artist}

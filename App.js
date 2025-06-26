@@ -63,6 +63,11 @@ const App = () => {
 		else global.maxBitRate = settings.maxBitRate
 	}, [settings.maxBitRate])
 
+	React.useEffect(() => {
+		if (window) window.cacheNextSong = settings.cacheNextSong
+		else global.cacheNextSong = settings.cacheNextSong
+	}, [settings.cacheNextSong])
+
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)
 		AsyncStorage.setItem('settings', JSON.stringify(settings))

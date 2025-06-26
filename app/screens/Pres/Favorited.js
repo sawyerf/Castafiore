@@ -40,6 +40,7 @@ const Favorited = ({ route: { params } }) => {
 				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
 				contentContainerStyle={mainStyles.contentMainContainer(insets, false)}
+				waitForInitialLayout={false}
 				recycleItems={true}
 				estimatedItemSize={60}
 				ListHeaderComponent={

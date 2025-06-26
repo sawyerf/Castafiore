@@ -50,7 +50,7 @@ const AlbumExplorer = () => {
 			keyExtractor={(item, index) => index}
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={[mainStyles.contentMainContainer(insets, false)]}
-			// waitForInitialLayout={false}
+			waitForInitialLayout={false}
 			recycleItems={true}
 			// estimatedItemSize={80}
 			ListHeaderComponent={

@@ -19,7 +19,7 @@ const AlbumExplorer = () => {
 		fetch(`https://api.listenbrainz.org/1/user/${encodeURIComponent(settings.listenBrainzUser)}/fresh_releases`, { mode: 'cors' })
 			.then(response => response.json())
 			.then(data => {
-				if (data.error) return 
+				if (data.error) return
 				if (!data?.payload?.releases?.length) return
 				let lastDate = ''
 				setAlbums(data.payload.releases
@@ -34,9 +34,10 @@ const AlbumExplorer = () => {
 							]
 						}
 						return item
-					}).flat())
-					.catch((error) => console.log(error))
+					})
+					.flat() || [])
 			})
+			.catch((error) => console.log(error))
 	}, [settings.listenBrainzUser])
 
 	const renderItem = React.useCallback(({ item }) => (

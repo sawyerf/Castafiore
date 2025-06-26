@@ -68,6 +68,7 @@ const HomeSettings = () => {
 				</View>
 				<Text style={settingStyles.description(theme)}>	{'It\'s recommanded to activate scroll helper on desktop'}</Text>
 
+				<Text style={settingStyles.titleContainer(theme)}>ListenBrainz stats</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
 						title="ListenBrainz User"

@@ -17,6 +17,7 @@ import UpdateRadio from '~/screens/UpdateRadio';
 
 import AlbumExplorer from '~/screens/AlbumExplorer';
 import ArtistExplorer from '~/screens/ArtistExplorer';
+import FreshReleases from '~/screens/FreshReleases';
 import Info from '~/screens/Info';
 import ShowAll from '~/screens/ShowAll';
 
@@ -56,6 +57,7 @@ export const HomeStack = () => {
 			<Stack.Screen name="ShowAll" component={ShowAll} />
 			<Stack.Screen name="Playlist" component={Playlist} />
 			<Stack.Screen name="Info" component={Info} />
+			<Stack.Screen name="FreshReleases" component={FreshReleases} />
 		</Stack.Navigator>
 	)
 }

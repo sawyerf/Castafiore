@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text, View, ScrollView, Animated, StyleSheet, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ConfigContext } from '~/contexts/config';
 
+import { ConfigContext } from '~/contexts/config';
 import { getApi, getApiNetworkFirst } from '~/utils/api';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
@@ -14,6 +15,7 @@ import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
 const Home = () => {
+	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
@@ -81,25 +83,36 @@ const Home = () => {
 					onPress={clickRandomSong}>
 					<Text style={styles.textRandom(theme)}>Random Song</Text>
 				</Pressable>
-				{statusRefresh ?
-					<Pressable onPress={forceRefresh} style={mainStyles.opacity}
-					>
-						<Text style={mainStyles.subTitle(theme)}>
-							{statusRefresh.count}°
-						</Text>
-					</Pressable> :
-					<Animated.View style={{ transform: [{ rotate: rotation }] }}>
-						<IconButton
-							icon="refresh"
-							size={size.icon.large}
+				<View style={{flexDirection: 'row'}}>
+					{
+						settings.listenBrainzUser && <IconButton
+							icon="bell-o"
+							size={size.icon.tiny}
 							color={theme.primaryText}
-							style={{ paddingHorizontal: 10 }}
-							onLongPress={refreshServer}
-							delayLongPress={200}
-							onPress={forceRefresh}
+							style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+							onPress={() => navigation.navigate('FreshReleases')}
 						/>
-					</Animated.View>
-				}
+					}
+					{statusRefresh ?
+						<Pressable onPress={forceRefresh} style={mainStyles.opacity}
+						>
+							<Text style={mainStyles.subTitle(theme)}>
+								{statusRefresh.count}°
+							</Text>
+						</Pressable> :
+						<Animated.View style={{ transform: [{ rotate: rotation }] }}>
+							<IconButton
+								icon="refresh"
+								size={size.icon.large}
+								color={theme.primaryText}
+								style={{ paddingHorizontal: 10 }}
+								onLongPress={refreshServer}
+								delayLongPress={200}
+								onPress={forceRefresh}
+							/>
+						</Animated.View>
+					}
+				</View>
 			</View>
 			{config?.url && settings?.homeOrder?.map((value, index) =>
 				<HorizontalList key={index} refresh={refresh}{...value} />

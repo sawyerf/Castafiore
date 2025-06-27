@@ -6,6 +6,10 @@ import { downloadNextSong } from "~/utils/player"
 import { isSongCached, getPathSong } from "~/utils/cache"
 
 let lockDownload = false
+let lastScrobble = {
+	id: null,
+	time: 0,
+}
 
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
@@ -44,16 +48,24 @@ module.exports = async () => {
 					})
 			}
 
-			// TODO: not trigger it two times
 			if (event.lastTrack) {
 				if (event.lastPosition >= event.lastTrack.duration - 1) {
+					console.log('scrobbled true', event.lastTrack.id)
 					getApi(event.lastTrack.config, 'scrobble', `id=${event.lastTrack.id}&submission=true`)
 						.catch(() => { })
 				}
 			}
 			if (event.track) {
-				getApi(event.track.config, 'scrobble', `id=${event.track.id}&submission=false`)
-					.catch(() => { })
+				const now = Date.now()
+				if (lastScrobble.id !== event.track.id || now - lastScrobble.time > 10 * 1000) {
+					console.log('scrobbled false', event.track.id)
+					getApi(event.track.config, 'scrobble', `id=${event.track.id}&submission=false`)
+						.catch(() => { })
+					lastScrobble = {
+						id: event.track.id,
+						time: now,
+					}
+				}
 			}
 		}
 	})

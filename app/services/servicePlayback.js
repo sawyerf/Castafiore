@@ -50,7 +50,6 @@ module.exports = async () => {
 
 			if (event.lastTrack) {
 				if (event.lastPosition >= event.lastTrack.duration - 1) {
-					console.log('scrobbled true', event.lastTrack.id)
 					getApi(event.lastTrack.config, 'scrobble', `id=${event.lastTrack.id}&submission=true`)
 						.catch(() => { })
 				}
@@ -58,7 +57,6 @@ module.exports = async () => {
 			if (event.track) {
 				const now = Date.now()
 				if (lastScrobble.id !== event.track.id || now - lastScrobble.time > 10 * 1000) {
-					console.log('scrobbled false', event.track.id)
 					getApi(event.track.config, 'scrobble', `id=${event.track.id}&submission=false`)
 						.catch(() => { })
 					lastScrobble = {

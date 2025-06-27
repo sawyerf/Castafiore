@@ -9,7 +9,7 @@ import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens
 import TabBar from '~/components/bar/TabBar';
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
-import { getListCacheSong } from '~/utils/cache';
+import { initCacheSong } from '~/utils/cache';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { setNavigationBarColor } from '~/utils/navigationBar';
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
@@ -40,11 +40,7 @@ const App = () => {
 			.then((settings) => {
 				setSettings(settings)
 			})
-		getListCacheSong()
-			.then((songs) => {
-				if (window) window.listCacheSong = songs || []
-				else global.listCacheSong = songs || []
-			})
+		initCacheSong()
 	}, [])
 
 	React.useEffect(() => {

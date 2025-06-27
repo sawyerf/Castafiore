@@ -53,3 +53,7 @@ export const getListCacheSong = async () => {
 export const getPathSong = (_songId, _streamFormat) => {
 	return null
 }
+
+export const initCacheSong = async () => {
+	if (global) global.listCacheSong = []
+}

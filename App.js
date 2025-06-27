@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';

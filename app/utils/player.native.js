@@ -1,6 +1,8 @@
 import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress, Event, useTrackPlayerEvents } from 'react-native-track-player';
-import { urlCover, urlStream } from '~/utils/api';
 import * as FileSystem from 'expo-file-system';
+
+import { urlCover, urlStream } from '~/utils/api';
+import { isSongCached, getPathSong } from '~/utils/cache';
 
 export const initService = async () => {
 	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'));
@@ -89,21 +91,13 @@ export const stopSong = async () => {
 	await TrackPlayer.stop()
 }
 
-export const getCacheSong = async (id) => {
-	const fileUri = FileSystem.documentDirectory + id + '.' + global.streamFormat
-	if ((await FileSystem.getInfoAsync(fileUri)).exists) {
-		return fileUri
-	}
-	return null
-}
-
 const downloadSong = async (urlStream, id) => {
-	const fileUri = FileSystem.documentDirectory + id + '.' + global.streamFormat
+	const fileUri = getPathSong(id, global.streamFormat)
 
-	if ((await FileSystem.getInfoAsync(fileUri)).exists) return fileUri
+	if (await isSongCached(null, id, global.streamFormat, global.maxBitRate)) return fileUri
 	try {
-		console.log('downloadSong: ', id)
 		await FileSystem.downloadAsync(urlStream, fileUri)
+		global.listCacheSong.push(`${id}.${global.streamFormat}`)
 		return fileUri
 	} catch (error) {
 		console.error('downloadSong: ', error)
@@ -116,22 +110,20 @@ export const downloadNextSong = async (queue, currentIndex) => {
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
-		if (currentIndex !== index && queue[index].url.startsWith('http')) {
+		if (queue[index].url.startsWith('http')) {
 			await downloadSong(queue[index].url, queue[index].id)
 		}
 	}
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
-	const fileUri = downloadSong(
-		urlStream(config, queue[index].id, global.streamFormat, global.maxBitRate),
-		queue[index].id)
-
-	let tracks = queue.map(async (track, indexTrack) => {
+	let tracks = queue.map(async (track) => {
 		return {
 			...track,
 			id: track.id,
-			url: indexTrack === index ? await fileUri : urlStream(config, track.id, global.streamFormat, global.maxBitRate),
+			url: (await isSongCached(null, track.id, global.streamFormat, global.maxBitRate)) ?
+				getPathSong(track.id, global.streamFormat) :
+				urlStream(config, track.id, global.streamFormat, global.maxBitRate),
 			atwork: urlCover(config, track),
 			artist: track.artist,
 			title: track.title,
@@ -152,7 +144,6 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	await TrackPlayer.play()
 	songDispatch({ type: 'setSong', queue, index })
 	setRepeat(songDispatch, 'next')
-	await downloadNextSong(tracks, index)
 }
 
 export const secondToTime = (second) => {

@@ -2,7 +2,10 @@ import TrackPlayer, { Event } from "react-native-track-player"
 
 import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
-import { getCacheSong, downloadNextSong } from "~/utils/player"
+import { downloadNextSong } from "~/utils/player"
+import { isSongCached, getPathSong } from "~/utils/cache"
+
+let lockDownload = false
 
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
@@ -21,21 +24,26 @@ module.exports = async () => {
 			const activeTrack = await TrackPlayer.getActiveTrack()
 
 			if (activeTrack.url.startsWith('http')) {
-				console.log(activeTrack.url)
-				getCacheSong(activeTrack.id)
-					.then((fileUri) => {
-						if (!fileUri) return
-						console.log('Cached song: ', fileUri)
-						TrackPlayer.load({
-							...activeTrack,
-							url: fileUri,
-						})
+				if (await isSongCached(null, activeTrack.id, global.streamFormat, global.maxBitRate)) {
+					TrackPlayer.load({
+						...activeTrack,
+						url: getPathSong(activeTrack.id, global.streamFormat),
 					})
-					.catch(() => { })
+				}
 			}
 
-			downloadNextSong(await TrackPlayer.getQueue(), event.index)
-				.catch((error) => console.log('downloadNextSong error: ', error))
+			if (!lockDownload) {
+				lockDownload = true
+				downloadNextSong(await TrackPlayer.getQueue(), event.index)
+					.then(() => {
+						lockDownload = false
+					})
+					.catch((error) => {
+						lockDownload = false
+						console.error('downloadNextSong error: ', error)
+					})
+			}
+
 			// TODO: not trigger it two times
 			if (event.lastTrack) {
 				if (event.lastPosition >= event.lastTrack.duration - 1) {

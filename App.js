@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens
 import TabBar from '~/components/bar/TabBar';
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
+import { getListCacheSong } from '~/utils/cache';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { setNavigationBarColor } from '~/utils/navigationBar';
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
@@ -38,6 +39,11 @@ const App = () => {
 		getSettings()
 			.then((settings) => {
 				setSettings(settings)
+			})
+		getListCacheSong()
+			.then((songs) => {
+				if (window) window.listCacheSong = songs || []
+				else global.listCacheSong = songs || []
 			})
 	}, [])
 

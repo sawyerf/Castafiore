@@ -3,12 +3,12 @@ import { Text, View, StyleSheet, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
-import { getCache } from '~/utils/cache';
+import { isSongCached } from '~/utils/cache';
 import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
 import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover, urlStream } from '~/utils/api';
+import { urlCover } from '~/utils/api';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
@@ -29,7 +29,7 @@ const Cached = ({ song }) => {
 
 	const cached = async (song) => {
 		if (!settings.showCache) return false
-		const cache = await getCache('song', urlStream(config, song.id, settings.streamFormat, settings.maxBitrate))
+		const cache = await isSongCached(config, song.id, settings.streamFormat, settings.maxBitrate)
 		if (cache) return true
 		return false
 	}

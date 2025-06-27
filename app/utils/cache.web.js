@@ -1,3 +1,5 @@
+import { urlStream } from '~/utils/api'
+
 export const getCache = async (cacheName, key) => {
 	const caches = await window.caches.open(cacheName)
 	if (!caches) return null
@@ -38,4 +40,16 @@ export const getJsonCache = async (cacheName, url) => {
 
 export const setJsonCache = async (_cacheName, _key, _json) => {
 	// Service worker already do this
+}
+
+export const isSongCached = async (config, songId, streamFormat, maxBitrate) => {
+	return getCache('song', urlStream(config, songId, streamFormat, maxBitrate))
+}
+
+export const getListCacheSong = async () => {
+	return []
+}
+
+export const getPathSong = (_songId, _streamFormat) => {
+	return null
 }

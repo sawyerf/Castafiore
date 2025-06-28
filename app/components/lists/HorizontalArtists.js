@@ -22,7 +22,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.artist])}
 			onPress={() => {
 				onPress(item)
-				navigation.navigate('Artist', { id: item.id, name: item.name })
+				navigation.push('Artist', { id: item.id, name: item.name })
 			}}
 			onLongPress={() => setIndexOptions(index)}
 			delayLongPress={200}

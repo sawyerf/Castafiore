@@ -37,7 +37,7 @@ const AlbumExplorer = () => {
 					})
 					.flat() || [])
 			})
-			.catch((error) => console.log(error))
+			.catch((error) => console.error(error))
 	}, [settings.listenBrainzUser])
 
 	const renderItem = React.useCallback(({ item }) => (

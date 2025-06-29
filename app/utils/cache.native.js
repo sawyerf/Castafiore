@@ -34,7 +34,7 @@ export const getPathSong = (songId, streamFormat) => {
 }
 
 const getPathDir = () => {
-	return `${FileSystem.documentDirectory}/cache/songs/`
+	return `${FileSystem.documentDirectory}/cache/${global.folderCache}/songs/`
 }
 
 export const initCacheSong = async () => {

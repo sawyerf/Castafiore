@@ -40,11 +40,14 @@ const App = () => {
 			.then((settings) => {
 				setSettings(settings)
 			})
-		initCacheSong()
 	}, [])
 
 	React.useEffect(() => {
-		if (window) window.config = config
+		if (!config.url) return
+		const folderCache = config.url.replace(/[^a-zA-Z0-9]/g, '_')
+		if (window) window.config = { ...config, folderCache }
+		else global.config = { ...config, folderCache }
+		initCacheSong()
 	}, [config])
 
 	React.useEffect(() => {

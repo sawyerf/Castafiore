@@ -66,11 +66,13 @@ export const useEvent = (songDispatch) => {
 }
 
 export const previousSong = async (config, song, songDispatch) => {
+	if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	await TrackPlayer.skipToPrevious()
 	songDispatch({ type: 'previous' })
 }
 
 export const nextSong = async (config, song, songDispatch) => {
+	if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	await TrackPlayer.skipToNext()
 	songDispatch({ type: 'next' })
 }

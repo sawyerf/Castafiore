@@ -208,6 +208,7 @@ export const nextSong = async (config, song, songDispatch) => {
 		unloadSong()
 		await loadSong(config, song.queue, (song.index + 1) % song.queue.length)
 		songDispatch({ type: 'next' })
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
 
@@ -216,6 +217,7 @@ export const previousSong = async (config, song, songDispatch) => {
 		unloadSong()
 		await loadSong(config, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
 		songDispatch({ type: 'previous' })
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
 

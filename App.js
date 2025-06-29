@@ -9,6 +9,7 @@ import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens
 import TabBar from '~/components/bar/TabBar';
 
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
+import { initCacheSong } from '~/utils/cache';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { setNavigationBarColor } from '~/utils/navigationBar';
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
@@ -42,7 +43,11 @@ const App = () => {
 	}, [])
 
 	React.useEffect(() => {
-		if (window) window.config = config
+		if (!config.url) return
+		const folderCache = config.url.replace(/[^a-zA-Z0-9]/g, '_')
+		if (window) window.config = { ...config, folderCache }
+		else global.config = { ...config, folderCache }
+		initCacheSong()
 	}, [config])
 
 	React.useEffect(() => {
@@ -62,6 +67,11 @@ const App = () => {
 		if (window) window.maxBitRate = settings.maxBitRate
 		else global.maxBitRate = settings.maxBitRate
 	}, [settings.maxBitRate])
+
+	React.useEffect(() => {
+		if (window) window.cacheNextSong = settings.cacheNextSong
+		else global.cacheNextSong = settings.cacheNextSong
+	}, [settings.cacheNextSong])
 
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)

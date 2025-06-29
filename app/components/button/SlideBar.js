@@ -18,6 +18,7 @@ const SlideBar = ({
 	const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
 	const viewRef = React.useRef(null)
 	const prog = React.useRef(0)
+	const [widthBar, setWidth] = React.useState(0)
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
@@ -43,6 +44,7 @@ const SlideBar = ({
 	const upLayoutBar = React.useCallback(() => {
 		if (!viewRef.current) return
 		viewRef.current.measure((x, y, width, height, pageX) => {
+			setWidth(width)
 			layoutBar.current = { width, x: pageX }
 		})
 	}, [])
@@ -65,19 +67,19 @@ const SlideBar = ({
 					style={[{ width: `${progress * 100}%`, height: '100%', backgroundColor: theme.primaryTouch }, styleProgress]}
 				/>
 			</View>
-			{isBitogno && <View style={styles.bitognoBar(progress, sizeBitogno, theme)} />}
+			{isBitogno && <View style={styles.bitognoBar(progress, sizeBitogno, theme, widthBar)} />}
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
-	bitognoBar: (vol, sizeBitogno, theme) => ({
+	bitognoBar: (vol, sizeBitogno, theme, width) => ({
 		position: 'absolute',
 		width: sizeBitogno,
 		height: sizeBitogno,
 		borderRadius: sizeBitogno / 2,
 		backgroundColor: theme.primaryTouch,
-		left: Platform.select({ web: `calc(${vol * 100}% - ${sizeBitogno / 2}px)`, default: vol * 99 + '%' }),
+		left: Platform.select({ web: `calc(${vol * 100}% - ${sizeBitogno / 2}px)`, default: ((vol * width) - (sizeBitogno / 2)) || 0 }),
 		top: 7
 	})
 })

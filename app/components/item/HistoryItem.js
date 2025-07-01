@@ -61,7 +61,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 				) : (
 					<>
 						<Icon name="eye" size={17} color={theme.secondaryText} style={{ width: 45, marginEnd: 10, textAlign: 'center' }} />
-						<Text style={[mainStyles.mediumText(theme.secondaryText), { flex: 1 }]}>{itemHist}</Text>
+						<Text numberOfLines={1} style={[mainStyles.mediumText(theme.secondaryText), { flex: 1 }]}>{itemHist}</Text>
 					</>
 				)
 			}

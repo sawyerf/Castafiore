@@ -108,6 +108,7 @@ const downloadSong = async (urlStream, id) => {
 }
 
 export const downloadNextSong = async (queue, currentIndex) => {
+	if (!global.isSongCaching) return
 	const maxIndex = Math.min(global.cacheNextSong, queue.length)
 
 	for (let i = -1; i < maxIndex; i++) {

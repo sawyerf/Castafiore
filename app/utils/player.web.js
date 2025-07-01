@@ -2,7 +2,6 @@ import React from 'react';
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 
 import { getApi, urlCover, urlStream } from '~/utils/api';
-import { getSettings } from '~/contexts/settings';
 
 const State = {
 	None: 'none',
@@ -161,8 +160,8 @@ export const updateTime = () => {
 }
 
 const downloadNextSong = async (config, queue, currentIndex) => {
-	const settings = await getSettings()
-	const maxIndex = Math.min(settings.cacheNextSong, queue.length)
+	if (!window.isSongCaching) return
+	const maxIndex = Math.min(window.cacheNextSong, queue.length)
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length

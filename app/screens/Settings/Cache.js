@@ -55,10 +55,19 @@ const CacheSettings = () => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title="Cache" />
-
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Auto Cache</Text>
+				<Text style={settingStyles.titleContainer(theme)}>Song Caching</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
+					<ButtonSwitch
+						title="Enable Song Caching"
+						value={settings.isSongCaching}
+						onPress={() => setSettings({ ...settings, isSongCaching: !settings.isSongCaching })}
+					/>
+					<ButtonSwitch
+						title="Show cached songs"
+						value={settings.showCache}
+						onPress={() => setSettings({ ...settings, showCache: !settings.showCache })}
+					/>
 					<OptionInput
 						title="Cache next song"
 						value={cacheNextSong}
@@ -68,14 +77,6 @@ const CacheSettings = () => {
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>{'Auto download upcoming songs (default: 5)'}</Text>
-				<View style={settingStyles.optionsContainer(theme)}>
-					<ButtonSwitch
-						title="Show if song is cached"
-						value={settings.showCache}
-						onPress={() => setSettings({ ...settings, showCache: !settings.showCache })}
-						isLast
-					/>
-				</View>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ButtonMenu
 						title="Clear cache"

@@ -73,6 +73,11 @@ const App = () => {
 		else global.cacheNextSong = settings.cacheNextSong
 	}, [settings.cacheNextSong])
 
+	React.useEffect(() => {
+		if (window) window.isSongCaching = settings.isSongCaching
+		else global.isSongCaching = settings.isSongCaching
+	}, [settings.isSongCaching])
+
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)
 		AsyncStorage.setItem('settings', JSON.stringify(settings))

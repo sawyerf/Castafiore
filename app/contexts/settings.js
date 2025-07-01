@@ -20,6 +20,17 @@ export const demoServers = [
 ]
 
 export const defaultSettings = {
+	isDesktop: false,
+	servers: [
+		{
+			name: 'Demo',
+			type: 'navidrome',
+			url: 'https://demo.navidrome.org',
+			username: 'demo',
+			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
+		},
+	],
+	// Home Settings
 	homeOrder: [
 		{ icon: 'bar-chart', title: 'Week Activity', type: 'listenbrainz', query: '', enable: false },
 		{ icon: 'user', title: 'Favorited Artist', type: 'artist', query: '', enable: true },
@@ -36,26 +47,21 @@ export const defaultSettings = {
 	],
 	listenBrainzUser: '',
 	sizeOfList: 15,
-	orderPlaylist: 'title',
-	previewFavorited: 3,
-	isDesktop: false,
-	servers: [
-		{
-			name: 'Demo',
-			type: 'navidrome',
-			url: 'https://demo.navidrome.org',
-			username: 'demo',
-			query: `u=${encodeURI('demo')}&t=${md5('demo' + 'aaaaaa')}&s=${'aaaaaa'}&v=1.16.1&c=castafiore`
-		},
-	],
-	cacheNextSong: 5,
+	scrollHelper: false,
+	// Theme settings
 	theme: 'castafiore',
 	themePlayer: 'default',
-	scrollHelper: false,
+	// Cache settings
+	isSongCaching: true,
+	cacheNextSong: 5,
 	showCache: false,
+	// Player settings
 	streamFormat: 'raw',
 	maxBitRate: 0,
+	// Playlist settings
 	reversePlaylist: false,
+	orderPlaylist: 'title',
+	previewFavorited: 3,
 }
 
 export const getSettings = async () => {

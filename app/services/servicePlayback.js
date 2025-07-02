@@ -1,4 +1,4 @@
-import TrackPlayer, { Event } from "react-native-track-player"
+import TrackPlayer, { Event, State } from "react-native-track-player"
 
 import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
@@ -10,6 +10,7 @@ let lastScrobble = {
 	id: null,
 	time: 0,
 }
+let shouldPlay = false
 
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
@@ -18,8 +19,24 @@ module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
 	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
-		if (event.paused) Player.pauseSong()
-		else Player.resumeSong()
+		TrackPlayer.getPlaybackState()
+			.then(({ state }) => {
+				if (event.paused) {
+					if (state === State.Playing) {
+						if (event.permanent) {
+							Player.stopSong()
+							shouldPlay = false
+						} else {
+							Player.pauseSong()
+							shouldPlay = true
+						}
+					}
+				}
+				else if (shouldPlay) {
+					Player.resumeSong()
+					shouldPlay = false
+				}
+			})
 	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
 		if (event.track?.id === 'tuktuktukend') {

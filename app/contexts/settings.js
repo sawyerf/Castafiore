@@ -52,7 +52,7 @@ export const defaultSettings = {
 	theme: 'castafiore',
 	themePlayer: 'default',
 	// Cache settings
-	isSongCaching: true,
+	isSongCaching: false,
 	cacheNextSong: 5,
 	showCache: false,
 	// Player settings

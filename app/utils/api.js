@@ -214,6 +214,9 @@ export const urlCover = (config, id, size = null) => {
 	if (typeof id === 'object') {
 		const item = id
 
+		if (item.homePageUrl && item.homePageUrl.startsWith('http')) {
+			return item.homePageUrl + '/favicon.ico'
+		}
 		if (['artist', 'album', 'playlist'].includes(item.mediaType)) {
 			if (['navidrome', 'ampache'].includes(config?.type) || !config?.type) return realCover(config, item.id || item.coverArt, size)
 			else return realCover(config, item.coverArt || item.id, size)

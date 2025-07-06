@@ -23,6 +23,7 @@ const RadioList = ({ radios }) => {
 
 	const playRadio = React.useCallback((index) => {
 		playSong(config, songDispatch, radios.map(radio => ({
+			...radio,
 			id: radio.streamUrl,
 			title: radio.name,
 			artist: radio.homePageUrl ? radio.homePageUrl : 'Radio',

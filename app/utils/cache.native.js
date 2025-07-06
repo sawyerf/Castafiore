@@ -56,6 +56,7 @@ export const clearCache = async () => {
 			return Promise.all(deletePromises)
 		})
 		.catch(() => [])
+	await initCacheSong()
 }
 
 export const getStatCache = async () => {

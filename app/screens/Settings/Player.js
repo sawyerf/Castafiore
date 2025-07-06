@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next';
 
 import { SettingsContext } from '~/contexts/settings'
 import { SetSettingsContext } from '~/contexts/settings'
@@ -33,6 +34,7 @@ const BITRATES = [
 ]
 
 const PlayerSettings = () => {
+	const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const theme = React.useContext(ThemeContext)
   const settings = React.useContext(SettingsContext)
@@ -43,7 +45,7 @@ const PlayerSettings = () => {
       style={mainStyles.mainContainer(theme)}
       contentContainerStyle={mainStyles.contentMainContainer(insets)}
     >
-      <Header title="Player" />
+      <Header title={t("Player")} />
 
       <View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
         <Text style={settingStyles.titleContainer(theme)}>Format stream</Text>

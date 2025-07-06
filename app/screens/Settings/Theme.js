@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
@@ -11,6 +12,7 @@ import settingStyles from '~/styles/settings';
 import SelectItem from '~/components/settings/SelectItem';
 
 const Theme = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -21,7 +23,7 @@ const Theme = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Theme" />
+			<Header title={t("Theme")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Theme</Text>
 				<View style={settingStyles.optionsContainer(theme)}>

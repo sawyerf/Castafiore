@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -20,6 +21,7 @@ import TableItem from '~/components/settings/TableItem';
 import Player from '~/utils/player';
 
 const Connect = ({ navigation }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const setConfig = React.useContext(SetConfigContext)
@@ -52,7 +54,7 @@ const Connect = ({ navigation }) => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Connect" />
+			<Header title={t("Connect")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
@@ -73,7 +75,7 @@ const Connect = ({ navigation }) => {
 								{(() => {
 									if (error.length) return error
 									else if (info) return `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} ${info.serverVersion}`
-									else return 'Not connected'
+									else return t('Not connected')
 								})()}
 							</Text>
 						</View>
@@ -81,15 +83,15 @@ const Connect = ({ navigation }) => {
 				</View>
 				{config.url && (
 					<>
-						<Text style={settingStyles.titleContainer(theme)}>Current server</Text>
+						<Text style={settingStyles.titleContainer(theme)}>{t('settings.connect.Current server')}</Text>
 						<View style={settingStyles.optionsContainer(theme)}>
-							<TableItem title="Name" value={config.name} />
-							<TableItem title="Url" value={config.url} />
-							<TableItem title="Username" value={config.username} isLast />
+							<TableItem title={t("Name")} value={config.name} />
+							<TableItem title={t("Url")} value={config.url} />
+							<TableItem title={t("Username")} value={config.username} isLast />
 						</View>
 					</>
 				)}
-				<Text style={settingStyles.titleContainer(theme)}>List of servers</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.connect.List of servers')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						settings?.servers?.map((server, index) => (
@@ -126,13 +128,13 @@ const Connect = ({ navigation }) => {
 					>
 						<Icon name="plus" size={size.icon.tiny} color={theme.secondaryText} style={{ marginEnd: 10 }} />
 						<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }}>
-							Add server
+							{t('settings.connect.Add server')}
 						</Text>
 					</Pressable>
 				</View>
 			</View>
 			<ButtonText
-				text="Disconnect"
+				text={t("Disconnect")}
 				onPress={() => {
 					upConfig({ url: null, username: null, query: null })
 					setInfo(null)
@@ -141,12 +143,12 @@ const Connect = ({ navigation }) => {
 			<OptionsPopup
 				options={[
 					{
-						name: 'Delete',
+						name: t('settings.connect.Delete'),
 						icon: 'trash',
 						onPress: () => {
 							confirmAlert(
-								'Delete server',
-								'Are you sure you want to delete this server?',
+								t('settings.connect.Alert Delete Title'),
+								t('settings.connect.Alert Delete Message'),
 								() => {
 									setSettings({ ...settings, servers: settings.servers.filter((server, index) => index !== serverOption.index) })
 									setServerOption(null)

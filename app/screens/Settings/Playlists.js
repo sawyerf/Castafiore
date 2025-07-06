@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { ThemeContext } from '~/contexts/theme'
@@ -31,6 +32,7 @@ const orders = {
 }
 
 const PlaylistsSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -56,7 +58,7 @@ const PlaylistsSettings = () => {
 				mainStyles.contentMainContainer(insets)
 			]}
 		>
-			<Header title="Playlists" />
+			<Header title={t("Playlists")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>

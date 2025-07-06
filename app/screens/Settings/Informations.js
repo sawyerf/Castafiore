@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config'
 import { useCachedAndApi } from '~/utils/api'
@@ -27,6 +28,7 @@ const ROLES = [
 ]
 
 const InformationsSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
@@ -56,7 +58,7 @@ const InformationsSettings = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Informations" />
+			<Header title={t("Informations")} />
 
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Server</Text>

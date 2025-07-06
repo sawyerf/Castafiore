@@ -19,8 +19,37 @@
       "Random": "Random",
       "Highest": "Highest"
     },
-    "Add radio": "Add radio",
+    "settings": {
+      "connect": {
+        "Add server": "Add Server",
+        "List of servers": "List of Servers",
+        "Current server": "Current Server",
+        "Name": "Name",
+        "Url": "Url",
+        "Username": "Username",
+        "Password": "Password",
+        "Show Password": "Show Password",
+        "Legacy Authentication": "Legacy Authentication",
+        "Legacy Description": "Legacy authentication sends the password in plain text without any hashing.",
+        "Connect": "Connect",
+        "Alert Delete Title": "Delete Server",
+        "Alert Delete Message": "Are you sure you want to delete this server?",
+        "Delete": "Delete"
+      },
+      "home": {
+        "Home Page": "Home Page",
+        "Home Page Description": "Select what you want to see on the home page",
+        "Size of album list": "Size of album list",
+        "Scroll": "Scroll",
+        "Scroll Description": "It's recommanded to activate scroll helper on desktop",
+        "Show scroll helper": "Show scroll helper",
+        "ListenBrainz Stats": "ListenBrainz Stats",
+        "ListenBrainz User": "ListenBrainz User",
+        "user": "user"
+      }
+    },
     "API Error": "API Error",
+    "Add radio": "Add radio",
     "Albums": "Albums",
     "Artists": "Artists",
     "Cache": "Cache",
@@ -33,17 +62,22 @@
     "Home": "Home",
     "Informations": "Informations",
     "Language": "Language",
+    "Name": "Name",
     "Network Error": "Network Error",
     "No results": "No results",
     "Not connected": "Not connected",
+    "Password": "Password",
     "Player": "Player",
     "Playlists": "Playlists",
     "Random Song": "Random Song",
     "Reset Settings": "Reset Settings",
     "Search": "Search",
     "Shares": "Shares",
+    "Server Url": "Server Url",
     "Songs": "Songs",
     "Theme": "Theme",
+    "Url": "Url",
+    "Username": "Username",
     "Your Playlists": "Your Playlists"
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 import { clearCache } from '~/utils/cache'
 import { confirmAlert } from '~/utils/alert'
@@ -18,6 +19,7 @@ import ListMap from '~/components/lists/ListMap'
 import size from '~/styles/size';
 
 const CacheSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -54,7 +56,7 @@ const CacheSettings = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Cache" />
+			<Header title={t("Cache")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Song Caching</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>

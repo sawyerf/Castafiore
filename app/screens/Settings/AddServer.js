@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import md5 from 'md5';
@@ -18,6 +19,7 @@ import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 
 const AddServer = ({ navigation }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets()
 	const setConfig = React.useContext(SetConfigContext)
 	const settings = React.useContext(SettingsContext)
@@ -79,7 +81,7 @@ const AddServer = ({ navigation }) => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Connect" />
+			<Header title={t("Connect")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
@@ -100,7 +102,7 @@ const AddServer = ({ navigation }) => {
 								{(() => {
 									if (error.length) return error
 									else if (info) return `${info.type.charAt(0).toUpperCase()}${info.type.slice(1)} ${info.serverVersion}`
-									else return 'Not connected'
+									else return t('Not connected')
 								})()}
 							</Text>
 						</View>
@@ -108,23 +110,23 @@ const AddServer = ({ navigation }) => {
 				</View>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 10 }]}>
 					<OptionInput
-						title="Name"
-						placeholder="Name"
+						title={t("Name")}
+						placeholder={t("Name")}
 						value={name}
 						placeholderTextColor={theme.primaryText}
 						onChangeText={name => setName(name)}
 					/>
 					<OptionInput
-						title="Url"
-						placeholder="Server Url"
+						title={t("Url")}
+						placeholder={t("Server Url")}
 						value={url}
 						inputMode="url"
 						placeholderTextColor={theme.primaryText}
 						onChangeText={url => setUrl(url)}
 					/>
 					<OptionInput
-						title="Username"
-						placeholder="Username"
+						title={t("Username")}
+						placeholder={t("Username")}
 						value={username}
 						inputMode="text"
 						placeholderTextColor={theme.primaryText}
@@ -132,8 +134,8 @@ const AddServer = ({ navigation }) => {
 						autoComplete="username"
 					/>
 					<OptionInput
-						title="Password"
-						placeholder="Password"
+						title={t("Password")}
+						placeholder={t("Password")}
 						value={password}
 						inputMode="text"
 						placeholderTextColor={theme.primaryText}
@@ -146,7 +148,7 @@ const AddServer = ({ navigation }) => {
 				</View>
 				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
 					<ButtonSwitch
-						title="Show Password"
+						title={t("settings.connect.Show Password")}
 						value={showPassword}
 						onPress={() => setShowPassword(!showPassword)}
 						isLast
@@ -154,14 +156,14 @@ const AddServer = ({ navigation }) => {
 				</View>
 				<View style={[settingStyles.optionsContainer(theme), { marginTop: 10, marginBottom: 5 }]}>
 					<ButtonSwitch
-						title="Legacy authentication"
+						title={t("settings.connect.Legacy authentication")}
 						value={lowSecurity}
 						onPress={() => setLowSecurity(!lowSecurity)}
 						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>
-					Legacy authentication sends the password in plain text without any hashing.
+					{t('settings.connect.Legacy Description')}
 				</Text>
 				<ButtonText
 					text="Connect"

@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView, Platform, Share } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config'
 import { confirmAlert } from '~/utils/alert'
@@ -14,6 +15,7 @@ import settingStyles from '~/styles/settings'
 import TableItem from '~/components/settings/TableItem'
 
 const SharesSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const refOption = React.useRef()
@@ -29,7 +31,7 @@ const SharesSettings = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Shares" />
+			<Header title={t("Shares")} />
 
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Shares</Text>

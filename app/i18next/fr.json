@@ -19,8 +19,34 @@
       "Random": "Aléatoire",
       "Highest": "Le plus haut"
     },
-    "Add radio": "Ajouter une radio",
+    "settings": {
+      "connect": {
+        "Add server": "Ajouter un serveur",
+        "List of servers": "Liste des serveurs",
+        "Current server": "Serveur actuel",
+        "Name": "Nom",
+        "Url": "Url",
+        "Username": "Nom d'utilisateur",
+        "Password": "Mot de passe",
+        "Show Password": "Afficher le mot de passe",
+        "Legacy authentication": "Authentification ancienne",
+        "Legacy Description": "L'authentification ancienne envoie le mot de passe en texte clair sans hachage.",
+        "Connect": "Connecter"
+      },
+      "home": {
+        "Home Page": "Page d'accueil",
+        "Home Page Description": "Sélectionnez ce que vous souhaitez voir sur la page d'accueil",
+        "Size of album list": "Taille de la liste d'albums",
+        "Scroll": "Scroll",
+        "Scroll Description": "Il est recommandé d'activer l'aide au défilement sur ordinateur",
+        "Show scroll helper": "Afficher l'aide au défilement",
+        "ListenBrainz Stats": "Statistiques ListenBrainz",
+        "ListenBrainz User": "Utilisateur ListenBrainz",
+        "user": "utilisateur"
+      }
+    },
     "API Error": "Erreur API",
+    "Add radio": "Ajouter une radio",
     "Albums": "Albums",
     "Artists": "Artistes",
     "Cache": "Cache",
@@ -33,17 +59,21 @@
     "Home": "Accueil",
     "Informations": "Informations",
     "Language": "Langue",
+    "Name": "Nom",
     "Network Error": "Erreur réseau",
     "No results": "Aucun résultat",
     "Not connected": "Non connecté",
+    "Password": "Mot de passe",
     "Player": "Lecteur",
     "Playlists": "Playlists",
     "Random Song": "Chanson aléatoire",
     "Reset Settings": "Réinitialiser les paramètres",
     "Search": "Recherche",
+    "Server Url": "Url du serveur",
     "Shares": "Partages",
     "Songs": "Chansons",
     "Theme": "Thème",
+    "Username": "Nom d'utilisateur",
     "Your Playlists": "Vos Playlists"
   }
 }

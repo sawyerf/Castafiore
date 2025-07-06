@@ -123,7 +123,7 @@ const Settings = ({ navigation }) => {
 
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
-					title={t("Github")}
+					title="Github"
 					icon="github"
 					onPress={() => Linking.openURL('https://github.com/sawyerf/Castafiore')}
 					isLast
@@ -136,7 +136,7 @@ const Settings = ({ navigation }) => {
 					icon="undo"
 					onPress={() => {
 						confirmAlert(
-							'Reset Settings',
+							t('Reset Settings'),
 							'Are you sure you want to reset all settings?',
 							() => setSettings({
 								...defaultSettings,

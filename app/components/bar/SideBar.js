@@ -12,7 +12,7 @@ import size from '~/styles/size'
 import mainStyles from '~/styles/main'
 import ImageError from '~/components/ImageError'
 
-const FavoritedItem = ({ navigation }) => {
+const FavoritedItem = ({ navigation, t }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isHover, setIsHover] = React.useState(false)
 
@@ -44,13 +44,13 @@ const FavoritedItem = ({ navigation }) => {
 						marginLeft: 10,
 					}]}
 					numberOfLines={1}
-				>Favorited</Text>
+				>{t('Favorited')}</Text>
 			</View>
 		</Pressable>
 	)
 }
 
-const PlaylistItem = ({ item, navigation }) => {
+const PlaylistItem = ({ item, navigation, t }) => {
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const [isHover, setIsHover] = React.useState(false)
@@ -89,7 +89,7 @@ const PlaylistItem = ({ item, navigation }) => {
 					{item.name}
 				</Text>
 				<Text style={{ color: theme.secondaryText, fontSize: size.text.small, marginLeft: 10 }} numberOfLines={1}>
-					Playlist
+					{t('Playlist')}
 				</Text>
 			</View>
 		</Pressable>
@@ -191,13 +191,14 @@ const SideBar = ({ state, descriptors, navigation }) => {
 				<Pressable onPress={() => setRefresh(refresh + 1)}>
 					<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>Playlists</Text>
 				</Pressable>
-				<FavoritedItem navigation={navigation} />
+				<FavoritedItem navigation={navigation} t={t} />
 				{
 					playlists.map((item, index) => (
 						<PlaylistItem
 							key={index}
 							item={item}
 							navigation={navigation}
+							t={t}
 						/>
 					))
 				}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LegendList } from "@legendapp/list"
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ThemeContext } from '~/contexts/theme';
@@ -16,6 +17,7 @@ const Favorited = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1);
+	const { t } = useTranslation();
 
 	const [favorited] = useCachedFirst(params?.favorited || [], 'getStarred2', null, (json, setData) => {
 		setData(json?.starred2?.song || [])
@@ -45,7 +47,7 @@ const Favorited = ({ route: { params } }) => {
 				estimatedItemSize={60}
 				ListHeaderComponent={
 					<PresHeaderIcon
-						title={<><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> Favorited</>}
+						title={<><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> {t('Favorited')}</>}
 						subTitle={`${favorited?.length || 0} songs`}
 						icon="heart"
 					>

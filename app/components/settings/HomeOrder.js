@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, PanResponder, Animated, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
@@ -7,6 +8,7 @@ import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 
 const HomeOrder = () => {
+	const { t } = useTranslation()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
@@ -82,7 +84,7 @@ const HomeOrder = () => {
 										color={value.enable ? theme.primaryTouch : theme.secondaryText}
 									/>
 								</View>
-								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryText, flex: 1 }}>{value.title}</Text>
+								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryText, flex: 1 }}>{t(`homeSection.${value.title}`)}</Text>
 							</Pressable>
 							<View
 								style={{

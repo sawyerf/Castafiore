@@ -21,17 +21,19 @@
     "expo": "^52.0.0",
     "expo-build-properties": "~0.13.3",
     "expo-dev-client": "~5.0.20",
+    "expo-file-system": "~18.0.12",
     "expo-navigation-bar": "~4.0.9",
+    "i18next": "^25.3.1",
     "md5": "^2.3.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-i18next": "^15.6.0",
     "react-native": "0.76.9",
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
     "react-native-track-player": "^4.1.1",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-web": "~0.19.13",
-    "expo-file-system": "~18.0.12"
+    "react-native-web": "~0.19.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

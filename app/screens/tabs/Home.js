@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, ScrollView, Animated, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi, getApiNetworkFirst } from '~/utils/api';
@@ -15,6 +16,7 @@ import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
 const Home = () => {
+	const { t } = useTranslation();
 	const navigation = useNavigation();
 	const insets = useSafeAreaInsets();
 	const songDispatch = React.useContext(SongDispatchContext)
@@ -81,7 +83,7 @@ const Home = () => {
 				<Pressable
 					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.boxRandom(theme)])}
 					onPress={clickRandomSong}>
-					<Text style={styles.textRandom(theme)}>Random Song</Text>
+					<Text style={styles.textRandom(theme)}>{t('Random Song')}</Text>
 				</Pressable>
 				<View style={{flexDirection: 'row'}}>
 					{

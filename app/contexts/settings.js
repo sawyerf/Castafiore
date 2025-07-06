@@ -62,6 +62,7 @@ export const defaultSettings = {
 	reversePlaylist: false,
 	orderPlaylist: 'title',
 	previewFavorited: 3,
+	language: 'en',
 }
 
 export const getSettings = async () => {

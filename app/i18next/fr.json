@@ -1,0 +1,42 @@
+{
+  "translation": {
+    "tabs": {
+      "Home": "Accueil",
+      "Search": "Recherche",
+      "Playlists": "Playlists",
+      "Settings": "Paramètres"
+    },
+    "homeSection": {
+      "Week Activity": "Activité de la semaine",
+      "Favorited Artist": "Artiste favori",
+      "Genre": "Genre",
+      "Radio": "Radio",
+      "Pin Playlist": "Épingler la playlist",
+      "Favorited": "Favori",
+      "Recently Added": "Ajouté récemment",
+      "Most Played": "Les plus joué",
+      "Recently Played": "Joué récemment",
+      "Random": "Aléatoire",
+      "Highest": "Le plus haut"
+    },
+    "Your Playlists": "Vos Playlists",
+    "Random Song": "Chanson aléatoire",
+    "Favorited": "Favori",
+    "Home": "Accueil",
+    "Search": "Recherche",
+    "Artists": "Artistes",
+    "Albums": "Albums",
+    "Playlists": "Playlists",
+    "Songs": "Chansons",
+    "Connect": "Serveur",
+    "Connected": "Connecté",
+    "Not connected": "Non connecté",
+    "Disconnect": "Déconnecter",
+    "Desktop": "Ordinateur",
+    "Player": "Lecteur",
+    "Theme": "Thème",
+    "Cache": "Cache",
+    "Language": "Langue",
+    "Reset Settings": "Réinitialiser les paramètres"
+  }
+}

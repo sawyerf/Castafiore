@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, View, Pressable, Image, StyleSheet, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 import { useCachedAndApi, urlCover } from '~/utils/api'
 import { ConfigContext } from '~/contexts/config'
@@ -101,6 +102,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const [hoverIndex, setHoverIndex] = React.useState(-1)
 	const [refresh, setRefresh] = React.useState(0)
+	const { t } = useTranslation()
 
 	const [playlists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
 		setData(json.playlists.playlist?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)) || [])
@@ -175,7 +177,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					>
 						<Icon name={options.icon} size={26} color={color} style={{ marginRight: 10 }} />
 						<Text style={{ color: color, textAlign: 'left', fontSize: size.text.large, fontWeight: '600' }}>
-							{options.title}
+							{t(`tabs.${options.title}`)}
 						</Text>
 					</Pressable>
 				)

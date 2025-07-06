@@ -2,6 +2,7 @@ import React from 'react';
 import pkg from '~/../package.json';
 import { Text, View, Image, ScrollView, Pressable, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
@@ -16,6 +17,7 @@ import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 
 const Settings = ({ navigation }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -52,8 +54,8 @@ const Settings = ({ navigation }) => {
 			</View>
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
-					title="Connect"
-					endText={config.query ? (config.name?.length ? config.name : 'Connected') : 'Not connected'}
+					title={t("Connect")}
+					endText={config.query ? (config.name?.length ? config.name : t('Connected')) : t('Not connected')}
 					icon="server"
 					onPress={() => navigation.navigate('Connect')}
 					isLast
@@ -62,7 +64,7 @@ const Settings = ({ navigation }) => {
 
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonSwitch
-					title="Desktop"
+					title={t("Desktop")}
 					icon="desktop"
 					value={setting.isDesktop}
 					onPress={() => setSettings({ ...setting, isDesktop: !setting.isDesktop })}
@@ -71,29 +73,34 @@ const Settings = ({ navigation }) => {
 
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
-					title="Home"
+					title={t("Home")}
 					icon="home"
 					onPress={() => navigation.navigate('Settings/Home')}
 				/>
 				<ButtonMenu
-					title="Playlists"
+					title={t("Playlists")}
 					icon="book"
 					onPress={() => navigation.navigate('Settings/Playlists')}
 				/>
 				<ButtonMenu
-					title="Player"
+					title={t("Player")}
 					icon="play"
 					onPress={() => navigation.navigate('Settings/Player')}
 				/>
 				<ButtonMenu
-					title="Theme"
+					title={t("Theme")}
 					icon="tint"
 					onPress={() => navigation.navigate('Settings/Theme')}
 				/>
 				<ButtonMenu
-					title="Cache"
+					title={t("Cache")}
 					icon="database"
 					onPress={() => navigation.navigate('Settings/Cache')}
+				/>
+				<ButtonMenu
+					title={t("Language")}
+					icon="language"
+					onPress={() => navigation.navigate('Settings/Language')}
 					isLast
 				/>
 			</View>
@@ -101,12 +108,12 @@ const Settings = ({ navigation }) => {
 			{config.query && (
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ButtonMenu
-						title="Shares"
+						title={t("Shares")}
 						icon="link"
 						onPress={() => navigation.navigate('Settings/Shares')}
 					/>
 					<ButtonMenu
-						title="Informations"
+						title={t("Informations")}
 						icon="info"
 						onPress={() => navigation.navigate('Settings/Informations')}
 						isLast
@@ -116,7 +123,7 @@ const Settings = ({ navigation }) => {
 
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
-					title="Github"
+					title={t("Github")}
 					icon="github"
 					onPress={() => Linking.openURL('https://github.com/sawyerf/Castafiore')}
 					isLast
@@ -125,7 +132,7 @@ const Settings = ({ navigation }) => {
 
 			<View style={settingStyles.optionsContainer(theme)}>
 				<ButtonMenu
-					title="Reset Settings"
+					title={t("Reset Settings")}
 					icon="undo"
 					onPress={() => {
 						confirmAlert(

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { getCachedAndApi, getUrl } from '~/utils/api';
@@ -19,6 +20,7 @@ import RadioList from '~/components/lists/RadioList';
 import size from '~/styles/size';
 
 const HorizontalList = ({ title, type, query, refresh, enable }) => {
+	const { t } = useTranslation();
 	const [list, setList] = React.useState();
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
@@ -26,12 +28,12 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 	const config = React.useContext(ConfigContext)
 	const updateApi = React.useContext(UpdateApiContext)
 
-	React.useEffect(() => {
-		if (!enable) return
-		if (config.query) {
-			getList()
-		}
-	}, [config, refresh, type, query, enable, settings.listenBrainzUser])
+		React.useEffect(() => {
+			if (!enable) return
+			if (config.query) {
+				getList()
+			}
+		}, [config, refresh, type, query, enable, settings.listenBrainzUser])
 
 	React.useEffect(() => {
 		const path = getPathByType(type)
@@ -83,9 +85,9 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 					width: '100%',
 				}}
 				disabled={!isShowAllType(type)}
-				onPress={() => { navigation.navigate('ShowAll', { title, type, query }) }}
+				onPress={() => { navigation.navigate('ShowAll', { title: t(`homeSection.${title}`), type, query }) }}
 			>
-				<Text style={mainStyles.titleSection(theme)}>{title}</Text>
+				<Text style={mainStyles.titleSection(theme)}>{t(`homeSection.${title}`)}</Text>
 				{
 					isShowAllType(type) && <Icon
 						name='angle-right'

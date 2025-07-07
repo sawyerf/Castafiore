@@ -43,6 +43,39 @@
         "ListenBrainz Stats": "Statistiques ListenBrainz",
         "ListenBrainz User": "Utilisateur ListenBrainz",
         "user": "utilisateur"
+      },
+      "playlists": {
+        "Preview Favorited": "Aperçu des favoris",
+        "Preview Favorited Name": "Nombre de chansons à prévisualiser",
+        "Preview Favorited Description": "Nombre de chansons à prévisualiser dans la playlist des favoris (par défaut : 3)",
+        "Title": "Titre",
+        "Order Playlists": "Ordre des playlists",
+        "Recently Updated": "Récemment mis à jour",
+        "Newest First": "Les plus récents d'abord",
+        "Oldest First": "Les plus anciens d'abord",
+        "Playlist Page": "Page de la playlist",
+        "Reverse playlist tracks": "Inverser les pistes de la playlist",
+        "Reverse playlist tracks Description": "Inverser l'ordre des pistes dans la playlist."
+      },
+      "player": {
+        "Stream format": "Format du flux",
+        "Stream format description": "Spécifiez le format du flux à lire.",
+        "Max bitrate": "Débit maximal",
+        "Max bitrate description": "Spécifiez le débit maximal en kilobits par seconde pour le flux à lire. Des débits plus bas consommeront moins de données mais peuvent entraîner une qualité audio inférieure."
+      },
+      "theme": {
+        "Player Theme": "Thème du lecteur"
+      },
+      "cache": {
+        "Song caching": "Cache des musiques",
+        "Enable song caching": "Activer le cache des musiques",
+        "Show cached songs": "Afficher les musiques en cache",
+        "Cache next song": "Musique suivante en cache",
+        "Cache next song description": "Télécharger automatiquement les chansons à venir (par défaut : 5)",
+        "Clear cache": "Vider le cache",
+        "Clear cache alert message": "Êtes-vous sûr de vouloir vider le cache ?",
+        "Cache stats": "Cache stats",
+        "No cache": "Aucun cache"
       }
     },
     "API Error": "Erreur API",

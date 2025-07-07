@@ -29,7 +29,7 @@
         "Username": "Username",
         "Password": "Password",
         "Show Password": "Show Password",
-        "Legacy Authentication": "Legacy Authentication",
+        "Legacy authentication": "Legacy Authentication",
         "Legacy Description": "Legacy authentication sends the password in plain text without any hashing.",
         "Connect": "Connect",
         "Alert Delete Title": "Delete Server",
@@ -46,6 +46,39 @@
         "ListenBrainz Stats": "ListenBrainz Stats",
         "ListenBrainz User": "ListenBrainz User",
         "user": "user"
+      },
+      "playlists": {
+        "Preview Favorited": "Preview Favorited",
+        "Preview Favorited Name": "Preview songs count",
+        "Preview Favorited Description": "Number of songs to preview in favorited playlist (default: 3)",
+        "Title": "Title",
+        "Order Playlists": "Order Playlists",
+        "Recently Updated": "Recently Updated",
+        "Newest First": "Newest First",
+        "Oldest First": "Oldest First",
+        "Playlist Page": "Playlist Page",
+        "Reverse playlist tracks": "Reverse playlist tracks",
+        "Reverse playlist tracks Description": "If enabled, recently added tracks will be shown first."
+      },
+      "player": {
+        "Stream format": "Stream format",
+        "Stream format Description": "Specify the format of the stream to be played.",
+        "Max bitrate": "Max bitrate",
+        "Max bitrate Description": "Specify the maximum bit rate in kilobits per second for the stream to be played. Lower bit rates will consume less data but may result in lower audio quality."
+      },
+      "theme": {
+        "Player Theme": "Player Theme"
+      },
+      "cache": {
+        "Song caching": "Song caching",
+        "Enable song caching": "Enable song caching",
+        "Show cached songs": "Show cached songs",
+        "Cache next song": "Cache next song",
+        "Cache next song description": "Auto download upcoming songs (default: 5)",
+        "Clear cache": "Clear cache",
+        "Clear cache alert message": "Are you sure you want to clear the cache?",
+        "Cache stats": "Cache stats",
+        "No cache": "No cache"
       }
     },
     "API Error": "API Error",

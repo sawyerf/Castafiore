@@ -25,7 +25,7 @@ const Theme = () => {
 		>
 			<Header title={t("Theme")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Theme</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('Theme')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(themes).map((themeName, index) => (
@@ -42,7 +42,7 @@ const Theme = () => {
 						))
 					}
 				</View>
-				<Text style={settingStyles.titleContainer(theme)}>Player Theme</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.theme.Player Theme')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(themesPlayer).map((themeName, index) => (

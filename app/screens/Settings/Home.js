@@ -70,7 +70,7 @@ const HomeSettings = () => {
 				</View>
 				<Text style={settingStyles.description(theme)}>	{t('settings.home.Scroll Description')}</Text>
 
-				<Text style={settingStyles.titleContainer(theme)}>{t('settings.home.ListenBrainz stats')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.home.ListenBrainz Stats')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
 						title={t("settings.home.ListenBrainz User")}

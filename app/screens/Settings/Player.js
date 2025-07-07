@@ -48,7 +48,7 @@ const PlayerSettings = () => {
       <Header title={t("Player")} />
 
       <View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-        <Text style={settingStyles.titleContainer(theme)}>Format stream</Text>
+        <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Stream format')}</Text>
         <View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
           {FORMATS.map((item, index) => (
             <SelectItem
@@ -62,9 +62,9 @@ const PlayerSettings = () => {
             />
           ))}
         </View>
-				<Text style={settingStyles.description(theme)}>Specify the format of the stream to be played.</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.player.Stream format description')}</Text>
 
-        <Text style={settingStyles.titleContainer(theme)}>Max bit rate</Text>
+        <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Max bitrate')}</Text>
         <View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
           {
             BITRATES.map((item, index) => (
@@ -81,7 +81,7 @@ const PlayerSettings = () => {
             ))
           }
         </View>
-				<Text style={settingStyles.description(theme)}>Specify the maximum bit rate in kilobits per second for the stream to be played. Lower bit rates will consume less data but may result in lower audio quality.</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.player.Max bitrate description')}</Text>
       </View>
     </ScrollView>
   )

@@ -60,10 +60,10 @@ const PlaylistsSettings = () => {
 		>
 			<Header title={t("Playlists")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Preview Favorited')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
-						title="Song preview favorited"
+						title={t("settings.playlists.Preview Favorited Name")}
 						value={previewFavorited}
 						onChangeText={(text) => {
 							if (parseInt(text) > 9) return
@@ -73,15 +73,15 @@ const PlaylistsSettings = () => {
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>Number of songs to preview in favorited playlist (default: 3)</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.playlists.Preview Favorited Description')}</Text>
 
-				<Text style={settingStyles.titleContainer(theme)}>Order Playlists</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Order Playlists')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(orders).map((name, index) => (
 							<SelectItem
 								key={index}
-								text={orders[name].name}
+								text={t(`settings.playlists.${orders[name].name}`)}
 								icon={orders[name].icon}
 								isSelect={name == settings.orderPlaylist}
 								onPress={() => {
@@ -91,16 +91,16 @@ const PlaylistsSettings = () => {
 						))
 					}
 				</View>
-				<Text style={settingStyles.titleContainer(theme)}>Playlist Page</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Playlist Page')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<ButtonSwitch
-						title="Reverse playlist tracks"
+						title={t("settings.playlists.Reverse playlist tracks")}
 						value={settings.reversePlaylist}
 						onPress={() => setSettings({ ...settings, reversePlaylist: !settings.reversePlaylist })}
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>If enabled, recently added tracks will be shown first.</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.playlists.Reverse playlist tracks Description')}</Text>
 			</View>
 		</View>
 	)

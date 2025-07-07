@@ -229,7 +229,7 @@ const Search = () => {
 						<Pressable
 							onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
 							style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }])}>
-							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>Clear</Text>
+							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>{t('Clear')}</Text>
 						</Pressable> : null
 				}
 				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, margin: 9 }} />

@@ -166,7 +166,7 @@ const AddServer = ({ navigation }) => {
 					{t('settings.connect.Legacy Description')}
 				</Text>
 				<ButtonText
-					text="Connect"
+					text={t("settings.connect.Connect")}
 					onPress={connect}
 				/>
 			</View>

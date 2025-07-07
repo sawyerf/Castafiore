@@ -140,7 +140,7 @@ const RadioList = ({ radios }) => {
 				item={optionRadio}
 				options={[
 					{
-						name: 'Open home page',
+						name: t('Open home page'),
 						icon: 'home',
 						onPress: () => {
 							setOptionRadio(null)
@@ -148,7 +148,7 @@ const RadioList = ({ radios }) => {
 						}
 					},
 					{
-						name: 'Edit radio',
+						name: t('Edit radio'),
 						icon: 'pencil',
 						onPress: () => {
 							setOptionRadio(null)
@@ -156,7 +156,7 @@ const RadioList = ({ radios }) => {
 						}
 					},
 					{
-						name: 'Remove radio',
+						name: t('Remove radio'),
 						icon: 'trash-o',
 						onPress: () => {
 							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)

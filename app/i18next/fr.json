@@ -14,10 +14,10 @@
       "Pin Playlist": "Épingler la playlist",
       "Favorited": "Favori",
       "Recently Added": "Ajouté récemment",
-      "Most Played": "Les plus joué",
+      "Most Played": "Les plus jouées",
       "Recently Played": "Joué récemment",
       "Random": "Aléatoire",
-      "Highest": "Le plus haut"
+      "Highest": "Les mieux notées"
     },
     "settings": {
       "connect": {
@@ -29,9 +29,9 @@
         "Username": "Nom d'utilisateur",
         "Password": "Mot de passe",
         "Show Password": "Afficher le mot de passe",
-        "Legacy authentication": "Authentification ancienne",
-        "Legacy Description": "L'authentification ancienne envoie le mot de passe en texte clair sans hachage.",
-        "Connect": "Connecter",
+        "Legacy authentication": "Authentification obsolète",
+        "Legacy Description": "L'authentification obsolète envoie le mot de passe clair sans chiffrement.",
+        "Connect": "Se connecter",
         "Alert Delete Title": "Supprimer le serveur",
         "Alert Delete Message": "Êtes-vous sûr de vouloir supprimer ce serveur ?",
         "Delete": "Supprimer"
@@ -86,13 +86,13 @@
         "Clear all shares alert message": "Êtes-vous sûr de vouloir vider tous les partages ?"
       },
       "informations": {
-        "API Version": "API Version",
+        "API Version": "Version de l'API",
         "Email": "Email",
         "Files scanned": "Fichiers analysés",
         "Folders scanned": "Dossiers analysés",
         "Last scan": "Dernière analyse",
-        "Server": "Server",
-        "Status": "Status",
+        "Server": "Serveur",
+        "Status": "Statut",
         "User role": "Rôle de l'utilisateur",
         "User": "Utilisateur",
         "Version": "Version"
@@ -106,6 +106,7 @@
     "Artists": "Artistes",
     "Cache": "Cache",
     "Cancel": "Annuler",
+    "Clear": "Effacer",
     "Connect": "Serveur",
     "Connected": "Connecté",
     "Create radio": "Créer une radio",
@@ -117,6 +118,7 @@
     "Disconnect": "Déconnecter",
     "Download": "Télécharger",
     "Edit playlist": "Modifier la playlist",
+    "Edit radio": "Modifier la radio",
     "Enter radio details": "Entrez les détails de la radio",
     "Favorited": "Favori",
     "Go to album": "Aller à l'album",
@@ -133,6 +135,7 @@
     "Network Error": "Erreur réseau",
     "No results": "Aucun résultat",
     "Not connected": "Non connecté",
+    "Open home page": "Page d'accueil",
     "Password": "Mot de passe",
     "Pin playlist": "Épingler la playlist",
     "Play similar songs": "Jouer des musiques similaires",
@@ -140,6 +143,7 @@
     "Playlists": "Playlists",
     "Public": "Public",
     "Random Song": "Chanson aléatoire",
+    "Remove radio": "Supprimer la radio",
     "Reset Settings": "Réinitialiser les paramètres",
     "Save": "Enregistrer",
     "Search": "Recherche",
@@ -150,7 +154,7 @@
     "Stream url": "Url stream",
     "Theme": "Thème",
     "Unpin playlist": "Désépingler la playlist",
-    "Update": "Update",
+    "Update": "Mettre à jour",
     "Username": "Nom d'utilisateur",
     "Your Playlists": "Vos Playlists"
   }

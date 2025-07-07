@@ -2,12 +2,14 @@
 import React from 'react';
 import { Platform, Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { getApi } from '~/utils/api';
 import { ConfigContext } from '~/contexts/config';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 
 const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const config = React.useContext(ConfigContext)
   const refOption = React.useRef()
@@ -20,7 +22,7 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
       item={indexOptions >= 0 ? albums[indexOptions] : null}
       options={[
         {
-          name: 'Go to artist',
+          name: t('Go to artist'),
           icon: 'user',
           onPress: () => {
             refOption.current.close()
@@ -28,7 +30,7 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
           }
         },
         {
-          name: 'Share',
+          name: t('Share'),
           icon: 'share',
           onPress: () => {
             getApi(config, 'createShare', { id: albums[indexOptions].id })
@@ -43,7 +45,7 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
           }
         },
         {
-          name: 'Info',
+          name: t('Info'),
           icon: 'info',
           onPress: () => {
             refOption.current.close();

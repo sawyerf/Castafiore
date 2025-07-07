@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi, urlCover } from '~/utils/api';
@@ -19,6 +20,7 @@ import presStyles from '~/styles/pres';
 import settingStyles from '~/styles/settings';
 
 const Playlist = ({ route: { params } }) => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -73,14 +75,14 @@ const Playlist = ({ route: { params } }) => {
 						<>
 							<View style={[settingStyles.optionsContainer(theme)]}>
 								<OptionInput
-									title="Name"
-									placeholder="Name"
+									title={t("Name")}
+									placeholder={t("Name")}
 									value={name}
 									placeholderTextColor={theme.primaryText}
 									onChangeText={name => setName(name)}
 								/>
 								<ButtonSwitch
-									title="Public"
+									title={t("Public")}
 									value={isPublic}
 									onPress={() => setIsPublic(!isPublic)}
 									isLast
@@ -89,7 +91,7 @@ const Playlist = ({ route: { params } }) => {
 							<Text style={settingStyles.titleContainer(theme)}>Description</Text>
 							<View style={[settingStyles.optionsContainer(theme), { marginBottom: 10 }]}>
 								<OptionText
-									placeholder="Comment"
+									placeholder={t("Description")}
 									value={comment}
 									placeholderTextColor={theme.primaryText}
 									onChangeText={comment => setComment(comment)}
@@ -97,7 +99,7 @@ const Playlist = ({ route: { params } }) => {
 								/>
 							</View>
 							<ButtonText
-								text="Save"
+								text={t("Save")}
 								onPress={pushEdit}
 							/>
 						</>

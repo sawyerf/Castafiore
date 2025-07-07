@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform, Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { confirmAlert } from '~/utils/alert';
@@ -8,6 +9,7 @@ import { getApi } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 
 const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylists, setDeletePlaylists, onRefresh }) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const config = React.useContext(ConfigContext)
   const refOption = React.useRef()
@@ -59,7 +61,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
         ...(() => {
           if (indexOption < 0) return []
           if (!isPin(indexOption)) return [{
-            name: 'Pin Playlist',
+            name: t('Pin playlist'),
             icon: 'bookmark',
             onPress: () => {
               refOption.current.close()
@@ -67,7 +69,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
             }
           }]
           return [{
-            name: 'Unpin Playlist',
+            name: t('Unpin playlist'),
             icon: 'bookmark',
             onPress: () => {
               refOption.current.close()
@@ -76,7 +78,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
           }]
         })(),
         {
-          name: 'Edit Playlist',
+          name: t('Edit playlist'),
           icon: 'pencil',
           onPress: () => {
             navigation.navigate('EditPlaylist', { playlist: playlists[indexOption] })
@@ -84,7 +86,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
           }
         },
         {
-          name: (indexOption !== -1 && playlists[indexOption].public) ? 'Make Private' : 'Make Public',
+          name: (indexOption !== -1 && playlists[indexOption].public) ? t('Make private') : t('Make public'),
           icon: (indexOption !== -1 && playlists[indexOption].public) ? 'lock' : 'globe',
           onPress: () => {
             getApi(config, 'updatePlaylist', {
@@ -99,7 +101,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
           }
         },
         {
-          name: 'Delete Playlist',
+          name: t('Delete playlist'),
           icon: 'trash',
           onPress: () => {
             confirmAlert(
@@ -111,7 +113,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
           }
         },
         {
-          name: 'Share',
+          name: t('Share'),
           icon: 'share',
           onPress: () => {
             getApi(config, 'createShare', { id: playlists[indexOption].id })
@@ -126,7 +128,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
           }
         },
         {
-          name: 'Info',
+          name: t('Info'),
           icon: 'info',
           onPress: () => {
             refOption.current.showInfo(playlists[indexOption])

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
@@ -14,6 +15,7 @@ import ButtonText from '~/components/settings/ButtonText';
 import size from '~/styles/size';
 
 const UpdateRadio = ({ navigation, route: { params } }) => {
+	const { t } = useTranslation();
 	const theme = React.useContext(ThemeContext)
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
@@ -52,7 +54,7 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 			mainStyles.mainContainer(theme),
 			mainStyles.contentMainContainer(insets)
 		]}>
-			<Header title={params?.id ? 'Update Radio' : 'Create Radio'} />
+			<Header title={params?.id ? t('Update radio') : t('Create radio')} />
 
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<View style={settingStyles.optionsContainer(theme)}>
@@ -71,15 +73,15 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
 							{/* {!error.length && <Icon name="circle" size={10} color={info ? 'green' : 'red'} />} */}
 							<Text style={{ color: error.length ? '#ff0000' : theme.primaryText, fontSize: size.text.medium, marginStart: 5 }}>
-								{error || 'Enter radio details'}
+								{error || t('Enter radio details')}
 							</Text>
 						</View>
 					</View>
 				</View>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<OptionInput
-						title="Name"
-						placeholder="Name"
+						title={t("Name")}
+						placeholder={t("Name")}
 						placeholderTextColor="#888"
 						value={name}
 						onChangeText={setName}
@@ -87,8 +89,8 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 						autoFocus={true}
 					/>
 					<OptionInput
-						title="Stream url"
-						placeholder="Stream url"
+						title={t("Stream url")}
+						placeholder={t("Stream url")}
 						placeholderTextColor="#888"
 						value={streamUrl}
 						onChangeText={setStreamUrl}
@@ -96,8 +98,8 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 						autoCorrect={false}
 					/>
 					<OptionInput
-						title="Home page url"
-						placeholder="Home page url"
+						title={t("Home page url")}
+						placeholder={t("Home page url")}
 						placeholderTextColor="#888"
 						value={homePageUrl}
 						onChangeText={setHomePageUrl}
@@ -108,7 +110,7 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 					/>
 				</View>
 				<ButtonText
-					text={params?.id ? 'Update' : 'Create'}
+					text={params?.id ? t('Update') : t('Create')}
 					onPress={updateRadio}
 					disabled={!name || !streamUrl}
 				/>

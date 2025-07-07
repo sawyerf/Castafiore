@@ -48,15 +48,15 @@
         "user": "user"
       },
       "playlists": {
-        "Preview Favorited": "Preview Favorited",
-        "Preview Favorited Name": "Preview songs count",
-        "Preview Favorited Description": "Number of songs to preview in favorited playlist (default: 3)",
+        "Preview favorited": "Preview favorited",
+        "Preview favorited Name": "Preview songs count",
+        "Preview favorited Description": "Number of songs to preview in favorited playlist (default: 3)",
         "Title": "Title",
-        "Order Playlists": "Order Playlists",
-        "Recently Updated": "Recently Updated",
-        "Newest First": "Newest First",
-        "Oldest First": "Oldest First",
-        "Playlist Page": "Playlist Page",
+        "Order playlists": "Order playlists",
+        "Recently updated": "Recently updated",
+        "Newest first": "Newest first",
+        "Oldest first": "Oldest first",
+        "Playlist page": "Playlist page",
         "Reverse playlist tracks": "Reverse playlist tracks",
         "Reverse playlist tracks Description": "If enabled, recently added tracks will be shown first."
       },
@@ -79,6 +79,23 @@
         "Clear cache alert message": "Are you sure you want to clear the cache?",
         "Cache stats": "Cache stats",
         "No cache": "No cache"
+      },
+      "shares": {
+        "No shares found": "No shares found",
+        "Clear all shares": "Clear all shares",
+        "Clear all shares alert message": "Are you sure you want to clear all shares?"
+      },
+      "informations": {
+        "Server": "Server",
+        "Status": "Status",
+        "Version": "Version",
+        "API Version": "API Version",
+        "Last scan": "Last scan",
+        "Folders scanned": "Folders scanned",
+        "Files scanned": "Files scanned",
+        "User": "User",
+        "Email": "Email",
+        "User role": "User role"
       }
     },
     "API Error": "API Error",
@@ -88,6 +105,7 @@
     "Cache": "Cache",
     "Connect": "Connect",
     "Connected": "Connected",
+    "Delete": "Delete",
     "Desktop": "Desktop",
     "Disconnect": "Disconnect",
     "Favorited": "Favorited",
@@ -105,8 +123,9 @@
     "Random Song": "Random Song",
     "Reset Settings": "Reset Settings",
     "Search": "Search",
-    "Shares": "Shares",
     "Server Url": "Server Url",
+    "Share": "Share",
+    "Shares": "Shares",
     "Songs": "Songs",
     "Theme": "Theme",
     "Url": "Url",

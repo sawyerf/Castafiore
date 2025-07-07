@@ -18,15 +18,15 @@ const orders = {
 		icon: 'sort-alpha-asc',
 	},
 	'changed': {
-		name: 'Recently Updated',
+		name: 'Recently updated',
 		icon: 'sort-amount-desc',
 	},
 	'newest': {
-		name: 'Newest First',
+		name: 'Newest first',
 		icon: 'sort-numeric-desc',
 	},
 	'oldest': {
-		name: 'Oldest First',
+		name: 'Oldest first',
 		icon: 'sort-numeric-asc',
 	},
 }
@@ -60,10 +60,10 @@ const PlaylistsSettings = () => {
 		>
 			<Header title={t("Playlists")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Preview Favorited')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Preview favorited')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
-						title={t("settings.playlists.Preview Favorited Name")}
+						title={t("settings.playlists.Preview favorited Name")}
 						value={previewFavorited}
 						onChangeText={(text) => {
 							if (parseInt(text) > 9) return
@@ -73,9 +73,9 @@ const PlaylistsSettings = () => {
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>{t('settings.playlists.Preview Favorited Description')}</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.playlists.Preview favorited Description')}</Text>
 
-				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Order Playlists')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Order playlists')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(orders).map((name, index) => (
@@ -91,7 +91,7 @@ const PlaylistsSettings = () => {
 						))
 					}
 				</View>
-				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Playlist Page')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Playlist page')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<ButtonSwitch
 						title={t("settings.playlists.Reverse playlist tracks")}

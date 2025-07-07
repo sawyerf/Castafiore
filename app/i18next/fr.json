@@ -45,15 +45,15 @@
         "user": "utilisateur"
       },
       "playlists": {
-        "Preview Favorited": "Aperçu des favoris",
-        "Preview Favorited Name": "Nombre de chansons à prévisualiser",
-        "Preview Favorited Description": "Nombre de chansons à prévisualiser dans la playlist des favoris (par défaut : 3)",
+        "Preview favorited": "Aperçu des favoris",
+        "Preview favorited Name": "Nombre de chansons à prévisualiser",
+        "Preview favorited Description": "Nombre de chansons à prévisualiser dans la playlist des favoris (par défaut : 3)",
         "Title": "Titre",
-        "Order Playlists": "Ordre des playlists",
-        "Recently Updated": "Récemment mis à jour",
-        "Newest First": "Les plus récents d'abord",
-        "Oldest First": "Les plus anciens d'abord",
-        "Playlist Page": "Page de la playlist",
+        "Order playlists": "Ordre des playlists",
+        "Recently updated": "Récemment mis à jour",
+        "Newest first": "Les plus récents d'abord",
+        "Oldest first": "Les plus anciens d'abord",
+        "Playlist page": "Page de la playlist",
         "Reverse playlist tracks": "Inverser les pistes de la playlist",
         "Reverse playlist tracks Description": "Inverser l'ordre des pistes dans la playlist."
       },
@@ -76,6 +76,11 @@
         "Clear cache alert message": "Êtes-vous sûr de vouloir vider le cache ?",
         "Cache stats": "Cache stats",
         "No cache": "Aucun cache"
+      },
+      "shares": {
+        "No shares found": "Aucun partage trouvé",
+        "Clear all shares": "Supprimer les partages",
+        "Clear all shares alert message": "Êtes-vous sûr de vouloir vider tous les partages ?"
       }
     },
     "API Error": "Erreur API",
@@ -83,8 +88,10 @@
     "Albums": "Albums",
     "Artists": "Artistes",
     "Cache": "Cache",
+    "Cancel": "Annuler",
     "Connect": "Serveur",
     "Connected": "Connecté",
+    "Delete": "Supprimer",
     "Desktop": "Ordinateur",
     "Disconnect": "Déconnecter",
     "Favorited": "Favori",
@@ -103,6 +110,7 @@
     "Reset Settings": "Réinitialiser les paramètres",
     "Search": "Recherche",
     "Server Url": "Url du serveur",
+    "Share": "Partager",
     "Shares": "Partages",
     "Songs": "Chansons",
     "Theme": "Thème",

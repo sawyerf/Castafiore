@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Modal, ScrollView, Animated, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -12,6 +13,7 @@ import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
 const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const slide = React.useRef(new Animated.Value(-1000)).current
@@ -127,7 +129,7 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 						</View>
 					}
 					{[...(virtualOptions || options), {
-						name: 'Cancel',
+						name: t('Cancel'),
 						icon: 'close',
 						onPress: close
 					}].map((option, index) => {

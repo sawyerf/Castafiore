@@ -34,12 +34,12 @@ const SharesSettings = () => {
 			<Header title={t("Shares")} />
 
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Shares</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('Shares')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						shares.length === 0 && (
 							<TableItem
-								title="No shares found"
+								title={t('settings.shares.No shares found')}
 								value=""
 								isLast
 							/>
@@ -65,11 +65,12 @@ const SharesSettings = () => {
 			</View>
 
 			<ButtonText
-				text="Clear all shares"
+				text={t('settings.shares.Clear all shares')}
 				onPress={() => {
 					confirmAlert(
-						'Clear all shares',
-						'Are you sure you want to clear all shares?', () => {
+						t('settings.shares.Clear all shares'),
+						t('settings.shares.Clear all shares alert message'),
+						() => {
 							if (shares.length === 0) return
 							const wait = shares?.map((item) => {
 								return getApi(config, 'deleteShare', { id: item.id })
@@ -90,7 +91,7 @@ const SharesSettings = () => {
 				}}
 				options={[
 					{
-						name: 'Share',
+						name: t('Share'),
 						icon: 'share',
 						onPress: () => {
 							if (Platform.OS === 'web') navigator.clipboard.writeText(shares[indexOptions].url)
@@ -99,7 +100,7 @@ const SharesSettings = () => {
 						}
 					},
 					{
-						name: 'Delete',
+						name: t('Delete'),
 						icon: 'trash-o',
 						onPress: () => {
 							getApi(config, 'deleteShare', { id: shares[indexOptions].id })

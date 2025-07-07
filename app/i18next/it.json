@@ -1,0 +1,83 @@
+{
+  "translation": {
+    "tabs": {
+      "Home": "Home",
+      "Search": "Cerca",
+      "Playlists": "Playlist",
+      "Settings": "Impostazioni"
+    },
+    "homeSection": {
+      "Week Activity": "Attività Settimanale",
+      "Favorited Artist": "Artista Preferito",
+      "Genre": "Genere",
+      "Radio": "Radio",
+      "Pin Playlist": "Fissa Playlist",
+      "Favorited": "Preferiti",
+      "Recently Added": "Aggiunti di Recente",
+      "Most Played": "Più Ascoltati",
+      "Recently Played": "Ascoltati di Recente",
+      "Random": "Casuale",
+      "Highest": "Più Alti"
+    },
+    "settings": {
+      "connect": {
+        "Add server": "Aggiungi Server",
+        "List of servers": "Lista dei Server",
+        "Current server": "Server Attuale",
+        "Name": "Nome",
+        "Url": "Url",
+        "Username": "Nome Utente",
+        "Password": "Password",
+        "Show Password": "Mostra Password",
+        "Legacy Authentication": "Autenticazione Legacy",
+        "Legacy Description": "L'autenticazione legacy invia la password in chiaro senza alcun hashing.",
+        "Connect": "Connetti",
+        "Alert Delete Title": "Elimina Server",
+        "Alert Delete Message": "Sei sicuro di voler eliminare questo server?",
+        "Delete": "Elimina"
+      },
+      "home": {
+        "Home Page": "Pagina Iniziale",
+        "Home Page Description": "Seleziona cosa vuoi vedere nella pagina iniziale",
+        "Size of album list": "Dimensione della lista album",
+        "Scroll": "Scorrimento",
+        "Scroll Description": "Si consiglia di attivare l'assistente allo scorrimento su desktop",
+        "Show scroll helper": "Mostra assistente allo scorrimento",
+        "ListenBrainz Stats": "Statistiche ListenBrainz",
+        "ListenBrainz User": "Utente ListenBrainz",
+        "user": "utente"
+      }
+    },
+    "API Error": "Errore API",
+    "Add radio": "Aggiungi radio",
+    "Albums": "Album",
+    "Artists": "Artisti",
+    "Cache": "Cache",
+    "Connect": "Connetti",
+    "Connected": "Connesso",
+    "Desktop": "Desktop",
+    "Disconnect": "Disconnetti",
+    "Favorited": "Preferiti",
+    "History": "Cronologia",
+    "Home": "Home",
+    "Informations": "Informazioni",
+    "Language": "Lingua",
+    "Name": "Nome",
+    "Network Error": "Errore di Rete",
+    "No results": "Nessun risultato",
+    "Not connected": "Non connesso",
+    "Password": "Password",
+    "Player": "Lettore",
+    "Playlists": "Playlist",
+    "Random Song": "Canzone Casuale",
+    "Reset Settings": "Reimposta Impostazioni",
+    "Search": "Cerca",
+    "Shares": "Condivisioni",
+    "Server Url": "Url del Server",
+    "Songs": "Canzoni",
+    "Theme": "Tema",
+    "Url": "Url",
+    "Username": "Nome Utente",
+    "Your Playlists": "Le tue Playlist"
+  }
+}

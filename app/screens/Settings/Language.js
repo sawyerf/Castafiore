@@ -12,6 +12,7 @@ import SelectItem from '~/components/settings/SelectItem';
 const languages = [
 	{ lang: 'en', name: 'English' },
 	{ lang: 'fr', name: 'Français' },
+	{ lang: 'it', name: 'Italiano' },
 ]
 
 const Theme = () => {

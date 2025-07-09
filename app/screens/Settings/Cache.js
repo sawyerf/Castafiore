@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 import { clearCache } from '~/utils/cache'
 import { confirmAlert } from '~/utils/alert'
@@ -18,6 +19,7 @@ import ListMap from '~/components/lists/ListMap'
 import size from '~/styles/size';
 
 const CacheSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -54,36 +56,36 @@ const CacheSettings = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Cache" />
+			<Header title={t("Cache")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Song Caching</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.cache.Song caching')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<ButtonSwitch
-						title="Enable Song Caching"
+						title={t("settings.cache.Enable song caching")}
 						value={settings.isSongCaching}
 						onPress={() => setSettings({ ...settings, isSongCaching: !settings.isSongCaching })}
 					/>
 					<ButtonSwitch
-						title="Show cached songs"
+						title={t("settings.cache.Show cached songs")}
 						value={settings.showCache}
 						onPress={() => setSettings({ ...settings, showCache: !settings.showCache })}
 					/>
 					<OptionInput
-						title="Cache next song"
+						title={t("settings.cache.Cache next song")}
 						value={cacheNextSong}
 						onChangeText={(text) => setCacheNextSong(text.replace(/[^0-9]/g, ''))}
 						inputMode="numeric"
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>{'Auto download upcoming songs (default: 5)'}</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.cache.Cache next song description')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ButtonMenu
-						title="Clear cache"
+						title={t("settings.cache.Clear cache")}
 						icon="trash"
 						onPress={() => confirmAlert(
-							'Clear cache',
-							'Are you sure you want to clear the cache?',
+							t('settings.cache.Clear cache'),
+							t('settings.cache.Clear cache alert message'),
 							async () => {
 								await clearCache()
 								getStat()
@@ -92,7 +94,7 @@ const CacheSettings = () => {
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.titleContainer(theme)}>Cache Stats</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.cache.Cache stats')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ListMap
 						data={statCache}
@@ -106,7 +108,7 @@ const CacheSettings = () => {
 						)}
 						ListEmptyComponent={(
 							<View style={settingStyles.optionItem(theme, true)}>
-								<Text style={{ color: theme.primaryText, fontSize: size.text.medium, fontWeight: '400' }}>No Cache</Text>
+								<Text style={{ color: theme.primaryText, fontSize: size.text.medium, fontWeight: '400' }}>{t('settings.cache.No cache')}</Text>
 							</View>
 						)}
 					/>

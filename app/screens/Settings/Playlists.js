@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { ThemeContext } from '~/contexts/theme'
@@ -17,20 +18,21 @@ const orders = {
 		icon: 'sort-alpha-asc',
 	},
 	'changed': {
-		name: 'Recently Updated',
+		name: 'Recently updated',
 		icon: 'sort-amount-desc',
 	},
 	'newest': {
-		name: 'Newest First',
+		name: 'Newest first',
 		icon: 'sort-numeric-desc',
 	},
 	'oldest': {
-		name: 'Oldest First',
+		name: 'Oldest first',
 		icon: 'sort-numeric-asc',
 	},
 }
 
 const PlaylistsSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -56,12 +58,12 @@ const PlaylistsSettings = () => {
 				mainStyles.contentMainContainer(insets)
 			]}
 		>
-			<Header title="Playlists" />
+			<Header title={t("Playlists")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Preview Favorited</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Preview favorited')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput
-						title="Song preview favorited"
+						title={t("settings.playlists.Preview favorited Name")}
 						value={previewFavorited}
 						onChangeText={(text) => {
 							if (parseInt(text) > 9) return
@@ -71,15 +73,15 @@ const PlaylistsSettings = () => {
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>Number of songs to preview in favorited playlist (default: 3)</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.playlists.Preview favorited Description')}</Text>
 
-				<Text style={settingStyles.titleContainer(theme)}>Order Playlists</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Order playlists')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						Object.keys(orders).map((name, index) => (
 							<SelectItem
 								key={index}
-								text={orders[name].name}
+								text={t(`settings.playlists.${orders[name].name}`)}
 								icon={orders[name].icon}
 								isSelect={name == settings.orderPlaylist}
 								onPress={() => {
@@ -89,16 +91,16 @@ const PlaylistsSettings = () => {
 						))
 					}
 				</View>
-				<Text style={settingStyles.titleContainer(theme)}>Playlist Page</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Playlist page')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<ButtonSwitch
-						title="Reverse playlist tracks"
+						title={t("settings.playlists.Reverse playlist tracks")}
 						value={settings.reversePlaylist}
 						onPress={() => setSettings({ ...settings, reversePlaylist: !settings.reversePlaylist })}
 						isLast
 					/>
 				</View>
-				<Text style={settingStyles.description(theme)}>If enabled, recently added tracks will be shown first.</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.playlists.Reverse playlist tracks Description')}</Text>
 			</View>
 		</View>
 	)

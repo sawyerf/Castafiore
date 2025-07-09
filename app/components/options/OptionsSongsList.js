@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform, Share } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi, getApiNetworkFirst, urlStream } from '~/utils/api';
@@ -10,6 +11,7 @@ import { urlCover } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 
 const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () => { }, idPlaylist = null }) => {
+	const { t } = useTranslation();
 	const navigation = useNavigation();
 	const song = React.useContext(SongContext);
 	const songDispatch = React.useContext(SongDispatchContext);
@@ -51,7 +53,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 
 				reffOption.current.setVirtualOptions([
 					{
-						name: 'Add to playlist',
+						name: t('Add to playlist'),
 					},
 					...json.playlists.playlist.map((playlist) => ({
 						name: playlist.name,
@@ -121,34 +123,34 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 			item={indexOptions >= 0 ? songs[indexOptions] : null}
 			options={[
 				{
-					name: 'Play similar songs',
+					name: t('Play similar songs'),
 					icon: 'play',
 					onPress: playSimilarSongs
 				},
 				{
-					name: 'Add to queue',
+					name: t('Add to queue'),
 					icon: 'th-list',
 					onPress: addToQueue
 				},
 				{
-					name: 'Go to artist',
+					name: t('Go to artist'),
 					icon: 'user',
 					onPress: goToArtist
 				},
 				{
-					name: 'Go to album',
+					name: t('Go to album'),
 					icon: 'folder-open',
 					onPress: goToAlbum
 				},
 				{
-					name: 'Add to playlist',
+					name: t('Add to playlist'),
 					icon: 'plus',
 					onPress: openAddToPlaylist
 				},
 				...(
 					!idPlaylist ? [] : [
 						{
-							name: 'Remove from playlist',
+							name: t('Remove from playlist'),
 							icon: 'trash-o',
 							onPress: removeFromPlaylist
 						}
@@ -156,19 +158,19 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 				),
 				...Platform.select({
 					web: [{
-						name: 'Download',
+						name: t('Download'),
 						icon: 'download',
 						onPress: downloadSong
 					}],
 					default: []
 				}),
 				{
-					name: 'Share',
+					name: t('Share'),
 					icon: 'share',
 					onPress: shareSong
 				},
 				{
-					name: 'Info',
+					name: t('Info'),
 					icon: 'info',
 					onPress: () => {
 						reffOption.current.close()

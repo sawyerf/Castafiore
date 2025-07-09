@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, TextInput, ScrollView, Pressable, Platform, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, TextInput, ScrollView, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -26,8 +27,9 @@ const STATES = {
 }
 
 const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory }) => {
+	const { t } = useTranslation()
 	const theme = React.useContext(ThemeContext)
-	const navigation = useNavigation();
+	const navigation = useNavigation()
 
 	const delItemHistory = async (index) => {
 		const hist = [...history]
@@ -54,7 +56,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 						color: theme.primaryText,
 						fontSize: size.text.large,
 						fontWeight: 'bold',
-					}}>Artists</Text>
+					}}>{t('Artists')}</Text>
 				</Pressable>
 				<Pressable
 					style={styles.explorer(theme)}
@@ -65,13 +67,13 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 						color: theme.primaryText,
 						fontSize: size.text.large,
 						fontWeight: 'bold',
-					}}>Albums</Text>
+					}}>{t('Albums')}</Text>
 				</Pressable>
 			</View>
 			{
 				history.length === 0 ? null : (
 					<>
-						<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>History</Text>
+						<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>{t('History')}</Text>
 						{
 							history.map((item, index) => (
 								<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />
@@ -82,16 +84,8 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 		</>
 	)
 	else if (state === STATES.LOADING) {
-		if (Platform.OS === 'web') return (
-			<ActivityIndicator size={'large'} color={theme.primaryTouch} />
-		)
 		return (
-			<Text style={{
-				margin: 20,
-				color: theme.secondaryText,
-				fontSize: size.text.large,
-				textAlign: 'center',
-			}}>Searching...</Text>
+			<ActivityIndicator size={'large'} color={theme.primaryTouch} />
 		)
 	}
 	else if (state === STATES.LOADED) {
@@ -101,28 +95,28 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				color: theme.secondaryText,
 				fontSize: size.text.large,
 				textAlign: 'center',
-			}}>No results</Text>
+			}}>{t('No results')}</Text>
 		)
 		else if (results) return (
 			<>
 				{
 					results.artist &&
 					<>
-						<Text style={mainStyles.titleSection(theme)}>Artists</Text>
+						<Text style={mainStyles.titleSection(theme)}>{t('Artists')}</Text>
 						<HorizontalArtists artists={results.artist} onPress={(item) => addHistory({...item, mediaType: 'artist'})} />
 					</>
 				}
 				{
 					results.album &&
 					<>
-						<Text style={mainStyles.titleSection(theme)}>Albums</Text>
+						<Text style={mainStyles.titleSection(theme)}>{t('Albums')}</Text>
 						<HorizontalAlbums albums={results.album} onPress={(item) => addHistory({...item, mediaType: 'album'})} />
 					</>
 				}
 				{
 					results.song &&
 					<>
-						<Text style={mainStyles.titleSection(theme)}>Songs</Text>
+						<Text style={mainStyles.titleSection(theme)}>{t('Songs')}</Text>
 						<SongsList songs={results.song} onPress={(item) => addHistory({...item, mediaType: 'song'})} />
 					</>
 				}
@@ -133,7 +127,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 			color: theme.secondaryText,
 			fontSize: size.text.large,
 			textAlign: 'center',
-		}}>API Error</Text>
+		}}>{t('API Error')}</Text>
 	)
 	else if (state === STATES.NETWORK_ERROR) return (
 		<Text style={{
@@ -141,12 +135,13 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 			color: theme.secondaryText,
 			fontSize: size.text.large,
 			textAlign: 'center',
-		}}>Network Error</Text>
+		}}>{t('Network Error')}</Text>
 	)
 	return null
 }
 
 const Search = () => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
@@ -208,7 +203,7 @@ const Search = () => {
 			mainStyles.contentMainContainer(insets), {
 				paddingBottom: 0,
 			}]}>
-			<Text style={mainStyles.mainTitle(theme)}>Search</Text>
+			<Text style={mainStyles.mainTitle(theme)}>{t('Search')}</Text>
 			<View style={[mainStyles.stdVerticalMargin, { marginBottom: 20, flexDirection: 'row', gap: 10 }]}>
 				<TextInput
 					style={{
@@ -222,7 +217,7 @@ const Search = () => {
 						backgroundColor: theme.secondaryBack,
 						outline: 'none',
 					}}
-					placeholder="Search"
+					placeholder={t("Search")}
 					placeholderTextColor={theme.secondaryText}
 					value={query}
 					autoCapitalize='none'
@@ -234,7 +229,7 @@ const Search = () => {
 						<Pressable
 							onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
 							style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }])}>
-							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>Clear</Text>
+							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>{t('Clear')}</Text>
 						</Pressable> : null
 				}
 				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, margin: 9 }} />

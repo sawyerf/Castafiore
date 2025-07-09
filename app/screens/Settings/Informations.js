@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config'
 import { useCachedAndApi } from '~/utils/api'
@@ -27,6 +28,7 @@ const ROLES = [
 ]
 
 const InformationsSettings = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
@@ -56,29 +58,29 @@ const InformationsSettings = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Informations" />
+			<Header title={t("Informations")} />
 
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<Text style={settingStyles.titleContainer(theme)}>Server</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem
-						title={'Status'}
-						value={server.connected ? 'connected' : 'not connected'}
+						title={t('settings.informations.Status')}
+						value={server.connected ? t('Connected') : t('Not connected')}
 					/>
 					<TableItem
-						title={'Server'}
+						title={t('settings.informations.Server')}
 						value={server.name}
 					/>
 					<TableItem
-						title={'Version'}
+						title={t('settings.informations.Version')}
 						value={server.version}
 					/>
 					<TableItem
-						title={'API Version'}
+						title={t('settings.informations.API Version')}
 						value={server.apiVersion}
 					/>
 					<TableItem
-						title={'Url'}
+						title={t('Url')}
 						value={config.url}
 						isLast
 					/>
@@ -88,36 +90,36 @@ const InformationsSettings = () => {
 				<Text style={settingStyles.titleContainer(theme)}>Scan</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem
-						title={'Last Scan'}
+						title={t('settings.informations.Last scan')}
 						value={convertDate(scan.lastScan)}
 					/>
 					<TableItem
-						title={'Folders Scanned'}
+						title={t('settings.informations.Folders scanned')}
 						value={scan.folderCount}
 					/>
 					<TableItem
-						title={'Files Scanned'}
+						title={t('settings.informations.Files scanned')}
 						value={scan.count}
 						isLast
 					/>
 				</View>
 			</View>
 			<View style={[settingStyles.contentMainContainer]}>
-				<Text style={settingStyles.titleContainer(theme)}>User</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.informations.User')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem
-						title={'Username'}
+						title={t('Username')}
 						value={user.username}
 					/>
 					<TableItem
-						title={'Email'}
+						title={t('settings.informations.Email')}
 						value={user.email}
 						isLast
 					/>
 				</View>
 			</View>
 			<View style={[settingStyles.contentMainContainer]}>
-				<Text style={settingStyles.titleContainer(theme)}>User Role</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.informations.User role')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						ROLES.map((role, index) => {

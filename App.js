@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTranslation } from 'react-i18next';
 
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
 import TabBar from '~/components/bar/TabBar';
@@ -16,6 +17,7 @@ import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song';
 import { ThemeContext, getTheme } from '~/contexts/theme';
 import Player from '~/utils/player';
+import '~/i18next/i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,6 +30,7 @@ const App = () => {
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 	const [theme, setTheme] = React.useState(getTheme())
 	const [updateApi, setUpdateApi] = React.useState({ path: '', query: '' })
+	const { i18n } = useTranslation();
 	Player.useEvent(dispatch)
 
 	React.useEffect(() => {
@@ -77,6 +80,12 @@ const App = () => {
 		if (window) window.isSongCaching = settings.isSongCaching
 		else global.isSongCaching = settings.isSongCaching
 	}, [settings.isSongCaching])
+
+	React.useEffect(() => {
+		console.log('Language changed to:', settings.language)
+		i18n.changeLanguage(settings.language)
+			.catch(err => console.error(err));
+	}, [settings.language])
 
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)

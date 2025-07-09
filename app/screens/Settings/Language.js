@@ -1,18 +1,21 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
-import { themes, themesPlayer } from '~/contexts/theme';
 import Header from '~/components/Header';
 import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings';
 import SelectItem from '~/components/settings/SelectItem';
 
+const languages = [
+	{ lang: 'en', name: 'English', color: '#dc3545' },
+	{ lang: 'fr', name: 'Français', color: '#007bff' },
+	{ lang: 'it', name: 'Italiano', color: '#28a745' },
+]
+
 const Theme = () => {
-	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -23,37 +26,20 @@ const Theme = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title={t("Theme")} />
+			<Header title="Language" />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>{t('Theme')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>Language</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
-						Object.keys(themes).map((themeName, index) => (
+						languages.map((lang, index) => (
 							<SelectItem
 								key={index}
-								text={themeName}
-								icon="tint"
-								colorIcon={themes[themeName].primaryTouch}
-								isSelect={themeName == settings.theme}
+								text={lang.name}
+								icon="flag"
+								colorIcon={lang.color}
+								isSelect={lang.lang == settings.language}
 								onPress={() => {
-									setSettings({ ...settings, theme: themeName })
-								}}
-							/>
-						))
-					}
-				</View>
-				<Text style={settingStyles.titleContainer(theme)}>{t('settings.theme.Player Theme')}</Text>
-				<View style={settingStyles.optionsContainer(theme)}>
-					{
-						Object.keys(themesPlayer).map((themeName, index) => (
-							<SelectItem
-								key={index}
-								text={themeName}
-								icon="tint"
-								colorIcon={themesPlayer[themeName].playerBackground}
-								isSelect={themeName == settings.themePlayer}
-								onPress={() => {
-									setSettings({ ...settings, themePlayer: themeName })
+									setSettings({ ...settings, language: lang.lang })
 								}}
 							/>
 						))

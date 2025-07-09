@@ -1,6 +1,7 @@
 import React from 'react';
 import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -14,6 +15,7 @@ import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
 import size from '~/styles/size';
 
 const Playlists = ({ navigation }) => {
+	const { t } = useTranslation();
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets();
 	const settings = React.useContext(SettingsContext)
@@ -84,7 +86,7 @@ const Playlists = ({ navigation }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
-				<Text style={[mainStyles.mainTitle(theme), { marginBottom: 0, marginTop: 0 }]}>Your Playlists</Text>
+				<Text style={[mainStyles.mainTitle(theme), { marginBottom: 0, marginTop: 0 }]}>{t('Your Playlists')}</Text>
 				<Animated.View style={{ transform: [{ rotate: rotation }] }}>
 					<IconButton
 						icon="refresh"
@@ -100,7 +102,7 @@ const Playlists = ({ navigation }) => {
 				onPress={() => navigation.navigate('Favorited', { favorited })}
 			>
 				<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
-				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>Favorited</Text>
+				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>{t('Favorited')}</Text>
 				<Text style={{ color: theme.secondaryText, fontWeight: 'bold', fontSize: 15 }}>
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryText} />
 				</Text>
@@ -136,7 +138,7 @@ const Playlists = ({ navigation }) => {
 						</> :
 						<>
 							<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
-							<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}> Playlists</Text>
+							<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>{t('Playlists')}</Text>
 							<IconButton
 								icon="plus"
 								size={size.icon.tiny}

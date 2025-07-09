@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Linking, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -15,6 +16,7 @@ import OptionsPopup from '~/components/popup/OptionsPopup';
 import size from '~/styles/size';
 
 const RadioList = ({ radios }) => {
+	const { t } = useTranslation()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
@@ -66,7 +68,7 @@ const RadioList = ({ radios }) => {
 						overflow: 'hidden',
 					}}
 				>
-					Add radio
+					{t('Add radio')}
 				</Text>
 			</Pressable>
 		)
@@ -138,7 +140,7 @@ const RadioList = ({ radios }) => {
 				item={optionRadio}
 				options={[
 					{
-						name: 'Open home page',
+						name: t('Open home page'),
 						icon: 'home',
 						onPress: () => {
 							setOptionRadio(null)
@@ -146,7 +148,7 @@ const RadioList = ({ radios }) => {
 						}
 					},
 					{
-						name: 'Edit radio',
+						name: t('Edit radio'),
 						icon: 'pencil',
 						onPress: () => {
 							setOptionRadio(null)
@@ -154,7 +156,7 @@ const RadioList = ({ radios }) => {
 						}
 					},
 					{
-						name: 'Remove radio',
+						name: t('Remove radio'),
 						icon: 'trash-o',
 						onPress: () => {
 							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)

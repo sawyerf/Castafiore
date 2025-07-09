@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, View, Pressable, Image, StyleSheet, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 import { useCachedAndApi, urlCover } from '~/utils/api'
 import { ConfigContext } from '~/contexts/config'
@@ -11,7 +12,7 @@ import size from '~/styles/size'
 import mainStyles from '~/styles/main'
 import ImageError from '~/components/ImageError'
 
-const FavoritedItem = ({ navigation }) => {
+const FavoritedItem = ({ navigation, t }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isHover, setIsHover] = React.useState(false)
 
@@ -43,13 +44,13 @@ const FavoritedItem = ({ navigation }) => {
 						marginLeft: 10,
 					}]}
 					numberOfLines={1}
-				>Favorited</Text>
+				>{t('Favorited')}</Text>
 			</View>
 		</Pressable>
 	)
 }
 
-const PlaylistItem = ({ item, navigation }) => {
+const PlaylistItem = ({ item, navigation, t }) => {
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const [isHover, setIsHover] = React.useState(false)
@@ -88,7 +89,7 @@ const PlaylistItem = ({ item, navigation }) => {
 					{item.name}
 				</Text>
 				<Text style={{ color: theme.secondaryText, fontSize: size.text.small, marginLeft: 10 }} numberOfLines={1}>
-					Playlist
+					{t('Playlist')}
 				</Text>
 			</View>
 		</Pressable>
@@ -101,6 +102,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 	const theme = React.useContext(ThemeContext)
 	const [hoverIndex, setHoverIndex] = React.useState(-1)
 	const [refresh, setRefresh] = React.useState(0)
+	const { t } = useTranslation()
 
 	const [playlists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
 		setData(json.playlists.playlist?.filter(playlist => playlist.comment?.includes(`#${config.username}-pin`)) || [])
@@ -175,7 +177,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					>
 						<Icon name={options.icon} size={26} color={color} style={{ marginRight: 10 }} />
 						<Text style={{ color: color, textAlign: 'left', fontSize: size.text.large, fontWeight: '600' }}>
-							{options.title}
+							{t(`tabs.${options.title}`)}
 						</Text>
 					</Pressable>
 				)
@@ -189,13 +191,14 @@ const SideBar = ({ state, descriptors, navigation }) => {
 				<Pressable onPress={() => setRefresh(refresh + 1)}>
 					<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>Playlists</Text>
 				</Pressable>
-				<FavoritedItem navigation={navigation} />
+				<FavoritedItem navigation={navigation} t={t} />
 				{
 					playlists.map((item, index) => (
 						<PlaylistItem
 							key={index}
 							item={item}
 							navigation={navigation}
+							t={t}
 						/>
 					))
 				}

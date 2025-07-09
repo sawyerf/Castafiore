@@ -1,7 +1,8 @@
 import React from 'react'
 import { Text, View, Pressable, Platform } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ConfigContext } from '~/contexts/config'
 import { ThemeContext } from '~/contexts/theme'
@@ -10,6 +11,7 @@ import size from '~/styles/size'
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
 const TabItem = ({ route, index, state, descriptors, navigation }) => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -54,8 +56,8 @@ const TabItem = ({ route, index, state, descriptors, navigation }) => {
 			disabled={(!config.query && route.name !== 'Settings')}
 		>
 			<Icon name={options.icon} size={size.icon.tiny} color={color} style={{ alignSelf: 'center', marginBottom: 2, height: 24 }} />
-			<Text style={{ color: color, textAlign: 'center', height: 19, fontSize: 14 }}>
-				{options.title}
+			<Text numberOfLines={1} style={{ color: color, textAlign: 'center', height: 19, fontSize: 14 }}>
+				{t(`tabs.${options.title}`)}
 			</Text>
 		</Pressable>
 	)

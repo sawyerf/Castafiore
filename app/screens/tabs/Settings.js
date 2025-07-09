@@ -88,14 +88,17 @@ const Settings = ({ navigation }) => {
 					onPress={() => navigation.navigate('Settings/Player')}
 				/>
 				<ButtonMenu
-					title={t("Theme")}
-					icon="tint"
-					onPress={() => navigation.navigate('Settings/Theme')}
-				/>
-				<ButtonMenu
 					title={t("Cache")}
 					icon="database"
 					onPress={() => navigation.navigate('Settings/Cache')}
+					isLast
+				/>
+			</View>
+			<View style={settingStyles.optionsContainer(theme)}>
+				<ButtonMenu
+					title={t("Theme")}
+					icon="tint"
+					onPress={() => navigation.navigate('Settings/Theme')}
 				/>
 				<ButtonMenu
 					title={t("Language")}

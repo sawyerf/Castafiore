@@ -10,9 +10,9 @@ import settingStyles from '~/styles/settings';
 import SelectItem from '~/components/settings/SelectItem';
 
 const languages = [
-	{ lang: 'en', name: 'English' },
-	{ lang: 'fr', name: 'Français' },
-	{ lang: 'it', name: 'Italiano' },
+	{ lang: 'en', name: 'English', color: '#dc3545' },
+	{ lang: 'fr', name: 'Français', color: '#007bff' },
+	{ lang: 'it', name: 'Italiano', color: '#28a745' },
 ]
 
 const Theme = () => {
@@ -36,6 +36,7 @@ const Theme = () => {
 								key={index}
 								text={lang.name}
 								icon="flag"
+								colorIcon={lang.color}
 								isSelect={lang.lang == settings.language}
 								onPress={() => {
 									setSettings({ ...settings, language: lang.lang })

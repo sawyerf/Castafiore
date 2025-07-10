@@ -88,7 +88,7 @@ If you want to build localy docker image with web version of an app, run:
 ```
 docker build -t castafiore:local -f deploy/Dockerfile .
 ```
-An then runwith:
+An then run with:
 ```
 docker run -p8080:80 castafiore:local
 ```

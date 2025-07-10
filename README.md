@@ -81,3 +81,16 @@ Install the apk and run the dev server
 ```bash
 npm run android
 ```
+
+## Docker
+### Local image
+If you want to build localy docker image with web version of an app, run:
+```
+docker build -t castafiore:local -f deploy/Dockerfile .
+```
+An then runwith:
+```
+docker run -p8080:80 castafiore:local
+```
+
+App will be available at `http://localhost:8080`

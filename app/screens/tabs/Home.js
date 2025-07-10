@@ -87,7 +87,9 @@ const Home = () => {
 				</Pressable>
 				<View style={{flexDirection: 'row'}}>
 					{
-						settings.listenBrainzUser && <IconButton
+						settings.listenBrainzUser != null
+						&& settings.listenBrainzUser.length > 0
+						&& <IconButton
 							icon="bell-o"
 							size={size.icon.tiny}
 							color={theme.primaryText}

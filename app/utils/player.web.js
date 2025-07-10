@@ -306,6 +306,10 @@ export const resetAudio = (songDispatch) => {
 	sound.currentTime = 0
 }
 
+export const removeFromQueue = async (songDispatch, index) => {
+	songDispatch({ type: 'removeFromQueue', index })
+}
+
 export default {
 	initService,
 	initPlayer,

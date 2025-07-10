@@ -6,17 +6,18 @@ import { ConfigContext } from '~/contexts/config';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
-import Player from '~/utils/player';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import IconButton from '~/components/button/IconButton';
+import ImageError from '~/components/ImageError';
 import Lyric from '~/components/player/Lyric';
 import mainStyles from '~/styles/main';
+import OptionsQueue from '~/components/options/OptionsQueue';
+import PlayButton from '~/components/button/PlayButton';
+import Player from '~/utils/player';
+import size from '~/styles/size';
 import SlideBar from '~/components/button/SlideBar';
 import SlideControl from '~/components/button/SlideControl';
 import SongItem from '~/components/item/SongItem';
-import ImageError from '~/components/ImageError';
-import size from '~/styles/size';
-import PlayButton from '~/components/button/PlayButton';
 
 const preview = {
 	COVER: 0,
@@ -24,10 +25,11 @@ const preview = {
 	LYRICS: 2
 }
 
-const CoverItem = ({ isPreview, song }) => {
+const CoverItem = ({ isPreview, song, setFullScreen }) => {
 	const scroll = React.useRef(null)
 	const config = React.useContext(ConfigContext);
 	const theme = React.useContext(ThemeContext);
+	const [indexOptions, setIndexOptions] = React.useState(-1);
 	const { width } = useWindowDimensions();
 
 	React.useEffect(() => {
@@ -57,25 +59,29 @@ const CoverItem = ({ isPreview, song }) => {
 		</SlideControl>
 	)
 	if (isPreview === preview.QUEUE) return (
-		<FlatList
-			style={[albumImage, { borderRadius: null }]}
-			contentContainerStyle={{ width: '100%' }}
-			ref={scroll}
-			data={song.queue}
-			keyExtractor={(_, index) => index}
-			showsVerticalScrollIndicator={false}
-			onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
-			getItemLayout={(_, index) => ({ length: size.image.small + 10, offset: (size.image.small + 10) * index, index })}
-			onScrollToIndexFailed={() => { }}
-			renderItem={({ item, index }) => (
-				<SongItem
-					song={item}
-					queue={song.queue}
-					index={index}
-					isPlaying={song.index === index}
-				/>
-			)}
-		/>
+		<>
+			<FlatList
+				style={[albumImage, { borderRadius: null }]}
+				contentContainerStyle={{ width: '100%' }}
+				ref={scroll}
+				data={song.queue}
+				keyExtractor={(_, index) => index}
+				showsVerticalScrollIndicator={false}
+				onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
+				getItemLayout={(_, index) => ({ length: size.image.small + 10, offset: (size.image.small + 10) * index, index })}
+				onScrollToIndexFailed={() => { }}
+				renderItem={({ item, index }) => (
+					<SongItem
+						song={item}
+						queue={song.queue}
+						index={index}
+						setIndexOptions={setIndexOptions}
+						isPlaying={song.index === index}
+					/>
+				)}
+			/>
+			<OptionsQueue queue={song.queue} indexOptions={indexOptions} setIndexOptions={setIndexOptions} closePlayer={() => setFullScreen(false)} />
+		</>
 	)
 	if (isPreview === preview.LYRICS) return (
 		<Lyric song={song} style={albumImage} />
@@ -136,7 +142,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					color={theme.primaryText}
 					onPress={() => setFullScreen(false)} />
 				<View style={styles.playerContainer}>
-					<CoverItem isPreview={isPreview} song={song} />
+					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} />
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
 							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>

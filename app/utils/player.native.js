@@ -218,6 +218,12 @@ export const resetAudio = (songDispatch) => {
 	TrackPlayer.reset()
 }
 
+export const removeFromQueue = async (songDispatch, index) => {
+	const queue = await TrackPlayer.getQueue()
+	TrackPlayer.remove(queue[index])
+	songDispatch({ type: 'removeFromQueue', index })
+}
+
 export default {
 	initService,
 	initPlayer,

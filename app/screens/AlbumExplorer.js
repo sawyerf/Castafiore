@@ -77,7 +77,7 @@ const AlbumExplorer = () => {
 	return (
 		<LegendList
 			data={albums}
-			keyExtractor={(item, index) => `${item.id || index}`}
+			keyExtractor={(_, index) => `${index}`}
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 678 }]}
 			waitForInitialLayout={false}

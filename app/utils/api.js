@@ -86,6 +86,21 @@ export const refreshApi = (config, path, query = '') => {
 	})
 }
 
+/**
+ * Custom hooks for API data fetching with caching and updates.
+ * setFunc is called three times during its lifecycle:
+ * 1. Once with cached data (if available).
+ * 2. Once with fresh data from the API.
+ * 3. Again with cached data when another component fetches the same url.
+ * 
+ * @param {any} initialState - Initial state for the data.
+ * @param {string} path - API endpoint path.
+ * @param {string | object} query - Query parameters for the API request.
+ * @param {function} setFunc - Function called to set the data state.
+ * @param {Array} deps - Dependencies for the effect hook.
+ * @return {Array} - Returns an array containing the data, a refresh function, and a setData function. 
+ * 
+*/
 export const useCachedAndApi = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
 	const config = React.useContext(ConfigContext)
 	const updateApi = React.useContext(UpdateApiContext)

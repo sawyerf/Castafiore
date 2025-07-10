@@ -13,6 +13,7 @@ const languages = [
 	{ lang: 'en', name: 'English', color: '#dc3545' },
 	{ lang: 'fr', name: 'Français', color: '#007bff' },
 	{ lang: 'it', name: 'Italiano', color: '#28a745' },
+	{ lang: 'ru', name: 'Русский', color: '#ffc107' },
 ]
 
 const Theme = () => {

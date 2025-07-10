@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 import en from './en.json';
 import it from './it.json';
 import fr from './fr.json';
+import ru from './ru.json';
 
 i18n.use(initReactI18next).init({
   lng: 'en',
@@ -12,6 +13,7 @@ i18n.use(initReactI18next).init({
     en: en,
     it: it,
     fr: fr,
+    ru: ru,
   },
   interpolation: {
     escapeValue: false

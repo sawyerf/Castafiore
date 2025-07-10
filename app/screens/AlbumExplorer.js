@@ -35,11 +35,11 @@ const AlbumExplorer = () => {
 		[type, offset]
 	)
 
-	const handleEndReached = React.useCallback(() => {
+	const handleEndReached = () => {
 		if (albums.length > 0 && albums.length % PAGE_SIZE === 0) {
 			setOffset(albums.length);
 		}
-	}, [albums.length]);
+	};
 
 	const renderItem = React.useCallback(({ item }) => (
 		<ExplorerItem
@@ -52,13 +52,13 @@ const AlbumExplorer = () => {
 	), [])
 
 
-	const renderActivityIndicator = React.useCallback(() => (
+	const renderActivityIndicator = () => (
 		<View style={styles.loadingContainer}>
 			<ActivityIndicator size="small" color={theme.primaryTouch} />
 		</View>
-	), [theme.primaryTouch]);
+	);
 
-	const renderFooter = React.useCallback(() => {
+	const renderFooter = () => {
 		if (albums.length === 0 || albums.length % PAGE_SIZE !== 0) return null;
 		
 		return (
@@ -66,7 +66,7 @@ const AlbumExplorer = () => {
 				<ActivityIndicator size="small" color={theme.primaryTouch} />
 			</View>
 		);
-	}, [albums.length, theme.primaryTouch]);
+	};
 
 	// Reset albums when type changes
 	React.useEffect(() => {

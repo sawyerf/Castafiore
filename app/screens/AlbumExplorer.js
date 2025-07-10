@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { LegendList } from '@legendapp/list';
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { ThemeContext } from '~/contexts/theme';
 import { getApiNetworkFirst } from '~/utils/api';
@@ -17,6 +18,7 @@ const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random'];
 const PAGE_SIZE = 20;
 
 const AlbumExplorer = () => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext);
 	const navigation = useNavigation();
@@ -47,7 +49,6 @@ const AlbumExplorer = () => {
 		setOffset(0)
 	}, [type])
 
-
 	const handleEndReached = () => {
 		if (albums.length > 0 && albums.length % PAGE_SIZE === 0) {
 			setOffset(albums.length)
@@ -69,7 +70,7 @@ const AlbumExplorer = () => {
 		if (!isLoading) {
 			return (
 				<View style={styles.loadingContainer}>
-					<Text style={{ color: theme.primaryText, fontSize: size.text.medium }}>No albums found</Text>
+					<Text style={{ color: theme.primaryText, fontSize: size.text.medium }}>{t('No results')}</Text>
 				</View>
 			)
 		}
@@ -109,8 +110,8 @@ const AlbumExplorer = () => {
 			ListHeaderComponent={
 				<View style={{ flex: 1 }}>
 					<PresHeaderIcon
-						title="Albums"
-						subTitle="Explore"
+						title={t("Albums")}
+						subTitle={t("Explore")}
 						icon="book"
 					/>
 

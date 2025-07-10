@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { LegendList } from '@legendapp/list';
@@ -13,18 +13,26 @@ import size from '~/styles/size';
 import ExplorerItem from '~/components/item/ExplorerItem';
 
 const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random'];
-const SIZES = [20, 50, 100, 200, 500];
+const PAGE_SIZE = 20;
 
 const AlbumExplorer = () => {
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
 	const [type, setType] = React.useState('newest');
-	const [parSize, setParSize] = React.useState(20);
+	const [offset, setOffset] = React.useState(0);
 
-	const [albums] = useCachedAndApi([], 'getAlbumList2', { type, size: parSize }, (json, setData) => {
-		setData(json?.albumList2?.album || []);
-	}, [type, parSize])
+	const [albums] = useCachedAndApi([], 'getAlbumList2', { type, size: PAGE_SIZE, offset }, async (json, setData) => {		
+		const newAlbums = json?.albumList2?.album || [];
+		if (offset === 0) return setData(newAlbums);
+		setData(prev => [...prev, ...newAlbums]);
+	}, [type, offset])
+
+	const handleEndReached = React.useCallback(() => {
+		if (albums.length > 0 && albums.length % PAGE_SIZE === 0) {
+			setOffset(albums.length);
+		}
+	}, [albums.length]);
 
 	const renderItem = React.useCallback(({ item }) => (
 		<ExplorerItem
@@ -36,10 +44,25 @@ const AlbumExplorer = () => {
 		/>
 	), [])
 
+	const renderFooter = React.useCallback(() => {
+		if (albums.length === 0 || albums.length % PAGE_SIZE !== 0) return null;
+		
+		return (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator size="small" color={theme.primaryTouch} />
+			</View>
+		);
+	}, [albums.length, theme.primaryTouch]);
+
+	// Сброс offset при изменении типа
+	React.useEffect(() => {
+		setOffset(0);
+	}, [type]);
+
 	return (
 		<LegendList
 			data={albums}
-			keyExtractor={(item, index) => index}
+			keyExtractor={(item, index) => `${item.id || index}`}
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 678 }]}
 			waitForInitialLayout={false}
@@ -49,6 +72,8 @@ const AlbumExplorer = () => {
 				minIndexForVisible: 0,
 				itemVisiblePercentThreshold: 50,
 			}}
+			onEndReached={handleEndReached}
+			onEndReachedThreshold={0.1}
 			ListHeaderComponent={
 				<View style={{ flex: 1}}>
 					<PresHeaderIcon
@@ -59,11 +84,9 @@ const AlbumExplorer = () => {
 
 					<Text style={styles.titleSelector(theme)}>Type</Text>
 					<Selector current={type} items={TYPES} setData={setType} />
-
-					<Text style={styles.titleSelector(theme)}>Size</Text>
-					<Selector current={parSize} items={SIZES} setData={setParSize} />
-</View>
+				</View>
 			}
+			ListFooterComponent={renderFooter}
 			renderItem={renderItem}
 		/>
 	);
@@ -77,6 +100,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 		marginBottom: 10,
 	}),
+	loadingContainer: {
+		paddingVertical: 20,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 });
 
 export default AlbumExplorer;

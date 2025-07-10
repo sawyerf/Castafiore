@@ -51,6 +51,13 @@ const AlbumExplorer = () => {
 		/>
 	), [])
 
+
+	const renderActivityIndicator = React.useCallback(() => (
+		<View style={styles.loadingContainer}>
+			<ActivityIndicator size="small" color={theme.primaryTouch} />
+		</View>
+	), [theme.primaryTouch]);
+
 	const renderFooter = React.useCallback(() => {
 		if (albums.length === 0 || albums.length % PAGE_SIZE !== 0) return null;
 		
@@ -96,6 +103,7 @@ const AlbumExplorer = () => {
 			}
 			ListFooterComponent={renderFooter}
 			renderItem={renderItem}
+			ListEmptyComponent={renderActivityIndicator}
 		/>
 	);
 }

@@ -5,7 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import { LegendList } from '@legendapp/list';
 
 import { ThemeContext } from '~/contexts/theme';
-import { useCachedAndApi } from '~/utils/api';
+import { getApiNetworkFirst } from '~/utils/api';
+import { ConfigContext } from '~/contexts/config';
 import mainStyles from '~/styles/main';
 import PresHeaderIcon from '~/components/PresHeaderIcon';
 import Selector from '~/components/Selector';
@@ -17,29 +18,41 @@ const PAGE_SIZE = 20;
 
 const AlbumExplorer = () => {
 	const insets = useSafeAreaInsets();
-	const theme = React.useContext(ThemeContext)
+	const theme = React.useContext(ThemeContext);
 	const navigation = useNavigation();
+	const config = React.useContext(ConfigContext);
+	const [albums, setAlbums] = React.useState([]);
 	const [type, setType] = React.useState('newest');
 	const [offset, setOffset] = React.useState(0);
+	const [isLoading, setIsLoading] = React.useState(false);
 
-	const handleAlbumsFetch = async (json, setData) => {
-		const newAlbums = json?.albumList2?.album || [];
-		setData(prev => [...prev, ...newAlbums]);
-	}
+	React.useEffect(() => {
+		setIsLoading(true)
+		getApiNetworkFirst(config, 'getAlbumList2', { type, size: PAGE_SIZE, offset })
+			.then(json => {
+				setIsLoading(false)
+				const newAlbums = json?.albumList2?.album || []
+				if (newAlbums.length === 0) return
+				setAlbums(prev => [...prev, ...newAlbums])
+			})
+			.catch(error => {
+				console.error('Error fetching albums:', error)
+				setIsLoading(false)
+			})
+	}, [type, offset])
 
-	const [albums] = useCachedAndApi(
-		[],
-		'getAlbumList2', 
-		{ type, size: PAGE_SIZE, offset },
-		handleAlbumsFetch,
-		[type, offset]
-	)
+	// Reset albums when type changes
+	React.useEffect(() => {
+		setAlbums([])
+		setOffset(0)
+	}, [type])
+
 
 	const handleEndReached = () => {
 		if (albums.length > 0 && albums.length % PAGE_SIZE === 0) {
-			setOffset(albums.length);
+			setOffset(albums.length)
 		}
-	};
+	}
 
 	const renderItem = React.useCallback(({ item }) => (
 		<ExplorerItem
@@ -52,27 +65,31 @@ const AlbumExplorer = () => {
 	), [])
 
 
-	const renderActivityIndicator = () => (
-		<View style={styles.loadingContainer}>
-			<ActivityIndicator size="small" color={theme.primaryTouch} />
-		</View>
-	);
-
-	const renderFooter = () => {
-		if (albums.length === 0 || albums.length % PAGE_SIZE !== 0) return null;
-		
+	const renderActivityIndicator = () => {
+		if (!isLoading) {
+			return (
+				<View style={styles.loadingContainer}>
+					<Text style={{ color: theme.primaryText, fontSize: size.text.medium }}>No albums found</Text>
+				</View>
+			)
+		}
 		return (
 			<View style={styles.loadingContainer}>
 				<ActivityIndicator size="small" color={theme.primaryTouch} />
 			</View>
-		);
-	};
+		)
+	}
 
-	// Reset albums when type changes
-	React.useEffect(() => {
-		albums.length = 0;
-		setOffset(0);
-	}, [type]);
+	const renderFooter = () => {
+		if (albums.length === 0 || albums.length % PAGE_SIZE !== 0) return null
+		if (!isLoading) return null
+
+		return (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator size="small" color={theme.primaryTouch} />
+			</View>
+		)
+	}
 
 	return (
 		<LegendList
@@ -90,7 +107,7 @@ const AlbumExplorer = () => {
 			onEndReached={handleEndReached}
 			onEndReachedThreshold={0.1}
 			ListHeaderComponent={
-				<View style={{ flex: 1}}>
+				<View style={{ flex: 1 }}>
 					<PresHeaderIcon
 						title="Albums"
 						subTitle="Explore"
@@ -105,7 +122,7 @@ const AlbumExplorer = () => {
 			renderItem={renderItem}
 			ListEmptyComponent={renderActivityIndicator}
 		/>
-	);
+	)
 }
 
 const styles = StyleSheet.create({
@@ -121,6 +138,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-});
+})
 
-export default AlbumExplorer;
+export default AlbumExplorer

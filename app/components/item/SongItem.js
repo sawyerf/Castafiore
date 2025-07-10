@@ -55,7 +55,10 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song, style])}
 			key={song.id}
 			onLongPress={() => setIndexOptions(index)}
-			onContextMenu={() => setIndexOptions(index)}
+			onContextMenu={(ev) => {
+				ev.preventDefault()
+				return setIndexOptions(index)
+			}}
 			delayLongPress={200}
 			onPress={() => {
 				onPress(song)

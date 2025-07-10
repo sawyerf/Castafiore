@@ -82,7 +82,7 @@ const AlbumExplorer = () => {
 	}
 
 	const renderFooter = () => {
-		if (albums.length === 0 || albums.length % PAGE_SIZE !== 0) return null
+		if (!albums.length || albums.length % PAGE_SIZE !== 0) return null
 		if (!isLoading) return null
 
 		return (

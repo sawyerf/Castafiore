@@ -22,11 +22,18 @@ const AlbumExplorer = () => {
 	const [type, setType] = React.useState('newest');
 	const [offset, setOffset] = React.useState(0);
 
-	const [albums] = useCachedAndApi([], 'getAlbumList2', { type, size: PAGE_SIZE, offset }, async (json, setData) => {		
+	const handleAlbumsFetch = async (json, setData) => {
 		const newAlbums = json?.albumList2?.album || [];
-		if (offset === 0) return setData(newAlbums);
 		setData(prev => [...prev, ...newAlbums]);
-	}, [type, offset])
+	}
+
+	const [albums] = useCachedAndApi(
+		[],
+		'getAlbumList2', 
+		{ type, size: PAGE_SIZE, offset },
+		handleAlbumsFetch,
+		[type, offset]
+	)
 
 	const handleEndReached = React.useCallback(() => {
 		if (albums.length > 0 && albums.length % PAGE_SIZE === 0) {
@@ -54,8 +61,9 @@ const AlbumExplorer = () => {
 		);
 	}, [albums.length, theme.primaryTouch]);
 
-	// Сброс offset при изменении типа
+	// Reset albums when type changes
 	React.useEffect(() => {
+		albums.length = 0;
 		setOffset(0);
 	}, [type]);
 

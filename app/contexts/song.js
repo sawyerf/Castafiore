@@ -67,6 +67,20 @@ export const songReducer = (state, action) => {
 			return newSong(state, {
 				actionEndOfSong: action.action,
 			})
+		case 'removeFromQueue': {
+			if (!state.queue || state.queue.length <= action.index) return state
+			const newQueue = [...state.queue]
+			let newIndex = state.index
+
+			newQueue.splice(action.index, 1)
+			if (newIndex >= action.index) newIndex--
+			if (newIndex < 0) newIndex = 0
+			return newSong(state, {
+				queue: newQueue,
+				index: newIndex,
+				songInfo: newQueue[newIndex] || null,
+			})
+		}
 		case 'reset':
 			return newSong(state, {
 				...defaultSong,

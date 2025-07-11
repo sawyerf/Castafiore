@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LegendList } from '@legendapp/list';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
@@ -10,6 +11,7 @@ import PresHeaderIcon from '~/components/PresHeaderIcon';
 import LBAlbumItem from '~/components/item/LBAlbumItem';
 
 const AlbumExplorer = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext);
@@ -56,7 +58,7 @@ const AlbumExplorer = () => {
 			ListHeaderComponent={
 				<View style={{ flex: 1 }}>
 					<PresHeaderIcon
-						title="Fresh releases"
+						title={t("Fresh releases")}
 						subTitle="ListenBrainz"
 						icon="bell-o"
 					/>

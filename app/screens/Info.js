@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
@@ -13,6 +14,7 @@ import ImageError from '~/components/ImageError';
 import size from '~/styles/size';
 
 const Info = ({ route: { params: { info } } }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext);
 	const theme = React.useContext(ThemeContext)
@@ -23,7 +25,7 @@ const Info = ({ route: { params: { info } } }) => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Info" />
+			<Header title={t("Info")} />
 			<ImageError
 				style={{
 					width: size.image.large,

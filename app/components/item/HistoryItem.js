@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
@@ -14,6 +15,7 @@ import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
 const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
+	const { t } = useTranslation()
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
@@ -55,7 +57,7 @@ const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 						/>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
 							<Text numberOfLines={1} style={[mainStyles.smallText(theme.primaryText), { marginBottom: 2 }]}>{itemHist.name || itemHist.title}</Text>
-							<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>{itemHist.mediaType} · {itemHist.artist}</Text>
+							<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>{t(itemHist.mediaType)} · {itemHist.artist}</Text>
 						</View>
 					</>
 				) : (

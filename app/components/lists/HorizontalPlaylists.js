@@ -2,6 +2,7 @@
 import React from 'react'
 import { Text, View, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
 import { SongDispatchContext } from '~/contexts/song'
@@ -17,6 +18,7 @@ import size from '~/styles/size'
 
 // TODO: made this component beautiful
 const ItemPlaylist = ({ item }) => {
+  const { t } = useTranslation()
   const theme = React.useContext(ThemeContext)
   const config = React.useContext(ConfigContext)
   const settings = React.useContext(SettingsContext)
@@ -43,7 +45,7 @@ const ItemPlaylist = ({ item }) => {
             {item.name}
           </Text>
           <Text numberOfLines={1} style={{ color: theme.secondaryText, fontSize: size.text.medium, width: '100%' }}>
-            {(item.duration / 60) | 1} min · {item.songCount} songs
+            {(item.duration / 60) | 1} {t('min')} · {item.songCount} {t('songs')}
           </Text>
         </View>
       </Pressable>

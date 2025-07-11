@@ -51,7 +51,7 @@ const ArtistExplorer = () => {
 			<ExplorerItem
 				item={item}
 				title={item.name}
-				subTitle={`${item.albumCount} albums`}
+				subTitle={`${item.albumCount} ${t('albums')}`}
 				onPress={() => navigation.navigate('Artist', { id: item.id, name: item.name })}
 				borderRadius={size.radius.circle}
 				iconError="group"
@@ -72,7 +72,7 @@ const ArtistExplorer = () => {
 			ListHeaderComponent={
 				<PresHeaderIcon
 					title={t("Artists")}
-					subTitle="Explore"
+					subTitle={t("Explore")}
 					icon="group"
 				/>
 			}

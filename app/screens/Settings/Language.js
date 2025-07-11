@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
@@ -19,6 +20,7 @@ const languages = [
 ]
 
 const Theme = () => {
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
@@ -29,9 +31,9 @@ const Theme = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<Header title="Language" />
+			<Header title={t("Language")} />
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
-				<Text style={settingStyles.titleContainer(theme)}>Language</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('Language')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{
 						languages.map((lang, index) => (

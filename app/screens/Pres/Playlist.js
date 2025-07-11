@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TextInput, Pressable } from 'react-native';
 import { LegendList } from "@legendapp/list"
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi, urlCover, useCachedAndApi } from '~/utils/api';
@@ -16,6 +17,7 @@ import RandomButton from '~/components/button/RandomButton';
 import SongItem from '~/components/item/SongItem';
 
 const Playlist = ({ route: { params } }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -91,7 +93,7 @@ const Playlist = ({ route: { params } }) => {
 									)
 								}
 								<Text style={presStyles.subTitle(theme)}>
-									{((info?.duration || params?.playlist?.duration) / 60) | 1} minutes · {info?.songCount || params?.playlist?.songCount} songs
+									{((info?.duration || params?.playlist?.duration) / 60) | 1} {t('minutes')} · {info?.songCount || params?.playlist?.songCount} {t('songs')}
 								</Text>
 							</View>
 							<RandomButton songList={songs} style={presStyles.button} />

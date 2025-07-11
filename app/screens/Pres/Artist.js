@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
@@ -19,6 +20,7 @@ import size from '~/styles/size';
 import PresHeader from '~/components/PresHeader';
 
 const Artist = ({ route: { params } }) => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
@@ -71,7 +73,7 @@ const Artist = ({ route: { params } }) => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<PresHeader
 				title={params.name}
-				subTitle={'Artist'}
+				subTitle={t('Artist')}
 				imgSrc={urlCover(config, params)}
 			>
 				<IconButton
@@ -97,7 +99,7 @@ const Artist = ({ route: { params } }) => {
 			{
 				artistInfo?.similarArtist?.length && (
 					<>
-						<Text style={mainStyles.titleSection(theme)}>Similar Artist</Text>
+						<Text style={mainStyles.titleSection(theme)}>{t('Similar artists')}</Text>
 						<HorizontalArtists artists={artistInfo.similarArtist} />
 					</>
 				)
@@ -105,7 +107,7 @@ const Artist = ({ route: { params } }) => {
 			{
 				favorited?.length ? (
 					<>
-						<Text style={[mainStyles.titleSection(theme), { marginBottom: 15 }]}>Favorited Songs</Text>
+						<Text style={[mainStyles.titleSection(theme), { marginBottom: 15 }]}>{t('Favorited songs')}</Text>
 						<SongsList songs={favorited} />
 					</>
 				) : null

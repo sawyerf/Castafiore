@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, FlatList, Pressable } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 import { ThemeContext } from '~/contexts/theme'
 import { ConfigContext } from '~/contexts/config'
@@ -9,6 +10,7 @@ import Player from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
+	const { t } = useTranslation()
 	const [indexCurrent, setIndex] = React.useState(0)
 	const [lyrics, setLyrics] = React.useState([])
 	const config = React.useContext(ConfigContext)
@@ -17,7 +19,7 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 	const time = Player.updateTime()
 
 	React.useEffect(() => {
-		setLyrics([{ time: 0, text: 'Loading lyrics...' }])
+		setLyrics([{ time: 0, text: t('Loading lyrics...') }])
 		getLyrics()
 	}, [song.songInfo])
 
@@ -78,7 +80,7 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 				AsyncStorage.setItem(`lyrics/${song.songInfo.id}`, JSON.stringify(ly))
 			})
 			.catch(() => {
-				setLyrics([{ time: 0, text: 'No lyrics found' }])
+				setLyrics([{ time: 0, text: t('No lyrics found') }])
 			})
 	}
 

@@ -48,7 +48,7 @@ const Favorited = ({ route: { params } }) => {
 				ListHeaderComponent={
 					<PresHeaderIcon
 						title={<><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> {t('Favorited')}</>}
-						subTitle={`${favorited?.length || 0} songs`}
+						subTitle={`${favorited?.length || 0} ${t('songs')}`}
 						icon="heart"
 					>
 						<RandomButton songList={favorited} />

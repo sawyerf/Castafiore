@@ -69,6 +69,17 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 						fontWeight: 'bold',
 					}}>{t('Albums')}</Text>
 				</Pressable>
+				<Pressable
+					style={styles.explorer(theme)}
+					onPress={() => {
+						navigation.navigate('SongExplorer');
+					}}>
+					<Text style={{
+						color: theme.primaryText,
+						fontSize: size.text.large,
+						fontWeight: 'bold',
+					}}>{t('Songs')}</Text>
+				</Pressable>
 			</View>
 			{
 				history.length === 0 ? null : (

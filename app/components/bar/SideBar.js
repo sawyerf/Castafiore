@@ -189,7 +189,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					marginTop: 16,
 				}}>
 				<Pressable onPress={() => setRefresh(refresh + 1)}>
-					<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>Playlists</Text>
+					<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>{t('Playlists')}</Text>
 				</Pressable>
 				<FavoritedItem navigation={navigation} t={t} />
 				{

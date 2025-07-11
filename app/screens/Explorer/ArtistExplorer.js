@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { LegendList } from '@legendapp/list';
+import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 import { useCachedAndApi } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
@@ -12,6 +13,7 @@ import ExplorerItem from '~/components/item/ExplorerItem';
 import size from '~/styles/size';
 
 const ArtistExplorer = () => {
+	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation();
@@ -69,7 +71,7 @@ const ArtistExplorer = () => {
 			estimatedItemSize={80}
 			ListHeaderComponent={
 				<PresHeaderIcon
-					title="Artists"
+					title={t("Artists")}
 					subTitle="Explore"
 					icon="group"
 				/>

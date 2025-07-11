@@ -82,7 +82,6 @@ const App = () => {
 	}, [settings.isSongCaching])
 
 	React.useEffect(() => {
-		console.log('Language changed to:', settings.language)
 		i18n.changeLanguage(settings.language)
 			.catch(err => console.error(err));
 	}, [settings.language])

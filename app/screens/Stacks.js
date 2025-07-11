@@ -15,8 +15,9 @@ import Playlist from '~/screens/Pres/Playlist';
 import EditPlaylist from '~/screens/EditPlaylist';
 import UpdateRadio from '~/screens/UpdateRadio';
 
-import AlbumExplorer from '~/screens/AlbumExplorer';
-import ArtistExplorer from '~/screens/ArtistExplorer';
+import AlbumExplorer from '~/screens/Explorer/AlbumExplorer';
+import ArtistExplorer from '~/screens/Explorer/ArtistExplorer';
+import SongExplorer from '~/screens/Explorer/SongExplorer';
 import FreshReleases from '~/screens/FreshReleases';
 import Info from '~/screens/Info';
 import ShowAll from '~/screens/ShowAll';
@@ -82,6 +83,7 @@ export const SearchStack = () => {
 			<Stack.Screen name="Artist" component={Artist} />
 			<Stack.Screen name="ArtistExplorer" component={ArtistExplorer} />
 			<Stack.Screen name="AlbumExplorer" component={AlbumExplorer} />
+			<Stack.Screen name="SongExplorer" component={SongExplorer} />
 			<Stack.Screen name="Info" component={Info} />
 		</Stack.Navigator>
 	)

@@ -15,7 +15,7 @@ import size from '~/styles/size';
 import ExplorerItem from '~/components/item/ExplorerItem';
 
 const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random'];
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 100;
 
 const AlbumExplorer = () => {
 	const { t } = useTranslation();
@@ -97,7 +97,7 @@ const AlbumExplorer = () => {
 			data={albums}
 			keyExtractor={(_, index) => index}
 			style={mainStyles.mainContainer(theme)}
-			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 678 }]}
+			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 410 }]}
 			waitForInitialLayout={false}
 			recycleItems={true}
 			estimatedItemSize={80}

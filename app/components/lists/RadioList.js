@@ -79,6 +79,10 @@ const RadioList = ({ radios }) => {
 				onPress={() => playRadio(index)}
 				onLongPress={() => setOptionRadio(item)}
 				delayLongPress={200}
+				onContextMenu={(ev) => {
+					ev.preventDefault()
+					setOptionRadio(item)
+				}}
 				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.cardRadio(theme)])}
 			>
 				<ImageError

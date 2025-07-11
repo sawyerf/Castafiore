@@ -98,11 +98,16 @@ const Connect = ({ navigation }) => {
 							<Pressable
 								key={index}
 								style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, true)])}
-								delayLongPress={200}
-								onLongPress={() => setServerOption({ ...server, index })}
 								onPress={() => {
 									upConfig(server)
-								}}>
+								}}
+								delayLongPress={200}
+								onLongPress={() => setServerOption({ ...server, index })}
+								onContextMenu={(ev) => {
+									ev.preventDefault()
+									setServerOption({ ...server, index })
+								}}
+							>
 								<Icon name="server" size={size.icon.tiny} color={theme.secondaryText} style={{ marginEnd: 10 }} />
 								<Text numberOfLines={1} style={[mainStyles.mediumText(theme.primaryText), { marginRight: 10, textTransform: 'uppercase', flex: 1, overflow: 'hidden' }]}>
 									{server.name?.length ? server.name : server.url}

@@ -30,9 +30,14 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 						<Pressable
 							style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.favoritedSong])}
 							key={playlist.id}
-							onLongPress={() => setIndexOption(index)}
+							onPress={() => navigation.navigate('Playlist', { playlist: playlist })}
 							delayLongPress={200}
-							onPress={() => navigation.navigate('Playlist', { playlist: playlist })}>
+							onLongPress={() => setIndexOption(index)}
+							onContextMenu={(ev) => {
+								ev.preventDefault()
+								setIndexOption(index)
+							}}
+						>
 							<ImageError
 								style={mainStyles.coverSmall(theme)}
 								source={{ uri: urlCover(config, playlist, 100) }}

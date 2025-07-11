@@ -9,10 +9,15 @@ const IconButton = ({ icon, size = 23, color = undefined, style = {}, onPress, o
 	const theme = React.useContext(ThemeContext)
 	return (
 		<Pressable
-			style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }, StyleSheet.flatten(style) ])}
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }, StyleSheet.flatten(style)])}
 			onLongPress={onLongPress}
 			delayLongPress={delayLongPress}
-			onPress={onPress}>
+			onPress={onPress}
+			onContextMenu={(ev) => {
+				ev.preventDefault()
+				if (onLongPress) onLongPress()
+			}}
+		>
 			<Icon name={icon} size={size} color={color ? color : theme.primaryTouch} />
 		</Pressable>
 	)

@@ -42,6 +42,10 @@ const TableItem = ({ title, value, toCopy = null, onLongPress = () => {}, isLast
 			}]}
 			onPress={onPress}
 			onLongPress={onLongPress}
+			onContextMenu={(ev) => {
+				ev.preventDefault()
+				onLongPress()
+			}}
 		>
 			<Text
 				numberOfLines={1}

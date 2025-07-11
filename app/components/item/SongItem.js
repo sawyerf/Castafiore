@@ -53,17 +53,17 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 	return (
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song, style])}
-			key={song.id}
+			onPress={() => {
+				onPress(song)
+				playSong(config, songDispatch, queue, index)
+			}}
+			delayLongPress={200}
 			onLongPress={() => setIndexOptions(index)}
 			onContextMenu={(ev) => {
 				ev.preventDefault()
 				return setIndexOptions(index)
 			}}
-			delayLongPress={200}
-			onPress={() => {
-				onPress(song)
-				playSong(config, songDispatch, queue, index)
-			}}>
+		>
 			<ImageError
 				style={[mainStyles.coverSmall(theme), { marginRight: 10 }]}
 				source={{ uri: urlCover(config, song, 100) }}

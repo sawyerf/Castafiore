@@ -24,8 +24,12 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 				onPress(item)
 				navigation.push('Artist', { id: item.id, name: item.name })
 			}}
-			onLongPress={() => setIndexOptions(index)}
 			delayLongPress={200}
+			onLongPress={() => setIndexOptions(index)}
+			onContextMenu={(ev) => {
+				ev.preventDefault()
+				setIndexOptions(index)
+			}}
 		>
 			<ImageError
 				style={[styles.artistCover, { backgroundColor: theme.secondaryBack }]}

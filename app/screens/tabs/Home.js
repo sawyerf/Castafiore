@@ -108,9 +108,9 @@ const Home = () => {
 								size={size.icon.large}
 								color={theme.primaryText}
 								style={{ paddingHorizontal: 10 }}
+								onPress={forceRefresh}
 								onLongPress={refreshServer}
 								delayLongPress={200}
-								onPress={forceRefresh}
 							/>
 						</Animated.View>
 					}

@@ -54,7 +54,9 @@ const SharesSettings = () => {
 									value={item.id}
 									toCopy={item.url}
 									isLast={index === shares.length - 1}
-									onLongPress={() => {
+									onLongPress={() => setIndexOptions(index)}
+									onContextMenu={(ev) => {
+										ev.preventDefault()
 										setIndexOptions(index)
 									}}
 								/>

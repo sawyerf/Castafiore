@@ -20,12 +20,17 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	const renderItem = React.useCallback(({ item, index }) => (
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.album])}
-			onLongPress={() => setIndexOptions(index)}
-			delayLongPress={200}
 			onPress={() => {
 				onPress(item)
 				navigation.navigate('Album', item)
-			}}>
+			}}
+			delayLongPress={200}
+			onLongPress={() => setIndexOptions(index)}
+			onContextMenu={(ev) => {
+				ev.preventDefault()
+				setIndexOptions(index)
+			}}
+		>
 			<ImageError
 				style={[styles.albumCover, { backgroundColor: theme.secondaryBack }]}
 				source={{ uri: urlCover(config, item) }}

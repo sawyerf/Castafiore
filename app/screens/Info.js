@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -36,6 +36,11 @@ const Info = ({ route: { params: { info } } }) => {
 				}}
 				source={{ uri: urlCover(config, info) }}
 			/>
+			<Text style={[ mainStyles.largeText(theme.primaryText), {
+				textAlign: 'center',
+				marginTop: 15,
+				paddingHorizontal: 30,
+			}]}>{info.title || info.name}</Text>
 			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{

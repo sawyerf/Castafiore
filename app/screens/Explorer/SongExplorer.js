@@ -39,7 +39,6 @@ const SongExplorer = () => {
 				setIsLoading(false)
 				const newSongs = json?.searchResult3?.song || []
 				if (newSongs.length === 0) return
-				console.log('Fetched songs:', newSongs.length, 'at offset:', offset)
 				setSongs(prev => [...prev, ...newSongs])
 			})
 			.catch(error => {

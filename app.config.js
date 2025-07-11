@@ -8,6 +8,7 @@ module.exports = ({ config }) => {
 			orientation: "default",
 			icon: "./assets/icon.png",
 			userInterfaceStyle: "light",
+			newArchEnabled: false, // Disable New Architecture because react-native-track-player does not support it yet
 			assetBundlePatterns: [
 				"**/*"
 			],
@@ -22,6 +23,7 @@ module.exports = ({ config }) => {
 			},
 			android: {
 				package: "com.sawyerf.castafiore",
+				edgeToEdgeEnabled: true,
 				adaptiveIcon: {
 					foregroundImage: "./assets/foreground-icon.png",
 					backgroundColor: "#660000"

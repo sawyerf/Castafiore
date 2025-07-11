@@ -12,7 +12,6 @@ import TabBar from '~/components/bar/TabBar';
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
 import { initCacheSong } from '~/utils/cache';
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { setNavigationBarColor } from '~/utils/navigationBar';
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song';
 import { ThemeContext, getTheme } from '~/contexts/theme';
@@ -56,10 +55,6 @@ const App = () => {
 	React.useEffect(() => {
 		setTheme(getTheme(settings))
 	}, [settings.theme, settings.themePlayer])
-
-	React.useEffect(() => {
-		setNavigationBarColor(theme.secondaryBack)
-	}, [theme])
 
 	React.useEffect(() => {
 		if (window) window.streamFormat = settings.streamFormat
@@ -112,11 +107,7 @@ const App = () => {
 														}
 													}}
 												>
-													<StatusBar
-														backgroundColor={'rgba(0, 0, 0, 0)'}
-														translucent={true}
-														barStyle={theme.barStyle}
-													/>
+													<StatusBar barStyle={theme.barStyle} />
 													<Tab.Navigator
 														tabBar={(props) => <TabBar {...props} />}
 														screenOptions={{

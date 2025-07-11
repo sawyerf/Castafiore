@@ -85,15 +85,16 @@ const Home = () => {
 					onPress={clickRandomSong}>
 					<Text style={styles.textRandom(theme)}>{t('Random Song')}</Text>
 				</Pressable>
-				<View style={{flexDirection: 'row'}}>
+				<View style={{ flexDirection: 'row' }}>
 					{
-						settings.listenBrainzUser && <IconButton
-							icon="bell-o"
-							size={size.icon.tiny}
-							color={theme.primaryText}
-							style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-							onPress={() => navigation.navigate('FreshReleases')}
-						/>
+						settings.listenBrainzUser ?
+							<IconButton
+								icon="bell-o"
+								size={size.icon.tiny}
+								color={theme.primaryText}
+								style={{ paddingHorizontal: 10, paddingVertical: 5 }}
+								onPress={() => navigation.navigate('FreshReleases')}
+							/> : null
 					}
 					{statusRefresh ?
 						<Pressable onPress={forceRefresh} style={mainStyles.opacity}

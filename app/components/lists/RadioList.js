@@ -128,8 +128,8 @@ const RadioList = ({ radios }) => {
 			<CustomFlat
 				contentContainerStyle={{
 					height: 60 * 2 + 10,
-					paddingStart: 20,
-					paddingEnd: 20,
+					width: 310 * (radios.length + radios.length % 2) / 2 + 30,
+					paddingHorizontal: 20,
 					flexDirection: 'column',
 					flexWrap: 'wrap',
 					columnGap: 10,

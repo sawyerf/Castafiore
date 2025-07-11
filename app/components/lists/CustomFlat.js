@@ -6,7 +6,7 @@ import { ThemeContext } from '~/contexts/theme';
 import IconButton from '~/components/button/IconButton';
 import size from '~/styles/size';
 
-const CustomScroll = ({ data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
+const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
 	const indexScroll = React.useRef(0)
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default CustomScroll;
+export default CustomFlat;

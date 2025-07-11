@@ -162,7 +162,10 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						<PlayButton
 							size={size.icon.large}
 							color={theme.primaryText}
-							style={{ paddingHorizontal: 10 }}
+							style={{
+								paddingHorizontal: 10,
+								minWidth: 46
+							}}
 						/>
 						<IconButton
 							icon="step-forward"

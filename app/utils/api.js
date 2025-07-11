@@ -127,6 +127,10 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 	}, [config, ...deps])
 
 	React.useEffect(() => {
+		if (!config?.url || !config?.query) setData(initialState)
+	}, [config])
+
+	React.useEffect(() => {
 		if (!config?.url || !config?.query) return
 		if (!isUpdatable(updateApi, path, query)) return
 		if (updateApi.uid === uid.current) return

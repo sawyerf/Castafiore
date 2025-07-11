@@ -182,27 +182,33 @@ const SideBar = ({ state, descriptors, navigation }) => {
 					</Pressable>
 				)
 			})}
-			<ScrollView
-				showsVerticalScrollIndicator={false}
-				style={{
-					flex: 1,
-					marginTop: 16,
-				}}>
-				<Pressable onPress={() => setRefresh(refresh + 1)}>
-					<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>{t('Playlists')}</Text>
-				</Pressable>
-				<FavoritedItem navigation={navigation} t={t} />
-				{
-					playlists.map((item, index) => (
-						<PlaylistItem
-							key={index}
-							item={item}
-							navigation={navigation}
-							t={t}
-						/>
-					))
-				}
-			</ScrollView>
+
+			{
+				config.query ?
+					<>
+						<Pressable
+							style={{ marginTop: 16 }}
+							onPress={() => setRefresh(refresh + 1)}
+						>
+							<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>{t('Playlists')}</Text>
+						</Pressable>
+						<ScrollView
+							showsVerticalScrollIndicator={false}
+							style={{ flex: 1 }}>
+							<FavoritedItem navigation={navigation} t={t} />
+							{
+								playlists.map((item, index) => (
+									<PlaylistItem
+										key={index}
+										item={item}
+										navigation={navigation}
+										t={t}
+									/>
+								))
+							}
+						</ScrollView>
+					</> : null
+			}
 		</View>
 	)
 }

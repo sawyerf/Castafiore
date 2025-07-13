@@ -75,7 +75,8 @@
         "Show cached songs": "Показать кэшированные треки",
         "Cache next song": "Кэшировать следующий трек",
         "Cache next song description": "Автоматически скачивать следующие треки (по умолчанию: 5)",
-        "Clear cache": "Очистить кэш",
+        "Clear API cache": "Очистить кэш API",
+        "Clear song cache": "Очистить кэш треков",
         "Clear cache alert message": "Вы уверены, что хотите очистить кэш?",
         "Cache stats": "Статистика кэша",
         "No cache": "Нет кэша"

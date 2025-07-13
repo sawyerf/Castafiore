@@ -75,7 +75,8 @@
         "Show cached songs": "Mostra i brani in cache",
         "Cache next song": "Precarica il brano successivo",
         "Cache next song description": "Scarica automaticamente i prossimi brani (predefinito: 5)",
-        "Clear cache": "Svuota cache",
+        "Clear API cache": "Svuota cache API",
+        "Clear song cache": "Svuota cache brani",
         "Clear cache alert message": "Sei sicuro di voler svuotare la cache?",
         "Cache stats": "Statistiche cache",
         "No cache": "Nessuna cache"

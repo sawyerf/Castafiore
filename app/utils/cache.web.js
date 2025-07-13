@@ -12,11 +12,14 @@ export const clearCache = async () => {
 		'coverArt',
 		'images',
 		'lyrics',
-		'song',
 	]
 	keys.forEach(async (key) => {
 		await window.caches.delete(key)
 	})
+}
+
+export const clearSongCache = async () => {
+	await window.caches.delete('song')
 }
 
 export const getStatCache = async () => {

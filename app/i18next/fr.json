@@ -75,7 +75,8 @@
         "Show cached songs": "Afficher les musiques en cache",
         "Cache next song": "Musique suivante en cache",
         "Cache next song description": "Télécharger automatiquement les titres à venir (par défaut : 5)",
-        "Clear cache": "Vider le cache",
+        "Clear API cache": "Vider le cache de l'API",
+        "Clear song cache": "Vider le cache des musiques",
         "Clear cache alert message": "Êtes-vous sûr de vouloir vider le cache ?",
         "Cache stats": "Cache stats",
         "No cache": "Aucun cache"

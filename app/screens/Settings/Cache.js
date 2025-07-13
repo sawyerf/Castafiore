@@ -3,20 +3,19 @@ import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { clearCache } from '~/utils/cache'
+import { clearCache, clearSongCache, getStatCache } from '~/utils/cache'
 import { confirmAlert } from '~/utils/alert'
-import { getStatCache } from '~/utils/cache'
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { ThemeContext } from '~/contexts/theme'
 import ButtonMenu from '~/components/settings/ButtonMenu'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
+import ListMap from '~/components/lists/ListMap'
 import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
-import TableItem from '~/components/settings/TableItem'
-import ListMap from '~/components/lists/ListMap'
 import size from '~/styles/size';
+import TableItem from '~/components/settings/TableItem'
 
 const CacheSettings = () => {
 	const { t } = useTranslation()
@@ -81,13 +80,26 @@ const CacheSettings = () => {
 				<Text style={settingStyles.description(theme)}>{t('settings.cache.Cache next song description')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ButtonMenu
-						title={t("settings.cache.Clear cache")}
+						title={t("settings.cache.Clear API cache")}
 						icon="trash"
 						onPress={() => confirmAlert(
-							t('settings.cache.Clear cache'),
-							t('settings.cache.Clear cache alert message'),
+							t('settings.cache.Clear API cache'),
+							t('settings.cache.Clear API cache alert message'),
 							async () => {
 								await clearCache()
+								getStat()
+							}
+						)}
+						isLast
+					/>
+					<ButtonMenu
+						title={t("settings.cache.Clear song cache")}
+						icon="trash"
+						onPress={() => confirmAlert(
+							t('settings.cache.Clear song cache'),
+							t('settings.cache.Clear song cache alert message'),
+							async () => {
+								await clearSongCache()
 								getStat()
 							}
 						)}

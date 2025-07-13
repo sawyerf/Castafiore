@@ -50,9 +50,13 @@ export const clearCache = async () => {
 			.then(keys => keys.filter(key => key.startsWith('http')))
 			.catch(() => [])
 	)
-	await FileSystem.readDirectoryAsync(getPathDir())
+}
+
+export const clearSongCache = async () => {
+	const pathDir = getPathDir()
+	await FileSystem.readDirectoryAsync(pathDir)
 		.then(files => {
-			const deletePromises = files.map(file => FileSystem.deleteAsync(`${getPathDir()}${file}`))
+			const deletePromises = files.map(file => FileSystem.deleteAsync(`${pathDir}${file}`))
 			return Promise.all(deletePromises)
 		})
 		.catch(() => [])

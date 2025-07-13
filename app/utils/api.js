@@ -207,6 +207,9 @@ export const getApiNetworkFirst = (config, path, query = '') => {
 			.then((json) => {
 				setJsonCache('api', key, json)
 					.then(() => resolve(json))
+					.catch(() => {
+						resolve(json)
+					})
 			})
 			.catch((error) => {
 				getJsonCache('api', key)

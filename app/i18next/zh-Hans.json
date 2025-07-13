@@ -75,7 +75,8 @@
         "Show cached songs": "显示已缓存的歌曲",
         "Cache next song": "缓存下一首歌曲",
         "Cache next song description": "自动下载即将播放的歌曲（默认值：5）",
-        "Clear cache": "清除缓存",
+        "Clear API cache": "清除 API 缓存",
+        "Clear song cache": "清除歌曲缓存",
         "Clear cache alert message": "您确定要清除缓存吗？",
         "Cache stats": "缓存统计",
         "No cache": "没有缓存"

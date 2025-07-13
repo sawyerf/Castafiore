@@ -198,8 +198,8 @@ const Search = () => {
 		setState(STATES.LOADING)
 		getApiNetworkFirst(config, 'search3', { query })
 			.then((json) => {
-				setResults(json.searchResult3)
 				setState(STATES.LOADED)
+				setResults(json?.searchResult3 || undefined)
 			})
 			.catch((err) => {
 				if (err.isApiError) setState(STATES.API_ERROR)

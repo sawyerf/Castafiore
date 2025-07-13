@@ -75,7 +75,8 @@
         "Show cached songs": "Show cached songs",
         "Cache next song": "Cache next song",
         "Cache next song description": "Auto download upcoming songs (default: 5)",
-        "Clear cache": "Clear cache",
+        "Clear API cache": "Clear API cache",
+        "Clear song cache": "Clear song cache",
         "Clear cache alert message": "Are you sure you want to clear the cache?",
         "Cache stats": "Cache stats",
         "No cache": "No cache"

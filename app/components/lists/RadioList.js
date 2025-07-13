@@ -17,10 +17,11 @@ import size from '~/styles/size';
 
 const RadioList = ({ radios }) => {
 	const { t } = useTranslation()
+	const [optionRadio, setOptionRadio] = React.useState(null)
+	const refOption = React.useRef()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
-	const [optionRadio, setOptionRadio] = React.useState(null)
 	const navigation = useNavigation()
 
 	const playRadio = React.useCallback((index) => {
@@ -139,6 +140,7 @@ const RadioList = ({ radios }) => {
 				renderItem={renderItem}
 			/>
 			<OptionsPopup
+				reff={refOption}
 				visible={optionRadio !== null}
 				close={() => { setOptionRadio(null) }}
 				item={optionRadio}
@@ -147,7 +149,7 @@ const RadioList = ({ radios }) => {
 						name: t('Open home page'),
 						icon: 'home',
 						onPress: () => {
-							setOptionRadio(null)
+							refOption.current.close()
 							Linking.openURL(optionRadio.homePageUrl)
 						}
 					},
@@ -155,7 +157,7 @@ const RadioList = ({ radios }) => {
 						name: t('Edit radio'),
 						icon: 'pencil',
 						onPress: () => {
-							setOptionRadio(null)
+							refOption.current.close()
 							navigation.navigate('UpdateRadio', { id: optionRadio.id, name: optionRadio.name, streamUrl: optionRadio.streamUrl, homePageUrl: optionRadio.homePageUrl })
 						}
 					},
@@ -165,10 +167,18 @@ const RadioList = ({ radios }) => {
 						onPress: () => {
 							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)
 								.then(() => {
-									setOptionRadio(null)
+									refOption.current.close()
 									radios.splice(radios.indexOf(optionRadio), 1)
 								})
 								.catch(() => { })
+						}
+					},
+					{
+						name: t('Info'),
+						icon: 'info',
+						onPress: () => {
+							refOption.current.close()
+							refOption.current.showInfo(optionRadio)
 						}
 					}
 				]}

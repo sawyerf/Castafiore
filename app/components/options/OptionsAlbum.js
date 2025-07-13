@@ -48,7 +48,7 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
           name: t('Info'),
           icon: 'info',
           onPress: () => {
-            refOption.current.close();
+            refOption.current.close()
             refOption.current.showInfo(albums[indexOptions])
           }
         }

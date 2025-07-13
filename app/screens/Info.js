@@ -89,7 +89,7 @@ const Info = ({ route: { params: { info } } }) => {
 									))
 								}
 								<ButtonMenu
-									title={t("Clear cache")}
+									title={t("Delete from cache")}
 									icon="trash"
 									onPress={() => {
 										deleteSongCache(config, info.id, global.streamFormat, global.maxBitRate);

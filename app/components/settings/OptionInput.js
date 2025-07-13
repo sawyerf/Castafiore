@@ -12,10 +12,15 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 		<View style={settingStyles.optionItem(theme, isLast)}>
 			<Text
 				numberOfLines={1}
-				style={settingStyles.primaryText(theme, { flex: undefined })}>{title}</Text>
+				style={[settingStyles.primaryText(theme), {
+					flex: undefined,
+					maxWidth: '70%',
+					width: 'min-content',
+				}]}>{title}</Text>
 			<TextInput
 				style={{
 					flex: 1,
+					width: '100%',
 					textAlign: 'right',
 					color: theme.primaryText,
 					fontSize: size.text.medium,
@@ -36,6 +41,11 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				inputMode={inputMode}
 				secureTextEntry={secureTextEntry === undefined ? isPassword : secureTextEntry}
 				onChangeText={value => onChangeText(value)}
+				onFocus={(ev)	=> {
+					if (ev.target && ev.target.value) {
+						ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length);
+					}
+				}}
 			/>
 		</View>
 	)

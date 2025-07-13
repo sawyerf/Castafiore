@@ -47,10 +47,9 @@ export default StyleSheet.create({
 		borderBottomWidth: isLast ? 0 : .5,
 		flexDirection: 'row',
 	}),
-	primaryText: (theme, style = { flex: 1 }) => ({
+	primaryText: (theme) => ({
 		color: theme.primaryText,
 		fontSize: size.text.medium,
 		marginEnd: 10,
-		...style,
 	}),
 })

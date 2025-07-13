@@ -23,7 +23,7 @@ const objectToString = (obj) => {
 	}
 }
 
-const TableItem = ({ title, value, toCopy = null, onLongPress = () => {}, isLast = false }) => {
+const TableItem = ({ title, value, toCopy = null, onLongPress = () => { }, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 	const [isCopied, setIsCopied] = React.useState(false)
 
@@ -49,7 +49,8 @@ const TableItem = ({ title, value, toCopy = null, onLongPress = () => {}, isLast
 		>
 			<Text
 				numberOfLines={1}
-				style={[settingStyles.primaryText(theme, { flex: undefined }), {
+				style={[settingStyles.primaryText(theme), {
+					flex: undefined,
 					maxWidth: '80%',
 					width: 'min-content',
 				}]}

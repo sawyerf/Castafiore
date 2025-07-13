@@ -7,7 +7,7 @@ import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
-const ButtonMenu = ({ title, onPress, icon, endText="", isLast = false }) => {
+const ButtonMenu = ({ title, onPress, icon, endText = "", isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -33,7 +33,7 @@ const ButtonMenu = ({ title, onPress, icon, endText="", isLast = false }) => {
 			</View>
 			<Text
 				numberOfLines={1}
-				style={settingStyles.primaryText(theme)}>{title}</Text>
+				style={[settingStyles.primaryText(theme), { flex: 1 }]}>{title}</Text>
 			{
 				endText ?
 					<Text

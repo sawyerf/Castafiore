@@ -28,13 +28,12 @@ export default StyleSheet.create({
 		color: theme.primaryText,
 		fontSize: size.title.small,
 		fontWeight: 'bold',
-		margin: 20,
+		marginHorizontal: 20,
 		marginTop: 25,
 		marginBottom: 10
 	}),
 	stdVerticalMargin: {
-		marginStart: 20,
-		marginEnd: 20,
+		marginHorizontal: 20,
 	},
 	button: {
 		flex: 1,

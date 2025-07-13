@@ -100,5 +100,5 @@ export const setListByType = (json, type, setList) => {
 	if (type == 'artist_all') return setList(json?.artists?.index.map((item) => item.artist).flat())
 	if (type == 'genre') return setList(json?.genres?.genre)
 	if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
-	if (type == 'playlist') return setList(json?.playlists?.playlist)
+	if (type == 'playlist') return setList(json?.playlists?.playlist?.filter((playlist) => playlist.comment?.includes(`#${global.config.username}-pin`)))
 }

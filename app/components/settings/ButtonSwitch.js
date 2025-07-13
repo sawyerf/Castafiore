@@ -31,7 +31,7 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 				/></View>}
 			<Text
 				numberOfLines={1}
-				style={settingStyles.primaryText(theme)}>{title}</Text>
+				style={[settingStyles.primaryText(theme), { flex: 1 }]}>{title}</Text>
 			<View
 				style={{
 					height: 30,

@@ -59,10 +59,10 @@ export const getSongCachedInfo = async (config, songId, streamFormat, maxBitrate
 }
 
 export const deleteSongCache = async (config, songId, streamFormat, maxBitrate) => {
-	const urlStream = urlStream(config, songId, streamFormat, maxBitrate)
+	const url = urlStream(config, songId, streamFormat, maxBitrate)
 
 	await window.caches.open('song')
-		.then(cache => cache.delete(urlStream))
+		.then(cache => cache.delete(url))
 }
 
 export const getListCacheSong = async () => {

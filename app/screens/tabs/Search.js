@@ -52,7 +52,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 					onPress={() => {
 						navigation.navigate('ArtistExplorer');
 					}}>
-					<Text style={{
+					<Text numberOfLines={1} style={{
 						color: theme.primaryText,
 						fontSize: size.text.large,
 						fontWeight: 'bold',
@@ -63,7 +63,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 					onPress={() => {
 						navigation.navigate('AlbumExplorer');
 					}}>
-					<Text style={{
+					<Text numberOfLines={1} style={{
 						color: theme.primaryText,
 						fontSize: size.text.large,
 						fontWeight: 'bold',
@@ -74,7 +74,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 					onPress={() => {
 						navigation.navigate('SongExplorer');
 					}}>
-					<Text style={{
+					<Text numberOfLines={1} style={{
 						color: theme.primaryText,
 						fontSize: size.text.large,
 						fontWeight: 'bold',

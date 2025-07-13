@@ -75,6 +75,7 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 
 	if (!enable) return null
 	if (!list) return null
+	if (list?.length === 0) return null
 	return (
 		<>
 			<Pressable
@@ -87,7 +88,10 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				disabled={!isShowAllType(type)}
 				onPress={() => { navigation.navigate('ShowAll', { title: t(`homeSection.${title}`), type, query }) }}
 			>
-				<Text style={mainStyles.titleSection(theme)}>{t(`homeSection.${title}`)}</Text>
+				<Text numberOfLines={1} style={[mainStyles.titleSection(theme), {
+					flex: 1,
+					marginEnd: 0,
+				}]}>{t(`homeSection.${title}`)}</Text>
 				{
 					isShowAllType(type) && <Icon
 						name='angle-right'

@@ -64,21 +64,33 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 				return setIndexOptions(index)
 			}}
 		>
-			<ImageError
-				style={[mainStyles.coverSmall(theme), { marginRight: 10 }]}
-				source={{ uri: urlCover(config, song, 100) }}
-			/>
+			<View style={[mainStyles.coverSmall(theme), { overflow: 'hidden', marginRight: 10 }]}>
+				{isPlaying && (
+					<View style={{
+						position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1,
+						backgroundColor: 'rgba(0, 0, 0, 0.3)',
+						justifyContent: 'center', alignItems: 'center'
+					}}
+					>
+						<Icon name="align-center" size={19} color={'white'} style={{ paddingTop: 3, transform: [{ rotate: '90deg' }] }} />
+					</View>
+				)}
+				<ImageError
+					style={[mainStyles.coverSmall(theme)]}
+					source={{ uri: urlCover(config, song, 100) }}
+				/>
+			</View>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
 				<Text numberOfLines={1} style={[mainStyles.mediumText(isPlaying ? theme.primaryTouch : theme.primaryText), { marginBottom: 2 }]}>
 					{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
 				</Text>
-				<Text numberOfLines={1} style={mainStyles.smallText(isPlaying ? theme.secondaryTouch : theme.secondaryText)}>
+				<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
 					{song.artist}
 				</Text>
 			</View>
 			<Cached song={song} />
 			<FavoritedButton id={song.id} isFavorited={song?.starred} style={{ padding: 5, paddingStart: 10 }} />
-		</Pressable>
+		</Pressable >
 	)
 }
 

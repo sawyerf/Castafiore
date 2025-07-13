@@ -72,6 +72,14 @@ const SlideBar = ({
 	)
 }
 
+const calcPositionBitogno = (vol, sizeBitogno, width) => {
+	const result = ((vol * width) - (sizeBitogno / 2))
+	if (!result) return 0
+	if (result < 0) return 0
+	if (result > width) return width - sizeBitogno / 2
+	return result
+}
+
 const styles = StyleSheet.create({
 	bitognoBar: (vol, sizeBitogno, theme, width) => ({
 		position: 'absolute',
@@ -79,7 +87,7 @@ const styles = StyleSheet.create({
 		height: sizeBitogno,
 		borderRadius: sizeBitogno / 2,
 		backgroundColor: theme.primaryTouch,
-		left: Platform.select({ web: `calc(${vol * 100}% - ${sizeBitogno / 2}px)`, default: ((vol * width) - (sizeBitogno / 2)) || 0 }),
+		left: Platform.select({ web: `calc(${vol * 100}% - ${sizeBitogno / 2}px)`, default: calcPositionBitogno(vol, sizeBitogno, width) }),
 		top: 7
 	})
 })

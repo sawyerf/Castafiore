@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
 import { urlCover } from '~/utils/api';
+import { isSongCached, getSongCachedInfo, deleteSongCache } from '~/utils/cache';
+import ButtonMenu from '~/components/settings/ButtonMenu';
 import settingStyles from '~/styles/settings';
 import TableItem from '~/components/settings/TableItem';
 import mainStyles from '~/styles/main';
@@ -18,6 +20,24 @@ const Info = ({ route: { params: { info } } }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext);
 	const theme = React.useContext(ThemeContext)
+	const [statsCache, setStatsCache] = React.useState([]);
+
+	React.useEffect(() => {
+		if (!info?.id) return
+		isSongCached(config, info.id, global.streamFormat, global.maxBitRate)
+			.then((isCached) => {
+				if (!isCached) {
+					setStatsCache([]);
+					return;
+				}
+				getSongCachedInfo(config, info.id, global.streamFormat, global.maxBitRate)
+					.then((res) => {
+						if (res) setStatsCache(res);
+						else setStatsCache([]);
+					})
+					.catch(() => setStatsCache([]));
+			})
+	}, [config, info.id]);
 
 	if (!info) return null;
 	return (
@@ -36,7 +56,7 @@ const Info = ({ route: { params: { info } } }) => {
 				}}
 				source={{ uri: urlCover(config, info) }}
 			/>
-			<Text style={[ mainStyles.largeText(theme.primaryText), {
+			<Text style={[mainStyles.largeText(theme.primaryText), {
 				textAlign: 'center',
 				marginTop: 15,
 				paddingHorizontal: 30,
@@ -54,6 +74,32 @@ const Info = ({ route: { params: { info } } }) => {
 						))
 					}
 				</View>
+				{
+					statsCache.length ?
+						<>
+							<Text style={settingStyles.titleContainer(theme)}>{t("Cache")}</Text>
+							<View style={settingStyles.optionsContainer(theme)}>
+								{
+									statsCache.map((item, index) => (
+										<TableItem
+											key={index}
+											title={item.title}
+											value={item.value}
+										/>
+									))
+								}
+								<ButtonMenu
+									title={t("Clear cache")}
+									icon="trash"
+									onPress={() => {
+										deleteSongCache(config, info.id, global.streamFormat, global.maxBitRate);
+										setStatsCache([]);
+									}}
+									isLast
+								/>
+							</View>
+						</> : null
+				}
 			</View>
 		</ScrollView>
 	)

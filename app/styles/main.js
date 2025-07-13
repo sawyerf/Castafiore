@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import size from "~/styles/size";
 
 export default StyleSheet.create({
@@ -8,7 +8,7 @@ export default StyleSheet.create({
 	}),
 	contentMainContainer: (insets, statusBar = true) => ({
 		paddingTop: statusBar ? insets.top : 0,
-		paddingBottom: 80 + Platform.select({ web: 0, android: insets.bottom }),
+		paddingBottom: 80,
 		paddingStart: insets.left,
 		paddingEnd: insets.right,
 	}),

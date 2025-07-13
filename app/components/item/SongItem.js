@@ -72,7 +72,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 						justifyContent: 'center', alignItems: 'center'
 					}}
 					>
-						<Icon name="align-center" size={19} color={'white'} style={{ paddingTop: 3, transform: [{ rotate: '90deg' }] }} />
+						<Icon name="align-center" size={19} color={'white'} style={{ height: 19, transform: [{ rotate: '90deg' }] }} />
 					</View>
 				)}
 				<ImageError

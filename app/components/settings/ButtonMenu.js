@@ -7,7 +7,7 @@ import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
-const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
+const ButtonMenu = ({ title, onPress, icon, endText="", isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -34,17 +34,20 @@ const ButtonMenu = ({ title, endText, onPress, icon, isLast = false }) => {
 			<Text
 				numberOfLines={1}
 				style={settingStyles.primaryText(theme)}>{title}</Text>
-			<Text
-				numberOfLines={1}
-				style={{
-					flex: 1,
-					textAlign: 'right',
-					color: theme.secondaryText,
-					fontSize: size.text.medium,
-					overflow: 'hidden',
-				}}>
-				{endText}
-			</Text>
+			{
+				endText ?
+					<Text
+						numberOfLines={1}
+						style={{
+							flex: 1,
+							textAlign: 'right',
+							color: theme.secondaryText,
+							fontSize: size.text.medium,
+							overflow: 'hidden',
+						}}>
+						{endText}
+					</Text> : null
+			}
 			<Icon
 				name="angle-right"
 				size={size.icon.tiny}

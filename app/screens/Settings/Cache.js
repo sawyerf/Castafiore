@@ -90,7 +90,6 @@ const CacheSettings = () => {
 								getStat()
 							}
 						)}
-						isLast
 					/>
 					<ButtonMenu
 						title={t("settings.cache.Clear song cache")}

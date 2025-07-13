@@ -93,14 +93,28 @@ export const stopSong = async () => {
 	await TrackPlayer.stop()
 }
 
+const getHeader = (headers, key) => {
+	if (!headers || !key) return null
+	const header = Object.keys(headers).find(h => h.toLowerCase() === key.toLowerCase())
+	return header ? headers[header] : null
+}
+
 const downloadSong = async (urlStream, id) => {
 	const fileUri = getPathSong(id, global.streamFormat)
 
 	if (await isSongCached(null, id, global.streamFormat, global.maxBitRate)) return fileUri
 	try {
-		await FileSystem.downloadAsync(urlStream, fileUri)
-		global.listCacheSong.push(`${id}.${global.streamFormat}`)
-		return fileUri
+		const res = await FileSystem.downloadAsync(urlStream, fileUri)
+		const contentType = getHeader(res?.headers, 'content-type')
+		const contentLength = getHeader(res?.headers, 'content-length')
+		if (res?.status === 200 && contentLength > 0 && contentType?.includes('audio')) {
+			global.listCacheSong.push(`${id}.${global.streamFormat}`)
+			return fileUri
+		} else {
+			console.error('downloadSong: Error downloading song', res?.status, contentType, contentLength)
+			await FileSystem.deleteAsync(fileUri)
+			return urlStream
+		}
 	} catch (error) {
 		console.error('downloadSong: ', error)
 		return urlStream

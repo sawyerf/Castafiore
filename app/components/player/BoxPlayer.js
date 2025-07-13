@@ -27,7 +27,7 @@ const BoxPlayer = ({ setFullScreen }) => {
 			onPress={() => setFullScreen(true)}
 			style={{
 				position: 'absolute',
-				bottom: (insets.bottom ? insets.bottom : 10) + 58,
+				bottom: (insets.bottom ? insets.bottom : 13) + 58,
 				left: insets.left,
 				right: insets.right,
 

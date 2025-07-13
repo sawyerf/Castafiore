@@ -49,6 +49,22 @@ export const isSongCached = async (config, songId, streamFormat, maxBitrate) => 
 	return getCache('song', urlStream(config, songId, streamFormat, maxBitrate))
 }
 
+export const getSongCachedInfo = async (config, songId, streamFormat, maxBitrate) => {
+	const cache = await getCache('song', urlStream(config, songId, streamFormat, maxBitrate))
+	if (!cache) return null
+	return [
+		{ title: 'Is cached', value: 'Yes' },
+		{ title: 'Size', value: `${(cache.headers.get('content-length') / (1024 * 1024)).toFixed(2)} MB` },
+	]
+}
+
+export const deleteSongCache = async (config, songId, streamFormat, maxBitrate) => {
+	const urlStream = urlStream(config, songId, streamFormat, maxBitrate)
+
+	await window.caches.open('song')
+		.then(cache => cache.delete(urlStream))
+}
+
 export const getListCacheSong = async () => {
 	return []
 }

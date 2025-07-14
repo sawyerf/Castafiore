@@ -237,8 +237,10 @@ export const stopSong = async () => {
 }
 
 export const setPosition = async (position) => {
+	if (position === Infinity) return
 	const sound = audio()
 
+	if (position < 0) position = 0
 	if (position > sound.duration) position = sound.duration
 	if (!sound.duration || position < 0) position = 0
 	sound.currentTime = position

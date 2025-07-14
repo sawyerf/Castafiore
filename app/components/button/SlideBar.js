@@ -13,6 +13,7 @@ const SlideBar = ({
 	styleProgress = {},
 	isBitogno = false,
 	sizeBitogno = 12,
+	disable = false
 }) => {
 	const theme = React.useContext(ThemeContext)
 	const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
@@ -23,18 +24,21 @@ const SlideBar = ({
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
 		onPanResponderGrant: (_, gestureState) => {
+			if (disable) return
 			prog.current = (gestureState.x0 - layoutBar.current.x) / layoutBar.current.width
 			if (!prog.current || prog.current < 0) return onStart(0)
 			else if (prog.current > 1) return onStart(1)
 			onStart(prog.current)
 		},
 		onPanResponderMove: (_, gestureState) => {
+			if (disable) return
 			prog.current = (gestureState.moveX - layoutBar.current.x) / layoutBar.current.width
 			if (!prog.current || prog.current < 0) return onChange(0)
 			else if (prog.current > 1) return onChange(1)
 			onChange(prog.current)
 		},
 		onPanResponderRelease: () => {
+			if (disable) return
 			if (!prog.current || prog.current < 0) return onComplete(0)
 			else if (prog.current > 1) return onComplete(1)
 			onComplete(prog.current)

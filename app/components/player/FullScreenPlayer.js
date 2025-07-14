@@ -92,23 +92,36 @@ const TimeBar = () => {
 	const [fakeTime, setFakeTime] = React.useState(-1)
 	const theme = React.useContext(ThemeContext)
 	const time = Player.updateTime()
+	const song = React.useContext(SongContext)
+	const [duration, setDuration] = React.useState(0)
+
+	React.useEffect(() => {
+		if (song.songInfo?.isLiveStream) {
+			setDuration(Infinity)
+		} else if ((time.duration === 0 || time.duration === Infinity) && song.songInfo?.duration) {
+			setDuration(song.songInfo.duration || 0)
+		} else {
+			setDuration(time.duration)
+		}
+	}, [time.duration])
 
 	return (
 		<>
 			<SlideBar
-				progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
+				disable={time.duration === 0 || duration === Infinity}
+				progress={fakeTime < 0 ? time.position / duration : fakeTime}
 				onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
 				onChange={(progress) => setFakeTime(progress)}
-				onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
+				onComplete={(progress) => Player.setPosition(progress * duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
 				stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
 				styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
 				styleProgress={{ backgroundColor: theme.primaryTouch }}
-				isBitogno={true}
+				isBitogno={song.songInfo?.isLiveStream ? false : true}
 			/>
 
 			<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-				<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * time.duration)}</Text>
-				<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
+				<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(fakeTime < 0 ? time.position : fakeTime * duration)}</Text>
+				<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(duration)}</Text>
 			</View>
 		</>
 	)

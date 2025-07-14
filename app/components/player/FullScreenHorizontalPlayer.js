@@ -29,6 +29,40 @@ const color = {
 	secondary: '#c6c6c6'
 }
 
+const TimeBar = () => {
+	const [fakeTime, setFakeTime] = React.useState(-1)
+	const theme = React.useContext(ThemeContext)
+	const time = Player.updateTime()
+	const song = React.useContext(SongContext)
+	const [duration, setDuration] = React.useState(0)
+
+	React.useEffect(() => {
+		if (song.songInfo?.isLiveStream) {
+			setDuration(Infinity)
+		} else if ((time.duration === 0 || time.duration === Infinity) && song.songInfo?.duration) {
+			setDuration(song.songInfo.duration || 0)
+		} else {
+			setDuration(time.duration)
+		}
+	}, [time.duration])
+
+	return (
+		<>
+			<Text style={{ color: color.primary, fontSize: size.text.small }}>{fakeTime < 0 ? Player.secondToTime(time.position) : Player.secondToTime(fakeTime * duration)}</Text>
+			<SlideBar
+				disable={time.duration === 0 || duration === Infinity}
+				progress={fakeTime < 0 ? time.position / duration : fakeTime}
+				onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
+				onChange={(progress) => setFakeTime(progress)}
+				onComplete={(progress) => Player.setPosition(progress * duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
+				stylePress={{ flex: 1, height: 26, paddingVertical: 10 }}
+				styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
+				styleProgress={{ backgroundColor: theme.primaryTouch }}
+			/>
+			<Text style={{ color: color.primary, fontSize: size.text.small }}>{Player.secondToTime(duration)}</Text>
+		</>
+	)
+}
 const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const config = React.useContext(ConfigContext)
@@ -36,9 +70,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
-	const time = Player.updateTime()
 	const volume = Player.updateVolume()
-	const [fakeTime, setFakeTime] = React.useState(-1)
 	const scroll = React.useRef(null)
 	const { height } = useWindowDimensions()
 
@@ -155,17 +187,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 					}
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 7, maxWidth: '100%' }}>
-					<Text style={{ color: color.primary, fontSize: size.text.small }}>{fakeTime < 0 ? Player.secondToTime(time.position) : Player.secondToTime(fakeTime * time.duration)}</Text>
-					<SlideBar
-						progress={fakeTime < 0 ? time.position / time.duration : fakeTime}
-						onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
-						onChange={(progress) => setFakeTime(progress)}
-						onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
-						stylePress={{ flex: 1, height: 26, paddingVertical: 10 }}
-						styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
-						styleProgress={{ backgroundColor: theme.primaryTouch }}
-					/>
-					<Text style={{ color: color.primary, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
+					<TimeBar />
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center', gap: 15 }}>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 5 }}>

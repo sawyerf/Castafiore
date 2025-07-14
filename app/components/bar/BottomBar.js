@@ -12,7 +12,6 @@ import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
 const TabItem = ({ route, index, state, descriptors, navigation }) => {
 	const { t } = useTranslation()
-	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 
@@ -50,8 +49,8 @@ const TabItem = ({ route, index, state, descriptors, navigation }) => {
 			onLongPress={onLongPress}
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 				flex: 1,
-				paddingBottom: insets.bottom ? insets.bottom : 13,
-				paddingTop: 10,
+				paddingBottom: 3,
+				paddingTop: 11,
 			}])}
 			disabled={(!config.query && route.name !== 'Settings')}
 		>
@@ -74,10 +73,9 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 		<View style={{
 			flexDirection: 'row',
 			backgroundColor: theme.secondaryBack,
-			borderTopColor: theme.secondaryBack,
-			borderTopWidth: 1,
 			paddingLeft: insets.left,
 			paddingRight: insets.right,
+			paddingBottom: insets.bottom ? insets.bottom : 10,
 			display: keyboardIsOpen ? 'none' : undefined,
 		}}
 		>

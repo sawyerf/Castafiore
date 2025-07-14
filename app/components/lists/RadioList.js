@@ -35,6 +35,8 @@ const RadioList = ({ radios }) => {
 			discNumber: 1,
 			duration: 0,
 			albumArtist: radio.homePageUrl,
+			type: 'radio',
+			isLiveStream: true,
 		})), index)
 	})
 

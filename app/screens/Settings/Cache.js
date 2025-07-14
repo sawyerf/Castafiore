@@ -96,7 +96,7 @@ const CacheSettings = () => {
 						icon="trash"
 						onPress={() => confirmAlert(
 							t('settings.cache.Clear song cache'),
-							t('settings.cache.Clear song cache alert message'),
+							t('settings.cache.Clear cache alert message'),
 							async () => {
 								await clearSongCache()
 								getStat()

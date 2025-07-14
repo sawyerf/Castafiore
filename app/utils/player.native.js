@@ -151,7 +151,7 @@ export const playSong = async (config, songDispatch, queue, index) => {
 			rating: false,
 			duration: track.duration,
 			type: 'default',
-			isLiveStream: false,
+			isLiveStream: track.type === 'radio',
 			config
 		}
 	})
@@ -170,6 +170,9 @@ export const secondToTime = (second) => {
 }
 
 export const setPosition = async (position) => {
+	if (position < 0 || !position) position = 0
+	if (position === Infinity) return 
+
 	await TrackPlayer.seekTo(position)
 }
 

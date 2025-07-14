@@ -6,22 +6,21 @@
 </a>
 
 <div align="center">
-  <a href="https://github.com/sawyerf/Castafiore/assets/22857002/d97befb0-92f6-4d29-b1ef-f43fc96bbc41" >
-    <img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/d97befb0-92f6-4d29-b1ef-f43fc96bbc41" />
+  <a href="https://github.com/user-attachments/assets/860f7c32-bd7d-47af-9e46-86e298a48002" >
+    <img style="width: 20%; margin-right: 5px;" src="https://github.com/user-attachments/assets/860f7c32-bd7d-47af-9e46-86e298a48002" />
   </a>
-  <a href="https://github.com/sawyerf/Castafiore/assets/22857002/7e43e4ff-433d-4150-a98f-99dec38769ad" >
-    <img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/7e43e4ff-433d-4150-a98f-99dec38769ad" />
+  <a href="https://github.com/user-attachments/assets/46bcde04-fe5d-4078-b7d3-de2f0db006b7" >
+    <img style="width: 20%; margin-right: 5px;" src="https://github.com/user-attachments/assets/46bcde04-fe5d-4078-b7d3-de2f0db006b7" />
   </a>
-  <a href="https://github.com/sawyerf/Castafiore/assets/22857002/5d3973a3-1f2e-4948-a167-b55162c2e725" >
-    <img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/5d3973a3-1f2e-4948-a167-b55162c2e725" />
+  <a href="https://github.com/user-attachments/assets/a4a2b19e-17bb-4cc1-a3cb-1c8a8b30162f" >
+    <img style="width: 20%; margin-right: 5px;" src="https://github.com/user-attachments/assets/a4a2b19e-17bb-4cc1-a3cb-1c8a8b30162f" />
   </a>
-  <a href="https://github.com/sawyerf/Castafiore/assets/22857002/93058bc3-f593-4f83-b9f8-1fc278e1e7d5" >
-    <img style="width: 20%; margin-right: 5px;" src="https://github.com/sawyerf/Castafiore/assets/22857002/93058bc3-f593-4f83-b9f8-1fc278e1e7d5" />
+  <a href="https://github.com/user-attachments/assets/868031fc-0ddb-4a21-80c5-867fbd368235" >
+    <img style="width: 20%; margin-right: 5px;" src="https://github.com/user-attachments/assets/868031fc-0ddb-4a21-80c5-867fbd368235" />
   </a>
 </div>
 
 </br>
-
 
 <div align=center>
   <b>Castafiore</b> is a music player that support Subsonic API. It is available on the following platforms: <b>Web</b> (PWA), <b>Android</b>.
@@ -38,11 +37,14 @@
 ## Support Feature
 - Customize Home page
 - Offline music
-- Song
+- Favorited
 - Playlist
-- Search
-- Artist
 - Radio
+- Lyrics
+- Listenbrainz stats
+- Listenbrainz fresh releases
+- Multi-languages
+- Theme
 
 ## Build locally
 ### Web
@@ -74,7 +76,7 @@ If you want to run the app in development mode for android, you need to install 
 Run the following command that will created an apk
 ```bash
 npm i
-npm run build-dev
+npm run export:dev
 ```
 
 Install the apk and run the dev server

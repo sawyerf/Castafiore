@@ -11,6 +11,7 @@ let lastScrobble = {
 	time: 0,
 }
 let shouldPlay = false
+let pauseTimer = null
 
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
@@ -18,7 +19,9 @@ module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext())
 	TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
+	// This handles the interruptions like calls or notifications
 	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
+		clearTimeout(pauseTimer)
 		TrackPlayer.getPlaybackState()
 			.then(({ state }) => {
 				if (event.paused) {
@@ -27,12 +30,16 @@ module.exports = async () => {
 							Player.stopSong()
 							shouldPlay = false
 						} else {
-							Player.pauseSong()
+							TrackPlayer.setVolume(0.5)
 							shouldPlay = true
+							pauseTimer = setTimeout(async () => {
+								Player.pauseSong()
+							}, 5000)
 						}
 					}
 				}
 				else if (shouldPlay) {
+					TrackPlayer.setVolume(1)
 					Player.resumeSong()
 					shouldPlay = false
 				}

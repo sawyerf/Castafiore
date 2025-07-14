@@ -53,7 +53,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
 
   return (
     <OptionsPopup
-      reff={refOption}
+      ref={refOption}
       visible={indexOption >= 0}
       close={() => setIndexOption(-1)}
       item={indexOption !== -1 ? playlists[indexOption] : null}

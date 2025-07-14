@@ -16,7 +16,7 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
 
   return (
     <OptionsPopup
-      reff={refOption}
+      ref={refOption}
       visible={indexOptions >= 0}
       close={() => { setIndexOptions(-1) }}
       item={indexOptions >= 0 ? albums[indexOptions] : null}

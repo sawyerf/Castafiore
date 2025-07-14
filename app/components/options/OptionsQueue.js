@@ -15,17 +15,17 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 	const song = React.useContext(SongContext);
 	const songDispatch = React.useContext(SongDispatchContext);
 	const config = React.useContext(ConfigContext);
-	const reffOption = React.useRef();
+	const refOption = React.useRef();
 
 	const goToArtist = () => {
 		navigation.navigate('Artist', { id: queue[indexOptions].artistId, name: queue[indexOptions].artist })
-		reffOption.current.close()
+		refOption.current.close()
 		closePlayer()
 	}
 
 	const goToAlbum = () => {
 		navigation.navigate('Album', { id: queue[indexOptions].albumId, name: queue[indexOptions].album, artist: queue[indexOptions].artist, artistId: queue[indexOptions].artistId })
-		reffOption.current.close()
+		refOption.current.close()
 		closePlayer()
 	}
 
@@ -34,7 +34,7 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 			.then((json) => {
 				if (!json.playlists?.playlist) return
 
-				reffOption.current.setVirtualOptions([
+				refOption.current.setVirtualOptions([
 					{
 						name: t('Add to playlist'),
 					},
@@ -52,22 +52,22 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 	const addToPlaylist = (playlist) => {
 		getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${queue[indexOptions].id}`)
 			.then(() => {
-				reffOption.current.close()
+				refOption.current.close()
 			})
 			.catch(() => { })
 	}
 
 	const removeFromQueueOpt = () => {
 		removeFromQueue(songDispatch, indexOptions)
-		reffOption.current.close()
+		refOption.current.close()
 	}
 
 	return (
 		<OptionsPopup
-			reff={reffOption}
+			ref={refOption}
 			visible={indexOptions >= 0}
 			close={() => {
-				reffOption.current.clearVirtualOptions()
+				refOption.current.clearVirtualOptions()
 				setIndexOptions(-1)
 			}}
 			item={indexOptions >= 0 ? queue[indexOptions] : null}

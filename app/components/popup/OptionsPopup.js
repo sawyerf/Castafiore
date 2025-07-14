@@ -12,7 +12,7 @@ import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
-const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
+const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const theme = React.useContext(ThemeContext)
@@ -22,7 +22,7 @@ const OptionsPopup = ({ reff, visible, close, options, item = null }) => {
 	const navigation = useNavigation();
 	const [virtualOptions, setVirtualOptions] = React.useState();
 
-	React.useImperativeHandle(reff, () => ({
+	React.useImperativeHandle(ref, () => ({
 		close: close,
 		showInfo: (info) => {
 			navigation.navigate('Info', { info });

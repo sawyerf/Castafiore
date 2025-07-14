@@ -86,7 +86,7 @@ const SharesSettings = () => {
 
 			{/* Popups */}
 			<OptionsPopup
-				reff={refOption}
+				ref={refOption}
 				visible={indexOptions >= 0}
 				close={() => {
 					setIndexOptions(-1)

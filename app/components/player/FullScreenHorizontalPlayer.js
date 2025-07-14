@@ -1,5 +1,6 @@
 import React from 'react'
 import { Modal, View, Text, Image, FlatList, Pressable, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useWindowDimensions } from 'react-native'
 
@@ -172,14 +173,27 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: size.text.medium, marginBottom: 2, textAlign: 'right' }}>
 												{item.title}
 											</Text>
-											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.secondary, fontSize: size.text.small, textAlign: 'right' }}>
+											<Text numberOfLines={1} style={{ color: color.secondary, fontSize: size.text.small, textAlign: 'right' }}>
 												{item.artist}
 											</Text>
 										</View>
-										<ImageError
-											style={[mainStyles.coverSmall(theme), { marginStart: 10 }]}
-											source={{ uri: urlCover(config, item, 100) }}
-										/>
+
+										<View style={[mainStyles.coverSmall(theme), { overflow: 'hidden', marginStart: 10 }]}>
+											{song.index === index && (
+												<View style={{
+													position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1,
+													backgroundColor: 'rgba(0, 0, 0, 0.3)',
+													justifyContent: 'center', alignItems: 'center'
+												}}
+												>
+													<Icon name="align-center" size={19} color={'white'} style={{ height: 19, transform: [{ rotate: '90deg' }] }} />
+												</View>
+											)}
+											<ImageError
+												style={[mainStyles.coverSmall(theme)]}
+												source={{ uri: urlCover(config, item, 100) }}
+											/>
+										</View>
 									</Pressable>
 								)}
 							/>

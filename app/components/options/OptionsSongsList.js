@@ -16,7 +16,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	const song = React.useContext(SongContext);
 	const songDispatch = React.useContext(SongDispatchContext);
 	const config = React.useContext(ConfigContext);
-	const reffOption = React.useRef();
+	const refOption = React.useRef();
 
 	const playSimilarSongs = () => {
 		getApiNetworkFirst(config, 'getSimilarSongs', `id=${songs[indexOptions].id}&count=50`)
@@ -28,30 +28,30 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 				}
 			})
 			.catch(() => { })
-		reffOption.current.close()
+		refOption.current.close()
 	}
 
 	const addToQueue = () => {
 		if (song.queue) songDispatch({ type: 'addQueue', queue: [songs[indexOptions]] })
 		else playSong(config, songDispatch, [songs[indexOptions]], 0)
-		reffOption.current.close()
+		refOption.current.close()
 	}
 
 	const goToArtist = () => {
 		navigation.navigate('Artist', { id: songs[indexOptions].artistId, name: songs[indexOptions].artist })
-		reffOption.current.close()
+		refOption.current.close()
 	}
 
 	const goToAlbum = () => {
 		navigation.navigate('Album', { id: songs[indexOptions].albumId, name: songs[indexOptions].album, artist: songs[indexOptions].artist, artistId: songs[indexOptions].artistId })
-		reffOption.current.close()
+		refOption.current.close()
 	}
 	const openAddToPlaylist = () => {
 		getApi(config, 'getPlaylists')
 			.then((json) => {
 				if (!json.playlists?.playlist) return
 
-				reffOption.current.setVirtualOptions([
+				refOption.current.setVirtualOptions([
 					{
 						name: t('Add to playlist'),
 					},
@@ -69,7 +69,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	const addToPlaylist = (playlist) => {
 		getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${songs[indexOptions].id}`)
 			.then(() => {
-				reffOption.current.close()
+				refOption.current.close()
 				onUpdate()
 			})
 			.catch(() => { })
@@ -78,14 +78,14 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	const removeFromPlaylist = () => {
 		getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${songs[indexOptions].index}`)
 			.then(() => {
-				reffOption.current.close()
+				refOption.current.close()
 				onUpdate()
 			})
 			.catch(() => { })
 	}
 
 	const downloadSong = async () => {
-		reffOption.current.close()
+		refOption.current.close()
 		fetch(urlStream(config, songs[indexOptions].id))
 			.then((res) => res.blob())
 			.then((data) => {
@@ -109,15 +109,15 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 				}
 			})
 			.catch(() => { })
-		reffOption.current.close()
+		refOption.current.close()
 	}
 
 	return (
 		<OptionsPopup
-			reff={reffOption}
+			ref={refOption}
 			visible={indexOptions >= 0}
 			close={() => {
-				reffOption.current.clearVirtualOptions()
+				refOption.current.clearVirtualOptions()
 				setIndexOptions(-1)
 			}}
 			item={indexOptions >= 0 ? songs[indexOptions] : null}
@@ -173,8 +173,8 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 					name: t('Info'),
 					icon: 'info',
 					onPress: () => {
-						reffOption.current.close()
-						reffOption.current.showInfo(songs[indexOptions])
+						refOption.current.close()
+						refOption.current.showInfo(songs[indexOptions])
 					}
 				},
 			]} />

@@ -13,6 +13,7 @@ import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import size from '~/styles/size';
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen';
+import Marquee from '../Marquee';
 
 const BoxPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
@@ -47,7 +48,11 @@ const BoxPlayer = ({ setFullScreen }) => {
 				</View>
 			</ImageError>
 			<View style={{ flex: 1 }}>
-				<Text style={{ color: theme.playerPrimaryText, textAlign: 'left', flex: 1, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+				<Marquee
+					text={(song?.songInfo?.track ? `${song?.songInfo?.track}. ` : '') + (song?.songInfo?.title ? song.songInfo.title : 'Song title')}
+					style={{ color: theme.playerPrimaryText, textAlign: 'left', fontWeight: 'bold', }}
+					styleContainer={{ flex: 1 }}
+				/>
 				<Text style={{ color: theme.playerSecondaryText, textAlign: 'left', flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 			</View>
 			<IconButton

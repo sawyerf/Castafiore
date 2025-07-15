@@ -11,6 +11,7 @@ import { urlCover } from '~/utils/api';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
+import Marquee from '../Marquee';
 
 const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 	const { t } = useTranslation();
@@ -116,9 +117,14 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 								source={{ uri: urlCover(config, item, 100) }}
 							/>
 							<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
-								<Text numberOfLines={1} style={mainStyles.mediumText(theme.primaryText)}>
+								{/* <Text numberOfLines={1} style={mainStyles.mediumText(theme.primaryText)}>
 									{item.track !== undefined ? `${item.track}. ` : null}{item.title || item.name}
-								</Text>
+								</Text> */}
+								<Marquee
+									text={(item.track !== undefined ? `${item.track}. ` : '') + (item.title || item.name)}
+									style={mainStyles.mediumText(theme.primaryText)}
+									styleContainer={{ flex: 1 }}
+								/>
 								{
 									(item.artist || item.homePageUrl) ?
 										<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>

@@ -18,6 +18,7 @@ import size from '~/styles/size';
 import SlideBar from '~/components/button/SlideBar';
 import SlideControl from '~/components/button/SlideControl';
 import SongItem from '~/components/item/SongItem';
+import Marquee from '../Marquee';
 
 const preview = {
 	COVER: 0,
@@ -158,7 +159,11 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} />
 					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
 						<View style={{ flex: 1 }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+							<Marquee
+								text={song.songInfo.title}
+								style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}
+								styleContainer={{ flex: 1 }}
+							/>
 							<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist} · {song.songInfo.album}</Text>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />

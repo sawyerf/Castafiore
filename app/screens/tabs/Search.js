@@ -223,7 +223,7 @@ const Search = () => {
 						fontSize: size.text.large,
 						textAlign: 'left',
 						padding: 8,
-						paddingLeft: 36,
+						paddingStart: 42,
 						borderRadius: 10,
 						backgroundColor: theme.secondaryBack,
 						outline: 'none',
@@ -243,7 +243,7 @@ const Search = () => {
 							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>{t('Clear')}</Text>
 						</Pressable> : null
 				}
-				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, margin: 9 }} />
+				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, lineHeight: 20, paddingVertical: 11.5, paddingHorizontal: 12 }} />
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ flexDirection: 'column', paddingBottom: 80, gap: 10 }}>
 				<SearchResult

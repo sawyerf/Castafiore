@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { getApi, getApiNetworkFirst, urlStream } from '~/utils/api';
-import { playSong } from '~/utils/player';
+import { playSong, addToQueue } from '~/utils/player';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { urlCover } from '~/utils/api';
 import OptionsPopup from '~/components/popup/OptionsPopup';
@@ -31,8 +31,8 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		refOption.current.close()
 	}
 
-	const addToQueue = () => {
-		if (song.queue) songDispatch({ type: 'addQueue', queue: [songs[indexOptions]] })
+	const addQueue = () => {
+		if (song.queue) addToQueue(songDispatch, songs[indexOptions])
 		else playSong(config, songDispatch, [songs[indexOptions]], 0)
 		refOption.current.close()
 	}
@@ -130,7 +130,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 				{
 					name: t('Add to queue'),
 					icon: 'th-list',
-					onPress: addToQueue
+					onPress: addQueue
 				},
 				{
 					name: t('Go to artist'),

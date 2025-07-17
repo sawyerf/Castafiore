@@ -312,6 +312,10 @@ export const removeFromQueue = async (songDispatch, index) => {
 	songDispatch({ type: 'removeFromQueue', index })
 }
 
+export const addToQueue = async (songDispatch, song) => {
+	songDispatch({ type: 'addQueue', queue: [song] })
+}
+
 export default {
 	initService,
 	initPlayer,
@@ -333,5 +337,7 @@ export default {
 	setRepeat,
 	reload,
 	resetAudio,
+	addToQueue,
+	removeFromQueue,
 	State,
 }

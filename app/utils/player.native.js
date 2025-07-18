@@ -106,8 +106,9 @@ const downloadSong = async (urlStream, id) => {
 	try {
 		const res = await FileSystem.downloadAsync(urlStream, fileUri)
 		const contentType = getHeader(res?.headers, 'content-type')
-		const contentLength = getHeader(res?.headers, 'content-length')
-		if (res?.status === 200 && contentLength > 0 && contentType?.includes('audio')) {
+		const contentLength = parseInt(getHeader(res?.headers, 'content-length'), 10)
+		const realSize = await FileSystem.getInfoAsync(fileUri).then(info => info.size)
+		if (res?.status === 200 && contentLength > 0 && contentType?.includes('audio') && realSize === contentLength) {
 			global.listCacheSong.push(`${id}.${global.streamFormat}`)
 			return fileUri
 		} else {

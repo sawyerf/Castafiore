@@ -83,6 +83,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	return (
 		<Modal
 			statusBarTranslucent={true}
+			navigationBarTranslucent={true}
 			onRequestClose={() => setFullScreen(false)}
 		>
 			<Image

@@ -142,6 +142,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	return (
 		<Modal
 			statusBarTranslucent={true}
+			navigationBarTranslucent={true}
 			onRequestClose={() => setFullScreen(false)}
 		>
 			<View style={[mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>

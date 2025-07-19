@@ -107,7 +107,7 @@ const App = () => {
 														}
 													}}
 												>
-													<StatusBar barStyle={theme.barStyle} />
+													<StatusBar barStyle={theme.barStyle} backgroundColor={'rgba(0, 0, 0, 0)'} translucent={true} />
 													<Tab.Navigator
 														tabBar={(props) => <TabBar {...props} />}
 														screenOptions={{

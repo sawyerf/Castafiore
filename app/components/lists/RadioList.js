@@ -142,7 +142,7 @@ const RadioList = ({ radios }) => {
 				renderItem={renderItem}
 			/>
 			<OptionsPopup
-				reff={refOption}
+				ref={refOption}
 				visible={optionRadio !== null}
 				close={() => { setOptionRadio(null) }}
 				item={optionRadio}

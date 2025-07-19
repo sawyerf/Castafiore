@@ -62,7 +62,7 @@ const PlayerSettings = () => {
             />
           ))}
         </View>
-				<Text style={settingStyles.description(theme)}>{t('settings.player.Stream format description')}</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.player.Stream format Description')}</Text>
 
         <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Max bitrate')}</Text>
         <View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
@@ -81,7 +81,7 @@ const PlayerSettings = () => {
             ))
           }
         </View>
-				<Text style={settingStyles.description(theme)}>{t('settings.player.Max bitrate description')}</Text>
+				<Text style={settingStyles.description(theme)}>{t('settings.player.Max bitrate Description')}</Text>
       </View>
     </ScrollView>
   )

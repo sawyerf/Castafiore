@@ -32,7 +32,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	}
 
 	const addQueue = () => {
-		if (song.queue) addToQueue(songDispatch, songs[indexOptions])
+		if (song.queue) addToQueue(config, songDispatch, songs[indexOptions])
 		else playSong(config, songDispatch, [songs[indexOptions]], 0)
 		refOption.current.close()
 	}

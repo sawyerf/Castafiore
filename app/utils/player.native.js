@@ -134,28 +134,30 @@ export const downloadNextSong = async (queue, currentIndex) => {
 	}
 }
 
+const convertToTrack = async (track, config) => {
+	return {
+		...track,
+		id: track.id,
+		url: (await isSongCached(null, track.id, global.streamFormat, global.maxBitRate)) ?
+			getPathSong(track.id, global.streamFormat) :
+			urlStream(config, track.id, global.streamFormat, global.maxBitRate),
+		atwork: urlCover(config, track),
+		artist: track.artist,
+		title: track.title,
+		album: track.album,
+		description: '',
+		date: '',
+		genre: '',
+		rating: false,
+		duration: track.duration,
+		type: 'default',
+		isLiveStream: track.type === 'radio',
+		config
+	}
+}
+
 export const playSong = async (config, songDispatch, queue, index) => {
-	let tracks = queue.map(async (track) => {
-		return {
-			...track,
-			id: track.id,
-			url: (await isSongCached(null, track.id, global.streamFormat, global.maxBitRate)) ?
-				getPathSong(track.id, global.streamFormat) :
-				urlStream(config, track.id, global.streamFormat, global.maxBitRate),
-			atwork: urlCover(config, track),
-			artist: track.artist,
-			title: track.title,
-			album: track.album,
-			description: '',
-			date: '',
-			genre: '',
-			rating: false,
-			duration: track.duration,
-			type: 'default',
-			isLiveStream: track.type === 'radio',
-			config
-		}
-	})
+	let tracks = queue.map((track) => convertToTrack(track, config))
 	tracks = await Promise.all(tracks)
 	await TrackPlayer.setQueue(tracks)
 	await TrackPlayer.skip(index)
@@ -172,7 +174,7 @@ export const secondToTime = (second) => {
 
 export const setPosition = async (position) => {
 	if (position < 0 || !position) position = 0
-	if (position === Infinity) return 
+	if (position === Infinity) return
 
 	await TrackPlayer.seekTo(position)
 }
@@ -241,8 +243,8 @@ export const removeFromQueue = async (songDispatch, index) => {
 	songDispatch({ type: 'removeFromQueue', index })
 }
 
-export const addToQueue = async (songDispatch, song) => {
-	await TrackPlayer.add(song)
+export const addToQueue = async (config, songDispatch, song) => {
+	await TrackPlayer.add(await convertToTrack(song, config))
 	songDispatch({ type: 'addQueue', queue: [song] })
 }
 

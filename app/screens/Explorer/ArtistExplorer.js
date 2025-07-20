@@ -71,7 +71,7 @@ const ArtistExplorer = () => {
 				onPress={(letter) => {
 					const index = artists.findIndex(item => typeof item === 'string' && item.startsWith(letter))
 					if (index !== -1) {
-						refScroll.current.scrollToIndex({ index, animated: true })
+						refScroll.current.scrollToIndex({ index, animated: false })
 					}
 				}}
 			/>

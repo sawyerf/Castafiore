@@ -57,11 +57,20 @@ export const songReducer = (state, action) => {
 				state: action.state,
 			})
 		}
-		case 'addQueue':
-			if (!state.songInfo || !state.queue.length || !action.queue.length) return state
+		case 'addToQueue': {
+			if (!state.songInfo || !state.queue) return state
+			const newQueue = [...state.queue]
+			if (action.index === null || action.index >= newQueue.length) {
+				newQueue.push(action.track)
+			} else {
+				newQueue.splice(action.index, 0, action.track)
+			}
+
 			return newSong(state, {
-				queue: [...state.queue, ...action.queue],
+				queue: newQueue,
+				index: (typeof action.index === 'number' && state.index >= action.index) ? state.index + 1 : state.index,
 			})
+		}
 		case 'setActionEndOfSong':
 			if (['next', 'repeat'].indexOf(action.action) === -1) return state
 			return newSong(state, {

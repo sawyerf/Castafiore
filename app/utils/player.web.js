@@ -312,8 +312,8 @@ export const removeFromQueue = async (songDispatch, index) => {
 	songDispatch({ type: 'removeFromQueue', index })
 }
 
-export const addToQueue = async (_config, songDispatch, song) => {
-	songDispatch({ type: 'addQueue', queue: [song] })
+export const addToQueue = async (_config, songDispatch, track, index = null) => {
+	songDispatch({ type: 'addToQueue', track, index })
 }
 
 export default {

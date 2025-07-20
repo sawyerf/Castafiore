@@ -37,6 +37,14 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		refOption.current.close()
 	}
 
+	const playNext = () => {
+		if (song.queue) {
+			addToQueue(config, songDispatch, songs[indexOptions], song.index + 1)
+		} else {
+			playSong(config, songDispatch, [songs[indexOptions]], 0)
+		}
+	}
+
 	const goToArtist = () => {
 		navigation.navigate('Artist', { id: songs[indexOptions].artistId, name: songs[indexOptions].artist })
 		refOption.current.close()
@@ -128,8 +136,13 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 					onPress: playSimilarSongs
 				},
 				{
+					name: t('Play next'),
+					icon: 'indent',
+					onPress: playNext
+				},
+				{
 					name: t('Add to queue'),
-					icon: 'th-list',
+					icon: 'list-ul',
 					onPress: addQueue
 				},
 				{

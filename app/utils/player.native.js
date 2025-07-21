@@ -141,7 +141,7 @@ const convertToTrack = async (track, config) => {
 		url: (await isSongCached(null, track.id, global.streamFormat, global.maxBitRate)) ?
 			getPathSong(track.id, global.streamFormat) :
 			urlStream(config, track.id, global.streamFormat, global.maxBitRate),
-		atwork: urlCover(config, track),
+		artwork: urlCover(config, track),
 		artist: track.artist,
 		title: track.title,
 		album: track.album,

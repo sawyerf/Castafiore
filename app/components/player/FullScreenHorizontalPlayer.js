@@ -213,7 +213,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
 					</View>
-					<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', gap: 25 }}>
+					<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', gap: 25, minWidth: 222 }}>
 						<IconButton
 							icon="repeat"
 							style={{ width: 30, alignItems: 'end' }}
@@ -258,14 +258,14 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 									icon={volume ? "volume-up" : "volume-off"}
 									size={17}
 									color={color.primary}
-									style={{ width: 27 }}
+									style={{ width: 27, height: 30, justifyContent: 'center' }}
 									onPress={() => Player.setVolume(volume ? 0 : 1)}
 								/>
 								<SlideBar
 									progress={volume}
 									onStart={(progress) => Player.setVolume(progress)}
 									onChange={(progress) => Player.setVolume(progress)}
-									stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
+									stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, flex: 1 }}
 									styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
 									styleProgress={{ backgroundColor: theme.primaryTouch }}
 									isBitogno={true}
@@ -275,7 +275,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						<IconButton
 							icon="expand"
 							size={17}
-							style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
+							style={{ height: 30, justifyContent: 'center', paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
 							color={color.primary}
 							onPress={() => setFullScreen(false)}
 						/>

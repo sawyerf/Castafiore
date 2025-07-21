@@ -43,6 +43,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		} else {
 			playSong(config, songDispatch, [songs[indexOptions]], 0)
 		}
+		refOption.current.close()
 	}
 
 	const goToArtist = () => {

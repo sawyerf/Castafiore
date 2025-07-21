@@ -57,6 +57,15 @@ module.exports = ({ config }) => {
 							usesCleartextTraffic: true
 						}
 					}
+				],
+				[
+					"react-native-edge-to-edge",
+					{
+						"android": {
+							"parentTheme": "Default",
+							"enforceNavigationBarContrast": false
+						}
+					}
 				]
 			]
 		}

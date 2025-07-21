@@ -28,6 +28,7 @@
     "react-dom": "19.0.0",
     "react-i18next": "^15.6.0",
     "react-native": "0.79.5",
+    "react-native-edge-to-edge": "^1.6.2",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-track-player": "4.1.1-nightly-c46c8fb107e0de61d9b33c28e7228002077b4f20",

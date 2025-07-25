@@ -191,35 +191,35 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
 						<IconButton
-							icon="random"
-							size={19}
-							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
-							style={{ paddingVertical: 10 }}
-							onPress={() => {
-								Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')
-							}}
-						/>
-						<IconButton
 							icon="repeat"
 							size={19}
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
-							style={{ paddingVertical: 10, paddingEnd: 20 }}
+							style={{ padding: 10 }}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
+							}}
+						/>
+						<IconButton
+							icon="random"
+							size={19}
+							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
+							style={{ padding: 10 }}
+							onPress={() => {
+								Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')
 							}}
 						/>
 						<IconButton
 							icon="comment-o"
 							size={19}
 							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryText}
-							style={{ paddingVertical: 10 }}
+							style={{ padding: 10 }}
 							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
 						/>
 						<IconButton
 							icon="bars"
 							size={19}
 							color={isPreview == preview.QUEUE ? theme.primaryTouch : theme.secondaryText}
-							style={{ paddingVertical: 10, paddingStart: 20 }}
+							style={{ padding: 10 }}
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
 					</View>

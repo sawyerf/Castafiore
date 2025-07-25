@@ -191,7 +191,8 @@ export const getVolume = () => {
 
 export const setRepeat = async (songdispatch, action) => {
 	songdispatch({ type: 'setActionEndOfSong', action })
-	TrackPlayer.setRepeatMode(action === 'repeat' ? RepeatMode.Track : RepeatMode.Queue)
+	if (action === 'next') await TrackPlayer.setRepeatMode(RepeatMode.Queue)
+	else if (action === 'repeat') await TrackPlayer.setRepeatMode(RepeatMode.Track)
 }
 
 export const unloadSong = async () => { }
@@ -221,6 +222,13 @@ export const tuktuktuk = async (songDispatch) => {
 		await TrackPlayer.play()
 		songDispatch({ type: 'setSong', queue, index: 0 })
 		setRepeat(songDispatch, 'next')
+	}
+}
+
+export const setIndex = async (config, queue, songDispatch, index) => {
+	if (queue && index >= 0 && index < queue.length) {
+		await TrackPlayer.skip(index)
+		songDispatch({ type: 'setIndex', index })
 	}
 }
 

@@ -202,20 +202,26 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	setRepeat(songDispatch, 'next')
 }
 
+export const setIndex = async (config, queue, songDispatch, index) => {
+	if (queue && index >= 0 && index < queue.length) {
+		unloadSong()
+		await loadSong(config, queue, index)
+		songDispatch({ type: 'setIndex', index })
+	}
+}
+
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong()
-		await loadSong(config, song.queue, (song.index + 1) % song.queue.length)
-		songDispatch({ type: 'next' })
+		if (song.actionEndOfSong === 'random') await setIndex(config, song.queue, songDispatch, nextRandomIndex())
+		else await setIndex(config, song.queue, songDispatch, (song.index + 1) % song.queue.length)
 		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
 
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
-		unloadSong()
-		await loadSong(config, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
-		songDispatch({ type: 'previous' })
+		if (song.actionEndOfSong === 'random') await setIndex(config, song.queue, songDispatch, prevRandomIndex())
+		else await setIndex(config, song.queue, songDispatch, (song.queue.length + song.index - 1) % song.queue.length)
 		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
@@ -291,8 +297,25 @@ export const tuktuktuk = (_songDispatch) => {
 	})
 }
 
+const currentRandomIndex = () => {
+	return window.song.randomIndex.findIndex((item) => item === window.song.index)
+}
+
+const nextRandomIndex = () => {
+	let index = currentRandomIndex()
+	if (index === -1) index = 0
+	if (index + 1 >= window.song.randomIndex.length) return window.song.randomIndex[0]
+	else return window.song.randomIndex[index + 1]
+}
+
+const prevRandomIndex = () => {
+	let index = currentRandomIndex()
+	if (index - 1 < 0) return window.song.randomIndex[window.song.randomIndex.length - 1]
+	else return window.song.randomIndex[index - 1]
+}
+
 export const setRepeat = async (songdispatch, action) => {
-	songdispatch({ type: 'setActionEndOfSong', action })
+	await songdispatch({ type: 'setActionEndOfSong', action })
 }
 
 export const isVolumeSupported = () => {

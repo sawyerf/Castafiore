@@ -191,6 +191,15 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
 						<IconButton
+							icon="random"
+							size={19}
+							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
+							style={{ paddingVertical: 10 }}
+							onPress={() => {
+								Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')
+							}}
+						/>
+						<IconButton
 							icon="repeat"
 							size={19}
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}

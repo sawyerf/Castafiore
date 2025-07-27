@@ -7,7 +7,7 @@ import SongItem from '~/components/item/SongItem';
 import size from '~/styles/size';
 import OptionsSongsList from '~/components/options/OptionsSongsList';
 
-const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => { } }) => {
+const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => true }) => {
 	const theme = React.useContext(ThemeContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const isMultiCD = React.useMemo(() => songs?.some(item => item.discNumber !== songs[0].discNumber), [songs])

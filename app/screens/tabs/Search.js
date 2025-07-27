@@ -128,7 +128,10 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 					results.song &&
 					<>
 						<Text style={mainStyles.titleSection(theme)}>{t('Songs')}</Text>
-						<SongsList songs={results.song} onPress={(item) => addHistory({...item, mediaType: 'song'})} />
+						<SongsList songs={results.song} onPress={(item) => {
+							addHistory({...item, mediaType: 'song'})
+							return true
+						}} />
 					</>
 				}
 			</>)

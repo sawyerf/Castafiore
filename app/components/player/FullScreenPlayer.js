@@ -29,6 +29,7 @@ const CoverItem = ({ isPreview, song, setFullScreen }) => {
 	const scroll = React.useRef(null)
 	const config = React.useContext(ConfigContext);
 	const theme = React.useContext(ThemeContext);
+	const songDispatch = React.useContext(SongDispatchContext);
 	const [indexOptions, setIndexOptions] = React.useState(-1);
 	const { width } = useWindowDimensions();
 
@@ -76,6 +77,9 @@ const CoverItem = ({ isPreview, song, setFullScreen }) => {
 						queue={song.queue}
 						index={index}
 						setIndexOptions={setIndexOptions}
+						onPress={(_track, queue, index) => {
+							Player.setIndex(config, songDispatch, queue, index)
+						}}
 						isPlaying={song.index === index}
 					/>
 				)}

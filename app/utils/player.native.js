@@ -225,7 +225,7 @@ export const tuktuktuk = async (songDispatch) => {
 	}
 }
 
-export const setIndex = async (config, queue, songDispatch, index) => {
+export const setIndex = async (config, songDispatch, queue, index) => {
 	if (queue && index >= 0 && index < queue.length) {
 		await TrackPlayer.skip(index)
 		songDispatch({ type: 'setIndex', index })
@@ -280,5 +280,6 @@ export default {
 	resetAudio,
 	removeFromQueue,
 	addToQueue,
+	setIndex,
 	State,
 }

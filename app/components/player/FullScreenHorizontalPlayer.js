@@ -168,7 +168,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 										}])}
 										key={item.id}
 										onPress={() => {
-											Player.playSong(config, songDispatch, song.queue, index)
+											Player.setIndex(config, songDispatch, song.queue, index)
 										}}>
 										<View style={{ flex: 1, flexDirection: 'column' }}>
 											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: size.text.medium, marginBottom: 2, textAlign: 'right' }}>

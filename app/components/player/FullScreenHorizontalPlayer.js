@@ -217,7 +217,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						<IconButton
 							icon="repeat"
 							style={{ width: 30, alignItems: 'end' }}
-							size={size.icon.medium}
+							size={size.icon.small}
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
@@ -225,7 +225,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						/>
 						<IconButton
 							icon="step-backward"
-							style={{ alignItems: 'end' }}
+							style={{ width: 16, alignItems: 'center' }}
 							size={size.icon.medium}
 							color={color.primary}
 							onPress={() => Player.previousSong(config, song, songDispatch)}
@@ -237,20 +237,27 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						/>
 						<IconButton
 							icon="step-forward"
-							style={{ alignItems: 'start' }}
+							style={{ width: 16, alignItems: 'center' }}
 							size={size.icon.medium}
 							color={color.primary}
 							onPress={() => Player.nextSong(config, song, songDispatch)}
 						/>
 						<IconButton
-							icon="bars"
-							size={size.icon.medium}
-							style={{ width: 30, alignItems: 'start' }}
-							color={theme.secondaryText}
-							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
+							icon="random"
+							size={size.icon.small}
+							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
+							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
+							onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
 						/>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }}>
+						<IconButton
+							icon="bars"
+							size={size.icon.small}
+							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
+							color={theme.secondaryText}
+							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
+						/>
 						{
 							Player.isVolumeSupported() &&
 							<>
@@ -275,7 +282,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						<IconButton
 							icon="expand"
 							size={17}
-							style={{ height: 30, justifyContent: 'center', paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
+							style={{ height: 30, justifyContent: 'center', paddingHorizontal: 8, marginStart: Player.isVolumeSupported() ? 15 : 0, borderRadius: 4 }}
 							color={color.primary}
 							onPress={() => setFullScreen(false)}
 						/>

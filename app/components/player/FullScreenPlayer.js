@@ -208,9 +208,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							size={19}
 							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
 							style={{ padding: 10 }}
-							onPress={() => {
-								Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')
-							}}
+							onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
 						/>
 						<IconButton
 							icon="comment-o"

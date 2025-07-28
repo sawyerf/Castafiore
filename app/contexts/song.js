@@ -1,5 +1,5 @@
-import React from 'react';
-import Player from '~/utils/player';
+import React from 'react'
+import Player from '~/utils/player'
 
 export const SongContext = React.createContext()
 export const SongDispatchContext = React.createContext()
@@ -75,13 +75,13 @@ export const songReducer = (state, action) => {
 			if (['next', 'repeat', 'random'].indexOf(action.action) === -1) return state
 			if (action.action === 'random') {
 				if (state.queue?.length) {
-					const allIndex = state.queue.map((_, index) => index);
+					const allIndex = state.queue.map((_, index) => index)
 					// generate list of random index
 					const randomIndex = []
 					while (randomIndex.length < state.queue.length) {
-						const index = Math.floor(Math.random() * allIndex.length);
-						randomIndex.push(allIndex[index]);
-						allIndex.splice(index, 1);
+						const index = Math.floor(Math.random() * allIndex.length)
+						randomIndex.push(allIndex[index])
+						allIndex.splice(index, 1)
 					}
 					return newSong(state, {
 						actionEndOfSong: action.action,

@@ -54,7 +54,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					<IconButton
 						icon="repeat"
 						style={{ width: 22, alignItems: 'end' }}
-						size={19}
+						size={17}
 						color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
 						onPress={() => {
 							Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
@@ -62,8 +62,8 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					/>
 					<IconButton
 						icon="step-backward"
-						style={{ width: 10, alignItems: 'end' }}
-						size={17}
+						style={{ width: 12, alignItems: 'end' }}
+						size={17.5}
 						color={theme.primaryText}
 						onPress={() => Player.previousSong(config, song, songDispatch)}
 					/>
@@ -74,16 +74,17 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					/>
 					<IconButton
 						icon="step-forward"
-						style={{ width: 10, alignItems: 'start' }}
-						size={17}
+						style={{ width: 12, alignItems: 'start' }}
+						size={17.5}
 						color={theme.primaryText}
 						onPress={() => Player.nextSong(config, song, songDispatch)}
 					/>
 					<IconButton
-						icon="bars"
-						size={19}
-						style={{ width: 22, alignItems: 'start' }}
-						color={theme.secondaryText}
+						icon="random"
+						size={17}
+						style={{ width: 22, alignItems: 'start', justifyContent: 'center' }}
+						color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
+						onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
 					/>
 				</View>
 				<View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, maxWidth: '100%' }}>

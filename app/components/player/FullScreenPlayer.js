@@ -117,9 +117,8 @@ const TimeBar = () => {
 				onStart={(progress) => Player.pauseSong() && setFakeTime(progress)}
 				onChange={(progress) => setFakeTime(progress)}
 				onComplete={(progress) => Player.setPosition(progress * duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
-				stylePress={{ width: '100%', height: 26, paddingVertical: 10, marginTop: 10 }}
-				styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
-				styleProgress={{ backgroundColor: theme.primaryTouch }}
+				stylePress={{ width: '100%', height: 24, paddingVertical: 10, marginTop: 10 }}
+				styleBar={{ width: '100%', height: '100%', borderRadius: size.radius.circle, overflow: 'hidden' }}
 				isBitogno={song.songInfo?.isLiveStream ? false : true}
 			/>
 
@@ -169,31 +168,31 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<TimeBar />
-					<View style={{ flexDirection: 'row', width: '100%', marginTop: 30, alignItems: 'center', justifyContent: 'center', gap: 20 }}>
-							<IconButton
-								icon="step-backward"
-								size={size.icon.large}
-								color={theme.primaryText}
-								style={{ padding: 10 }}
-								onPress={() => Player.previousSong(config, song, songDispatch)}
-							/>
-							<PlayButton
-								size={50}
-								color={theme.primaryText}
-								style={{
-									paddingHorizontal: 10,
-									minWidth: 63,
-									justifyContent: 'center',
-									alignItems: 'center',
-								}}
-							/>
-							<IconButton
-								icon="step-forward"
-								size={size.icon.large}
-								color={theme.primaryText}
-								style={{ padding: 10 }}
-								onPress={() => Player.nextSong(config, song, songDispatch)}
-							/>
+					<View style={{ flexDirection: 'row', width: '100%', marginTop: 30, alignItems: 'center', justifyContent: 'center', gap: 30 }}>
+						<IconButton
+							icon="step-backward"
+							size={size.icon.large}
+							color={theme.primaryText}
+							style={{ padding: 10 }}
+							onPress={() => Player.previousSong(config, song, songDispatch)}
+						/>
+						<PlayButton
+							size={50}
+							color={theme.primaryText}
+							style={{
+								paddingHorizontal: 10,
+								minWidth: 63,
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}
+						/>
+						<IconButton
+							icon="step-forward"
+							size={size.icon.large}
+							color={theme.primaryText}
+							style={{ padding: 10 }}
+							onPress={() => Player.nextSong(config, song, songDispatch)}
+						/>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
 						<IconButton

@@ -26,7 +26,7 @@ export const themes = {
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
 		innerTouch: '#f5f5dc',
-		backgroundTouch: '#f5f5dc',
+		backgroundTouch: '#2e2e2e',
 
 		// Color of the player
 		playerBackground: '#1e1e1e',

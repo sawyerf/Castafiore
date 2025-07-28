@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions } from 'react-native';
+import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 import { ConfigContext } from '~/contexts/config';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
@@ -136,6 +137,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const theme = React.useContext(ThemeContext)
 	const song = React.useContext(SongContext)
 	const insets = useSafeAreaInsets();
+	const navigation = useNavigation();
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 
 	// React.useEffect(() => {
@@ -162,8 +164,24 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} />
 					<View style={{ flexDirection: 'row', marginTop: 15, width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
 						<View style={{ flex: 1 }}>
-							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
-							<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist}</Text>
+							<Pressable
+								style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+								onPress={() => {
+									navigation.navigate('Album', { id: song.songInfo.albumId, name: song.songInfo.album, artist: song.songInfo.artist, artistId: song.songInfo.artistId })
+									setFullScreen(false);
+								}}
+							>
+								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+							</Pressable>
+							<Pressable
+								style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+								onPress={() => {
+									navigation.navigate('Artist', { id: song.songInfo.artistId, name: song.songInfo.artist })
+									setFullScreen(false);
+								}}
+							>
+								<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist}</Text>
+							</Pressable>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>

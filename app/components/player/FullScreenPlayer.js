@@ -161,67 +161,69 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					onPress={() => setFullScreen(false)} />
 				<View style={styles.playerContainer}>
 					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} />
-					<View style={{ flexDirection: 'row', marginTop: 20, width: '100%' }}>
+					<View style={{ flexDirection: 'row', marginTop: 15, width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
 						<View style={{ flex: 1 }}>
 							<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
-							<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist} · {song.songInfo.album}</Text>
+							<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist}</Text>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<TimeBar />
-					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around', marginTop: 30 }}>
-						<IconButton
-							icon="step-backward"
-							size={size.icon.large}
-							color={theme.primaryText}
-							style={{ paddingHorizontal: 10 }}
-							onPress={() => Player.previousSong(config, song, songDispatch)}
-						/>
-						<PlayButton
-							size={size.icon.large}
-							color={theme.primaryText}
-							style={{
-								paddingHorizontal: 10,
-								minWidth: 46
-							}}
-						/>
-						<IconButton
-							icon="step-forward"
-							size={size.icon.large}
-							color={theme.primaryText}
-							style={{ paddingHorizontal: 10 }}
-							onPress={() => Player.nextSong(config, song, songDispatch)}
-						/>
+					<View style={{ flexDirection: 'row', width: '100%', marginTop: 30, alignItems: 'center', justifyContent: 'center', gap: 20 }}>
+							<IconButton
+								icon="step-backward"
+								size={size.icon.large}
+								color={theme.primaryText}
+								style={{ padding: 10 }}
+								onPress={() => Player.previousSong(config, song, songDispatch)}
+							/>
+							<PlayButton
+								size={50}
+								color={theme.primaryText}
+								style={{
+									paddingHorizontal: 10,
+									minWidth: 63,
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							/>
+							<IconButton
+								icon="step-forward"
+								size={size.icon.large}
+								color={theme.primaryText}
+								style={{ padding: 10 }}
+								onPress={() => Player.nextSong(config, song, songDispatch)}
+							/>
 					</View>
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
 						<IconButton
+							icon="comment-o"
+							size={17}
+							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryText}
+							style={{ paddingVertical: 10, paddingEnd: 10 }}
+							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
+						/>
+						<IconButton
 							icon="repeat"
-							size={19}
+							size={17}
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
-							style={{ padding: 10 }}
+							style={{ paddingVertical: 10, paddingHorizontal: 10 }}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 							}}
 						/>
 						<IconButton
 							icon="random"
-							size={19}
+							size={17}
 							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
-							style={{ padding: 10 }}
+							style={{ paddingVertical: 10, paddingHorizontal: 10 }}
 							onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
 						/>
 						<IconButton
-							icon="comment-o"
-							size={19}
-							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryText}
-							style={{ padding: 10 }}
-							onPress={() => setIsPreview(isPreview == preview.LYRICS ? preview.COVER : preview.LYRICS)}
-						/>
-						<IconButton
 							icon="bars"
-							size={19}
+							size={17}
 							color={isPreview == preview.QUEUE ? theme.primaryTouch : theme.secondaryText}
-							style={{ padding: 10 }}
+							style={{ paddingVertical: 10, paddingStart: 10 }}
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
 					</View>

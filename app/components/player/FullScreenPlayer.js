@@ -168,7 +168,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<TimeBar />
-					<View style={{ flexDirection: 'row', width: '100%', marginTop: 30, alignItems: 'center', justifyContent: 'center', gap: 30 }}>
+					<View style={{ flexDirection: 'row', width: '100%', marginVertical: 30, alignItems: 'center', justifyContent: 'center', gap: 30 }}>
 						<IconButton
 							icon="step-backward"
 							size={size.icon.large}
@@ -194,7 +194,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							onPress={() => Player.nextSong(config, song, songDispatch)}
 						/>
 					</View>
-					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginTop: 30 }}>
+					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
 						<IconButton
 							icon="comment-o"
 							size={17}

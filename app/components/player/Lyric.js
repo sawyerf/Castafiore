@@ -13,6 +13,7 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 	const { t } = useTranslation()
 	const [indexCurrent, setIndex] = React.useState(0)
 	const [lyrics, setLyrics] = React.useState([])
+	const [isLayout, setIsLayout] = React.useState(false)
 	const config = React.useContext(ConfigContext)
 	const refScroll = React.useRef(null)
 	const theme = React.useContext(ThemeContext)
@@ -28,6 +29,7 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 			.then(res => {
 				if (res) {
 					const ly = JSON.parse(res)
+					setIsLayout(true)
 					setLyrics(ly)
 				} else {
 					getNavidromeLyrics()
@@ -42,10 +44,14 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 		if (index === -2) index = lyrics.length - 1
 		if (index < 0) return
 		if (index !== indexCurrent) {
-			refScroll.current.scrollToIndex({ index, animated: true, viewOffset: 0, viewPosition: 0.5 })
 			setIndex(index)
 		}
-	}, [time.position])
+	}, [time.position, lyrics])
+
+	React.useEffect(() => {
+		if (!isLayout) return
+		refScroll.current.scrollToIndex({ index: indexCurrent, animated: true, viewOffset: 0, viewPosition: 0.5 })
+	}, [indexCurrent, isLayout])
 
 	const getNavidromeLyrics = () => {
 		getApi(config, 'getLyricsBySongId', { id: song.songInfo.id })
@@ -93,6 +99,7 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 			onScrollToIndexFailed={() => { }}
 			initialNumToRender={lyrics.length}
 			data={lyrics}
+			onLayout={() => setIsLayout(true)}
 			keyExtractor={(item, index) => index}
 			renderItem={({ item, index }) => {
 				return (

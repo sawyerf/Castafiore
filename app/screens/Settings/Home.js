@@ -42,7 +42,7 @@ const HomeSettings = () => {
 		>
 			<Header title={t("Home")} />
 			<View
-				style={[settingStyles.contentMainContainer, { marginTop: 30 }]}
+				style={settingStyles.contentMainContainer}
 			>
 				<Text style={settingStyles.titleContainer(theme)}>{t('settings.home.Home Page')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>

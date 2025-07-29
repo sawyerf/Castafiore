@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
@@ -19,7 +20,7 @@ import SongsList from '~/components/lists/SongsList';
 import size from '~/styles/size';
 import PresHeader from '~/components/PresHeader';
 
-const Artist = ({ route: { params } }) => {
+const Artist = ({ navigation, route: { params } }) => {
 	const { t } = useTranslation();
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
@@ -34,7 +35,7 @@ const Artist = ({ route: { params } }) => {
 
 	const [artist] = useCachedAndApi([], 'getArtist', `id=${params.id}`, (json, setData) => {
 		setData(json.artist)
-		setSortAlbum(json.artist?.album?.sort((a, b) => b.year - a.year))
+		setSortAlbum(json.artist?.album?.sort((a, b) => (b.year || 0) - (a.year || 0)))
 	}, [params.id])
 
 	const [favorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
@@ -95,6 +96,20 @@ const Artist = ({ route: { params } }) => {
 					size={size.icon.medium}
 				/>
 			</PresHeader>
+			<Pressable onPress={() => navigation.navigate('ArtistAlbums', { albums: sortAlbum })} style={{
+				flexDirection: 'row',
+				justifyContent: 'space-between',
+				alignItems: 'center',
+				width: '100%',
+			}}>
+				<Text style={[mainStyles.titleSection(theme), { marginTop: 5, flex: 1, marginEnd: 0 }]}>{t('Albums')}</Text>
+				<Icon
+					name='angle-right'
+					color={theme.secondaryText}
+					size={size.icon.medium}
+					style={[mainStyles.titleSection(theme), { marginTop: 5, marginEnd: 20 }]}
+				/>
+			</Pressable>
 			<HorizontalAlbums albums={sortAlbum} year={true} />
 			{
 				artistInfo?.similarArtist?.length && (
@@ -107,7 +122,7 @@ const Artist = ({ route: { params } }) => {
 			{
 				favorited?.length ? (
 					<>
-						<Text style={[mainStyles.titleSection(theme), { marginBottom: 15 }]}>{t('Favorited songs')}</Text>
+						<Text style={[mainStyles.titleSection(theme),]}>{t('Favorited songs')}</Text>
 						<SongsList songs={favorited} />
 					</>
 				) : null

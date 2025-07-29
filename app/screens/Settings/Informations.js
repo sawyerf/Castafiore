@@ -60,7 +60,7 @@ const InformationsSettings = () => {
 		>
 			<Header title={t("Informations")} />
 
-			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+			<View style={settingStyles.contentMainContainer}>
 				<Text style={settingStyles.titleContainer(theme)}>Server</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<TableItem

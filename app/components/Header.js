@@ -6,12 +6,12 @@ import { ThemeContext } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
 import size from '~/styles/size';
 
-const Header = ({ title }) => {
+const Header = ({ title, marginBottom=30 }) => {
 	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
 
 	return (
-		<View style={styles.header}>
+		<View style={[styles.header, { marginBottom }]}>
 			<Text numberOfLines={1} style={styles.title(theme)}>
 				{title}
 			</Text>

@@ -24,7 +24,7 @@ const Theme = () => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title={t("Theme")} />
-			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+			<View style={settingStyles.contentMainContainer}>
 				<Text style={settingStyles.titleContainer(theme)}>{t('Theme')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{

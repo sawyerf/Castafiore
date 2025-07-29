@@ -30,7 +30,7 @@ export default StyleSheet.create({
 		fontWeight: 'bold',
 		marginHorizontal: 20,
 		marginTop: 25,
-		marginBottom: 10
+		marginBottom: 12
 	}),
 	stdVerticalMargin: {
 		marginHorizontal: 20,

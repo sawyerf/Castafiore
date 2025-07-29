@@ -59,7 +59,7 @@ const PlaylistsSettings = () => {
 			]}
 		>
 			<Header title={t("Playlists")} />
-			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+			<View style={settingStyles.contentMainContainer}>
 				<Text style={settingStyles.titleContainer(theme)}>{t('settings.playlists.Preview favorited')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<OptionInput

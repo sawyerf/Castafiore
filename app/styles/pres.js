@@ -18,7 +18,6 @@ export default StyleSheet.create({
 	subTitle: theme => ({
 		color: theme.secondaryText,
 		fontSize: size.text.large,
-		marginBottom: 30,
 		marginStart: 20,
 		textAlign: 'left',
 	}),
@@ -30,5 +29,6 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		width: '100%',
 		maxWidth: '100%',
+		marginBottom: 30
 	},
 })

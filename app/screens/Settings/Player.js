@@ -47,7 +47,7 @@ const PlayerSettings = () => {
     >
       <Header title={t("Player")} />
 
-      <View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+      <View style={settingStyles.contentMainContainer}>
         <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Stream format')}</Text>
         <View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
           {FORMATS.map((item, index) => (

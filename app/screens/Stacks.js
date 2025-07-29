@@ -8,6 +8,7 @@ import Settings from '~/screens/tabs/Settings';
 
 import Album from '~/screens/Pres/Album';
 import Artist from '~/screens/Pres/Artist';
+import ArtistAlbums from '~/screens/Pres/ArtistAlbums';
 import Favorited from '~/screens/Pres/Favorited';
 import Genre from '~/screens/Pres/Genre';
 import Playlist from '~/screens/Pres/Playlist';
@@ -54,6 +55,7 @@ export const HomeStack = () => {
 			<Stack.Screen name="Home" component={Home} />
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
+			<Stack.Screen name="ArtistAlbums" component={ArtistAlbums} />
 			<Stack.Screen name="Genre" component={Genre} />
 			<Stack.Screen name="UpdateRadio" component={UpdateRadio} />
 			<Stack.Screen name="ShowAll" component={ShowAll} />
@@ -81,6 +83,7 @@ export const SearchStack = () => {
 			<Stack.Screen name="Search" component={Search} />
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
+			<Stack.Screen name="ArtistAlbums" component={ArtistAlbums} />
 			<Stack.Screen name="ArtistExplorer" component={ArtistExplorer} />
 			<Stack.Screen name="AlbumExplorer" component={AlbumExplorer} />
 			<Stack.Screen name="SongExplorer" component={SongExplorer} />
@@ -108,6 +111,7 @@ export const PlaylistsStack = () => {
 			<Stack.Screen name="Favorited" component={Favorited} />
 			<Stack.Screen name="Album" component={Album} />
 			<Stack.Screen name="Artist" component={Artist} />
+			<Stack.Screen name="ArtistAlbums" component={ArtistAlbums} />
 			<Stack.Screen name="EditPlaylist" component={EditPlaylist} />
 			<Stack.Screen name="Info" component={Info} />
 		</Stack.Navigator>

@@ -52,7 +52,6 @@ const Info = ({ route: { params: { info } } }) => {
 					height: size.image.large,
 					alignSelf: 'center',
 					borderRadius: 5,
-					marginTop: 20,
 				}}
 				source={{ uri: urlCover(config, info) }}
 			/>

@@ -56,7 +56,7 @@ const CacheSettings = () => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title={t("Cache")} />
-			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+			<View style={settingStyles.contentMainContainer}>
 				<Text style={settingStyles.titleContainer(theme)}>{t('settings.cache.Song caching')}</Text>
 				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
 					<ButtonSwitch

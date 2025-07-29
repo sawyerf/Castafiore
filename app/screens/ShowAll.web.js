@@ -48,7 +48,6 @@ const ShowAll = ({ navigation, route: { params: { type, query, title } } }) => {
 			<Header title={title} />
 			<View
 				style={{
-					marginTop: 30,
 					display: 'grid',
 					gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
 					paddingStart: 20,

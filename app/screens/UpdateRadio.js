@@ -56,7 +56,7 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 		]}>
 			<Header title={params?.id ? t('Update radio') : t('Create radio')} />
 
-			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+			<View style={settingStyles.contentMainContainer}>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<View style={{ flexDirection: 'column', alignItems: 'center', width: '100%', minHeight: 60, marginTop: 20, paddingBottom: 20 }}>
 						<View

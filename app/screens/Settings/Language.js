@@ -32,7 +32,7 @@ const Theme = () => {
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
 			<Header title={t("Language")} />
-			<View style={[settingStyles.contentMainContainer, { marginTop: 30 }]}>
+			<View style={settingStyles.contentMainContainer}>
 				<Text style={settingStyles.titleContainer(theme)}>{t('Language')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					{

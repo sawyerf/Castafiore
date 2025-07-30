@@ -10,6 +10,7 @@ const newSong = (state, action) => {
 		...action,
 	}
 	if (window) window.song = song
+	else global.song = song
 	return song
 }
 

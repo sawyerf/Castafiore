@@ -16,8 +16,11 @@ let pauseTimer = null
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
 	TrackPlayer.addEventListener(Event.RemotePause, () => Player.pauseSong())
-	TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext())
-	TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())
+	TrackPlayer.addEventListener(Event.RemoteNext, () => {
+		console.log("RemoteNext event triggered", global.song)
+		Player.nextSong(global.config, global.song, global.songDispatch)
+	})
+	TrackPlayer.addEventListener(Event.RemotePrevious, () => Player.previousSong(global.config, global.song, global.songDispatch))
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
 	// This handles the interruptions like calls or notifications
 	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
@@ -44,6 +47,11 @@ module.exports = async () => {
 					shouldPlay = false
 				}
 			})
+	})
+	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async (event) => {
+		console.log("PlaybackQueueEnded event triggered", event)
+		console.log("Current song:", global.song.songInfo)
+		Player.nextSong(global.config, global.song, () => {})
 	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
 		if (event.track?.id === 'tuktuktukend') {

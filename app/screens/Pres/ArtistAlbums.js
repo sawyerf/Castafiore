@@ -33,7 +33,7 @@ const AristAlbums = ({ navigation, route: { params: { albums } } }) => {
 				data={albums}
 				keyExtractor={(_, index) => index}
 				style={mainStyles.mainContainer(theme)}
-				contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 80 * albums.length + 100 + 80 }]}
+				contentContainerStyle={[mainStyles.contentMainContainer(insets, true), { minHeight: 80 * albums.length + 100 + 80 }]}
 				waitForInitialLayout={false}
 				recycleItems={true}
 				estimatedItemSize={80}

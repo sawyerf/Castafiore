@@ -4,6 +4,7 @@ import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
 import { downloadNextSong } from "~/utils/player"
 import { isSongCached, getPathSong } from "~/utils/cache"
+import { songReducer } from "../contexts/song"
 
 let lockDownload = false
 let lastScrobble = {
@@ -13,14 +14,18 @@ let lastScrobble = {
 let shouldPlay = false
 let pauseTimer = null
 
+const fakeSongDispatch = (action) => {
+	songReducer(global.song, action)
+}
+
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
 	TrackPlayer.addEventListener(Event.RemotePause, () => Player.pauseSong())
 	TrackPlayer.addEventListener(Event.RemoteNext, () => {
 		console.log("RemoteNext event triggered", global.song)
-		Player.nextSong(global.config, global.song, global.songDispatch)
+		Player.nextSong(global.config, global.song, fakeSongDispatch)
 	})
-	TrackPlayer.addEventListener(Event.RemotePrevious, () => Player.previousSong(global.config, global.song, global.songDispatch))
+	TrackPlayer.addEventListener(Event.RemotePrevious, () => Player.previousSong(global.config, global.song, fakeSongDispatch))
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
 	// This handles the interruptions like calls or notifications
 	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
@@ -51,7 +56,7 @@ module.exports = async () => {
 	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async (event) => {
 		console.log("PlaybackQueueEnded event triggered", event)
 		console.log("Current song:", global.song.songInfo)
-		Player.nextSong(global.config, global.song, () => {})
+		Player.nextSong(global.config, global.song, fakeSongDispatch)
 	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
 		if (event.track?.id === 'tuktuktukend') {

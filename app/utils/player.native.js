@@ -39,10 +39,15 @@ export const initPlayer = async (songDispatch) => {
 	TrackPlayer.setRepeatMode(RepeatMode.Off)
 	// Set the player to the current song
 	const state = (await TrackPlayer.getPlaybackState()).state
+	const activeTrack = await TrackPlayer.getActiveTrack()
+	if (activeTrack) {
+		console.log('initPlayer: Active track found', activeTrack.song)
+		songDispatch({ type: 'setSong', queue: activeTrack.song.queue, index: activeTrack.song.index })
+	}
 	songDispatch({ type: 'setPlaying', state })
 }
 
-export const useEvent = (songDispatch) => {
+export const useEvent = (song, songDispatch) => {
 	// Catch player events
 	useTrackPlayerEvents(
 		[
@@ -53,7 +58,10 @@ export const useEvent = (songDispatch) => {
 			if (event.type === Event.PlaybackState) {
 				songDispatch({ type: 'setPlaying', state: event.state })
 			} else if (event.type === Event.PlaybackActiveTrackChanged) {
-				// songDispatch({ type: 'setIndex', index: event.index })
+				console.log(global.song.index)
+				if (global.song.index != undefined && song.index != global.song.index) {
+					songDispatch({ type: 'setIndex', index: global.song.index })
+				}
 			}
 		})
 }
@@ -144,6 +152,7 @@ const convertToTrack = async (track, config) => {
 		type: 'default',
 		isLiveStream: track.type === 'radio',
 		config,
+		song: global.song
 	}
 }
 

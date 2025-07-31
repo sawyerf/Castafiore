@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system';
 
 import { urlCover, urlStream } from '~/utils/api';
 import { isSongCached, getPathSong } from '~/utils/cache';
+import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
 
 export const initService = async () => {
 	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'));
@@ -36,13 +37,16 @@ export const initPlayer = async (songDispatch) => {
 		progressUpdateEventInterval: -1,
 		icon: require('~/../assets/icon.png')
 	})
-	TrackPlayer.setRepeatMode(RepeatMode.Off)
 	// Set the player to the current song
 	const state = (await TrackPlayer.getPlaybackState()).state
 	const activeTrack = await TrackPlayer.getActiveTrack()
 	if (activeTrack) {
-		console.log('initPlayer: Active track found', activeTrack.song)
 		songDispatch({ type: 'setSong', queue: activeTrack.song.queue, index: activeTrack.song.index })
+		const repeatMode = await TrackPlayer.getRepeatMode()
+		if (repeatMode === RepeatMode.Track) songDispatch({ type: 'setActionEndOfSong', action: 'repeat' })
+		else songDispatch({ type: 'setActionEndOfSong', action: activeTrack.song.actionEndOfSong })
+	} else {
+		TrackPlayer.setRepeatMode(RepeatMode.Off)
 	}
 	songDispatch({ type: 'setPlaying', state })
 }
@@ -58,7 +62,6 @@ export const useEvent = (song, songDispatch) => {
 			if (event.type === Event.PlaybackState) {
 				songDispatch({ type: 'setPlaying', state: event.state })
 			} else if (event.type === Event.PlaybackActiveTrackChanged) {
-				console.log(global.song.index)
 				if (global.song.index != undefined && song.index != global.song.index) {
 					songDispatch({ type: 'setIndex', index: global.song.index })
 				}
@@ -67,13 +70,19 @@ export const useEvent = (song, songDispatch) => {
 }
 
 export const previousSong = async (config, song, songDispatch) => {
-	if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
-	setIndex(config, songDispatch, song.queue, song.index - 1 % song.queue.length)
+	if (song.queue) {
+		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, prevRandomIndex())
+		else await setIndex(config, songDispatch, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
+	}
 }
 
 export const nextSong = async (config, song, songDispatch) => {
-	if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
-	setIndex(config, songDispatch, song.queue, song.index + 1 % song.queue.length)
+	if (song.queue) {
+		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, nextRandomIndex())
+		else await setIndex(config, songDispatch, song.queue, (song.index + 1) % song.queue.length)
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
+	}
 }
 
 export const reload = async () => {
@@ -127,9 +136,7 @@ export const downloadNextSong = async (queue, currentIndex) => {
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
-		if (queue[index].url.startsWith('http')) {
-			await downloadSong(queue[index].url, queue[index].id)
-		}
+		await downloadSong(urlStream(global.config, queue[index].id, global.streamFormat, global.maxBitRate), queue[index].id)
 	}
 }
 
@@ -156,9 +163,13 @@ const convertToTrack = async (track, config) => {
 	}
 }
 
-export const playSong = async (config, songDispatch, queue, index) => {
+const loadSong = async (config, queue, index) => {
 	await TrackPlayer.load(await convertToTrack(queue[index], config))
 	await TrackPlayer.play()
+}
+
+export const playSong = async (config, songDispatch, queue, index) => {
+	loadSong(config, queue, index)
 	songDispatch({ type: 'setSong', queue, index })
 	setRepeat(songDispatch, 'next')
 }
@@ -188,9 +199,8 @@ export const getVolume = () => {
 
 export const setRepeat = async (songdispatch, action) => {
 	songdispatch({ type: 'setActionEndOfSong', action })
-	TrackPlayer.setRepeatMode(RepeatMode.Off) // Reset repeat mode first
-	// if (action === 'next') await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-	// else if (action === 'repeat') await TrackPlayer.setRepeatMode(RepeatMode.Track)
+	if (action === 'repeat') TrackPlayer.setRepeatMode(RepeatMode.Track)
+	else TrackPlayer.setRepeatMode(RepeatMode.Off)
 }
 
 export const unloadSong = async () => { }
@@ -225,7 +235,7 @@ export const tuktuktuk = async (songDispatch) => {
 
 export const setIndex = async (config, songDispatch, queue, index) => {
 	if (queue && index >= 0 && index < queue.length) {
-		playSong(config, songDispatch, queue, index)
+		loadSong(config, queue, index)
 		songDispatch({ type: 'setIndex', index })
 	}
 }

@@ -199,7 +199,7 @@ const loadSong = async (config, queue, index) => {
 
 export const playSong = async (config, songDispatch, queue, index) => {
 	await loadSong(config, queue, index)
-	songDispatch({ type: 'setSong', queue, index })
+	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
 }
 

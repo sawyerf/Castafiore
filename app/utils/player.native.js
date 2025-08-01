@@ -1,5 +1,6 @@
 import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress, Event, useTrackPlayerEvents } from 'react-native-track-player';
 import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { urlCover, urlStream } from '~/utils/api';
 import { isSongCached, getPathSong } from '~/utils/cache';
@@ -10,6 +11,8 @@ export const initService = async () => {
 }
 
 export const initPlayer = async (songDispatch) => {
+	const song = await AsyncStorage.getItem('song')
+		.then((song) => song ? JSON.parse(song) : null)
 	songDispatch({ type: 'init' })
 	await TrackPlayer.setupPlayer()
 		.catch((error) => {
@@ -38,16 +41,15 @@ export const initPlayer = async (songDispatch) => {
 		icon: require('~/../assets/icon.png')
 	})
 	// Set the player to the current song
-	const state = (await TrackPlayer.getPlaybackState()).state
 	const activeTrack = await TrackPlayer.getActiveTrack()
 	if (activeTrack) {
-		songDispatch({ type: 'setSong', queue: activeTrack.song.queue, index: activeTrack.song.index })
+		songDispatch({ type: 'init', song: song })
 		const repeatMode = await TrackPlayer.getRepeatMode()
 		if (repeatMode === RepeatMode.Track) songDispatch({ type: 'setActionEndOfSong', action: 'repeat' })
-		else songDispatch({ type: 'setActionEndOfSong', action: activeTrack.song.actionEndOfSong })
 	} else {
 		TrackPlayer.setRepeatMode(RepeatMode.Off)
 	}
+	const state = (await TrackPlayer.getPlaybackState()).state
 	songDispatch({ type: 'setPlaying', state })
 }
 
@@ -158,8 +160,6 @@ const convertToTrack = async (track, config) => {
 		duration: track.duration,
 		type: 'default',
 		isLiveStream: track.type === 'radio',
-		config,
-		song: global.song
 	}
 }
 
@@ -170,7 +170,7 @@ const loadSong = async (config, queue, index) => {
 
 export const playSong = async (config, songDispatch, queue, index) => {
 	loadSong(config, queue, index)
-	songDispatch({ type: 'setSong', queue, index })
+	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
 }
 
@@ -228,7 +228,7 @@ export const tuktuktuk = async (songDispatch) => {
 		}]
 		await TrackPlayer.setQueue(queue)
 		await TrackPlayer.play()
-		songDispatch({ type: 'setSong', queue, index: 0 })
+		songDispatch({ type: 'setQueue', queue, index: 0 })
 		setRepeat(songDispatch, 'next')
 	}
 }

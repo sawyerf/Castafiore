@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-track-player/android/build.gradle b/node_modules/react-native-track-player/android/build.gradle
+index ac33473..49ce42f 100644
+--- a/node_modules/react-native-track-player/android/build.gradle
++++ b/node_modules/react-native-track-player/android/build.gradle
+@@ -50,7 +50,9 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation 'com.github.doublesymmetry:kotlinaudio:v2.1.0'
++		// my github repository https://github.com/sawyerf/KotlinAudio
++		implementation 'com.github.sawyerf:KotlinAudio:v2.1.1'
++    // implementation 'com.github.doublesymmetry:kotlinaudio:v2.1.0'
+     // used when building against local maven
+ //    implementation "com.github.doublesymmetry:kotlin-audio:2.1.0"
+ 

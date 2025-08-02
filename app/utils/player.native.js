@@ -249,12 +249,10 @@ export const resetAudio = (songDispatch) => {
 }
 
 export const removeFromQueue = async (songDispatch, index) => {
-	await TrackPlayer.remove(index)
 	songDispatch({ type: 'removeFromQueue', index })
 }
 
 export const addToQueue = async (config, songDispatch, track, index = null) => {
-	await TrackPlayer.add(await convertToTrack(track, config), index)
 	songDispatch({ type: 'addToQueue', track, index })
 }
 

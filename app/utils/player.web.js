@@ -132,7 +132,7 @@ export const initPlayer = async (songDispatch) => {
 	})
 }
 
-export const useEvent = (_songDispatch) => { }
+export const useEvent = (_song, _songDispatch) => { }
 
 export const updateTime = () => {
 	const [time, setTime] = React.useState({

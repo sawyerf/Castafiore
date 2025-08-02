@@ -49,10 +49,14 @@ module.exports = async () => {
 				}
 			})
 	})
-	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async (_event) => {
+	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, (_event) => {
+		if (!global.song?.queue?.length) return
 		getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
 			.catch(() => { })
-		Player.nextSong(global.config, global.song, fakeSongDispatch)
+		if (global.song.actionEndOfSong === 'repeat') {
+			TrackPlayer.seekTo(0)
+			TrackPlayer.play()
+		} else Player.nextSong(global.config, global.song, fakeSongDispatch)
 	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
 		if (event.track?.id === 'tuktuktukend') {

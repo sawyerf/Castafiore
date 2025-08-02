@@ -42,13 +42,8 @@ export const initPlayer = async (songDispatch) => {
 	})
 	// Set the player to the current song
 	const activeTrack = await TrackPlayer.getActiveTrack()
-	if (activeTrack) {
-		songDispatch({ type: 'init', song: song })
-		const repeatMode = await TrackPlayer.getRepeatMode()
-		if (repeatMode === RepeatMode.Track) songDispatch({ type: 'setActionEndOfSong', action: 'repeat' })
-	} else {
-		TrackPlayer.setRepeatMode(RepeatMode.Off)
-	}
+	if (activeTrack) songDispatch({ type: 'init', song: song })
+	TrackPlayer.setRepeatMode(RepeatMode.Off)
 	const state = (await TrackPlayer.getPlaybackState()).state
 	songDispatch({ type: 'setPlaying', state })
 }
@@ -199,8 +194,7 @@ export const getVolume = () => {
 
 export const setRepeat = async (songdispatch, action) => {
 	songdispatch({ type: 'setActionEndOfSong', action })
-	if (action === 'repeat') TrackPlayer.setRepeatMode(RepeatMode.Track)
-	else TrackPlayer.setRepeatMode(RepeatMode.Off)
+	TrackPlayer.setRepeatMode(RepeatMode.Off)
 }
 
 export const unloadSong = async () => { }

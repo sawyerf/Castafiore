@@ -1,56 +1,51 @@
 import React from 'react'
 import Player from '~/utils/player'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Platform } from 'react-native'
 
 export const SongContext = React.createContext()
 export const SongDispatchContext = React.createContext()
 
-const newSong = (state, action) => {
+const newSong = (state, action, isCache = false) => {
 	const song = {
 		...state,
 		...action,
 	}
 	if (window) window.song = song
+	else global.song = song
+	if (isCache && Platform.OS === 'android') {
+		AsyncStorage.setItem('song', JSON.stringify(song))
+			.catch((error) => console.error('Error saving song to AsyncStorage:', error))
+	}
 	return song
 }
 
 export const songReducer = (state, action) => {
 	switch (action.type) {
 		case 'init':
+			if (action.song) return newSong(state, {
+				queue: action.song.queue || null,
+				songInfo: action.song.songInfo || null,
+				index: action.song.index || 0,
+				actionEndOfSong: action.song.actionEndOfSong || 'next',
+				randomIndex: action.song.randomIndex || [],
+				isInit: true,
+			})
 			return newSong(state, {
 				isInit: true,
 			})
-		case 'setSong':
+		case 'setQueue':
 			return newSong(state, {
 				songInfo: action.queue[action.index],
 				index: action.index,
 				queue: action.queue,
-			})
-		case 'resetQueue':
-			return newSong(state, {
-				queue: null,
-				index: 0,
-				songInfo: null,
-			})
+			}, true)
 		case 'setIndex':
 			if (!state.queue || state.queue?.length <= action.index) return state
 			return newSong(state, {
 				index: action.index,
 				songInfo: state.queue[action.index],
-			})
-		case 'next': {
-			const nextIndex = (state.index + 1) % state.queue.length
-			return newSong(state, {
-				index: nextIndex,
-				songInfo: state.queue[nextIndex],
-			})
-		}
-		case 'previous': {
-			const previousIndex = (state.queue.length + state.index - 1) % state.queue.length
-			return newSong(state, {
-				index: previousIndex,
-				songInfo: state.queue[previousIndex],
-			})
-		}
+			}, true)
 		case 'setPlaying': {
 			if (action.state === state.state || !action.state) return state
 			return newSong(state, {
@@ -69,7 +64,7 @@ export const songReducer = (state, action) => {
 			return newSong(state, {
 				queue: newQueue,
 				index: (typeof action.index === 'number' && state.index >= action.index) ? state.index + 1 : state.index,
-			})
+			}, true)
 		}
 		case 'setActionEndOfSong':
 			if (['next', 'repeat', 'random'].indexOf(action.action) === -1) return state
@@ -86,12 +81,12 @@ export const songReducer = (state, action) => {
 					return newSong(state, {
 						actionEndOfSong: action.action,
 						randomIndex
-					})
+					}, true)
 				}
 			}
 			return newSong(state, {
 				actionEndOfSong: action.action,
-			})
+			}, true)
 		case 'removeFromQueue': {
 			if (!state.queue || state.queue.length <= action.index) return state
 			const newQueue = [...state.queue]
@@ -104,13 +99,13 @@ export const songReducer = (state, action) => {
 				queue: newQueue,
 				index: newIndex,
 				songInfo: newQueue[newIndex] || null,
-			})
+			}, true)
 		}
 		case 'reset':
 			return newSong(state, {
 				...defaultSong,
 				isInit: true,
-			})
+			}, true)
 		default:
 			console.error('Unknown action', action)
 			return state
@@ -123,5 +118,6 @@ export const defaultSong = {
 	queue: null,
 	index: 0,
 	actionEndOfSong: 'next',
+	randomIndex: [],
 	state: Player.State.Stopped,
 }

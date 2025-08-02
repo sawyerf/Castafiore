@@ -10,7 +10,8 @@
     "android": "expo start --android --dev-client",
     "web": "cross-env PLATFORM=web expo start --web",
     "export:web": "cross-env PLATFORM=web expo export -p web && workbox generateSW workbox-config.js",
-    "eslint": "eslint app index.js App.js -c eslint.config.mjs"
+    "eslint": "eslint app index.js App.js -c eslint.config.mjs",
+		"postinstall": "patch-package"
   },
   "dependencies": {
     "@legendapp/list": "^1.1.4",
@@ -24,6 +25,7 @@
     "expo-file-system": "~18.1.11",
     "i18next": "^25.3.1",
     "md5": "^2.3.0",
+    "patch-package": "^8.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-i18next": "^15.6.0",

@@ -30,7 +30,7 @@ const App = () => {
 	const [theme, setTheme] = React.useState(getTheme())
 	const [updateApi, setUpdateApi] = React.useState({ path: '', query: '' })
 	const { i18n } = useTranslation();
-	Player.useEvent(dispatch)
+	Player.useEvent(song, dispatch)
 
 	React.useEffect(() => {
 		if (!song.isInit) Player.initPlayer(dispatch)

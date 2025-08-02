@@ -2,6 +2,7 @@ import React from 'react';
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
 
 import { getApi, urlCover, urlStream } from '~/utils/api';
+import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
 
 const State = {
 	None: 'none',
@@ -198,7 +199,7 @@ const loadSong = async (config, queue, index) => {
 
 export const playSong = async (config, songDispatch, queue, index) => {
 	await loadSong(config, queue, index)
-	songDispatch({ type: 'setSong', queue, index })
+	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
 }
 
@@ -295,23 +296,6 @@ export const tuktuktuk = (_songDispatch) => {
 	sound.addEventListener('ended', () => {
 		sound.src = ''
 	})
-}
-
-const currentRandomIndex = () => {
-	return window.song.randomIndex.findIndex((item) => item === window.song.index)
-}
-
-const nextRandomIndex = () => {
-	let index = currentRandomIndex()
-	if (index === -1) index = 0
-	if (index + 1 >= window.song.randomIndex.length) return window.song.randomIndex[0]
-	else return window.song.randomIndex[index + 1]
-}
-
-const prevRandomIndex = () => {
-	let index = currentRandomIndex()
-	if (index - 1 < 0) return window.song.randomIndex[window.song.randomIndex.length - 1]
-	else return window.song.randomIndex[index - 1]
 }
 
 export const setRepeat = async (songdispatch, action) => {

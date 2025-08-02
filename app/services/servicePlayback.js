@@ -3,7 +3,7 @@ import TrackPlayer, { Event, State } from "react-native-track-player"
 import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
 import { downloadNextSong } from "~/utils/player"
-import { isSongCached, getPathSong } from "~/utils/cache"
+import { songReducer } from "../contexts/song"
 
 let lockDownload = false
 let lastScrobble = {
@@ -13,11 +13,15 @@ let lastScrobble = {
 let shouldPlay = false
 let pauseTimer = null
 
+const fakeSongDispatch = (action) => {
+	songReducer(global.song, action)
+}
+
 module.exports = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
 	TrackPlayer.addEventListener(Event.RemotePause, () => Player.pauseSong())
-	TrackPlayer.addEventListener(Event.RemoteNext, () => TrackPlayer.skipToNext())
-	TrackPlayer.addEventListener(Event.RemotePrevious, () => TrackPlayer.skipToPrevious())
+	TrackPlayer.addEventListener(Event.RemoteNext, () => Player.nextSong(global.config, global.song, fakeSongDispatch))
+	TrackPlayer.addEventListener(Event.RemotePrevious, () => Player.previousSong(global.config, global.song, fakeSongDispatch))
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
 	// This handles the interruptions like calls or notifications
 	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
@@ -45,24 +49,18 @@ module.exports = async () => {
 				}
 			})
 	})
+	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async (_event) => {
+		getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
+			.catch(() => { })
+		Player.nextSong(global.config, global.song, fakeSongDispatch)
+	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {
 		if (event.track?.id === 'tuktuktukend') {
 			await TrackPlayer.remove([0, 1])
 		} else {
-			const activeTrack = await TrackPlayer.getActiveTrack()
-
-			if (activeTrack.url.startsWith('http')) {
-				if (await isSongCached(null, activeTrack.id, global.streamFormat, global.maxBitRate)) {
-					TrackPlayer.load({
-						...activeTrack,
-						url: getPathSong(activeTrack.id, global.streamFormat),
-					})
-				}
-			}
-
 			if (!lockDownload) {
 				lockDownload = true
-				downloadNextSong(await TrackPlayer.getQueue(), event.index)
+				downloadNextSong(global.song.queue, global.song.index)
 					.then(() => {
 						lockDownload = false
 					})
@@ -72,16 +70,10 @@ module.exports = async () => {
 					})
 			}
 
-			if (event.lastTrack) {
-				if (event.lastPosition >= event.lastTrack.duration - 1) {
-					getApi(event.lastTrack.config, 'scrobble', `id=${event.lastTrack.id}&submission=true`)
-						.catch(() => { })
-				}
-			}
 			if (event.track) {
 				const now = Date.now()
 				if (lastScrobble.id !== event.track.id || now - lastScrobble.time > 10 * 1000) {
-					getApi(event.track.config, 'scrobble', `id=${event.track.id}&submission=false`)
+					getApi(global.config, 'scrobble', `id=${event.track.id}&submission=false`)
 						.catch(() => { })
 					lastScrobble = {
 						id: event.track.id,

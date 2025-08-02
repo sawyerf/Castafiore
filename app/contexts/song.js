@@ -64,6 +64,22 @@ export const songReducer = (state, action) => {
 			return newSong(state, {
 				queue: newQueue,
 				index: (typeof action.index === 'number' && state.index >= action.index) ? state.index + 1 : state.index,
+				randomIndex: state.randomIndex?.length ? [...state.randomIndex, newQueue.length - 1] : [],
+			}, true)
+		}
+		case 'removeFromQueue': {
+			if (!state.queue || state.queue.length <= action.index) return state
+			const newQueue = [...state.queue]
+			let newIndex = state.index
+
+			newQueue.splice(action.index, 1)
+			if (newIndex >= action.index) newIndex--
+			if (newIndex < 0) newIndex = 0
+			return newSong(state, {
+				queue: newQueue,
+				index: newIndex,
+				songInfo: newQueue[newIndex] || null,
+				randomIndex: state.randomIndex.filter((i) => i < newQueue.length),
 			}, true)
 		}
 		case 'setActionEndOfSong':
@@ -87,20 +103,6 @@ export const songReducer = (state, action) => {
 			return newSong(state, {
 				actionEndOfSong: action.action,
 			}, true)
-		case 'removeFromQueue': {
-			if (!state.queue || state.queue.length <= action.index) return state
-			const newQueue = [...state.queue]
-			let newIndex = state.index
-
-			newQueue.splice(action.index, 1)
-			if (newIndex >= action.index) newIndex--
-			if (newIndex < 0) newIndex = 0
-			return newSong(state, {
-				queue: newQueue,
-				index: newIndex,
-				songInfo: newQueue[newIndex] || null,
-			}, true)
-		}
 		case 'reset':
 			return newSong(state, {
 				...defaultSong,

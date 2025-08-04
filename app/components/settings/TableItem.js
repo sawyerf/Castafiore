@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, Pressable, Platform } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ThemeContext } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
@@ -15,7 +16,7 @@ const objectToString = (obj) => {
 			return Object.keys(obj).map(key => `${key}: ${objectToString(obj[key])}`).join('\n')
 		}
 	} else if (typeof obj === 'boolean') {
-		return obj ? 'True' : 'False'
+		return obj ? <Icon name="check" size={size.icon.small} /> : <Icon name="close" size={size.icon.small} />
 	} else if (typeof obj === 'string' && obj.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z$/)) {
 		return new Date(obj).toLocaleString()
 	} else {

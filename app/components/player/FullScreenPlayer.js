@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
@@ -13,7 +12,7 @@ import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import Lyric from '~/components/player/Lyric';
 import mainStyles from '~/styles/main';
-import OptionsPopup from '~/components/popup/OptionsPopup';
+import OptionsMultiArtists from '~/components/options/OptionsMultiArtists';
 import OptionsQueue from '~/components/options/OptionsQueue';
 import PlayButton from '~/components/button/PlayButton';
 import Player from '~/utils/player';
@@ -134,7 +133,6 @@ const TimeBar = () => {
 }
 
 const FullScreenPlayer = ({ setFullScreen }) => {
-	const { t } = useTranslation()
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -190,27 +188,12 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							>
 								<Text numberOfLines={1} style={mainStyles.largeText(theme.secondaryText)}>{song.songInfo.artist}</Text>
 							</Pressable>
-							<OptionsPopup
-								visible={isOptArtists}
+							<OptionsMultiArtists
+								albumArtists={song.songInfo.albumArtists || []}
+								artists={song.songInfo.artists || []}
 								close={() => setIsOptArtists(false)}
-								options={[
-									{
-										name: t('Go to artist'),
-										onPress: () => {
-											navigation.navigate('Artist', { id: song.songInfo.artistId, name: song.songInfo.artist })
-											setFullScreen(false);
-										}
-									},
-									...(song.songInfo.artists?.map((artist) => ({
-										name: artist.name,
-										image: urlCover(config, artist, 100),
-										borderRadius: size.radius.circle,
-										onPress: () => {
-											navigation.navigate('Artist', { id: artist.id, name: artist.name })
-											setFullScreen(false);
-										}
-									})) || [])
-								]}
+								visible={isOptArtists}
+								setFullScreen={setFullScreen}
 							/>
 						</View>
 						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />

@@ -47,21 +47,24 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		refOption.current.close()
 	}
 
+	const artistOpt = (artist) => ({
+		name: artist.name,
+		image: urlCover(config, artist, 100),
+		borderRadius: size.radius.circle,
+		onPress: () => {
+			navigation.navigate('Artist', { id: artist.id, name: artist.name })
+			refOption.current.close();
+		}
+	})
+
 	const goToArtist = () => {
 		if (songs[indexOptions].artists?.length > 1) {
 			refOption.current.setVirtualOptions([
 				{
 					name: t('Go to artist'),
 				},
-				...songs[indexOptions].artists.map((artist) => ({
-					name: artist.name,
-					image: urlCover(config, artist, 100),
-					borderRadius: size.radius.circle,
-					onPress: () => {
-						navigation.navigate('Artist', { id: artist.id, name: artist.name })
-						refOption.current.close();
-					}
-				}))
+				// ...(songs[indexOptions].albumArtists?.filter((artist) => songs[indexOptions].artists.findIndex((a) => a.id === artist.id)).map(artistOpt) || []),
+				...songs[indexOptions].artists.map(artistOpt)
 			])
 		} else {
 			navigation.navigate('Artist', { id: songs[indexOptions].artistId, name: songs[indexOptions].artist })
@@ -73,6 +76,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		navigation.navigate('Album', { id: songs[indexOptions].albumId, name: songs[indexOptions].album, artist: songs[indexOptions].artist, artistId: songs[indexOptions].artistId })
 		refOption.current.close()
 	}
+
 	const openAddToPlaylist = () => {
 		getApi(config, 'getPlaylists')
 			.then((json) => {

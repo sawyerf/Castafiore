@@ -1,6 +1,6 @@
 {
   "name": "castafiore",
-  "version": "2025.08.02",
+  "version": "2025.08.04",
   "main": "index.js",
   "homepage": ".",
   "scripts": {
@@ -25,7 +25,6 @@
     "expo-file-system": "~18.1.11",
     "i18next": "^25.3.1",
     "md5": "^2.3.0",
-    "patch-package": "^8.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-i18next": "^15.6.0",
@@ -46,6 +45,7 @@
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
+    "patch-package": "^8.0.0",
     "workbox-cli": "^7.3.0"
   },
   "private": true

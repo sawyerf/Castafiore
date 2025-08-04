@@ -1,4 +1,5 @@
 import React from 'react';
+import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -7,6 +8,7 @@ import { getApi } from '~/utils/api';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { urlCover } from '~/utils/api';
 import { removeFromQueue } from '~/utils/player';
+import size from '~/styles/size';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 
 const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => {
@@ -18,9 +20,27 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 	const refOption = React.useRef();
 
 	const goToArtist = () => {
-		navigation.navigate('Artist', { id: queue[indexOptions].artistId, name: queue[indexOptions].artist })
-		refOption.current.close()
-		closePlayer()
+		if (queue[indexOptions].artists?.length > 1) {
+			refOption.current.setVirtualOptions([
+				{
+					name: t('Go to artist'),
+				},
+				...queue[indexOptions].artists.map((artist) => ({
+					name: artist.name,
+					image: urlCover(config, artist, 100),
+					borderRadius: size.radius.circle,
+					onPress: () => {
+						navigation.navigate('Artist', { id: artist.id, name: artist.name })
+						refOption.current.close();
+						closePlayer()
+					}
+				}))
+			])
+		} else {
+			navigation.navigate('Artist', { id: queue[indexOptions].artistId, name: queue[indexOptions].artist })
+			refOption.current.close()
+			closePlayer()
+		}
 	}
 
 	const goToAlbum = () => {
@@ -75,25 +95,36 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 				{
 					name: t('Go to artist'),
 					icon: 'user',
-					onPress: goToArtist
+					onPress: goToArtist,
+					hidden: indexOptions >= 0 && queue[indexOptions].isLiveStream
 				},
 				{
 					name: t('Go to album'),
 					icon: 'folder-open',
-					onPress: goToAlbum
+					onPress: goToAlbum,
+					hidden: indexOptions >= 0 && queue[indexOptions].isLiveStream
 				},
 				{
 					name: t('Add to playlist'),
 					icon: 'plus',
-					onPress: openAddToPlaylist
+					onPress: openAddToPlaylist,
+					hidden: indexOptions >= 0 && queue[indexOptions].isLiveStream
 				},
-				...(song.index === indexOptions ? [] : [
-					{
-						name: t('Remove from queue'),
-						icon: 'trash',
-						onPress: removeFromQueueOpt
-					}]
-				),
+				{
+					name: t('Open home page'),
+					icon: 'home',
+					onPress: () => {
+						refOption.current.close()
+						Linking.openURL(queue[indexOptions].homePageUrl)
+					},
+					hidden: indexOptions >= 0 && !queue[indexOptions].homePageUrl
+				},
+				{
+					name: t('Remove from queue'),
+					icon: 'trash',
+					onPress: removeFromQueueOpt,
+					hidden: song.index === indexOptions
+				}
 			]} />
 	);
 }

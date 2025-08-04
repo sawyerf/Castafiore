@@ -73,7 +73,7 @@ const Artist = ({ navigation, route: { params } }) => {
 			vertical={true}
 			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
 			<PresHeader
-				title={params.name}
+				title={artist.name || params.name}
 				subTitle={t('Artist')}
 				imgSrc={urlCover(config, params)}
 			>
@@ -96,21 +96,25 @@ const Artist = ({ navigation, route: { params } }) => {
 					size={size.icon.medium}
 				/>
 			</PresHeader>
-			<Pressable onPress={() => navigation.navigate('ArtistAlbums', { albums: sortAlbum })} style={{
-				flexDirection: 'row',
-				justifyContent: 'space-between',
-				alignItems: 'center',
-				width: '100%',
-			}}>
-				<Text style={[mainStyles.titleSection(theme), { marginTop: 5, flex: 1, marginEnd: 0 }]}>{t('Albums')}</Text>
-				<Icon
-					name='angle-right'
-					color={theme.secondaryText}
-					size={size.icon.medium}
-					style={[mainStyles.titleSection(theme), { marginTop: 5, marginEnd: 20 }]}
-				/>
-			</Pressable>
-			<HorizontalAlbums albums={sortAlbum} year={true} />
+			{sortAlbum?.length ? (
+				<>
+					<Pressable onPress={() => navigation.navigate('ArtistAlbums', { albums: sortAlbum })} style={{
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						width: '100%',
+					}}>
+						<Text style={[mainStyles.titleSection(theme), { marginTop: 5, flex: 1, marginEnd: 0 }]}>{t('Albums')}</Text>
+						<Icon
+							name='angle-right'
+							color={theme.secondaryText}
+							size={size.icon.medium}
+							style={[mainStyles.titleSection(theme), { marginTop: 5, marginEnd: 20 }]}
+						/>
+					</Pressable>
+					<HorizontalAlbums albums={sortAlbum} year={true} />
+				</>
+			) : null}
 			{
 				artistInfo?.similarArtist?.length && (
 					<>

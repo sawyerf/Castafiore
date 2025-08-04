@@ -15,6 +15,7 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
   const refOption = React.useRef()
 
   const isPin = (index) => {
+    if (index < 0) return false;
     return playlists[index].comment?.includes(`#${config.username}-pin`)
   }
 
@@ -58,25 +59,24 @@ const OptionsPlaylist = ({ playlists, indexOption, setIndexOption, deletePlaylis
       close={() => setIndexOption(-1)}
       item={indexOption !== -1 ? playlists[indexOption] : null}
       options={[
-        ...(() => {
-          if (indexOption < 0) return []
-          if (!isPin(indexOption)) return [{
-            name: t('Pin playlist'),
-            icon: 'bookmark',
-            onPress: () => {
-              refOption.current.close()
-              pinToComment(indexOption)
-            }
-          }]
-          return [{
-            name: t('Unpin playlist'),
-            icon: 'bookmark',
-            onPress: () => {
-              refOption.current.close()
-              unPinToComment(indexOption)
-            }
-          }]
-        })(),
+        {
+          name: t('Pin playlist'),
+          icon: 'bookmark',
+          hidden: isPin(indexOption),
+          onPress: () => {
+            refOption.current.close()
+            pinToComment(indexOption)
+          }
+        },
+        {
+          name: t('Unpin playlist'),
+          icon: 'bookmark',
+          hidden: !isPin(indexOption),
+          onPress: () => {
+            refOption.current.close()
+            unPinToComment(indexOption)
+          }
+        },
         {
           name: t('Edit playlist'),
           icon: 'pencil',

@@ -134,6 +134,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 						onPress: close
 					}].map((option, index) => {
 						if (!option) return null
+						if (option.hidden) return null;
 						return (
 							<Pressable
 								style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
@@ -163,7 +164,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 											style={{
 												width: 35,
 												height: 35,
-												borderRadius: 5,
+												borderRadius: option.borderRadius || 5,
 											}}
 											source={{ uri: option.image }}
 										/>

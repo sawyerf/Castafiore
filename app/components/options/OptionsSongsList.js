@@ -8,6 +8,7 @@ import { getApi, getApiNetworkFirst, urlStream } from '~/utils/api';
 import { playSong, addToQueue } from '~/utils/player';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { urlCover } from '~/utils/api';
+import size from '~/styles/size';
 import OptionsPopup from '~/components/popup/OptionsPopup';
 
 const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () => { }, idPlaylist = null }) => {
@@ -47,8 +48,25 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	}
 
 	const goToArtist = () => {
-		navigation.navigate('Artist', { id: songs[indexOptions].artistId, name: songs[indexOptions].artist })
-		refOption.current.close()
+		if (songs[indexOptions].artists?.length > 1) {
+			refOption.current.setVirtualOptions([
+				{
+					name: t('Go to artist'),
+				},
+				...songs[indexOptions].artists.map((artist) => ({
+					name: artist.name,
+					image: urlCover(config, artist, 100),
+					borderRadius: size.radius.circle,
+					onPress: () => {
+						navigation.navigate('Artist', { id: artist.id, name: artist.name })
+						refOption.current.close();
+					}
+				}))
+			])
+		} else {
+			navigation.navigate('Artist', { id: songs[indexOptions].artistId, name: songs[indexOptions].artist })
+			refOption.current.close()
+		}
 	}
 
 	const goToAlbum = () => {
@@ -161,23 +179,18 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 					icon: 'plus',
 					onPress: openAddToPlaylist
 				},
-				...(
-					!idPlaylist ? [] : [
-						{
-							name: t('Remove from playlist'),
-							icon: 'trash-o',
-							onPress: removeFromPlaylist
-						}
-					]
-				),
-				...Platform.select({
-					web: [{
-						name: t('Download'),
-						icon: 'download',
-						onPress: downloadSong
-					}],
-					default: []
-				}),
+				{
+					name: t('Remove from playlist'),
+					icon: 'trash-o',
+					onPress: removeFromPlaylist,
+					hidden: !idPlaylist
+				},
+				{
+					name: t('Download'),
+					icon: 'download',
+					onPress: downloadSong,
+					hidden: Platform.OS !== 'web'
+				},
 				{
 					name: t('Share'),
 					icon: 'share',

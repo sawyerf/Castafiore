@@ -45,6 +45,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 			<CustomFlat
 				data={artists}
 				renderItem={renderItem}
+				widthItem={size.image.medium + 10}
 			/>
 
 			<OptionsArtist

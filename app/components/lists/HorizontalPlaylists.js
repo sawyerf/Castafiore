@@ -90,6 +90,7 @@ const HorizontalPlaylists = ({ playlists }) => {
     <CustomFlat
       data={playlists.filter((playlist) => playlist.comment?.includes(`#${config.username}-pin`))}
       renderItem={({ item }) => <ItemPlaylist item={item} />}
+      widthItem={350 + 10}
     />
   )
 }

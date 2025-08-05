@@ -52,7 +52,10 @@ const HorizontalList = ({ refresh, id, enable }) => {
 
 		if (isUpdatable(updateApi, section.path, nquery)) {
 			getJsonCache('api', getUrl(config, section.path, nquery))
-				.then(json => section.getInfo(json, setList))
+				.then(json => {
+					if (!json) return
+					section.getInfo(json, setList)
+				})
 		}
 	}, [updateApi])
 

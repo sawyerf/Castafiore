@@ -37,8 +37,10 @@ const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContai
 	const setVisibility = () => {
 		if (indexScroll.current === 0) setIsLeftVisible(false)
 		else setIsLeftVisible(true)
-		if (indexScroll.current + visibleItems >= data.length) setIsRightVisible(false)
-		else setIsRightVisible(true)
+		if (widthItem > 0) {
+			if (indexScroll.current + visibleItems >= data.length) setIsRightVisible(false)
+			else setIsRightVisible(true)
+		}
 	}
 
 	// https://github.com/facebook/react-native/issues/39421

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, useWindowDimensions } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 
 import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
@@ -11,25 +11,22 @@ const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContai
 	const settings = React.useContext(SettingsContext)
 	const indexScroll = React.useRef(0)
 	const refScroll = React.useRef(null)
+	const refView = React.useRef(null)
 	const [isScrollHelper, setIsScrollHelper] = React.useState(false)
-	const { width } = useWindowDimensions()
-	const visibleItems = React.useMemo(() => {
-		if (widthItem > 0) return width / widthItem
-		else return 3
-	}, [width, widthItem])
+	const visibleItems = React.useRef(0)
 	const [isLeftVisible, setIsLeftVisible] = React.useState(false);
 	const [isRightVisible, setIsRightVisible] = React.useState(true);
 
 	const goRight = () => {
-		if (Math.floor(indexScroll.current) + Math.floor(visibleItems) >= data.length) indexScroll.current = data.length - 1
-		else indexScroll.current = Math.floor(indexScroll.current) + Math.floor(visibleItems)
+		if (Math.floor(indexScroll.current) + Math.floor(visibleItems.current) >= data.length) indexScroll.current = data.length - 1
+		else indexScroll.current = Math.floor(indexScroll.current) + Math.floor(visibleItems.current)
 		setVisibility()
 		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 20 })
 	}
 
 	const goLeft = () => {
-		if (indexScroll.current < Math.floor(visibleItems)) indexScroll.current = 0
-		else indexScroll.current = indexScroll.current - Math.floor(visibleItems)
+		if (Math.floor(indexScroll.current) - Math.floor(visibleItems.current) <= 0) indexScroll.current = 0
+		else indexScroll.current = Math.floor(indexScroll.current) - Math.floor(visibleItems.current)
 		setVisibility()
 		refScroll.current.scrollToIndex({ index: indexScroll.current, animated: true, viewOffset: 20 })
 	}
@@ -38,7 +35,7 @@ const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContai
 		if (indexScroll.current === 0) setIsLeftVisible(false)
 		else setIsLeftVisible(true)
 		if (widthItem > 0) {
-			if (indexScroll.current + visibleItems >= data.length) setIsRightVisible(false)
+			if (indexScroll.current + visibleItems.current >= data.length) setIsRightVisible(false)
 			else setIsRightVisible(true)
 		}
 	}
@@ -48,7 +45,18 @@ const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContai
 
 	return (
 		<View
-			onPointerEnter={() => setIsScrollHelper(settings.scrollHelper && true)}
+			ref={refView}
+			onLayout={() => {
+				refView.current.measure((x, y, width) => {
+					if (widthItem > 0) {
+						visibleItems.current = width / widthItem
+					} else {
+						visibleItems.current = 3
+					}
+					setVisibility()
+				})
+			}}
+			onPointerEnter={() => setIsScrollHelper(settings.scrollHelper)}
 			onPointerLeave={() => setIsScrollHelper(false)}
 		>
 			{

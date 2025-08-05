@@ -116,12 +116,12 @@ const Artist = ({ navigation, route: { params } }) => {
 				</>
 			) : null}
 			{
-				artistInfo?.similarArtist?.length && (
+				artistInfo?.similarArtist?.length ? (
 					<>
 						<Text style={mainStyles.titleSection(theme)}>{t('Similar artists')}</Text>
 						<HorizontalArtists artists={artistInfo.similarArtist} />
 					</>
-				)
+				) : null
 			}
 			{
 				favorited?.length ? (

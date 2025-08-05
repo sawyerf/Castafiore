@@ -44,7 +44,9 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 		<>
 			<CustomFlat
 				data={albums}
-				renderItem={renderItem} />
+				renderItem={renderItem}
+				widthItem={size.image.large + 10}
+			/>
 			<OptionsAlbum
 				albums={albums}
 				indexOptions={indexOptions}

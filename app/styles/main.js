@@ -54,8 +54,8 @@ export default StyleSheet.create({
 		borderRadius: 10,
 		marginEnd: 10
 	},
-	opacity: ({ pressed }) => ({
-		opacity: pressed ? 0.5 : 1,
+	opacity: ({ pressed, enable = true }) => ({
+		opacity: (pressed && enable) ? 0.5 : 1,
 	}),
 	smallText: color => ({
 		color: color,

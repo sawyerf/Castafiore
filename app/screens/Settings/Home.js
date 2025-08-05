@@ -20,6 +20,7 @@ const HomeSettings = () => {
 	const setSettings = React.useContext(SetSettingsContext)
 	const [sizeOfList, setSizeOfList] = React.useState(settings.sizeOfList.toString())
 	const [LBUser, setLBUser] = React.useState(settings.listenBrainzUser)
+	const timeoutRef = React.useRef(null)
 
 	React.useEffect(() => {
 		setSizeOfList(settings.sizeOfList.toString())
@@ -32,7 +33,12 @@ const HomeSettings = () => {
 	}, [sizeOfList])
 
 	React.useEffect(() => {
-		if (LBUser != settings.listenBrainzUser) setSettings({ ...settings, listenBrainzUser: LBUser })
+		if (LBUser != settings.listenBrainzUser) {
+			if (timeoutRef.current) clearTimeout(timeoutRef.current)
+			timeoutRef.current = setTimeout(() => {
+				setSettings({ ...settings, listenBrainzUser: LBUser })
+			}, 1000)
+		}
 	}, [LBUser])
 
 	return (

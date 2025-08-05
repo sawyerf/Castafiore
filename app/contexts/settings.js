@@ -1,6 +1,6 @@
-import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import md5 from 'md5';
+import React from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import md5 from 'md5'
 
 export const demoServers = [
 	{
@@ -31,19 +31,18 @@ export const defaultSettings = {
 		},
 	],
 	// Home Settings
-	homeOrder: [
-		{ icon: 'bar-chart', title: 'Week Activity', type: 'listenbrainz', query: '', enable: false },
-		{ icon: 'user', title: 'Favorited Artist', type: 'artist', query: '', enable: true },
-		{ icon: 'flask', title: 'Genre', type: 'genre', query: '', enable: false },
-		{ icon: 'feed', title: 'Radio', type: 'radio', query: '', enable: false },
-		{ icon: 'book', title: 'Pin Playlist', type: 'playlist', query: '', enable: false },
-		// { icon: 'group', title: 'Artists', type: 'artist_all', query: '', enable: false },
-		{ icon: 'heart', title: 'Favorited', type: 'album_star', query: '', enable: true },
-		{ icon: 'plus', title: 'Recently Added', type: 'album', query: 'type=newest', enable: true },
-		{ icon: 'trophy', title: 'Most Played', type: 'album', query: 'type=frequent', enable: true },
-		{ icon: 'play', title: 'Recently Played', type: 'album', query: 'type=recent', enable: true },
-		{ icon: 'random', title: 'Random', type: 'album', query: 'type=random', enable: false },
-		{ icon: 'arrow-up', title: 'Highest', type: 'album', query: 'type=highest', enable: false },
+	homeOrderV2: [
+		{ id: 'week-activity', enable: false },
+		{ id: 'favorited-artist', enable: true },
+		{ id: 'genre', enable: false },
+		{ id: 'radio', enable: false },
+		{ id: 'pin-playlist', enable: false },
+		{ id: 'favorited-album-star', enable: true },
+		{ id: 'recently-added', enable: true },
+		{ id: 'most-played', enable: true },
+		{ id: 'recently-played', enable: true },
+		{ id: 'random-album', enable: false },
+		{ id: 'highest-album', enable: false },
 	],
 	listenBrainzUser: '',
 	sizeOfList: 15,
@@ -65,11 +64,131 @@ export const defaultSettings = {
 	language: 'en',
 }
 
+export const homeSections = [
+	{
+		icon: 'bar-chart',
+		id: 'week-activity',
+		title: 'Week Activity',
+		type: 'listenbrainz',
+		isShowAll: false,
+		path: '',
+		query: '',
+		getInfo: () => { },
+	},
+	{
+		icon: 'user',
+		id: 'favorited-artist',
+		title: 'Favorited Artist',
+		type: 'artist',
+		isShowAll: true,
+		path: 'getStarred2',
+		query: '',
+		getInfo: (json, setList) => setList(json?.starred2?.artist),
+	},
+	{
+		icon: 'flask',
+		id: 'genre',
+		title: 'Genre',
+		type: 'genre',
+		isShowAll: false,
+		path: 'getGenres',
+		query: '',
+		getInfo: (json, setList) => setList(json?.genres?.genre),
+	},
+	{
+		icon: 'feed',
+		id: 'radio',
+		title: 'Radio',
+		type: 'radio',
+		isShowAll: false,
+		path: 'getInternetRadioStations',
+		query: '',
+		getInfo: (json, setList) => setList(json?.internetRadioStations?.internetRadioStation),
+	},
+	{
+		icon: 'book',
+		id: 'pin-playlist',
+		title: 'Pin Playlist',
+		type: 'playlist',
+		isShowAll: false,
+		path: 'getPlaylists',
+		query: '',
+		getInfo: (json, setList) => setList(json?.playlists?.playlist?.filter((playlist) => playlist.comment?.includes(`#${global.config.username}-pin`))),
+	},
+	{
+		icon: 'heart',
+		id: 'favorited-album-star',
+		title: 'Favorited',
+		type: 'album_star',
+		isShowAll: true,
+		path: 'getStarred2',
+		query: '',
+		getInfo: (json, setList) => setList(json?.starred2?.album),
+	},
+	{
+		id: 'recently-added',
+		icon: 'plus',
+		title: 'Recently Added',
+		type: 'album',
+		isShowAll: true,
+		path: 'getAlbumList2',
+		query: 'type=newest',
+		getInfo: (json, setList) => setList(json?.albumList2?.album),
+	},
+	{
+		id: 'most-played',
+		icon: 'trophy',
+		title: 'Most Played',
+		type: 'album',
+		isShowAll: true,
+		path: 'getAlbumList2',
+		query: 'type=frequent',
+		getInfo: (json, setList) => setList(json?.albumList2?.album),
+	},
+	{
+		id: 'recently-played',
+		icon: 'play',
+		title: 'Recently Played',
+		type: 'album',
+		isShowAll: true,
+		path: 'getAlbumList2',
+		query: 'type=recent',
+		getInfo: (json, setList) => setList(json?.albumList2?.album),
+	},
+	{
+		id: 'random-album',
+		icon: 'random',
+		title: 'Random',
+		type: 'album',
+		isShowAll: false,
+		path: 'getAlbumList2',
+		query: 'type=random',
+		getInfo: (json, setList) => setList(json?.albumList2?.album),
+	},
+	{
+		id: 'highest-album',
+		icon: 'arrow-up',
+		title: 'Highest',
+		type: 'album',
+		isShowAll: true,
+		path: 'getAlbumList2',
+		query: 'type=highest',
+		getInfo: (json, setList) => setList(json?.albumList2?.album),
+	},
+]
+
 export const getSettings = async () => {
 	const config = await AsyncStorage.getItem('settings')
 	if (config === null) return defaultSettings
 	try {
 		const data = JSON.parse(config)
+		if (data.homeOrderV2 && data?.homeOrderV2?.length !== defaultSettings.homeOrderV2.length) {
+			defaultSettings.homeOrderV2.forEach((section) => {
+				if (!data.homeOrderV2.some((s) => s.id === section.id)) {
+					data.homeOrderV2.push({ ...section, enable: false })
+				}
+			})
+		}
 		return {
 			...defaultSettings,
 			...data,
@@ -81,24 +200,3 @@ export const getSettings = async () => {
 
 export const SettingsContext = React.createContext()
 export const SetSettingsContext = React.createContext()
-
-export const getPathByType = (type) => {
-	if (type === 'album') return 'getAlbumList2'
-	if (type === 'artist' || type === 'album_star') return 'getStarred2'
-	if (type === 'genre') return 'getGenres'
-	if (type === 'artist_all') return 'getArtists'
-	if (type === 'radio') return 'getInternetRadioStations'
-	if (type === 'playlist') return 'getPlaylists'
-	return type
-}
-
-export const setListByType = (json, type, setList) => {
-	if (!json) return
-	if (type == 'album') return setList(json?.albumList2?.album)
-	if (type == 'album_star') return setList(json?.starred2?.album)
-	if (type == 'artist') return setList(json?.starred2?.artist)
-	if (type == 'artist_all') return setList(json?.artists?.index.map((item) => item.artist).flat())
-	if (type == 'genre') return setList(json?.genres?.genre)
-	if (type == 'radio') return setList(json?.internetRadioStations?.internetRadioStation)
-	if (type == 'playlist') return setList(json?.playlists?.playlist?.filter((playlist) => playlist.comment?.includes(`#${global.config.username}-pin`)))
-}

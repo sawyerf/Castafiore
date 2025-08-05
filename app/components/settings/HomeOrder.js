@@ -3,7 +3,7 @@ import { View, Text, PanResponder, Animated, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
+import { SettingsContext, SetSettingsContext, homeSections } from '~/contexts/settings';
 import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 
@@ -16,29 +16,29 @@ const HomeOrder = () => {
 	const moveElement = (index, direction) => {
 		let newIndex = index + direction
 		if (newIndex < 0) newIndex = 0
-		if (newIndex >= settings.homeOrder.length) newIndex = settings.homeOrder.length - 1
+		if (newIndex >= settings.homeOrderV2.length) newIndex = settings.homeOrderV2.length - 1
 		if (index === newIndex) return
-		const newHomeOrder = [...settings.homeOrder]
+		const newHomeOrder = [...settings.homeOrderV2]
 		if (direction > 0) {
 			newHomeOrder.splice(newIndex + 1, 0, newHomeOrder[index])
 			newHomeOrder.splice(index, 1)
 		} else {
 			newHomeOrder.splice(index, 1)
-			newHomeOrder.splice(newIndex, 0, settings.homeOrder[index])
+			newHomeOrder.splice(newIndex, 0, settings.homeOrderV2[index])
 		}
-		setSettings({ ...settings, homeOrder: newHomeOrder })
+		setSettings({ ...settings, homeOrderV2: newHomeOrder })
 	}
 
 	const onPressHomeOrder = (index) => {
-		const newHomeOrder = [...settings.homeOrder]
+		const newHomeOrder = [...settings.homeOrderV2]
 		newHomeOrder[index].enable = !newHomeOrder[index].enable
-		setSettings({ ...settings, homeOrder: newHomeOrder })
+		setSettings({ ...settings, homeOrderV2: newHomeOrder })
 	}
 
 	return (
 		<>
 			{
-				settings.homeOrder.map((value, index) => {
+				settings.homeOrderV2.map((value, index) => {
 					const startMove = React.useRef(0)
 					const position = React.useRef(new Animated.Value(0)).current
 					const panResponder = PanResponder.create({
@@ -61,12 +61,13 @@ const HomeOrder = () => {
 							startMove.current = 0
 						}
 					})
+					const section = React.useMemo(() => homeSections.find(s => s.id === value.id), [value.id])
 
 					return (
 						<Animated.View
 							key={index}
 							style={[
-								settingStyles.optionItem(theme, index == settings.homeOrder.length - 1),
+								settingStyles.optionItem(theme, index == settings.homeOrderV2.length - 1),
 								{
 									cursor: 'pointer',
 									transform: [{ translateY: position }]
@@ -79,12 +80,12 @@ const HomeOrder = () => {
 							>
 								<View style={{ width: 22, marginEnd: 10, alignItems: 'center' }}>
 									<Icon
-										name={value.icon}
+										name={section.icon}
 										size={18}
 										color={value.enable ? theme.primaryTouch : theme.secondaryText}
 									/>
 								</View>
-								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryText, flex: 1 }}>{t(`homeSection.${value.title}`)}</Text>
+								<Text key={index} style={{ color: value.enable ? theme.primaryTouch : theme.secondaryText, flex: 1 }}>{t(`homeSection.${section.title}`)}</Text>
 							</Pressable>
 							<View
 								style={{

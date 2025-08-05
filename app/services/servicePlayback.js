@@ -3,7 +3,7 @@ import TrackPlayer, { Event, State } from "react-native-track-player"
 import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
 import { downloadNextSong } from "~/utils/player"
-import { songReducer } from "../contexts/song"
+import { songReducer } from "~/contexts/song"
 
 let lockDownload = false
 let lastScrobble = {

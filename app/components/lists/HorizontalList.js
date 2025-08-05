@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { getCachedAndApi, getUrl } from '~/utils/api';
 import { getJsonCache } from '~/utils/cache';
 import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext, getPathByType, setListByType } from '~/contexts/settings';
+import { SettingsContext, homeSections } from '~/contexts/settings';
 import { ConfigContext } from '~/contexts/config';
 import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi';
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
@@ -19,7 +19,7 @@ import mainStyles from '~/styles/main';
 import RadioList from '~/components/lists/RadioList';
 import size from '~/styles/size';
 
-const HorizontalList = ({ title, type, query, refresh, enable }) => {
+const HorizontalList = ({ refresh, id, enable }) => {
 	const { t } = useTranslation();
 	const [list, setList] = React.useState();
 	const theme = React.useContext(ThemeContext)
@@ -27,32 +27,40 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 	const navigation = useNavigation();
 	const config = React.useContext(ConfigContext)
 	const updateApi = React.useContext(UpdateApiContext)
-
-		React.useEffect(() => {
-			if (!enable) return
-			if (config.query) {
-				getList()
-			}
-		}, [config, refresh, type, query, enable, settings.listenBrainzUser])
+	const section = React.useMemo(() => homeSections.find(s => s.id === id), [id])
 
 	React.useEffect(() => {
-		const path = getPathByType(type)
-		let nquery = query ? query : ''
+		if (!enable) return
+		if (config.query) {
+			getList()
+		}
+	}, [config, refresh, enable])
 
-		if (type == 'album') nquery += '&size=' + settings.sizeOfList
+	React.useEffect(() => {
+		if (!enable) return
+		if (section?.type === 'listenbrainz') {
+			getList()
+		}
+	}, [settings.listenBrainzUser])
 
-		if (isUpdatable(updateApi, path, nquery)) {
-			getJsonCache('api', getUrl(config, path, query))
-				.then(json => setListByType(json, type, setList))
+	React.useEffect(() => {
+		if (!enable) return
+		if (!section) return
+		let nquery = section.query || ''
+
+		if (section.type == 'album') nquery += '&size=' + settings.sizeOfList
+
+		if (isUpdatable(updateApi, section.path, nquery)) {
+			getJsonCache('api', getUrl(config, section.path, nquery))
+				.then(json => section.getInfo(json, setList))
 		}
 	}, [updateApi])
 
 	const getList = async () => {
-		const path = getPathByType(type)
-		let nquery = query ? query : ''
+		let nquery = section.query ? section.query : ''
 
-		if (type == 'album') nquery += '&size=' + settings.sizeOfList
-		if (type == 'listenbrainz') {
+		if (section.type == 'album') nquery += '&size=' + settings.sizeOfList
+		if (section.type == 'listenbrainz') {
 			if (!settings.listenBrainzUser) return setList('No ListenBrainz user set')
 			fetch(`https://api.listenbrainz.org/1/stats/user/${encodeURIComponent(settings.listenBrainzUser)}/listening-activity?range=this_week`, { mode: 'cors' })
 				.then(response => response.json())
@@ -65,13 +73,9 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 				})
 				.catch(error => console.error(error))
 		} else {
-			getCachedAndApi(config, path, nquery, (json) => setListByType(json, type, setList))
+			getCachedAndApi(config, section.path, nquery, (json) => section.getInfo(json, setList))
 		}
 	}
-
-	const isShowAllType = React.useCallback((type) => {
-		return ['album', 'artist', 'album_star', 'artist_all'].includes(type)
-	}, [])
 
 	if (!enable) return null
 	if (!list) return null
@@ -85,15 +89,15 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 					alignItems: 'center',
 					width: '100%',
 				}}
-				disabled={!isShowAllType(type)}
-				onPress={() => { navigation.navigate('ShowAll', { title: t(`homeSection.${title}`), type, query }) }}
+				disabled={!section.isShowAll}
+				onPress={() => { navigation.navigate('ShowAll', { section }) }}
 			>
 				<Text numberOfLines={1} style={[mainStyles.titleSection(theme), {
 					flex: 1,
 					marginEnd: 0,
-				}]}>{t(`homeSection.${title}`)}</Text>
+				}]}>{t(`homeSection.${section.title}`)}</Text>
 				{
-					isShowAllType(type) && <Icon
+					section.isShowAll && <Icon
 						name='angle-right'
 						color={theme.secondaryText}
 						size={size.icon.medium}
@@ -101,14 +105,14 @@ const HorizontalList = ({ title, type, query, refresh, enable }) => {
 					/>
 				}
 			</Pressable>
-			{type === 'album' && <HorizontalAlbums albums={list} />}
-			{type === 'album_star' && <HorizontalAlbums albums={list} />}
-			{type === 'artist' && <HorizontalArtists artists={list} />}
-			{type === 'artist_all' && <HorizontalArtists artists={list} />}
-			{type === 'genre' && <HorizontalGenres genres={list} />}
-			{type === 'radio' && <RadioList radios={list} />}
-			{type === 'listenbrainz' && <HorizontalLBStat stats={list} />}
-			{type === 'playlist' && <HorizontalPlaylists playlists={list} />}
+			{section.type === 'album' && <HorizontalAlbums albums={list} />}
+			{section.type === 'album_star' && <HorizontalAlbums albums={list} />}
+			{section.type === 'artist' && <HorizontalArtists artists={list} />}
+			{section.type === 'artist_all' && <HorizontalArtists artists={list} />}
+			{section.type === 'genre' && <HorizontalGenres genres={list} />}
+			{section.type === 'radio' && <RadioList radios={list} />}
+			{section.type === 'listenbrainz' && <HorizontalLBStat stats={list} />}
+			{section.type === 'playlist' && <HorizontalPlaylists playlists={list} />}
 		</>
 	)
 }

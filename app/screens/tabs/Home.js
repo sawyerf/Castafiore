@@ -117,7 +117,7 @@ const Home = () => {
 					}
 				</View>
 			</View>
-			{config?.url && settings?.homeOrder?.map((value, index) =>
+			{config?.url && settings?.homeOrderV2?.map((value, index) =>
 				<HorizontalList key={index} refresh={refresh}{...value} />
 			)}
 		</ScrollView>

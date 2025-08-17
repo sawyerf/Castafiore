@@ -5,6 +5,7 @@ import en from './en.json';
 import it from './it.json';
 import fr from './fr.json';
 import ru from './ru.json';
+import de from './de.json';
 import zhHans from './zh-Hans.json';
 import zhHant from './zh-Hant.json';
 
@@ -16,6 +17,7 @@ i18n.use(initReactI18next).init({
     it: it,
     fr: fr,
     ru: ru,
+    de: de,
     zhHans: zhHans,
     zhHant: zhHant,
   },

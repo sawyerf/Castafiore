@@ -1,18 +1,31 @@
 
-import React from 'react';
-import { Platform, Share } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Platform, Share } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
-import { getApi } from '~/utils/api';
-import { ConfigContext } from '~/contexts/config';
-import OptionsPopup from '~/components/popup/OptionsPopup';
+import { getApi } from '~/utils/api'
+import { ConfigContext } from '~/contexts/config'
+import OptionsPopup from '~/components/popup/OptionsPopup'
+import { playSong } from '~/utils/player'
+import { SongDispatchContext } from '~/contexts/song'
+import { getApiNetworkFirst } from '~/utils/api'
 
 const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
+  const { t } = useTranslation()
+  const navigation = useNavigation()
   const config = React.useContext(ConfigContext)
   const refOption = React.useRef()
+  const songDispatch = React.useContext(SongDispatchContext)
+
+	const playSimilarSongs = () => {
+		getApiNetworkFirst(config, 'getSimilarSongs', `id=${albums[indexOptions].id}&count=50`)
+			.then((json) => {
+				if (json.similarSongs?.song) playSong(config, songDispatch, json.similarSongs.song, 0)
+			})
+			.catch(() => { })
+		refOption.current.close()
+	}
 
   return (
     <OptionsPopup
@@ -21,6 +34,11 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
       close={() => { setIndexOptions(-1) }}
       item={indexOptions >= 0 ? albums[indexOptions] : null}
       options={[
+        {
+          name: t('Play similar songs'),
+					icon: 'play',
+					onPress: playSimilarSongs
+        },
         {
           name: t('Go to artist'),
           icon: 'user',
@@ -57,4 +75,4 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
   )
 }
 
-export default OptionsAlbum;
+export default OptionsAlbum

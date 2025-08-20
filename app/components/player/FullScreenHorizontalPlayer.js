@@ -11,12 +11,13 @@ import FavoritedButton from '~/components/button/FavoritedButton'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
 import Lyric from '~/components/player/Lyric'
+import mainStyles from '~/styles/main'
+import OptionsQueue from '~/components/options/OptionsQueue'
+import PlayButton from '~/components/button/PlayButton'
 import Player from '~/utils/player'
 import size from '~/styles/size';
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
-import mainStyles from '~/styles/main'
-import PlayButton from '~/components/button/PlayButton'
 
 const preview = {
 	COVER: 0,
@@ -65,6 +66,7 @@ const TimeBar = () => {
 }
 const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
+	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const config = React.useContext(ConfigContext)
 	const insets = useSafeAreaInsets()
 	const song = React.useContext(SongContext)
@@ -148,6 +150,12 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 					{
 						isPreview == preview.QUEUE &&
 						<View style={{ flex: 1, maxWidth: '50%', justifyContent: 'flex-end' }}>
+							<OptionsQueue
+								queue={song.queue}
+								indexOptions={indexOptions}
+								setIndexOptions={setIndexOptions}
+								closePlayer={() => setFullScreen(false)}
+							/>
 							<FlatList
 								ref={scroll}
 								onLayout={() => scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })}
@@ -160,15 +168,19 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 								keyExtractor={(_, index) => index}
 								renderItem={({ item, index }) => (
 									<Pressable
+										key={item.id}
 										style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
 											flexDirection: 'row',
 											alignItems: 'center',
 											marginBottom: 10,
 										}])}
-										key={item.id}
-										onPress={() => {
-											Player.setIndex(config, songDispatch, song.queue, index)
-										}}>
+										onPress={() => Player.setIndex(config, songDispatch, song.queue, index)}
+										onLongPress={() => setIndexOptions(index)}
+										onContextMenu={(ev) => {
+											ev.preventDefault()
+											return setIndexOptions(index)
+										}}
+									>
 										<View style={{ flex: 1, flexDirection: 'column' }}>
 											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: size.text.medium, marginBottom: 2, textAlign: 'right' }}>
 												{item.title}

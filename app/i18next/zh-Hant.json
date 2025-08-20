@@ -64,7 +64,8 @@
         "Stream format": "流格式",
         "Stream format Description": "指定播放流的格式。",
         "Max bitrate": "最大比特率",
-        "Max bitrate Description": "指定播放流的最大比特率（單位：kbps）。較低的比特率將消耗較少的數據，但可能會導致音質下降。"
+        "Max bitrate Description": "指定播放流的最大比特率（單位：kbps）。較低的比特率將消耗較少的數據，但可能會導致音質下降。",
+        "Play seed first": "優先播放種子曲目"
       },
       "theme": {
         "Player Theme": "播放器主題"

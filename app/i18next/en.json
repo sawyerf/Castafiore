@@ -64,7 +64,8 @@
         "Stream format": "Stream format",
         "Stream format Description": "Specify the format of the stream to be played.",
         "Max bitrate": "Max bitrate",
-        "Max bitrate Description": "Specify the maximum bit rate in kilobits per second for the stream to be played. Lower bit rates will consume less data but may result in lower audio quality."
+        "Max bitrate Description": "Specify the maximum bit rate in kilobits per second for the stream to be played. Lower bit rates will consume less data but may result in lower audio quality.",
+        "Play seed first": "Play seed song first"
       },
       "theme": {
         "Player Theme": "Player Theme"

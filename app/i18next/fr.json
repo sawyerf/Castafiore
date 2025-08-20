@@ -64,7 +64,8 @@
         "Stream format": "Format du flux",
         "Stream format description": "Spécifiez le format du flux à lire.",
         "Max bitrate": "Débit maximal",
-        "Max bitrate description": "Spécifiez le débit maximal en kilobits par seconde pour le flux à lire. Des débits plus bas consommeront moins de données mais peuvent entraîner une qualité audio inférieure."
+        "Max bitrate description": "Spécifiez le débit maximal en kilobits par seconde pour le flux à lire. Des débits plus bas consommeront moins de données mais peuvent entraîner une qualité audio inférieure.",
+        "Play seed first": "Lire la référence en premier"
       },
       "theme": {
         "Player Theme": "Thème du lecteur"

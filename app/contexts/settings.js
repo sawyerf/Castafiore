@@ -57,6 +57,7 @@ export const defaultSettings = {
 	// Player settings
 	streamFormat: 'raw',
 	maxBitRate: 0,
+	playSeedFirst: false,
 	// Playlist settings
 	reversePlaylist: false,
 	orderPlaylist: 'title',

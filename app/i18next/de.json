@@ -64,7 +64,8 @@
         "Stream format": "Übertragungsformat",
         "Stream format Description": "Lege das Format der zu wiedergebenden Übertragung fest.",
         "Max bitrate": "Maximale Bitrate",
-        "Max bitrate Description": "Lege die maximale Bitrate in Kilobits pro Sekunde für den zu wiedergebenden Stream fest. Eine niedrigere Bitrate sort für geringere Datennutzung, kann jedoch die Wiedergabequalität beinträchtigen"
+        "Max bitrate Description": "Lege die maximale Bitrate in Kilobits pro Sekunde für den zu wiedergebenden Stream fest. Eine niedrigere Bitrate sort für geringere Datennutzung, kann jedoch die Wiedergabequalität beinträchtigen",
+        "Play seed first": "Seed-Lied zuerst abspielen"
       },
       "theme": {
         "Player Theme": "Darstellung des Players"

@@ -64,7 +64,8 @@
         "Stream format": "Formato streaming",
         "Stream format Description": "Specifica il formato dello streaming da riprodurre.",
         "Max bitrate": "Bitrate massimo",
-        "Max bitrate Description": "Specifica il bitrate massimo in kilobit al secondo per lo streaming. Bitrate inferiori consumano meno dati ma possono ridurre la qualità audio."
+        "Max bitrate Description": "Specifica il bitrate massimo in kilobit al secondo per lo streaming. Bitrate inferiori consumano meno dati ma possono ridurre la qualità audio.",
+        "Play seed first": "Prima il brano di riferimento"
       },
       "theme": {
         "Player Theme": "Tema del lettore"

@@ -10,6 +10,7 @@ import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { urlCover } from '~/utils/api';
 import size from '~/styles/size';
 import OptionsPopup from '~/components/popup/OptionsPopup';
+import { SettingsContext } from '~/contexts/settings';
 
 const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () => { }, idPlaylist = null }) => {
 	const { t } = useTranslation();
@@ -17,6 +18,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	const song = React.useContext(SongContext);
 	const songDispatch = React.useContext(SongDispatchContext);
 	const config = React.useContext(ConfigContext);
+	const settings = React.useContext(SettingsContext);
 	const refOption = React.useRef();
 
 	const playSimilarSongs = () => {
@@ -25,7 +27,8 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 				if (!json.similarSongs?.song) {
 					playSong(config, songDispatch, [songs[indexOptions]], 0)
 				} else {
-					playSong(config, songDispatch, json.similarSongs?.song, 0)
+					if (settings.playSeedFirst) playSong(config, songDispatch, [songs[indexOptions], ...json.similarSongs.song], 0)
+					else playSong(config, songDispatch, json.similarSongs.song, 0)
 				}
 			})
 			.catch(() => { })

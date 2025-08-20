@@ -6,7 +6,7 @@ import { ThemeContext } from '~/contexts/theme';
 import { SettingsContext } from '~/contexts/settings';
 import size from '~/styles/size';
 
-const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 }, widthItem = 0 }) => {
+const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
 	const indexScroll = React.useRef(0)

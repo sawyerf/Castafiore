@@ -6,10 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { SettingsContext } from '~/contexts/settings'
 import { SetSettingsContext } from '~/contexts/settings'
 import { ThemeContext } from '~/contexts/theme'
+import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
-import settingStyles from '~/styles/settings'
 import SelectItem from '~/components/settings/SelectItem'
+import settingStyles from '~/styles/settings'
 
 const FORMATS = [
   { name: 'Raw', value: 'raw' },
@@ -34,7 +35,7 @@ const BITRATES = [
 ]
 
 const PlayerSettings = () => {
-	const { t } = useTranslation()
+  const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const theme = React.useContext(ThemeContext)
   const settings = React.useContext(SettingsContext)
@@ -62,7 +63,7 @@ const PlayerSettings = () => {
             />
           ))}
         </View>
-				<Text style={settingStyles.description(theme)}>{t('settings.player.Stream format Description')}</Text>
+        <Text style={settingStyles.description(theme)}>{t('settings.player.Stream format Description')}</Text>
 
         <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Max bitrate')}</Text>
         <View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
@@ -81,7 +82,17 @@ const PlayerSettings = () => {
             ))
           }
         </View>
-				<Text style={settingStyles.description(theme)}>{t('settings.player.Max bitrate Description')}</Text>
+        <Text style={settingStyles.description(theme)}>{t('settings.player.Max bitrate Description')}</Text>
+
+        <Text style={settingStyles.titleContainer(theme)}>{t('Play similar songs')}</Text>
+        <View style={settingStyles.optionsContainer(theme)}>
+          <ButtonSwitch
+            title={t('settings.player.Play seed first')}
+            value={settings.playSeedFirst}
+            onPress={() => setSettings({ ...settings, playSeedFirst: !settings.playSeedFirst })}
+            isLast
+          />
+        </View>
       </View>
     </ScrollView>
   )

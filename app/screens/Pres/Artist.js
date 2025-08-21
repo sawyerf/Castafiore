@@ -61,16 +61,6 @@ const Artist = ({ navigation, route: { params } }) => {
 		playSong(config, songDispatch, shuffle(allSongs.current), 0)
 	}
 
-	const getTopSongs = () => {
-		getApiNetworkFirst(config, 'getTopSongs', { artist: params.name, count: 50 })
-			.then((json) => {
-				const songs = json.topSongs?.song
-				if (!songs) return
-				playSong(config, songDispatch, songs, 0)
-			})
-			.catch(() => { })
-	}
-
 	return (
 		<ScrollView
 			style={mainStyles.mainContainer(theme)}
@@ -85,7 +75,7 @@ const Artist = ({ navigation, route: { params } }) => {
 					style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
 					icon="arrow-up"
 					size={size.icon.medium}
-					onPress={getTopSongs}
+					onPress={() => topSongs.length && playSong(config, songDispatch, topSongs || [], 0)}
 				/>
 				<IconButton
 					style={[presStyles.button, { justifyContent: 'flex-start', paddingStart: 7.5, paddingEnd: 7.5 }]}
@@ -130,20 +120,20 @@ const Artist = ({ navigation, route: { params } }) => {
 			{
 				topSongs?.length ? (
 					<>
-					<Pressable onPress={() => navigation.navigate('Songs', { title: t('Top songs'), songs: topSongs })} style={{
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-						width: '100%',
-					}}>
-						<Text style={[mainStyles.titleSection(theme)]}>{t('Top songs')}</Text>
-						<Icon
-							name='angle-right'
-							color={theme.secondaryText}
-							size={size.icon.medium}
-							style={[mainStyles.titleSection(theme), { marginTop: 25, marginBottom: 12, marginEnd: 20 }]}
-						/>
-					</Pressable>
+						<Pressable onPress={() => navigation.navigate('Songs', { title: t('Top songs'), songs: topSongs })} style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							width: '100%',
+						}}>
+							<Text style={[mainStyles.titleSection(theme)]}>{t('Top songs')}</Text>
+							<Icon
+								name='angle-right'
+								color={theme.secondaryText}
+								size={size.icon.medium}
+								style={[mainStyles.titleSection(theme), { marginTop: 25, marginBottom: 12, marginEnd: 20, alignSelf: 'flex-end' }]}
+							/>
+						</Pressable>
 						<SongsList songs={topSongs.slice(0, 3)} listToPlay={topSongs} />
 					</>
 				) : null

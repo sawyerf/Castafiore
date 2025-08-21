@@ -38,6 +38,10 @@ const Artist = ({ navigation, route: { params } }) => {
 		setSortAlbum(json.artist?.album?.sort((a, b) => (b.year || 0) - (a.year || 0)))
 	}, [params.id])
 
+	const [topSongs] = useCachedAndApi([], 'getTopSongs', { artist: params.name, count: 50 }, (json, setData) => {
+		setData(json.topSongs?.song || [])
+	}, [params.name])
+
 	const [favorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
 		setData(json.starred2.song.filter(song => song.artistId === params.id))
 	}, [params.id])
@@ -120,6 +124,27 @@ const Artist = ({ navigation, route: { params } }) => {
 					<>
 						<Text style={mainStyles.titleSection(theme)}>{t('Similar artists')}</Text>
 						<HorizontalArtists artists={artistInfo.similarArtist} />
+					</>
+				) : null
+			}
+			{
+				topSongs?.length ? (
+					<>
+					<Pressable onPress={() => navigation.navigate('Songs', { title: t('Top songs'), songs: topSongs })} style={{
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						width: '100%',
+					}}>
+						<Text style={[mainStyles.titleSection(theme)]}>{t('Top songs')}</Text>
+						<Icon
+							name='angle-right'
+							color={theme.secondaryText}
+							size={size.icon.medium}
+							style={[mainStyles.titleSection(theme), { marginTop: 25, marginBottom: 12, marginEnd: 20 }]}
+						/>
+					</Pressable>
+						<SongsList songs={topSongs.slice(0, 3)} listToPlay={topSongs} />
 					</>
 				) : null
 			}

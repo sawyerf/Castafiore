@@ -31,7 +31,7 @@ const Songs = ({ route: { params } }) => {
 				data={params.songs || []}
 				keyExtractor={(item, index) => index}
 				style={mainStyles.mainContainer(theme)}
-				contentContainerStyle={mainStyles.contentMainContainer(insets, false)}
+				contentContainerStyle={mainStyles.contentMainContainer(insets, true)}
 				waitForInitialLayout={false}
 				recycleItems={true}
 				estimatedItemSize={60}

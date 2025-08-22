@@ -19,6 +19,7 @@ import IconButton from '~/components/button/IconButton';
 import SongsList from '~/components/lists/SongsList';
 import size from '~/styles/size';
 import PresHeader from '~/components/PresHeader';
+import OptionsArtist from '../../components/options/OptionsArtist';
 
 const Artist = ({ navigation, route: { params } }) => {
 	const { t } = useTranslation();
@@ -28,6 +29,7 @@ const Artist = ({ navigation, route: { params } }) => {
 	const theme = React.useContext(ThemeContext)
 	const allSongs = React.useRef([])
 	const [sortAlbum, setSortAlbum] = React.useState([])
+	const [isOption, setIsOption] = React.useState(false)
 
 	const [artistInfo] = useCachedAndApi([], 'getArtistInfo', `id=${params.id}`, (json, setData) => {
 		setData(json.artistInfo)
@@ -62,91 +64,101 @@ const Artist = ({ navigation, route: { params } }) => {
 	}
 
 	return (
-		<ScrollView
-			style={mainStyles.mainContainer(theme)}
-			vertical={true}
-			contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
-			<PresHeader
-				title={artist.name || params.name}
-				subTitle={t('Artist')}
-				imgSrc={urlCover(config, params)}
-			>
-				<IconButton
-					style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
-					icon="arrow-up"
-					size={size.icon.medium}
-					onPress={() => topSongs.length && playSong(config, songDispatch, topSongs || [], 0)}
-				/>
-				<IconButton
-					style={[presStyles.button, { justifyContent: 'flex-start', paddingStart: 7.5, paddingEnd: 7.5 }]}
-					icon="random"
-					size={size.icon.medium}
-					onPress={getRandomSongs}
-				/>
-				<FavoritedButton
-					id={params.id}
-					isFavorited={artist?.starred}
-					style={[presStyles.button, { paddingStart: 7.5 }]}
-					size={size.icon.medium}
-				/>
-			</PresHeader>
-			{sortAlbum?.length ? (
-				<>
-					<Pressable onPress={() => navigation.navigate('ArtistAlbums', { albums: sortAlbum })} style={{
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-						width: '100%',
-					}}>
-						<Text style={[mainStyles.titleSection(theme), { marginTop: 5, flex: 1, marginEnd: 0 }]}>{t('Albums')}</Text>
-						<Icon
-							name='angle-right'
-							color={theme.secondaryText}
-							size={size.icon.medium}
-							style={[mainStyles.titleSection(theme), { marginTop: 5, marginEnd: 20 }]}
-						/>
-					</Pressable>
-					<HorizontalAlbums albums={sortAlbum} year={true} />
-				</>
-			) : null}
-			{
-				artistInfo?.similarArtist?.length ? (
+		<>
+			<OptionsArtist
+				artist={artist}
+				isOption={isOption}
+				setIsOption={setIsOption}
+			/>
+			<ScrollView
+				style={mainStyles.mainContainer(theme)}
+				vertical={true}
+				contentContainerStyle={mainStyles.contentMainContainer(insets, false)}>
+				<PresHeader
+					title={artist.name || params.name}
+					subTitle={t('Artist')}
+					imgSrc={urlCover(config, params)}
+					onPressOption={() => {
+						setIsOption(true)
+					}}
+				>
+					<IconButton
+						style={[presStyles.button, { justifyContent: 'flex-start', paddingEnd: 7.5 }]}
+						icon="arrow-up"
+						size={size.icon.medium}
+						onPress={() => topSongs.length && playSong(config, songDispatch, topSongs || [], 0)}
+					/>
+					<IconButton
+						style={[presStyles.button, { justifyContent: 'flex-start', paddingStart: 7.5, paddingEnd: 7.5 }]}
+						icon="random"
+						size={size.icon.medium}
+						onPress={getRandomSongs}
+					/>
+					<FavoritedButton
+						id={params.id}
+						isFavorited={artist?.starred}
+						style={[presStyles.button, { paddingStart: 7.5 }]}
+						size={size.icon.medium}
+					/>
+				</PresHeader>
+				{sortAlbum?.length ? (
 					<>
-						<Text style={mainStyles.titleSection(theme)}>{t('Similar artists')}</Text>
-						<HorizontalArtists artists={artistInfo.similarArtist} />
-					</>
-				) : null
-			}
-			{
-				topSongs?.length ? (
-					<>
-						<Pressable onPress={() => navigation.navigate('Songs', { title: t('Top songs'), songs: topSongs })} style={{
+						<Pressable onPress={() => navigation.navigate('ArtistAlbums', { albums: sortAlbum })} style={{
 							flexDirection: 'row',
 							justifyContent: 'space-between',
 							alignItems: 'center',
 							width: '100%',
 						}}>
-							<Text style={[mainStyles.titleSection(theme)]}>{t('Top songs')}</Text>
+							<Text style={[mainStyles.titleSection(theme), { marginTop: 5, flex: 1, marginEnd: 0 }]}>{t('Albums')}</Text>
 							<Icon
 								name='angle-right'
 								color={theme.secondaryText}
 								size={size.icon.medium}
-								style={[mainStyles.titleSection(theme), { marginTop: 25, marginBottom: 12, marginEnd: 20, alignSelf: 'flex-end' }]}
+								style={[mainStyles.titleSection(theme), { marginTop: 5, marginEnd: 20 }]}
 							/>
 						</Pressable>
-						<SongsList songs={topSongs.slice(0, 3)} listToPlay={topSongs} />
+						<HorizontalAlbums albums={sortAlbum} year={true} />
 					</>
-				) : null
-			}
-			{
-				favorited?.length ? (
-					<>
-						<Text style={[mainStyles.titleSection(theme),]}>{t('Favorited songs')}</Text>
-						<SongsList songs={favorited} />
-					</>
-				) : null
-			}
-		</ScrollView>
+				) : null}
+				{
+					artistInfo?.similarArtist?.length ? (
+						<>
+							<Text style={mainStyles.titleSection(theme)}>{t('Similar artists')}</Text>
+							<HorizontalArtists artists={artistInfo.similarArtist} />
+						</>
+					) : null
+				}
+				{
+					topSongs?.length ? (
+						<>
+							<Pressable onPress={() => navigation.navigate('Songs', { title: t('Top songs'), songs: topSongs })} style={{
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+								width: '100%',
+							}}>
+								<Text style={[mainStyles.titleSection(theme)]}>{t('Top songs')}</Text>
+								<Icon
+									name='angle-right'
+									color={theme.secondaryText}
+									size={size.icon.medium}
+									style={[mainStyles.titleSection(theme), { marginTop: 25, marginBottom: 12, marginEnd: 20, alignSelf: 'flex-end' }]}
+								/>
+							</Pressable>
+							<SongsList songs={topSongs.slice(0, 3)} listToPlay={topSongs} />
+						</>
+					) : null
+				}
+				{
+					favorited?.length ? (
+						<>
+							<Text style={[mainStyles.titleSection(theme),]}>{t('Favorited songs')}</Text>
+							<SongsList songs={favorited} />
+						</>
+					) : null
+				}
+			</ScrollView>
+		</>
 	)
 }
 

@@ -8,7 +8,7 @@ import { urlCover } from '~/utils/api';
 import CustomFlat from '~/components/lists/CustomFlat';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
-import OptionsArtist from '~/components/options/OptionsArtist';
+import OptionsArtists from '~/components/options/OptionsArtists';
 import size from '~/styles/size';
 
 const HorizontalArtists = ({ artists, onPress = () => { } }) => {
@@ -48,7 +48,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 				widthItem={size.image.medium + 10}
 			/>
 
-			<OptionsArtist
+			<OptionsArtists
 				artists={artists}
 				indexOptions={indexOptions}
 				setIndexOptions={setIndexOptions}

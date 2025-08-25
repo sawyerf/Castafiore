@@ -1,8 +1,9 @@
-import React from 'react';
-import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration';
+import React from 'react'
+import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration'
 
-import { getApi, urlCover, urlStream } from '~/utils/api';
-import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
+import { getApi, urlCover, urlStream } from '~/utils/api'
+import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
+import logger from '~/utils/logger'
 
 const State = {
 	None: 'none',
@@ -19,7 +20,7 @@ const audio = () => {
 }
 
 export const initService = async () => {
-	serviceWorkerRegistration.register();
+	serviceWorkerRegistration.register()
 }
 
 export const initPlayer = async (songDispatch) => {
@@ -85,25 +86,25 @@ export const initPlayer = async (songDispatch) => {
 
 	navigator.mediaSession.setActionHandler("pause", () => {
 		pauseSong()
-	});
+	})
 	navigator.mediaSession.setActionHandler("play", () => {
 		resumeSong()
-	});
+	})
 	navigator.mediaSession.setActionHandler("seekto", (details) => {
 		setPosition(details.seekTime)
-	});
+	})
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
 		previousSong(window.config, window.song, songDispatch)
-	});
+	})
 	navigator.mediaSession.setActionHandler("nexttrack", () => {
 		nextSong(window.config, window.song, songDispatch)
-	});
+	})
 	navigator.mediaSession.setActionHandler("seekbackward", () => {
 		previousSong(window.config, window.song, songDispatch)
-	});
+	})
 	navigator.mediaSession.setActionHandler("seekforward", () => {
 		nextSong(window.config, window.song, songDispatch)
-	});
+	})
 
 	addEventListener('keydown', (e) => {
 		if (e.key === ' ') {
@@ -187,7 +188,7 @@ const loadSong = async (config, queue, index) => {
 				.catch(() => { })
 		})
 		.catch((error) => {
-			console.error(error)
+			logger.error(error)
 		})
 	navigator.mediaSession.metadata = new MediaMetadata({
 		title: song.title,

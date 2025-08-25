@@ -3,6 +3,8 @@ import Player from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Platform } from 'react-native'
 
+import logger from '~/utils/logger'
+
 export const SongContext = React.createContext()
 export const SongDispatchContext = React.createContext()
 
@@ -15,7 +17,7 @@ const newSong = (state, action, isCache = false) => {
 	else global.song = song
 	if (isCache && Platform.OS === 'android') {
 		AsyncStorage.setItem('song', JSON.stringify(song))
-			.catch((error) => console.error('Error saving song to AsyncStorage:', error))
+			.catch((error) => logger.error('Error saving song to AsyncStorage:', error))
 	}
 	return song
 }
@@ -109,7 +111,7 @@ export const songReducer = (state, action) => {
 				isInit: true,
 			}, true)
 		default:
-			console.error('Unknown action', action)
+			logger.error('Unknown action', action)
 			return state
 	}
 }

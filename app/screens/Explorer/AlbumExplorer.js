@@ -1,32 +1,33 @@
-import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { LegendList } from '@legendapp/list';
-import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { LegendList } from '@legendapp/list'
+import { useNavigation } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme';
-import { getApiNetworkFirst } from '~/utils/api';
-import { ConfigContext } from '~/contexts/config';
-import mainStyles from '~/styles/main';
-import PresHeaderIcon from '~/components/PresHeaderIcon';
-import Selector from '~/components/Selector';
-import size from '~/styles/size';
-import ExplorerItem from '~/components/item/ExplorerItem';
+import { ThemeContext } from '~/contexts/theme'
+import { getApiNetworkFirst } from '~/utils/api'
+import { ConfigContext } from '~/contexts/config'
+import mainStyles from '~/styles/main'
+import PresHeaderIcon from '~/components/PresHeaderIcon'
+import Selector from '~/components/Selector'
+import size from '~/styles/size'
+import ExplorerItem from '~/components/item/ExplorerItem'
+import logger from '~/utils/logger'
 
-const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random'];
-const PAGE_SIZE = 100;
+const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random']
+const PAGE_SIZE = 100
 
 const AlbumExplorer = () => {
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
-	const theme = React.useContext(ThemeContext);
-	const navigation = useNavigation();
-	const config = React.useContext(ConfigContext);
-	const [albums, setAlbums] = React.useState([]);
-	const [type, setType] = React.useState('newest');
-	const [offset, setOffset] = React.useState(0);
-	const [isLoading, setIsLoading] = React.useState(false);
+	const { t } = useTranslation()
+	const insets = useSafeAreaInsets()
+	const theme = React.useContext(ThemeContext)
+	const navigation = useNavigation()
+	const config = React.useContext(ConfigContext)
+	const [albums, setAlbums] = React.useState([])
+	const [type, setType] = React.useState('newest')
+	const [offset, setOffset] = React.useState(0)
+	const [isLoading, setIsLoading] = React.useState(false)
 
 	React.useEffect(() => {
 		setIsLoading(true)
@@ -38,7 +39,7 @@ const AlbumExplorer = () => {
 				setAlbums(prev => [...prev, ...newAlbums])
 			})
 			.catch(error => {
-				console.error('Error fetching albums:', error)
+				logger.error('Error fetching albums:', error)
 				setIsLoading(false)
 			})
 	}, [type, offset])

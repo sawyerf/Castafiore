@@ -1,38 +1,41 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { StatusBar, Platform } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NavigationContainer } from '@react-navigation/native'
+import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useTranslation } from 'react-i18next'
 
-import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks';
-import TabBar from '~/components/bar/TabBar';
+import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks'
+import TabBar from '~/components/bar/TabBar'
 
-import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config';
-import { initCacheSong } from '~/utils/cache';
-import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi';
-import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song';
-import { ThemeContext, getTheme } from '~/contexts/theme';
-import Player from '~/utils/player';
-import '~/i18next/i18next';
+import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config'
+import { initCacheSong } from '~/utils/cache'
+import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi'
+import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song'
+import { ThemeContext, getTheme } from '~/contexts/theme'
+import Player from '~/utils/player'
+import '~/i18next/i18next'
+import logger from '~/utils/logger'
+import { version } from '~/../package.json'
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
-global.maxBitRate = 0;
-global.streamFormat = 'mp3';
+global.maxBitRate = 0
+global.streamFormat = 'mp3'
 
 const App = () => {
-	const [config, setConfig] = React.useState({});
-	const [settings, setSettings] = React.useState({});
+	const [config, setConfig] = React.useState({})
+	const [settings, setSettings] = React.useState({})
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 	const [theme, setTheme] = React.useState(getTheme())
 	const [updateApi, setUpdateApi] = React.useState({ path: '', query: '' })
-	const { i18n } = useTranslation();
+	const { i18n } = useTranslation()
 	Player.useEvent(song, dispatch)
 
 	React.useEffect(() => {
+		logger.info(`App started (version: ${version}, platform: ${Platform.OS} ${Platform.Version})`)
 		if (!song.isInit) Player.initPlayer(dispatch)
 		getConfig()
 			.then((config) => {
@@ -78,14 +81,14 @@ const App = () => {
 
 	React.useEffect(() => {
 		i18n.changeLanguage(settings.language)
-			.catch(err => console.error(err));
+			.catch(err => logger.error(err))
 	}, [settings.language])
 
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)
 		AsyncStorage.setItem('settings', JSON.stringify(settings))
 			.catch((error) => {
-				console.error('Save settings error:', error)
+				logger.error('Save settings error:', error)
 			})
 	}, [settings, setSettings])
 
@@ -137,7 +140,7 @@ const App = () => {
 				</SetUpdateApiContext.Provider>
 			</SetSettingsContext.Provider>
 		</SetConfigContext.Provider>
-	);
+	)
 }
 
-export default App;
+export default App

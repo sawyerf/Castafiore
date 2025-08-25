@@ -1,30 +1,31 @@
-import React from 'react';
-import { Pressable, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Pressable, Text } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { getCachedAndApi, getUrl } from '~/utils/api';
-import { getJsonCache } from '~/utils/cache';
-import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext, homeSections } from '~/contexts/settings';
-import { ConfigContext } from '~/contexts/config';
-import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi';
-import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
-import HorizontalArtists from '~/components/lists/HorizontalArtists';
-import HorizontalGenres from '~/components/lists/HorizontalGenres';
-import HorizontalLBStat from '~/components/lists/HorizontalLBStat';
-import HorizontalPlaylists from '~/components/lists/HorizontalPlaylists';
-import mainStyles from '~/styles/main';
-import RadioList from '~/components/lists/RadioList';
-import size from '~/styles/size';
+import { getCachedAndApi, getUrl } from '~/utils/api'
+import { getJsonCache } from '~/utils/cache'
+import { ThemeContext } from '~/contexts/theme'
+import { SettingsContext, homeSections } from '~/contexts/settings'
+import { ConfigContext } from '~/contexts/config'
+import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi'
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
+import HorizontalArtists from '~/components/lists/HorizontalArtists'
+import HorizontalGenres from '~/components/lists/HorizontalGenres'
+import HorizontalLBStat from '~/components/lists/HorizontalLBStat'
+import HorizontalPlaylists from '~/components/lists/HorizontalPlaylists'
+import mainStyles from '~/styles/main'
+import RadioList from '~/components/lists/RadioList'
+import size from '~/styles/size'
+import logger from '~/utils/logger'
 
 const HorizontalList = ({ refresh, id, enable }) => {
-	const { t } = useTranslation();
-	const [list, setList] = React.useState();
+	const { t } = useTranslation()
+	const [list, setList] = React.useState()
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
-	const navigation = useNavigation();
+	const navigation = useNavigation()
 	const config = React.useContext(ConfigContext)
 	const updateApi = React.useContext(UpdateApiContext)
 	const section = React.useMemo(() => homeSections.find(s => s.id === id), [id])
@@ -74,7 +75,7 @@ const HorizontalList = ({ refresh, id, enable }) => {
 					if (!data?.payload?.listening_activity?.length) return
 					setList(data.payload.listening_activity)
 				})
-				.catch(error => console.error(error))
+				.catch(error => logger.error(error))
 		} else {
 			getCachedAndApi(config, section.path, nquery, (json) => section.getInfo(json, setList))
 		}
@@ -120,4 +121,4 @@ const HorizontalList = ({ refresh, id, enable }) => {
 	)
 }
 
-export default HorizontalList;
+export default HorizontalList

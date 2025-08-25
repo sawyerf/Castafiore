@@ -1,21 +1,22 @@
-import React from 'react';
-import { View } from 'react-native';
-import { LegendList } from '@legendapp/list';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { View } from 'react-native'
+import { LegendList } from '@legendapp/list'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext } from '~/contexts/settings';
-import mainStyles from '~/styles/main';
-import PresHeaderIcon from '~/components/PresHeaderIcon';
-import LBAlbumItem from '~/components/item/LBAlbumItem';
+import { ThemeContext } from '~/contexts/theme'
+import { SettingsContext } from '~/contexts/settings'
+import mainStyles from '~/styles/main'
+import PresHeaderIcon from '~/components/PresHeaderIcon'
+import LBAlbumItem from '~/components/item/LBAlbumItem'
+import logger from '~/utils/logger'
 
 const AlbumExplorer = () => {
 	const { t } = useTranslation()
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext);
-	const [albums, setAlbums] = React.useState([]);
+	const settings = React.useContext(SettingsContext)
+	const [albums, setAlbums] = React.useState([])
 
 	React.useEffect(() => {
 		fetch(`https://api.listenbrainz.org/1/user/${encodeURIComponent(settings.listenBrainzUser)}/fresh_releases`, { mode: 'cors' })
@@ -39,7 +40,7 @@ const AlbumExplorer = () => {
 					})
 					.flat() || [])
 			})
-			.catch((error) => console.error(error))
+			.catch((error) => logger.error(error))
 	}, [settings.listenBrainzUser])
 
 	const renderItem = React.useCallback(({ item }) => (
@@ -66,7 +67,7 @@ const AlbumExplorer = () => {
 			}
 			renderItem={renderItem}
 		/>
-	);
+	)
 }
 
-export default AlbumExplorer;
+export default AlbumExplorer

@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import { SetUpdateApiContext } from '~/contexts/updateApi';
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { getApi, refreshApi } from '~/utils/api';
-import IconButton from '~/components/button/IconButton';
+import { SetUpdateApiContext } from '~/contexts/updateApi'
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { getApi, refreshApi } from '~/utils/api'
+import IconButton from '~/components/button/IconButton'
+import logger from '~/utils/logger'
 
 const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => {
 	const [favorited, setFavorited] = React.useState(isFavorited)
@@ -25,7 +26,7 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 						setUpdateApi({ path: 'getStarred2', query: null, uid: 1 })
 					})
 			})
-			.catch((e) => console.error(`FavoritedButton: ${e}`))
+			.catch((e) => logger.error(`FavoritedButton: ${e}`))
 	}
 
 	return (
@@ -39,4 +40,4 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 	)
 }
 
-export default FavoritedButton;
+export default FavoritedButton

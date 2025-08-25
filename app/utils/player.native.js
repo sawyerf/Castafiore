@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { urlCover, urlStream } from '~/utils/api';
 import { isSongCached, getPathSong } from '~/utils/cache';
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
+import logger from '~/utils/logger';
 
 export const initService = async () => {
 	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'));
@@ -16,7 +17,7 @@ export const initPlayer = async (songDispatch) => {
 	songDispatch({ type: 'init' })
 	await TrackPlayer.setupPlayer()
 		.catch((error) => {
-			console.error('initPlayer: ', error)
+			logger.error('initPlayer: ', error)
 		})
 	await TrackPlayer.updateOptions({
 		android: {
@@ -117,12 +118,12 @@ const downloadSong = async (urlStream, id) => {
 			global.listCacheSong.push(`${id}.${global.streamFormat}`)
 			return fileUri
 		} else {
-			console.error('downloadSong: Error downloading song', res?.status, contentType, contentLength)
+			logger.error('downloadSong: Error downloading song', res?.status, contentType, contentLength)
 			await FileSystem.deleteAsync(fileUri)
 			return urlStream
 		}
 	} catch (error) {
-		console.error('downloadSong: ', error)
+		logger.error('downloadSong: ', error)
 		return urlStream
 	}
 }

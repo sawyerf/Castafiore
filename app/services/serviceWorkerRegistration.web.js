@@ -1,3 +1,5 @@
+import logger from '~/utils/logger'
+
 const isLocalhost = Boolean(
 	window.location.hostname === "localhost" ||
 	window.location.hostname === "[::1]" ||
@@ -21,7 +23,7 @@ export const register = (config) => {
 				checkValidServiceWorker(swUrl, config);
 
 				navigator.serviceWorker.ready.then(() => {
-					console.log('serviceWorker ready')
+					logger.info('serviceWorker ready')
 				});
 			} else {
 				registerValidSW(swUrl, config);
@@ -46,7 +48,7 @@ const registerValidSW = (swUrl, config) => {
 								config.onUpdate(registration);
 							}
 						} else {
-							console.log("Content is cached for offline use.");
+							logger.info("Content is cached for offline use.");
 
 							if (config && config.onSuccess) {
 								config.onSuccess(registration);
@@ -57,7 +59,7 @@ const registerValidSW = (swUrl, config) => {
 			};
 		})
 		.catch((error) => {
-			console.error("Error during service worker registration:", error);
+			logger.error("Error during service worker registration:", error);
 		});
 }
 
@@ -81,7 +83,7 @@ const checkValidServiceWorker = (swUrl, config) => {
 			}
 		})
 		.catch(() => {
-			console.log("No internet connection found. App is running in offline mode.");
+			logger.info("No internet connection found. App is running in offline mode.");
 		});
 }
 
@@ -92,7 +94,7 @@ export const unregister = () => {
 				registration.unregister();
 			})
 			.catch((error) => {
-				console.error(error.message);
+				logger.error(error.message);
 			});
 	}
 }

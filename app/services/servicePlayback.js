@@ -4,6 +4,7 @@ import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
 import { downloadNextSong } from "~/utils/player"
 import { songReducer } from "~/contexts/song"
+import logger from "~/utils/logger"
 
 let lockDownload = false
 let lastScrobble = {
@@ -70,7 +71,7 @@ module.exports = async () => {
 					})
 					.catch((error) => {
 						lockDownload = false
-						console.error('downloadNextSong error: ', error)
+						logger.error('downloadNextSong error: ', error)
 					})
 			}
 

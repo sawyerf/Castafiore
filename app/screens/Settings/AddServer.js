@@ -1,35 +1,36 @@
-import React from 'react';
-import { Text, View, ScrollView, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import md5 from 'md5';
+import React from 'react'
+import { Text, View, ScrollView, Platform } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import md5 from 'md5'
 
-import { SetConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import ButtonText from '~/components/settings/ButtonText';
-import ButtonSwitch from '~/components/settings/ButtonSwitch';
-import Header from '~/components/Header';
-import mainStyles from '~/styles/main';
-import OptionInput from '~/components/settings/OptionInput';
-import settingStyles from '~/styles/settings';
-import size from '~/styles/size';
+import { SetConfigContext } from '~/contexts/config'
+import { getApi } from '~/utils/api'
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import ButtonText from '~/components/settings/ButtonText'
+import ButtonSwitch from '~/components/settings/ButtonSwitch'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import OptionInput from '~/components/settings/OptionInput'
+import settingStyles from '~/styles/settings'
+import size from '~/styles/size'
+import logger from '~/utils/logger'
 
 const AddServer = ({ navigation }) => {
-	const { t } = useTranslation();
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const setConfig = React.useContext(SetConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
-	const [name, setName] = React.useState('');
-	const [url, setUrl] = React.useState('');
-	const [username, setUsername] = React.useState('');
-	const [password, setPassword] = React.useState('');
-	const [error, setError] = React.useState('');
+	const [name, setName] = React.useState('')
+	const [url, setUrl] = React.useState('')
+	const [username, setUsername] = React.useState('')
+	const [password, setPassword] = React.useState('')
+	const [error, setError] = React.useState('')
 	const [info, setInfo] = React.useState(null)
 	const [showPassword, setShowPassword] = React.useState(false)
 	const [lowSecurity, setLowSecurity] = React.useState(false)
@@ -44,7 +45,7 @@ const AddServer = ({ navigation }) => {
 		setUrl(uri)
 		const salt = Math.random().toString(36).substring(2, 15)
 
-		let query;
+		let query
 		if (lowSecurity) {
 			query = `u=${encodeURI(username)}&p=${encodeURI(password)}&v=1.16.1&c=castafiore`
 		} else {
@@ -66,11 +67,11 @@ const AddServer = ({ navigation }) => {
 					navigation.goBack()
 					navigation.navigate('HomeStack')
 				} else {
-					console.log('Connect api error:', json)
+					logger.error('Connect api error:', json)
 				}
 			})
 			.catch((error) => {
-				console.log('Connect error:', error)
+				logger.info('Connect error:', error)
 				if (error.isApiError || error.message) setError(error.message)
 				else setError('Failed to connect to server')
 			})
@@ -174,4 +175,4 @@ const AddServer = ({ navigation }) => {
 	)
 }
 
-export default AddServer;
+export default AddServer

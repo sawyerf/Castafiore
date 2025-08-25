@@ -179,10 +179,10 @@ export const homeSections = [
 ]
 
 export const getSettings = async () => {
-	const config = await AsyncStorage.getItem('settings')
-	if (config === null) return defaultSettings
+	const rawSettings = await AsyncStorage.getItem('settings')
+	if (rawSettings === null) return defaultSettings
 	try {
-		const data = JSON.parse(config)
+		const data = JSON.parse(rawSettings)
 		if (data.homeOrderV2 && data?.homeOrderV2?.length !== defaultSettings.homeOrderV2.length) {
 			defaultSettings.homeOrderV2.forEach((section) => {
 				if (!data.homeOrderV2.some((s) => s.id === section.id)) {
@@ -193,6 +193,7 @@ export const getSettings = async () => {
 		return {
 			...defaultSettings,
 			...data,
+			homeOrder: undefined,
 		}
 	} catch {
 		return defaultSettings

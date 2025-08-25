@@ -119,8 +119,13 @@ const Settings = ({ navigation }) => {
 						title={t("Informations")}
 						icon="info"
 						onPress={() => navigation.navigate('Settings/Informations')}
-						isLast
 					/>
+					{/* <ButtonMenu
+						title={t("Logs")}
+						icon="file-text"
+						onPress={() => navigation.navigate('Settings/Logs')}
+						isLast
+					/> */}
 				</View>
 			)}
 

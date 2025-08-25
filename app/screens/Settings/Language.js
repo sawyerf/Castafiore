@@ -20,7 +20,7 @@ const languages = [
 	{ lang: 'zhHant', name: '正體中文', color: '#0000AA' },
 ]
 
-const Theme = () => {
+const Language = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
@@ -56,4 +56,4 @@ const Theme = () => {
 	)
 }
 
-export default Theme;
+export default Language;

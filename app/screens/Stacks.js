@@ -30,6 +30,7 @@ import Connect from '~/screens/Settings/Connect';
 import HomeSettings from '~/screens/Settings/Home';
 import InformationsSettings from '~/screens/Settings/Informations';
 import LanguageSettings from '~/screens/Settings/Language';
+import LogsSettings from '~/screens/Settings/Logs';
 import PlayerSettings from '~/screens/Settings/Player';
 import PlaylistsSettings from '~/screens/Settings/Playlists';
 import SharesSettings from '~/screens/Settings/Shares';
@@ -147,6 +148,7 @@ export const SettingsStack = () => {
 			<Stack.Screen name="Settings/Player" component={PlayerSettings} />
 			<Stack.Screen name="Settings/Shares" component={SharesSettings} />
 			<Stack.Screen name="Settings/Language" component={LanguageSettings} />
+			<Stack.Screen name="Settings/Logs" component={LogsSettings} />
 		</Stack.Navigator>
 	)
 }

@@ -66,6 +66,9 @@ module.exports = ({ config }) => {
 							"enforceNavigationBarContrast": false
 						}
 					}
+				],
+				[
+					'./plugins/asyncStorage.js'
 				]
 			]
 		}

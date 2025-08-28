@@ -34,7 +34,8 @@
     "react-native-screens": "~4.11.1",
     "react-native-track-player": "4.1.1-nightly-c46c8fb107e0de61d9b33c28e7228002077b4f20",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-web": "^0.20.0"
+    "react-native-web": "^0.20.0",
+    "@expo/config-plugins": "~10.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

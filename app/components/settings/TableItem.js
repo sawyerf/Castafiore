@@ -13,7 +13,8 @@ const objectToString = (obj) => {
 		if (obj instanceof Array) {
 			return obj.map(value => objectToString(value)).join(', ')
 		} else {
-			return Object.keys(obj).map(key => `${key}: ${objectToString(obj[key])}`).join('\n')
+			// return Object.keys(obj).map(key => `${key}: ${objectToString(obj[key])}`).join('\n')
+			return JSON.stringify(obj, null, 1)
 		}
 	} else if (typeof obj === 'boolean') {
 		return obj ? <Icon name="check" size={size.icon.small} /> : <Icon name="close" size={size.icon.small} />
@@ -30,7 +31,7 @@ const TableItem = ({ title, value, toCopy = null, onLongPress = () => { }, isLas
 
 	const onPress = () => {
 		if (Platform.OS === 'web') {
-			navigator.clipboard.writeText(toCopy || value)
+			navigator.clipboard.writeText(toCopy || objectToString(value))
 			setIsCopied(true)
 			setTimeout(() => setIsCopied(false), 1000)
 		}

@@ -67,6 +67,7 @@ const Artist = ({ navigation, route: { params } }) => {
 		<>
 			<OptionsArtist
 				artist={artist}
+				artistInfo={artistInfo}
 				isOption={isOption}
 				setIsOption={setIsOption}
 			/>

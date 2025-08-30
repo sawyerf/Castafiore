@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Linking } from 'react-native'
 
 import { ConfigContext } from '~/contexts/config'
 import { getApiCacheFirst } from '~/utils/api'
@@ -7,7 +8,7 @@ import { playSong } from '~/utils/player'
 import { SongDispatchContext } from '~/contexts/song'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
-const OptionsArtist = ({ artist, isOption, setIsOption }) => {
+const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
   const songDispatch = React.useContext(SongDispatchContext)
   const config = React.useContext(ConfigContext)
   const { t } = useTranslation()
@@ -53,10 +54,22 @@ const OptionsArtist = ({ artist, isOption, setIsOption }) => {
           onPress: playTopSongs
         },
         {
+          name: t('Open in Last.fm'),
+          icon: 'external-link',
+          onPress: () => {
+            Linking.openURL(artistInfo.lastFmUrl)
+            refOption.current.close()
+          },
+          hidden: !artistInfo?.lastFmUrl
+        },
+        {
           name: t('Info'),
           icon: 'info',
           onPress: () => {
-            refOption.current.showInfo(artist)
+            refOption.current.showInfo({
+              ...artist,
+              ...artistInfo,
+          })
             refOption.current.close()
           }
         }

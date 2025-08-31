@@ -47,8 +47,8 @@ const Album = ({ navigation, route: { params } }) => {
 				imgSrc={urlCover(config, params)}
 				onPressTitle={() => {
 					if (album?.artists?.length > 1) setIsOptArtists(true)
-					else if (album?.artist) navigation.navigate('Artist', { id: album?.artistId, name: album?.artist })
-					else if (params.artistId) navigation.navigate('Artist', { id: params.artistId, name: params.artist })
+					else if (album?.artistId && album?.artist) navigation.navigate('Artist', { id: album?.artistId, name: album?.artist })
+					else if (params.artistId && params.artist) navigation.navigate('Artist', { id: params.artistId, name: params.artist })
 				}}
 			>
 				<FavoritedButton id={params.id} isFavorited={isStarred} style={[presStyles.button, { paddingEnd: 0 }]} size={size.icon.medium} />

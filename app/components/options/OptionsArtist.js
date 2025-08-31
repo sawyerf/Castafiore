@@ -54,6 +54,15 @@ const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
           onPress: playTopSongs
         },
         {
+          name: t('Open in MusicBrainz'),
+          icon: 'external-link',
+          onPress: () => {
+            Linking.openURL('https://musicbrainz.org/artist/' + artistInfo.musicBrainzId)
+            refOption.current.close()
+          },
+          hidden: !artistInfo?.musicBrainzId
+        },
+        {
           name: t('Open in Last.fm'),
           icon: 'external-link',
           onPress: () => {

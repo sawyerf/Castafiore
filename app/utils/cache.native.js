@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as FileSystem from 'expo-file-system'
+import logger from '~/utils/logger'
 
 // API Cache
 export const getCache = async (_cacheName, _key) => {
@@ -42,7 +43,7 @@ export const deleteSongCache = async (_config, songId, streamFormat, _maxBitrate
 		.then(() => {
 			global.listCacheSong = global.listCacheSong.filter(file => file !== `${songId}.${streamFormat}`)
 		})
-		.catch(() => {})
+		.catch(() => { })
 }
 
 export const getListCacheSong = async () => {
@@ -59,12 +60,29 @@ export const getPathSong = (songId, streamFormat) => {
 
 
 const getPathDir = () => {
-	return `${FileSystem.documentDirectory}/cache/${global.folderCache}/songs/`
+	return `${FileSystem.documentDirectory}/cache/${global.config.folderCache}/songs/`
 }
 
 export const initCacheSong = async () => {
+	// An error was in the past where folderCache was undefined
+	// So we need to rename it to avoid losing all cached songs
+	// This can be removed in the future 
+	const info = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}/cache/undefined/`)
+	if (info.exists) {
+		await FileSystem.moveAsync({
+			from: `${FileSystem.documentDirectory}/cache/undefined`,
+			to: `${FileSystem.documentDirectory}/cache/${global.config.folderCache}`
+		})
+			.catch(error => {
+				logger.error('initCacheSong:', error)
+			})
+			.then(() => logger.info('Renamed undefined cache folder to the correct one'))
+	}
+
 	await FileSystem.makeDirectoryAsync(getPathDir(), { intermediates: true })
-		.catch(() => { })
+		.catch(error => {
+			logger.error('initCacheSong:', error)
+		})
 	global.listCacheSong = await getListCacheSong() || []
 }
 

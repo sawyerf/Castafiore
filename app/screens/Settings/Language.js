@@ -11,6 +11,7 @@ import settingStyles from '~/styles/settings';
 import SelectItem from '~/components/settings/SelectItem';
 
 const languages = [
+	{ lang: 'ca', name: 'Català', color: '#FCDD09' },
 	{ lang: 'en', name: 'English', color: '#dc3545' },
 	{ lang: 'fr', name: 'Français', color: '#007bff' },
 	{ lang: 'it', name: 'Italiano', color: '#28a745' },
@@ -55,5 +56,6 @@ const Language = () => {
 		</ScrollView>
 	)
 }
+
 
 export default Language;

@@ -7,7 +7,7 @@ import mainStyles from '~/styles/main';
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size';
 
-const SelectItem = ({ text, onPress, icon, colorIcon = null, isSelect = false, disabled = false }) => {
+const SelectItem = ({ text, onPress, icon = null, emoji = null, colorIcon = null, isSelect = false, disabled = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -15,7 +15,16 @@ const SelectItem = ({ text, onPress, icon, colorIcon = null, isSelect = false, d
 			disabled={disabled}
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, true)])}
 			onPress={onPress}>
-			<Icon name={icon} size={size.icon.tiny} color={colorIcon || theme.primaryText} style={{ marginEnd: 10, opacity: disabled ? 0.5 : 1 }} />
+			{
+				icon &&
+				<Icon name={icon} size={size.icon.tiny} color={colorIcon || theme.primaryText} style={{ marginEnd: 10, opacity: disabled ? 0.5 : 1 }} />
+			}
+			{
+				emoji &&
+				<Text style={{ fontSize: size.text.medium, marginEnd: 10, opacity: disabled ? 0.5 : 1 }}>
+					{emoji}
+				</Text>
+			}
 			<Text
 				numberOfLines={1}
 				style={{

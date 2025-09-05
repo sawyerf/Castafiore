@@ -11,15 +11,15 @@ import settingStyles from '~/styles/settings';
 import SelectItem from '~/components/settings/SelectItem';
 
 const languages = [
-	{ lang: 'en', name: 'English', color: '#dc3545' },
-	{ lang: 'fr', name: 'Français', color: '#007bff' },
-	{ lang: 'it', name: 'Italiano', color: '#28a745' },
-	{ lang: 'ru', name: 'Русский', color: '#ffc107' },
-	{ lang: 'de', name: 'Deutsch', color: '#FFD700' },
-	{ lang: 'ca', name: 'Català', color: '#FCDD09' },
-	{ lang: 'es', name: 'Español', color: '#F1BF00' },
-	{ lang: 'zhHans', name: '简体中文', color: '#FF0000' },
-	{ lang: 'zhHant', name: '正體中文', color: '#0000AA' },
+	{ lang: 'ca', name: 'Català', color: '#FCDD09', flag: '🇨🇦' },
+	{ lang: 'de', name: 'Deutsch', color: '#dddddd', flag: '🇩🇪' },
+	{ lang: 'en', name: 'English', color: '#dc3545', flag: '🇬🇧' },
+	{ lang: 'es', name: 'Español', color: '#af0d12', flag: '🇪🇸' },
+	{ lang: 'fr', name: 'Français', color: '#007bff', flag: '🇫🇷' },
+	{ lang: 'it', name: 'Italiano', color: '#28a745', flag: '🇮🇹' },
+	{ lang: 'ru', name: 'Русский', color: '#ffc107', flag: '🇷🇺' },
+	{ lang: 'zhHans', name: '简体中文', color: '#FF0000', flag: '🇨🇳' },
+	{ lang: 'zhHant', name: '正體中文', color: '#0000AA', flag: '🇹🇼' },
 ]
 
 const Language = () => {
@@ -43,7 +43,7 @@ const Language = () => {
 							<SelectItem
 								key={index}
 								text={lang.name}
-								icon="flag"
+								emoji={lang.flag}
 								colorIcon={lang.color}
 								isSelect={lang.lang == settings.language}
 								onPress={() => {

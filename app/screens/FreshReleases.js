@@ -40,7 +40,7 @@ const AlbumExplorer = () => {
 					})
 					.flat() || [])
 			})
-			.catch((error) => logger.error(error))
+			.catch((error) => logger.error('FreshReleases', error))
 	}, [settings.listenBrainzUser])
 
 	const renderItem = React.useCallback(({ item }) => (

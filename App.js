@@ -35,7 +35,7 @@ const App = () => {
 	Player.useEvent(song, dispatch)
 
 	React.useEffect(() => {
-		logger.info(`App started (version: ${version}, platform: ${Platform.OS} ${Platform.Version})`)
+		logger.info('App', `App started (version: ${version}, platform: ${Platform.OS} ${Platform.Version})`)
 		if (!song.isInit) Player.initPlayer(dispatch)
 		getConfig()
 			.then((config) => {
@@ -81,14 +81,14 @@ const App = () => {
 
 	React.useEffect(() => {
 		i18n.changeLanguage(settings.language)
-			.catch(err => logger.error(err))
+			.catch(err => logger.error('i18n', err))
 	}, [settings.language])
 
 	const saveSettings = React.useCallback((settings) => {
 		setSettings(settings)
 		AsyncStorage.setItem('settings', JSON.stringify(settings))
 			.catch((error) => {
-				logger.error('Save settings error:', error)
+				logger.error('Save settings', error)
 			})
 	}, [settings, setSettings])
 

@@ -1,6 +1,7 @@
-const log = (level, message) => {
+const log = (level, message, source) => {
 	if (!global.logs) global.logs = []
 	global.logs.push({
+		source,
 		level,
 		message: message.join(' '),
 		timestamp: new Date().toISOString(),
@@ -8,19 +9,19 @@ const log = (level, message) => {
 	if (global.logs.length > 1000) global.logs.shift()
 }
 
-const info = (...message) => {
-	log('info', message)
-	console.log(...message)
+const info = (source, ...message) => {
+	log('info', message, source)
+	console.log(`[${source}]`, ...message)
 }
 
-const debug = (...message) => {
-	log('debug', message)
-	console.debug(...message)
+const debug = (source, ...message) => {
+	log('debug', message, source)
+	console.debug(`[${source}]`, ...message)
 }
 
-const error = (...message) => {
-	log('error', message)
-	console.error(...message)
+const error = (source, ...message) => {
+	log('error', message, source)
+	console.error(`[${source}]`, ...message)
 }
 
 const get = () => {

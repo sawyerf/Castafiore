@@ -74,14 +74,14 @@ export const initCacheSong = async () => {
 			to: `${FileSystem.documentDirectory}/cache/${global.config.folderCache}`
 		})
 			.catch(error => {
-				logger.error('initCacheSong:', error)
+				logger.error('initCacheSong', error)
 			})
-			.then(() => logger.info('Renamed undefined cache folder to the correct one'))
+			.then(() => logger.info('initCacheSong', 'Renamed undefined cache folder to the correct one'))
 	}
 
 	await FileSystem.makeDirectoryAsync(getPathDir(), { intermediates: true })
 		.catch(error => {
-			logger.error('initCacheSong:', error)
+			logger.error('initCacheSong', error)
 		})
 	global.listCacheSong = await getListCacheSong() || []
 }

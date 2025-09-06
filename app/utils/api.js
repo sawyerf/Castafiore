@@ -14,7 +14,7 @@ export const getUrl = (config, path, query = '') => {
 	} else if (typeof query === 'object') {
 		encodedQuery = Object.keys(query).map((key) => `${key}=${encodeURIComponent(query[key])}`).join('&')
 	} else {
-		logger.error('getApi: query is not a string or an object')
+		logger.error('getUrl', 'query is not a string or an object')
 		return ''
 	}
 	return `${config.url}/rest/${path}?${config.query}&f=json&${encodedQuery}`
@@ -44,12 +44,12 @@ export const getApi = (config, path, query = '') => {
 				if (json['subsonic-response'] && !json['subsonic-response']?.error) {
 					resolve(json['subsonic-response'])
 				} else {
-					logger.error(`getApi[/rest/${path}]: ${JSON.stringify(json['subsonic-response']?.error)}`)
+					logger.error('getApi', `/rest/${path}: ${JSON.stringify(json['subsonic-response']?.error)}`)
 					reject({ ...json['subsonic-response']?.error, isApiError: true })
 				}
 			})
 			.catch((error) => {
-				logger.error(`getApi[/rest/${path}]: ${error}`)
+				logger.error('getApi', `/rest/${path}: ${error}`)
 				reject({ message: error.message, error, isApiError: false })
 			})
 	})
@@ -57,7 +57,7 @@ export const getApi = (config, path, query = '') => {
 
 export const getCachedAndApi = async (config, path, query = '', setData = () => { }) => {
 	if (!config?.url || !config?.query) {
-		logger.error('getCachedApi: config.url or config.query is not defined')
+		logger.error('getCachedAndApi', 'config.url or config.query is not defined')
 		return
 	}
 
@@ -82,7 +82,7 @@ export const refreshApi = (config, path, query = '') => {
 					.then(() => resolve(json))
 			})
 			.catch((error) => {
-				logger.error(`refreshApi[/rest/${path}]: `, error)
+				logger.error('refreshApi', `/rest/${path}: `, error)
 				reject({ ...error, isApiError: false })
 			})
 	})

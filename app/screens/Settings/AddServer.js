@@ -67,11 +67,11 @@ const AddServer = ({ navigation }) => {
 					navigation.goBack()
 					navigation.navigate('HomeStack')
 				} else {
-					logger.error('Connect api error:', json)
+					logger.error('AddServer', json)
 				}
 			})
 			.catch((error) => {
-				logger.info('Connect error:', error)
+				logger.info('AddServer', error)
 				if (error.isApiError || error.message) setError(error.message)
 				else setError('Failed to connect to server')
 			})

@@ -71,7 +71,7 @@ module.exports = async () => {
 					})
 					.catch((error) => {
 						lockDownload = false
-						logger.error('downloadNextSong error: ', error)
+						logger.error('downloadNextSong', error)
 					})
 			}
 
@@ -87,5 +87,8 @@ module.exports = async () => {
 				}
 			}
 		}
+	})
+	TrackPlayer.addEventListener(Event.PlaybackError, (error) => {
+		logger.error('PlaybackError', error.code, error.message)
 	})
 }

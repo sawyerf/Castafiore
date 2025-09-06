@@ -23,7 +23,7 @@ export const register = (config) => {
 				checkValidServiceWorker(swUrl, config);
 
 				navigator.serviceWorker.ready.then(() => {
-					logger.info('serviceWorker ready')
+					logger.info('serviceWorker', 'serviceWorker ready')
 				});
 			} else {
 				registerValidSW(swUrl, config);
@@ -48,7 +48,7 @@ const registerValidSW = (swUrl, config) => {
 								config.onUpdate(registration);
 							}
 						} else {
-							logger.info("Content is cached for offline use.");
+							logger.info('serviceWorker', "Content is cached for offline use.");
 
 							if (config && config.onSuccess) {
 								config.onSuccess(registration);
@@ -59,7 +59,7 @@ const registerValidSW = (swUrl, config) => {
 			};
 		})
 		.catch((error) => {
-			logger.error("Error during service worker registration:", error);
+			logger.error('serviceWorker', "Error during service worker registration:", error);
 		});
 }
 
@@ -83,7 +83,7 @@ const checkValidServiceWorker = (swUrl, config) => {
 			}
 		})
 		.catch(() => {
-			logger.info("No internet connection found. App is running in offline mode.");
+			logger.info('serviceWorker', "No internet connection found. App is running in offline mode.");
 		});
 }
 
@@ -94,7 +94,7 @@ export const unregister = () => {
 				registration.unregister();
 			})
 			.catch((error) => {
-				logger.error(error.message);
+				logger.error('serviceWorker', error.message);
 			});
 	}
 }

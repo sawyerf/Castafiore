@@ -17,7 +17,7 @@ const newSong = (state, action, isCache = false) => {
 	else global.song = song
 	if (isCache && Platform.OS === 'android') {
 		AsyncStorage.setItem('song', JSON.stringify(song))
-			.catch((error) => logger.error('Error saving song to AsyncStorage:', error))
+			.catch((error) => logger.error('newSong', 'Error saving song to AsyncStorage:', error))
 	}
 	return song
 }
@@ -111,7 +111,7 @@ export const songReducer = (state, action) => {
 				isInit: true,
 			}, true)
 		default:
-			logger.error('Unknown action', action)
+			logger.error('songReducer', 'Unknown action', action)
 			return state
 	}
 }

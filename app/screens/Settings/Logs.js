@@ -17,7 +17,7 @@ const colorLevel = (level) => {
 	return '#6c757d'
 }
 
-const LogItem = ({ level, message, timestamp, isLast = false }) => {
+const LogItem = ({ level, message, timestamp, source, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -48,7 +48,7 @@ const LogItem = ({ level, message, timestamp, isLast = false }) => {
 					marginStart: 10,
 					fontSize: 12,
 					color: theme.secondaryText,
-				}]}>{new Date(timestamp).toLocaleString()}</Text>
+				}]}>{new Date(timestamp).toLocaleString()} · {source}</Text>
 			</View>
 			<Text style={[settingStyles.primaryText(theme), {
 				flex: 1,
@@ -88,6 +88,7 @@ const Logs = () => {
 								level={log.level}
 								message={log.message}
 								timestamp={log.timestamp}
+								source={log.source}
 								isLast={index === logs.length - 1}
 							/>
 						))

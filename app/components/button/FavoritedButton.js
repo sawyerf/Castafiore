@@ -26,7 +26,7 @@ const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => 
 						setUpdateApi({ path: 'getStarred2', query: null, uid: 1 })
 					})
 			})
-			.catch((e) => logger.error(`FavoritedButton: ${e}`))
+			.catch((e) => logger.error('FavoritedButton', `${e}`))
 	}
 
 	return (

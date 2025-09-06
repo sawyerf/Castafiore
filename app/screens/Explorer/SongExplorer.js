@@ -43,7 +43,7 @@ const SongExplorer = () => {
 				setSongs(prev => [...prev, ...newSongs])
 			})
 			.catch(error => {
-				logger.error('Error fetching songs:', error)
+				logger.error('SongExplorer', 'Error fetching songs:', error)
 				setIsLoading(false)
 			})
 	}, [offset])

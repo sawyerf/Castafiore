@@ -17,7 +17,7 @@ export const initPlayer = async (songDispatch) => {
 	songDispatch({ type: 'init' })
 	await TrackPlayer.setupPlayer()
 		.catch((error) => {
-			logger.error('initPlayer: ', error)
+			logger.error('initPlayer', error)
 		})
 	await TrackPlayer.updateOptions({
 		android: {
@@ -118,12 +118,12 @@ const downloadSong = async (urlStream, id) => {
 			global.listCacheSong.push(`${id}.${global.streamFormat}`)
 			return fileUri
 		} else {
-			logger.error('downloadSong: Error downloading song', res?.status, contentType, contentLength)
+			logger.error('downloadSong', 'Error downloading song', res?.status, contentType, contentLength)
 			await FileSystem.deleteAsync(fileUri)
 			return urlStream
 		}
 	} catch (error) {
-		logger.error('downloadSong: ', error)
+		logger.error('downloadSong', error)
 		return urlStream
 	}
 }

@@ -188,7 +188,7 @@ const loadSong = async (config, queue, index) => {
 				.catch(() => { })
 		})
 		.catch((error) => {
-			logger.error(error)
+			logger.error('loadSong', error)
 		})
 	navigator.mediaSession.metadata = new MediaMetadata({
 		title: song.title,

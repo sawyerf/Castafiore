@@ -39,7 +39,7 @@ const AlbumExplorer = () => {
 				setAlbums(prev => [...prev, ...newAlbums])
 			})
 			.catch(error => {
-				logger.error('Error fetching albums:', error)
+				logger.error('AlbumExplorer', 'Error fetching albums:', error)
 				setIsLoading(false)
 			})
 	}, [type, offset])

@@ -75,7 +75,7 @@ const HorizontalList = ({ refresh, id, enable }) => {
 					if (!data?.payload?.listening_activity?.length) return
 					setList(data.payload.listening_activity)
 				})
-				.catch(error => logger.error(error))
+				.catch(error => logger.error('ListenBrainz Stats', error))
 		} else {
 			getCachedAndApi(config, section.path, nquery, (json) => section.getInfo(json, setList))
 		}

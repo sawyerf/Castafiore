@@ -11,7 +11,7 @@ import settingStyles from '~/styles/settings';
 import SelectItem from '~/components/settings/SelectItem';
 
 const languages = [
-	{ lang: 'ca', name: 'Català', color: '#FCDD09', flag: '🇨🇦' },
+	{ lang: 'ca', name: 'Català', color: '#FCDD09', flag: '🇦🇩' },
 	{ lang: 'de', name: 'Deutsch', color: '#dddddd', flag: '🇩🇪' },
 	{ lang: 'en', name: 'English', color: '#dc3545', flag: '🇬🇧' },
 	{ lang: 'es', name: 'Español', color: '#af0d12', flag: '🇪🇸' },

@@ -1,44 +1,46 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import Home from '~/screens/tabs/Home';
-import Playlists from '~/screens/tabs/Playlists';
-import Search from '~/screens/tabs/Search';
-import Settings from '~/screens/tabs/Settings';
+import Home from '~/screens/tabs/Home'
+import Playlists from '~/screens/tabs/Playlists'
+import Search from '~/screens/tabs/Search'
+import Settings from '~/screens/tabs/Settings'
 
-import Album from '~/screens/Pres/Album';
-import Artist from '~/screens/Pres/Artist';
-import ArtistAlbums from '~/screens/Pres/ArtistAlbums';
-import Favorited from '~/screens/Pres/Favorited';
-import Genre from '~/screens/Pres/Genre';
-import Playlist from '~/screens/Pres/Playlist';
-import Songs from '~/screens/Pres/Songs';
+import Album from '~/screens/Pres/Album'
+import Artist from '~/screens/Pres/Artist'
+import ArtistAlbums from '~/screens/Pres/ArtistAlbums'
+import Favorited from '~/screens/Pres/Favorited'
+import Genre from '~/screens/Pres/Genre'
+import Playlist from '~/screens/Pres/Playlist'
+import Songs from '~/screens/Pres/Songs'
 
-import EditPlaylist from '~/screens/EditPlaylist';
-import UpdateRadio from '~/screens/UpdateRadio';
+import EditPlaylist from '~/screens/EditPlaylist'
+import UpdateRadio from '~/screens/UpdateRadio'
 
-import AlbumExplorer from '~/screens/Explorer/AlbumExplorer';
-import ArtistExplorer from '~/screens/Explorer/ArtistExplorer';
-import SongExplorer from '~/screens/Explorer/SongExplorer';
-import FreshReleases from '~/screens/FreshReleases';
-import Info from '~/screens/Info';
-import ShowAll from '~/screens/ShowAll';
+import AlbumExplorer from '~/screens/Explorer/AlbumExplorer'
+import ArtistExplorer from '~/screens/Explorer/ArtistExplorer'
+import SongExplorer from '~/screens/Explorer/SongExplorer'
+import FreshReleases from '~/screens/FreshReleases'
+import Info from '~/screens/Info'
+import ShowAll from '~/screens/ShowAll'
 
-import AddServer from '~/screens/Settings/AddServer';
-import CacheSettings from '~/screens/Settings/Cache';
-import Connect from '~/screens/Settings/Connect';
-import HomeSettings from '~/screens/Settings/Home';
-import InformationsSettings from '~/screens/Settings/Informations';
-import LanguageSettings from '~/screens/Settings/Language';
-import LogsSettings from '~/screens/Settings/Logs';
-import PlayerSettings from '~/screens/Settings/Player';
-import PlaylistsSettings from '~/screens/Settings/Playlists';
-import SharesSettings from '~/screens/Settings/Shares';
-import ThemeSettings from '~/screens/Settings/Theme';
+import SearchMore from '~/screens/SearchMore'
 
-import { ThemeContext } from '~/contexts/theme';
+import AddServer from '~/screens/Settings/AddServer'
+import CacheSettings from '~/screens/Settings/Cache'
+import Connect from '~/screens/Settings/Connect'
+import HomeSettings from '~/screens/Settings/Home'
+import InformationsSettings from '~/screens/Settings/Informations'
+import LanguageSettings from '~/screens/Settings/Language'
+import LogsSettings from '~/screens/Settings/Logs'
+import PlayerSettings from '~/screens/Settings/Player'
+import PlaylistsSettings from '~/screens/Settings/Playlists'
+import SharesSettings from '~/screens/Settings/Shares'
+import ThemeSettings from '~/screens/Settings/Theme'
 
-const Stack = createNativeStackNavigator();
+import { ThemeContext } from '~/contexts/theme'
+
+const Stack = createNativeStackNavigator()
 
 export const HomeStack = () => {
 	const theme = React.useContext(ThemeContext)
@@ -92,6 +94,7 @@ export const SearchStack = () => {
 			<Stack.Screen name="AlbumExplorer" component={AlbumExplorer} />
 			<Stack.Screen name="SongExplorer" component={SongExplorer} />
 			<Stack.Screen name="Info" component={Info} />
+			<Stack.Screen name="SearchMore" component={SearchMore} />
 		</Stack.Navigator>
 	)
 }

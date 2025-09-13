@@ -16,6 +16,7 @@ import mainStyles from '~/styles/main';
 import SongsList from '~/components/lists/SongsList';
 import HistoryItem from '~/components/item/HistoryItem';
 import size from '~/styles/size';
+import SectionTitle from '../../components/SectionTitle';
 
 const STATES = {
 	INIT: 'init',
@@ -113,23 +114,35 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				{
 					results.artist &&
 					<>
-						<Text style={mainStyles.titleSection(theme)}>{t('Artists')}</Text>
-						<HorizontalArtists artists={results.artist} onPress={(item) => addHistory({...item, mediaType: 'artist'})} />
+						<SectionTitle
+							title={t('Artists')}
+							onPress={() => navigation.navigate('SearchMore', { type: 'artist', query, items: results.artist })}
+							button={results.artist.length === 20}
+						/>
+						<HorizontalArtists artists={results.artist} onPress={(item) => addHistory({ ...item, mediaType: 'artist' })} />
 					</>
 				}
 				{
 					results.album &&
 					<>
-						<Text style={mainStyles.titleSection(theme)}>{t('Albums')}</Text>
-						<HorizontalAlbums albums={results.album} onPress={(item) => addHistory({...item, mediaType: 'album'})} />
+						<SectionTitle
+							title={t('Albums')}
+							onPress={() => navigation.navigate('SearchMore', { type: 'album', query, items: results.album })}
+							button={results.album.length === 20}
+						/>
+						<HorizontalAlbums albums={results.album} onPress={(item) => addHistory({ ...item, mediaType: 'album' })} />
 					</>
 				}
 				{
 					results.song &&
 					<>
-						<Text style={mainStyles.titleSection(theme)}>{t('Songs')}</Text>
+						<SectionTitle
+							title={t('Songs')}
+							onPress={() => navigation.navigate('SearchMore', { type: 'song', query, items: results.song })}
+							button={results.song.length === 20}
+						/>
 						<SongsList songs={results.song} onPress={(item) => {
-							addHistory({...item, mediaType: 'song'})
+							addHistory({ ...item, mediaType: 'song' })
 							return true
 						}} />
 					</>

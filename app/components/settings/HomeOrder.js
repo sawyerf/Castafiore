@@ -12,6 +12,8 @@ const HomeOrder = () => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
+	const [indexMoving, setIndexMoving] = React.useState(-1)
+	const [moveToIndex, setMoveToIndex] = React.useState(-1)
 
 	const moveElement = (index, direction) => {
 		let newIndex = index + direction
@@ -28,7 +30,7 @@ const HomeOrder = () => {
 		}
 		setSettings({ ...settings, homeOrderV2: newHomeOrder })
 	}
-
+	
 	const onPressHomeOrder = (index) => {
 		const newHomeOrder = [...settings.homeOrderV2]
 		newHomeOrder[index].enable = !newHomeOrder[index].enable
@@ -47,12 +49,17 @@ const HomeOrder = () => {
 						onPanResponderGrant: (_, gestureState) => {
 							startMove.current = gestureState.y0
 							position.setValue(0)
+							setIndexMoving(index)
+							setMoveToIndex(index)
 						},
 						onPanResponderMove: (_, gestureState) => {
 							const move = gestureState.moveY - startMove.current
 							position.setValue(move)
+							setMoveToIndex(index + Math.round(move / 50))
 						},
 						onPanResponderRelease: () => {
+							setIndexMoving(-1)
+							setMoveToIndex(-1)
 							if (position._value === 0) {
 								onPressHomeOrder(index)
 							}
@@ -63,6 +70,14 @@ const HomeOrder = () => {
 					})
 					const section = React.useMemo(() => homeSections.find(s => s.id === value.id), [value.id])
 
+					const translateY = () => {
+						if (index === indexMoving) return position
+						if (indexMoving === -1) return 0
+						if (index > indexMoving && index <= moveToIndex) return -50
+						if (index < indexMoving && index >= moveToIndex) return 50
+						return 0
+					}
+
 					return (
 						<Animated.View
 							key={index}
@@ -70,7 +85,7 @@ const HomeOrder = () => {
 								settingStyles.optionItem(theme, index == settings.homeOrderV2.length - 1),
 								{
 									cursor: 'pointer',
-									transform: [{ translateY: position }]
+									transform: [{ translateY: translateY() }]
 								}
 							]}
 						>

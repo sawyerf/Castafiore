@@ -8,8 +8,6 @@ import { useTranslation } from 'react-i18next'
 import { ThemeContext } from '~/contexts/theme'
 import { getApiNetworkFirst } from '~/utils/api'
 import { ConfigContext } from '~/contexts/config'
-import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 import ExplorerItem from '~/components/item/ExplorerItem'
@@ -18,38 +16,25 @@ import Header from '~/components/Header'
 
 const PAGE_SIZE = 20
 
-const SearchMore = ({ route: { params: { query, results, type } } }) => {
+const GenreAlbum = ({ route: { params: { name, albums } } }) => {
   const { t } = useTranslation()
   const insets = useSafeAreaInsets()
   const theme = React.useContext(ThemeContext)
   const navigation = useNavigation()
   const config = React.useContext(ConfigContext)
-  const songDispatch = React.useContext(SongDispatchContext)
-  const [items, setItems] = React.useState(results || [])
-  const [offset, setOffset] = React.useState(results?.length || 0)
+  const [items, setItems] = React.useState(albums || [])
+  const [offset, setOffset] = React.useState(albums?.length || 0)
   const [isLoading, setIsLoading] = React.useState(false)
-
-  const getParams = (type) => {
-    if (type === 'album') return { query, artistCount: 0, songCount: 0, albumCount: PAGE_SIZE, albumOffset: offset }
-    if (type === 'artist') return { query, artistCount: PAGE_SIZE, songCount: 0, albumCount: 0, artistOffset: offset }
-    if (type === 'song') return { query, artistCount: 0, songCount: PAGE_SIZE, albumCount: 0, songOffset: offset }
-  }
 
   React.useEffect(() => {
     setIsLoading(true)
-    getApiNetworkFirst(config, 'search3', getParams(type))
+    getApiNetworkFirst(config, 'getAlbumList2', { type: 'byGenre', genre: name, size: 20, offset })
       .then(json => {
         setIsLoading(false)
-        if (type === 'album') {
-          setItems(prev => [...prev, ...(json?.searchResult3?.album || [])])
-        } else if (type === 'artist') {
-          setItems(prev => [...prev, ...(json?.searchResult3?.artist || [])])
-        } else if (type === 'song') {
-          setItems(prev => [...prev, ...(json?.searchResult3?.song || [])])
-        }
+        setItems(prev => [...prev, ...(json?.albumList2?.album || [])])
       })
       .catch(error => {
-        logger.error('SearchMore', 'Error fetching items:', error)
+        logger.error('GenreAlbum', 'Error fetching items:', error)
         setIsLoading(false)
       })
   }, [offset])
@@ -60,20 +45,13 @@ const SearchMore = ({ route: { params: { query, results, type } } }) => {
     }
   }
 
-  const goTo = (item, index) => {
-    if (type === 'album') navigation.navigate('Album', item)
-    if (type === 'artist') navigation.navigate('Artist', item)
-    if (type === 'song') playSong(config, songDispatch, items, index)
-  }
-
-  const renderItem = React.useCallback(({ item, index }) => (
+  const renderItem = React.useCallback(({ item }) => (
     <ExplorerItem
       item={item}
       title={item.name || item.title}
-      subTitle={type !== 'artist' ? item.artist : ''}
-      onPress={() => goTo(item, index)}
+      subTitle={item.artist}
+      onPress={() => navigation.navigate('Album', { id: item.id, title: item.title, artist: item.artist })}
       isFavorited={item.starred}
-      borderRadius={type === 'artist' ? size.radius.circle : undefined}
     />
   ), [items, config])
 
@@ -120,7 +98,7 @@ const SearchMore = ({ route: { params: { query, results, type } } }) => {
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.1}
       ListHeaderComponent={
-        <Header title={t("Search")} />
+        <Header title={`${t('Albums')} · ${name}`} />
       }
       ListFooterComponent={renderFooter}
       renderItem={renderItem}
@@ -144,4 +122,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SearchMore
+export default GenreAlbum

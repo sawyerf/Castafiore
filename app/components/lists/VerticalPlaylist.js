@@ -8,7 +8,7 @@ import { ConfigContext } from '~/contexts/config';
 import { urlCover } from '~/utils/api';
 import { ThemeContext } from '~/contexts/theme';
 import ImageError from '~/components/ImageError';
-import OptionsPlaylist from '~/components/options/OptionsPlaylist';
+import OptionsPlaylists from '~/components/options/OptionsPlaylists';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
 
@@ -61,7 +61,7 @@ const VerticalPlaylist = ({ playlists, onRefresh }) => {
 				})
 			}
 
-			<OptionsPlaylist
+			<OptionsPlaylists
 				playlists={playlists}
 				indexOption={indexOption}
 				setIndexOption={setIndexOption}

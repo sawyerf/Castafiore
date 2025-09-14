@@ -19,7 +19,7 @@ import OptionText from '~/components/settings/OptionText';
 import presStyles from '~/styles/pres';
 import settingStyles from '~/styles/settings';
 
-const Playlist = ({ route: { params } }) => {
+const EditPlaylist = ({ route: { params } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
@@ -110,4 +110,4 @@ const Playlist = ({ route: { params } }) => {
 	);
 }
 
-export default Playlist;
+export default EditPlaylist;

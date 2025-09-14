@@ -1,30 +1,29 @@
-import React from 'react';
-import { Text, View, TextInput, Pressable } from 'react-native';
+import React from 'react'
 import { LegendList } from "@legendapp/list"
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApi, urlCover, useCachedAndApi } from '~/utils/api';
-import { SettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import BackButton from '~/components/button/BackButton';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
-import OptionsSongsList from '~/components/options/OptionsSongsList';
-import presStyles from '~/styles/pres';
-import RandomButton from '~/components/button/RandomButton';
-import SongItem from '~/components/item/SongItem';
+import { ConfigContext } from '~/contexts/config'
+import { urlCover, useCachedAndApi } from '~/utils/api'
+import { SettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import PresHeader from '~/components/PresHeader'
+import mainStyles from '~/styles/main'
+import OptionsSongsList from '~/components/options/OptionsSongsList'
+import presStyles from '~/styles/pres'
+import RandomButton from '~/components/button/RandomButton'
+import SongItem from '~/components/item/SongItem'
+import OptionsPlaylist from '../../components/options/OptionsPlaylist'
 
 const Playlist = ({ route: { params } }) => {
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
+	const { t } = useTranslation()
+	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
 	const [info, setInfo] = React.useState(null)
-	const [title, setTitle] = React.useState(null)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
+	const [isOption, setIsOption] = React.useState(false)
 
 	const [songs, refresh] = useCachedAndApi([], 'getPlaylist', `id=${params.playlist.id}`, (json, setData) => {
 		setInfo(json?.playlist)
@@ -42,7 +41,7 @@ const Playlist = ({ route: { params } }) => {
 				paddingHorizontal: 20,
 			}}
 		/>
-	), [songs]);
+	), [songs])
 
 	return (
 		<>
@@ -56,48 +55,21 @@ const Playlist = ({ route: { params } }) => {
 				estimatedItemSize={60}
 				ListHeaderComponent={
 					<>
-						<BackButton />
-						<ImageError
-							style={[presStyles.cover, { backgroundColor: theme.secondaryBack }]}
-							source={{ uri: urlCover(config, params.playlist) }}
-						/>
-						<View style={presStyles.headerContainer}>
-							<View style={{ flex: 1 }}>
-								{
-									title != null ? (
-										<TextInput
-											style={[presStyles.title(theme), { outline: 'none' }]}
-											value={title}
-											onChangeText={text => setTitle(text)}
-											autoFocus={true}
-											onSubmitEditing={() => {
-												getApi(config, 'updatePlaylist', { playlistId: params.playlist.id, name: title })
-													.then(() => {
-														setTitle(null);
-														refresh();
-													})
-													.catch(() => { });
-											}}
-											onBlur={() => setTitle(null)}
-										/>
-									) : (
-										<Pressable
-											style={mainStyles.opacity}
-											onLongPress={() => setTitle(info.name)}
-											delayLongPress={200}
-										>
-											<Text style={presStyles.title(theme)} numberOfLines={2}>
-												{info?.name || params.playlist?.name}
-											</Text>
-										</Pressable>
-									)
-								}
-								<Text style={presStyles.subTitle(theme)}>
-									{((info?.duration || params?.playlist?.duration) / 60) | 1} {t('minutes')} · {info?.songCount || params?.playlist?.songCount} {t('songs')}
-								</Text>
-							</View>
+						<PresHeader
+							title={info?.name || params.playlist.name}
+							subTitle={`${((info?.duration || params?.playlist?.duration) / 60) | 1} ${t('minutes')} · ${info?.songCount || params?.playlist?.songCount} ${t('songs')}`}
+							imgSrc={urlCover(config, params.playlist)}
+							onPressOption={() => {
+								setIsOption(true)
+							}}
+						>
 							<RandomButton songList={songs} style={presStyles.button} />
-						</View>
+						</PresHeader>
+						<OptionsPlaylist
+							playlist={info}
+							open={isOption}
+							onClose={() => setIsOption(false)}
+						/>
 					</>
 				}
 				renderItem={renderItem}
@@ -110,7 +82,7 @@ const Playlist = ({ route: { params } }) => {
 				idPlaylist={params.playlist.id}
 			/>
 		</>
-	);
+	)
 }
 
-export default Playlist;
+export default Playlist

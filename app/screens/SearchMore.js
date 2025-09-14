@@ -75,7 +75,7 @@ const SearchMore = ({ route: { params: { query, results, type } } }) => {
       isFavorited={item.starred}
       borderRadius={type === 'artist' ? size.radius.circle : undefined}
     />
-  ), [])
+  ), [items, config])
 
 
   const renderActivityIndicator = () => {

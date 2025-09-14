@@ -17,22 +17,22 @@ import presStyles from '~/styles/pres';
 import SongsList from '~/components/lists/SongsList';
 import size from '~/styles/size';
 
-const Genre = ({ route: { params } }) => {
+const Genre = ({ route: { params: { name, albumCount = 0, songCount = 0 } } }) => {
 	const insets = useSafeAreaInsets();
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 
-	const [albums] = useCachedAndApi([], 'getAlbumList2', { type: 'byGenre', genre: params.genre.value }, (json, setData) => {
+	const [albums] = useCachedAndApi([], 'getAlbumList2', { type: 'byGenre', genre: name, size: 20 }, (json, setData) => {
 		setData(json?.albumList2?.album)
 	})
 
-	const [songs] = useCachedAndApi([], 'getSongsByGenre', { genre: params.genre.value, count: 50 }, (json, setData) => {
+	const [songs] = useCachedAndApi([], 'getSongsByGenre', { genre: name, count: 50 }, (json, setData) => {
 		setData(json?.songsByGenre?.song)
 	})
 
 	const getRandomSongs = () => {
-		getApiNetworkFirst(config, 'getRandomSongs', { genre: params.genre.value, count: 50 })
+		getApiNetworkFirst(config, 'getRandomSongs', { genre: name, count: 50 })
 			.then((json) => {
 				const songs = json.randomSongs?.song
 				if (!songs) return
@@ -51,12 +51,12 @@ const Genre = ({ route: { params } }) => {
 			<View
 				style={styles.cover}
 			>
-				<Text style={styles.title}>{params.genre.value}</Text>
+				<Text style={styles.title}>{name}</Text>
 			</View>
 			<View style={presStyles.headerContainer}>
 				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)}><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> {params.genre.value}</Text>
-					<Text style={presStyles.subTitle(theme)}>{params.genre?.albumCount || 0} albums · {params.genre?.songCount || 0} songs </Text>
+					<Text style={presStyles.title(theme)}><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> {name}</Text>
+					<Text style={presStyles.subTitle(theme)}>{albumCount || 0} albums · {songCount || 0} songs </Text>
 				</View>
 				<IconButton
 					style={[presStyles.button, { justifyContent: 'flex-start', paddingStart: 20, paddingEnd: 20 }]}

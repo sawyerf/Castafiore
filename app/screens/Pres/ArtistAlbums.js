@@ -7,7 +7,7 @@ import { ThemeContext } from '~/contexts/theme';
 import mainStyles from '~/styles/main';
 import Header from '~/components/Header';
 import ExplorerItem from '~/components/item/ExplorerItem';
-import OptionsAlbum from '~/components/options/OptionsAlbum';
+import OptionsAlbums from '~/components/options/OptionsAlbums';
 
 
 const AristAlbums = ({ navigation, route: { params: { albums } } }) => {
@@ -44,7 +44,7 @@ const AristAlbums = ({ navigation, route: { params: { albums } } }) => {
 				ListHeaderComponent={<Header title={t('Albums')} />}
 				renderItem={renderItem}
 			/>
-			<OptionsAlbum
+			<OptionsAlbums
 				albums={albums}
 				indexOptions={indexOptions}
 				setIndexOptions={setIndexOptions}

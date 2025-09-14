@@ -12,6 +12,7 @@ export const clearCache = async () => {
 		'coverArt',
 		'images',
 		'lyrics',
+		'apiLongResponse',
 	]
 	keys.forEach(async (key) => {
 		await window.caches.delete(key)

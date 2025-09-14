@@ -1,57 +1,76 @@
-
 import React from 'react'
 import { Platform, Share } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { getApi } from '~/utils/api'
 import { ConfigContext } from '~/contexts/config'
-import OptionsPopup from '~/components/popup/OptionsPopup'
+import { getApi } from '~/utils/api'
+import { getApiNetworkFirst } from '~/utils/api'
 import { playSong } from '~/utils/player'
 import { SongDispatchContext } from '~/contexts/song'
-import { getApiNetworkFirst } from '~/utils/api'
+import OptionsPopup from '~/components/popup/OptionsPopup'
 
-const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
+const OptionsAlbum = ({ album, isOpen, onClose }) => {
   const { t } = useTranslation()
   const navigation = useNavigation()
   const config = React.useContext(ConfigContext)
   const refOption = React.useRef()
   const songDispatch = React.useContext(SongDispatchContext)
 
-	const playSimilarSongs = () => {
-		getApiNetworkFirst(config, 'getSimilarSongs', `id=${albums[indexOptions].id}&count=50`)
-			.then((json) => {
-				if (json.similarSongs?.song) playSong(config, songDispatch, json.similarSongs.song, 0)
-			})
-			.catch(() => { })
-		refOption.current.close()
-	}
+  const playSimilarSongs = () => {
+    getApiNetworkFirst(config, 'getSimilarSongs', `id=${album.id}&count=50`)
+      .then((json) => {
+        if (json.similarSongs?.song) playSong(config, songDispatch, json.similarSongs.song, 0)
+      })
+      .catch(() => { })
+    refOption.current.close()
+  }
 
+  if (!album) return null
   return (
     <OptionsPopup
       ref={refOption}
-      visible={indexOptions >= 0}
-      close={() => { setIndexOptions(-1) }}
-      item={indexOptions >= 0 ? albums[indexOptions] : null}
+      visible={isOpen}
+      close={() => {
+        onClose()
+				refOption.current.clearVirtualOptions()
+      }}
+      item={album}
       options={[
         {
           name: t('Play similar songs'),
-					icon: 'play',
-					onPress: playSimilarSongs
+          icon: 'play',
+          onPress: playSimilarSongs
         },
         {
-          name: t('Go to artist'),
-          icon: 'user',
+          name: t('Go to genre'),
+          icon: 'tag',
           onPress: () => {
-            refOption.current.close()
-            navigation.navigate('Artist', { id: albums[indexOptions].artistId, name: albums[indexOptions].artist })
-          }
+            if (album.genres?.length > 1) {
+              refOption.current.setVirtualOptions([
+                {
+                  name: t('Add to playlist'),
+                },
+                ...album.genres.map((genre) => ({
+                  name: genre.name,
+                  icon: 'tag',
+                  onPress: () => {
+                    navigation.navigate('Genre', { name: genre.name })
+                    refOption.current.close()
+                  }
+                }))
+              ])
+            } else {
+              navigation.navigate('Genre', { name: album.genres[0].name })
+            }
+          },
+          hidden: !album.genres?.length
         },
         {
           name: t('Share'),
           icon: 'share',
           onPress: () => {
-            getApi(config, 'createShare', { id: albums[indexOptions].id })
+            getApi(config, 'createShare', { id: album.id })
               .then((json) => {
                 if (json.shares.share.length > 0) {
                   if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
@@ -67,7 +86,7 @@ const OptionsAlbum = ({ albums, indexOptions, setIndexOptions }) => {
           icon: 'info',
           onPress: () => {
             refOption.current.close()
-            refOption.current.showInfo(albums[indexOptions])
+            refOption.current.showInfo(album)
           }
         }
       ]}

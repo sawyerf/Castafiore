@@ -1,18 +1,18 @@
-import React from 'react';
-import { Text, StyleSheet, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import { Text, StyleSheet, Pressable } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
-import ImageError from '~/components/ImageError';
-import CustomFlat from '~/components/lists/CustomFlat';
-import mainStyles from '~/styles/main';
-import OptionsAlbum from '~/components/options/OptionsAlbum';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/api'
+import ImageError from '~/components/ImageError'
+import CustomFlat from '~/components/lists/CustomFlat'
+import mainStyles from '~/styles/main'
+import OptionsAlbums from '~/components/options/OptionsAlbums'
+import size from '~/styles/size'
 
 const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
-	const navigation = useNavigation();
+	const navigation = useNavigation()
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
@@ -38,7 +38,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 			<Text numberOfLines={1} style={styles.titleAlbum(theme)}>{item.name || item.album || item.title}</Text>
 			<Text numberOfLines={1} style={styles.artist(theme)}>{year ? item.year : (item.artist || '-')}</Text>
 		</Pressable>
-	), [theme, config, onPress]);
+	), [theme, config, onPress])
 
 	return (
 		<>
@@ -47,7 +47,7 @@ const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 				renderItem={renderItem}
 				widthItem={size.image.large + 10}
 			/>
-			<OptionsAlbum
+			<OptionsAlbums
 				albums={albums}
 				indexOptions={indexOptions}
 				setIndexOptions={setIndexOptions}
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default HorizontalAlbums;
+export default HorizontalAlbums

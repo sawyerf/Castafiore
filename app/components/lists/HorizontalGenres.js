@@ -14,7 +14,7 @@ const HorizontalGenres = ({ genres }) => {
 	const renderItem = React.useCallback(({ item }) => (
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.genreBox(theme)])}
-			onPress={() => navigation.navigate('Genre', { genre: item })}
+			onPress={() => navigation.navigate('Genre', { name: item.value, songCount: item.songCount, albumCount: item.albumCount })}
 		>
 			<Text numberOfLines={1} style={styles.genreText(theme)}>{item.value}</Text>
 		</Pressable>

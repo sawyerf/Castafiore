@@ -36,6 +36,7 @@ const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
     refOption.current.close()
   }
 
+  if (!artist) return null
   return (
     <OptionsPopup
       ref={refOption}

@@ -14,6 +14,7 @@ import SongsList from '~/components/lists/SongsList'
 import size from '~/styles/size'
 import PresHeader from '~/components/PresHeader'
 import OptionsMultiArtists from '~/components/options/OptionsMultiArtists'
+import OptionsAlbum from '~/components/options/OptionsAlbum'
 
 const Album = ({ navigation, route: { params } }) => {
 	const insets = useSafeAreaInsets()
@@ -22,6 +23,7 @@ const Album = ({ navigation, route: { params } }) => {
 	const [isStarred, setStarred] = React.useState(params.starred || false)
 	const [album, setAlbum] = React.useState(null)
 	const [isOptArtists, setIsOptArtists] = React.useState(false)
+	const [isOptAlbum, setIsOptAlbum] = React.useState(false)
 
 	const [songs] = useCachedAndApi([], 'getAlbum', { id: params.id}, (json, setData) => {
 		setStarred(json?.album?.starred)
@@ -45,6 +47,7 @@ const Album = ({ navigation, route: { params } }) => {
 				title={album?.name || album?.album || album?.title || params.name || params.album || params.title}
 				subTitle={album?.artist || params.artist || '-'}
 				imgSrc={urlCover(config, params)}
+				onPressOption={() => setIsOptAlbum(true)}
 				onPressTitle={() => {
 					if (album?.artists?.length > 1) setIsOptArtists(true)
 					else if (album?.artistId && album?.artist) navigation.navigate('Artist', { id: album?.artistId, name: album?.artist })
@@ -54,6 +57,11 @@ const Album = ({ navigation, route: { params } }) => {
 				<FavoritedButton id={params.id} isFavorited={isStarred} style={[presStyles.button, { paddingEnd: 0 }]} size={size.icon.medium} />
 				<RandomButton songList={songs} size={size.icon.medium} />
 			</PresHeader>
+			<OptionsAlbum
+				album={album || params}
+				isOpen={isOptAlbum}
+				onClose={() => setIsOptAlbum(false)}
+			/>
 			<OptionsMultiArtists
 				artists={album?.artists || params.artists}
 				close={() => setIsOptArtists(false)}

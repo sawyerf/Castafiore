@@ -9,41 +9,32 @@ import { getApiNetworkFirst } from '~/utils/api'
 import { ConfigContext } from '~/contexts/config'
 import SongItem from '~/components/item/SongItem'
 import mainStyles from '~/styles/main'
-import PresHeaderIcon from '~/components/PresHeaderIcon'
+import Header from '~/components/Header'
 import size from '~/styles/size'
 import logger from '~/utils/logger'
 
-const PAGE_SIZE = 100
+const PAGE_SIZE = 50
 
-const SongExplorer = () => {
+const GenreSong = ({ route: { params: { genre, items } } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
-	const [songs, setSongs] = React.useState([])
-	const [offset, setOffset] = React.useState(0)
+	const [songs, setSongs] = React.useState(items || [])
+	const [offset, setOffset] = React.useState(items?.length || 0)
 	const [isLoading, setIsLoading] = React.useState(false)
 
 	React.useEffect(() => {
 		setIsLoading(true)
-		getApiNetworkFirst(config, 'search3', {
-			query: '',
-			size: PAGE_SIZE,
-			songOffset: offset,
-			songCount: PAGE_SIZE,
-			albumOffset: 0,
-			albumCount: 0,
-			artistOffset: 0,
-			artistCount: 0,
-		})
+		getApiNetworkFirst(config, 'getSongsByGenre', { genre, count: PAGE_SIZE, offset })
 			.then(json => {
 				setIsLoading(false)
-				const newSongs = json?.searchResult3?.song || []
+				const newSongs = json?.songsByGenre?.song || []
 				if (newSongs.length === 0) return
 				setSongs(prev => [...prev, ...newSongs])
 			})
 			.catch(error => {
-				logger.error('SongExplorer', 'Error fetching songs:', error)
+				logger.error('GenreSong', 'Error fetching songs:', error)
 				setIsLoading(false)
 			})
 	}, [offset])
@@ -98,7 +89,7 @@ const SongExplorer = () => {
 			data={songs}
 			keyExtractor={(_, index) => index}
 			style={mainStyles.mainContainer(theme)}
-			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 60 * songs.length + 410 }]}
+			contentContainerStyle={[mainStyles.contentMainContainer(insets, false), { minHeight: 60 * songs.length + 100 + 80 }]}
 			waitForInitialLayout={false}
 			recycleItems={true}
 			estimatedItemSize={80}
@@ -109,11 +100,7 @@ const SongExplorer = () => {
 			onEndReached={handleEndReached}
 			onEndReachedThreshold={0.1}
 			ListHeaderComponent={
-				<PresHeaderIcon
-					title={t("Songs")}
-					subTitle={t("Explore")}
-					icon="music"
-				/>
+				<Header title={t("Songs")} />
 			}
 			ListFooterComponent={renderFooter}
 			renderItem={renderItem}
@@ -137,4 +124,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default SongExplorer
+export default GenreSong

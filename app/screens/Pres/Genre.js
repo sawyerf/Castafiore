@@ -99,7 +99,11 @@ const Genre = ({ route: { params: { name, albumCount = 0, songCount = 0 } } }) =
 			<HorizontalAlbums albums={albums} />
 			<SectionTitle title={t("Artists")} />
 			<HorizontalArtists artists={Object.entries(artists).map(([id, name]) => ({ id, name }))} />
-			<Text style={mainStyles.titleSection(theme)}>Songs</Text>
+			<SectionTitle
+				title={t("Songs")}
+				onPress={() => navigation.navigate('GenreSong', { genre: name, items: songs })}
+				button={songs.length === 50}
+			/>
 			<SongsList songs={songs} />
 		</ScrollView>
 	)

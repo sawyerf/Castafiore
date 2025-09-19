@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, View, ScrollView, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ConfigContext } from '~/contexts/config'
@@ -12,6 +13,7 @@ import { ThemeContext } from '~/contexts/theme'
 import { useCachedAndApi } from '~/utils/api'
 import BackButton from '~/components/button/BackButton'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
+import HorizontalArtists from '~/components/lists/HorizontalArtists'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
 import presStyles from '~/styles/pres'
@@ -25,14 +27,35 @@ const Genre = ({ route: { params: { name, albumCount = 0, songCount = 0 } } }) =
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 	const navigation = useNavigation()
+	const [artists, setArtists] = React.useState({})
+	const { t } = useTranslation()
 
 	const [albums] = useCachedAndApi([], 'getAlbumList2', { type: 'byGenre', genre: name, size: 20 }, (json, setData) => {
 		setData(json?.albumList2?.album)
+		extractArtists(json?.albumList2?.album || [])
 	})
 
 	const [songs] = useCachedAndApi([], 'getSongsByGenre', { genre: name, count: 50 }, (json, setData) => {
 		setData(json?.songsByGenre?.song)
+		extractArtists(json?.songsByGenre?.song || [])
 	})
+
+	const extractArtists = (items) => {
+		setArtists(prev => {
+			const newArtists = { ...prev }
+			items.forEach(item => {
+				if (item.artistId && item.artist) {
+					newArtists[item.artistId] = item.artist
+				}
+				item?.artists?.forEach(artist => {
+					if (artist.id && artist.name) {
+						newArtists[artist.id] = artist.name
+					}
+				})
+			})
+			return newArtists
+		})
+	}
 
 	const getRandomSongs = () => {
 		getApiNetworkFirst(config, 'getRandomSongs', { genre: name, count: 50 })
@@ -67,13 +90,15 @@ const Genre = ({ route: { params: { name, albumCount = 0, songCount = 0 } } }) =
 				/>
 			</View>
 			<SectionTitle
-				title="Albums"
+				title={t("Albums")}
 				onPress={() => {
 					navigation.navigate('GenreAlbum', { name, albums })
 				}}
 				button={albums.length === 20}
 			/>
 			<HorizontalAlbums albums={albums} />
+			<SectionTitle title={t("Artists")} />
+			<HorizontalArtists artists={Object.entries(artists).map(([id, name]) => ({ id, name }))} />
 			<Text style={mainStyles.titleSection(theme)}>Songs</Text>
 			<SongsList songs={songs} />
 		</ScrollView>

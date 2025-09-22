@@ -69,6 +69,7 @@ const Playlist = ({ route: { params } }) => {
 							playlist={info}
 							open={isOption}
 							onClose={() => setIsOption(false)}
+							onRefresh={refresh}
 						/>
 					</>
 				}

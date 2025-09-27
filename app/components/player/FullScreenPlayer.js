@@ -1,25 +1,26 @@
-import React from 'react';
-import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
 
-import { ConfigContext } from '~/contexts/config';
-import { SongContext, SongDispatchContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
-import FavoritedButton from '~/components/button/FavoritedButton';
-import IconButton from '~/components/button/IconButton';
-import ImageError from '~/components/ImageError';
-import Lyric from '~/components/player/Lyric';
-import mainStyles from '~/styles/main';
-import OptionsMultiArtists from '~/components/options/OptionsMultiArtists';
-import OptionsQueue from '~/components/options/OptionsQueue';
-import PlayButton from '~/components/button/PlayButton';
-import Player from '~/utils/player';
-import size from '~/styles/size';
-import SlideBar from '~/components/button/SlideBar';
-import SlideControl from '~/components/button/SlideControl';
-import SongItem from '~/components/item/SongItem';
+import { ConfigContext } from '~/contexts/config'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/api'
+import FavoritedButton from '~/components/button/FavoritedButton'
+import IconButton from '~/components/button/IconButton'
+import ImageError from '~/components/ImageError'
+import Lyric from '~/components/player/Lyric'
+import mainStyles from '~/styles/main'
+import OptionsMultiArtists from '~/components/options/OptionsMultiArtists'
+import OptionsPlayer from '~/components/options/OptionsPlayer'
+import OptionsQueue from '~/components/options/OptionsQueue'
+import PlayButton from '~/components/button/PlayButton'
+import Player from '~/utils/player'
+import size from '~/styles/size'
+import SlideBar from '~/components/button/SlideBar'
+import SlideControl from '~/components/button/SlideControl'
+import SongItem from '~/components/item/SongItem'
 
 const preview = {
 	COVER: 0,
@@ -29,15 +30,15 @@ const preview = {
 
 const CoverItem = ({ isPreview, song, setFullScreen }) => {
 	const scroll = React.useRef(null)
-	const config = React.useContext(ConfigContext);
-	const theme = React.useContext(ThemeContext);
-	const songDispatch = React.useContext(SongDispatchContext);
-	const [indexOptions, setIndexOptions] = React.useState(-1);
-	const { width } = useWindowDimensions();
+	const config = React.useContext(ConfigContext)
+	const theme = React.useContext(ThemeContext)
+	const songDispatch = React.useContext(SongDispatchContext)
+	const [indexOptions, setIndexOptions] = React.useState(-1)
+	const { width } = useWindowDimensions()
 
 	React.useEffect(() => {
-		if (isPreview === preview.QUEUE) scroll.current.scrollToIndex({ index: song.index, animated: true, viewOffset: 0, viewPosition: 0.5 });
-	}, [song.index]);
+		if (isPreview === preview.QUEUE) scroll.current.scrollToIndex({ index: song.index, animated: true, viewOffset: 0, viewPosition: 0.5 })
+	}, [song.index])
 
 	const albumImage = React.useMemo(() => {
 		const size = Math.min(width, 500) - 50
@@ -51,7 +52,7 @@ const CoverItem = ({ isPreview, song, setFullScreen }) => {
 			aspectRatio: 1,
 			borderRadius: 10,
 		}
-	}, [width]);
+	}, [width])
 
 	if (isPreview === preview.COVER) return (
 		<SlideControl style={albumImage}>
@@ -137,10 +138,11 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const song = React.useContext(SongContext)
-	const insets = useSafeAreaInsets();
-	const navigation = useNavigation();
+	const insets = useSafeAreaInsets()
+	const navigation = useNavigation()
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
-	const [isOptArtists, setIsOptArtists] = React.useState(false);
+	const [isOptArtists, setIsOptArtists] = React.useState(false)
+	const [isOpt, setIsOpt] = React.useState(false)
 
 	// React.useEffect(() => {
 	// 	setIsPreview(preview.COVER)
@@ -153,15 +155,33 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 			onRequestClose={() => setFullScreen(false)}
 		>
 			<View style={[mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>
-				<IconButton
-					style={{
-						width: '100%',
-						paddingVertical: 20,
-						paddingHorizontal: 25,
-					}}
-					icon="chevron-down"
-					color={theme.primaryText}
-					onPress={() => setFullScreen(false)} />
+				<View style={{ width: '100%', flexDirection: 'row' }}>
+					<OptionsPlayer
+						song={song.songInfo}
+						isOpen={isOpt}
+						setIsOpen={setIsOpt}
+						closePlayer={() => setFullScreen(false)}
+					/>
+					<IconButton
+						style={{
+							paddingVertical: 20,
+							paddingHorizontal: 25,
+							flex: 1,
+						}}
+						icon="chevron-down"
+						color={theme.primaryText}
+						onPress={() => setFullScreen(false)}
+					/>
+					<IconButton
+						style={{
+							paddingVertical: 20,
+							paddingHorizontal: 25,
+						}}
+						icon="ellipsis-h"
+						color={theme.primaryText}
+						onPress={() => setIsOpt(true)}
+					/>
+				</View>
 				<View style={styles.playerContainer}>
 					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} />
 					<View style={{ flexDirection: 'row', marginTop: 15, width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -170,7 +190,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 								style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
 								onPress={() => {
 									navigation.navigate('Album', { id: song.songInfo.albumId, name: song.songInfo.album, artist: song.songInfo.artist, artistId: song.songInfo.artistId })
-									setFullScreen(false);
+									setFullScreen(false)
 								}}
 							>
 								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
@@ -179,10 +199,10 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 								style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
 								onPress={() => {
 									if (song.songInfo.artists?.length > 1) {
-										setIsOptArtists(true);
+										setIsOptArtists(true)
 									} else {
 										navigation.navigate('Artist', { id: song.songInfo.artistId, name: song.songInfo.artist })
-										setFullScreen(false);
+										setFullScreen(false)
 									}
 								}}
 							>
@@ -283,4 +303,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default FullScreenPlayer;
+export default FullScreenPlayer

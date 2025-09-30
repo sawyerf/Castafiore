@@ -7,15 +7,15 @@
       "Settings": "Configurações"
     },
     "homeSection": {
-      "Week Activity": "Nessa semana",
-      "Favorited Artist": "Artistas favoritos",
+      "Week Activity": "Ouvidas na Semana",
+      "Favorited Artist": "Artistas Favoritos",
       "Genre": "Estilos",
       "Radio": "Rádio",
-      "Pin Playlist": "Playlists fixadas",
+      "Pin Playlist": "Playlists Fixadas",
       "Favorited": "Favoritas",
-      "Recently Added": "Adicionadas recentemente",
-      "Most Played": "Mais tocadas",
-      "Recently Played": "Tocadas recentemente",
+      "Recently Added": "Adicionadas Recentemente",
+      "Most Played": "Mais Ouvidas",
+      "Recently Played": "Ouvidas Recentemente",
       "Random": "Aleatórias",
       "Highest": "Highest"
     },
@@ -79,7 +79,7 @@
         "Clear API cache": "Limpar cache da API",
         "Clear song cache": "Remover músicas em cache",
         "Clear cache alert message": "Você realmente deseja remover as músicas armazenadas no dispositivo?",
-        "Cache stats": "Informações do Cache",
+        "Cache stats": "Informações do cache",
         "No cache": "Cache vazio"
       },
       "shares": {
@@ -104,7 +104,7 @@
     "Add radio": "Adicionar rádio",
     "Add to playlist": "Adicionar à playlist",
     "Add to queue": "Adicionar à fila",
-    "Albums": "Albuns",
+    "Albums": "Álbuns",
     "Artist": "Artista",
     "Artists": "Artistas",
     "Cache": "Cache",
@@ -176,7 +176,7 @@
     "Username": "Nome de usuário",
     "Your Playlists": "Suas Playlists",
     "album": "álbum",
-    "albums": "álbums",
+    "albums": "álbuns",
     "artist": "artista",
     "artists": "artistas",
     "min": "min",

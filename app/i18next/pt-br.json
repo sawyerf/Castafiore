@@ -17,7 +17,7 @@
       "Most Played": "Mais Ouvidas",
       "Recently Played": "Ouvidas Recentemente",
       "Random": "Aleatórias",
-      "Highest": "Highest"
+      "Highest": "Mais populares"
     },
     "settings": {
       "connect": {
@@ -41,7 +41,7 @@
         "Home Page Description": "Selecione os itens que você deseja visualizar na tela inicial",
         "Size of album list": "Quantidade de álbuns exibidos",
         "Scroll": "Rolagem",
-        "Scroll Description": "Recomenda-se ativar o auxílio a rolagem na versão desktop",
+        "Scroll Description": "Recomenda-se ativar o auxílio à rolagem na versão desktop",
         "Show scroll helper": "Exibir rolagem",
         "ListenBrainz Stats": "Informações do ListenBrainz",
         "ListenBrainz User": "Usuário do ListenBrainz",

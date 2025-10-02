@@ -62,7 +62,7 @@ export const defaultSettings = {
 	reversePlaylist: false,
 	orderPlaylist: 'title',
 	previewFavorited: 3,
-	language: 'en',
+	language: null,
 }
 
 export const homeSections = [

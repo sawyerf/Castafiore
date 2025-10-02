@@ -1,14 +1,15 @@
-import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Text, View, ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import Header from '~/components/Header';
-import mainStyles from '~/styles/main';
-import settingStyles from '~/styles/settings';
-import SelectItem from '~/components/settings/SelectItem';
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import { localeLang } from '~/i18next/utils'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import settingStyles from '~/styles/settings'
+import SelectItem from '~/components/settings/SelectItem'
 
 const languages = [
 	{ lang: 'ca', name: 'Català', color: '#FCDD09', flag: '🇦🇩' },
@@ -23,6 +24,8 @@ const languages = [
 	{ lang: 'zhHans', name: '简体中文', color: '#FF0000', flag: '🇨🇳' },
 	{ lang: 'zhHant', name: '正體中文', color: '#0000AA', flag: '🇹🇼' },
 ]
+
+const sysLang = localeLang()
 
 const Language = () => {
 	const { t } = useTranslation()
@@ -39,7 +42,16 @@ const Language = () => {
 			<Header title={t("Language")} />
 			<View style={settingStyles.contentMainContainer}>
 				<Text style={settingStyles.titleContainer(theme)}>{t('Language')}</Text>
-				<View style={settingStyles.optionsContainer(theme)}>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
+					<SelectItem
+						text={`${t('System default')} (${sysLang || t('Not found')})`}
+						emoji={'🖥️'}
+						colorIcon={'white'}
+						isSelect={!settings.language}
+						onPress={() => {
+							setSettings({ ...settings, language: null })
+						}}
+					/>
 					{
 						languages.map((lang, index) => (
 							<SelectItem
@@ -55,10 +67,13 @@ const Language = () => {
 						))
 					}
 				</View>
+				<Text
+					style={settingStyles.description(theme)}
+				>{t('settings.language.description')}</Text>
 			</View>
 		</ScrollView>
 	)
 }
 
 
-export default Language;
+export default Language

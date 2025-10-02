@@ -98,6 +98,9 @@
         "User role": "用户角色",
         "User": "用户",
         "Version": "版本"
+      },
+      "language": {
+        "description": "选择应用程序的语言。如果您的语言不在列表中，您可以在 GitHub 上贡献。"
       }
     },
     "API Error": "API 错误",

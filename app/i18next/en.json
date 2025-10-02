@@ -98,6 +98,9 @@
         "User role": "User role",
         "User": "User",
         "Version": "Version"
+      },
+      "language": {
+        "description": "Select the language for the app. If your language is not listed you can contribute on GitHub."
       }
     },
     "API Error": "API Error",
@@ -133,7 +136,7 @@
     "Home page url": "Home page url",
     "Home": "Home",
     "Info": "Info",
-    "Informations": "Informations",
+    "Informations": "Information",
     "Language": "Language",
     "Loading lyrics...": "Loading lyrics...",
     "Logs": "Logs",

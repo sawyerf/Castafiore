@@ -18,16 +18,18 @@ i18n.use(initReactI18next).init({
   fallbackLng: 'en',
   resources: {
     en: en,
-    it: it,
-    fr: fr,
-    ru: ru,
-    de: de,
     ca: ca,
+    de: de,
     es: es,
+    fr: fr,
     gl: gl,
+    it: it,
+    ptBr: ptBr,
+    pt: ptBr,
+    ru: ru,
+    zh: zhHans,
     zhHans: zhHans,
     zhHant: zhHant,
-    ptBr: ptBr,
   },
   interpolation: {
     escapeValue: false
@@ -35,4 +37,3 @@ i18n.use(initReactI18next).init({
 });
 
 export default i18n;
-

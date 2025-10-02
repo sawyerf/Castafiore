@@ -98,6 +98,9 @@
         "User role": "Permissões do usuário",
         "User": "Usuário",
         "Version": "Versão"
+      },
+      "language": {
+        "description": "Selecione o idioma do aplicativo. Se o seu idioma não estiver listado, você pode contribuir no GitHub."
       }
     },
     "API Error": "Erro de API",

@@ -9,16 +9,17 @@ import { useTranslation } from 'react-i18next'
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks'
 import TabBar from '~/components/bar/TabBar'
 
+import '~/i18next/i18next'
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config'
-import { initCacheSong } from '~/utils/cache'
 import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { initCacheSong } from '~/utils/cache'
+import { localeLang } from '~/i18next/utils'
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi'
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song'
 import { ThemeContext, getTheme } from '~/contexts/theme'
-import Player from '~/utils/player'
-import '~/i18next/i18next'
-import logger from '~/utils/logger'
 import { version } from '~/../package.json'
+import logger from '~/utils/logger'
+import Player from '~/utils/player'
 
 const Tab = createBottomTabNavigator()
 
@@ -80,7 +81,10 @@ const App = () => {
 	}, [settings.isSongCaching])
 
 	React.useEffect(() => {
-		i18n.changeLanguage(settings.language)
+		const sysLang = localeLang()
+
+		logger.info('i18n', `System language: ${sysLang || 'Not found'}, App language: ${settings.language || 'Not set'}`)
+		i18n.changeLanguage(settings.language || sysLang || 'en')
 			.catch(err => logger.error('i18n', err))
 	}, [settings.language])
 

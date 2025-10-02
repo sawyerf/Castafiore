@@ -18,10 +18,10 @@ const languages = [
 	{ lang: 'fr', name: 'Français', color: '#007bff', flag: '🇫🇷' },
 	{ lang: 'gl', name: 'Galego', color: '#2195ddff', flag: '🇪🇸' },
 	{ lang: 'it', name: 'Italiano', color: '#28a745', flag: '🇮🇹' },
+	{ lang: 'ptBr', name: "Português do Brasil", color: '#302681', flag: '🇧🇷' },
 	{ lang: 'ru', name: 'Русский', color: '#ffc107', flag: '🇷🇺' },
 	{ lang: 'zhHans', name: '简体中文', color: '#FF0000', flag: '🇨🇳' },
 	{ lang: 'zhHant', name: '正體中文', color: '#0000AA', flag: '🇹🇼' },
-	{ lang: 'ptBr', name: "Português do Brasil", color: '#302681', flag: '🇧🇷' }
 ]
 
 const Language = () => {

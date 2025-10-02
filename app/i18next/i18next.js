@@ -11,6 +11,7 @@ import ca from './ca.json';
 import gl from './gl.json';
 import zhHans from './zh-Hans.json';
 import zhHant from './zh-Hant.json';
+import ptBr from './pt-br.json';
 
 i18n.use(initReactI18next).init({
   lng: 'en',
@@ -26,6 +27,7 @@ i18n.use(initReactI18next).init({
     gl: gl,
     zhHans: zhHans,
     zhHant: zhHant,
+    ptBr: ptBr,
   },
   interpolation: {
     escapeValue: false

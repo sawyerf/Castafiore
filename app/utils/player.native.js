@@ -107,32 +107,35 @@ const getHeader = (headers, key) => {
 
 const downloadSong = async (urlStream, id) => {
 	const fileUri = getPathSong(id, global.streamFormat)
+	const partUri = `${fileUri}.part`
 
 	if (await isSongCached(null, id, global.streamFormat, global.maxBitRate)) return fileUri
 	try {
-		const res = await FileSystem.downloadAsync(urlStream, fileUri)
+		const res = await FileSystem.downloadAsync(urlStream, partUri)
 		const contentType = getHeader(res?.headers, 'content-type')
 		const contentLength = parseInt(getHeader(res?.headers, 'content-length'), 10)
-		const realSize = await FileSystem.getInfoAsync(fileUri).then(info => info.size)
+		const realSize = await FileSystem.getInfoAsync(partUri).then(info => info.size)
 
 		if (res?.status !== 200) {
-			logger.error('downloadSong', `Error downloading song status not 200 (${res?.status})`)
-			await FileSystem.deleteAsync(fileUri)
+			logger.error('downloadSong', `Error downloading song, status not 200 (${res?.status})`)
+			await FileSystem.deleteAsync(partUri)
 			return urlStream
 		} else if (!contentType?.includes('audio')) {
-			logger.error('downloadSong', `Error downloading song content-type not audio (${contentType})`)
-			await FileSystem.deleteAsync(fileUri)
+			logger.error('downloadSong', `Error downloading song, content-type not audio (${contentType})`)
+			await FileSystem.deleteAsync(partUri)
 			return urlStream
-		} else if ((contentLength > 0 && realSize !== contentLength) || realSize === 0) {
-			logger.error('downloadSong', `Error downloading song size mismatch (real: ${realSize} / content-length: ${contentLength})`)
-			await FileSystem.deleteAsync(fileUri)
+		} else if ((!isNaN(contentLength) && realSize !== contentLength) || realSize === 0) {
+			logger.error('downloadSong', `Error downloading song, size mismatch (real: ${realSize} / content-length: ${contentLength})`)
+			await FileSystem.deleteAsync(partUri)
 			return urlStream
 		} else {
+			await FileSystem.moveAsync({ from: partUri, to: fileUri })
 			global.listCacheSong.push(`${id}.${global.streamFormat}`)
 			return fileUri
 		}
 	} catch (error) {
 		logger.error('downloadSong', error)
+		await FileSystem.deleteAsync(partUri).catch(() => { })
 		return urlStream
 	}
 }

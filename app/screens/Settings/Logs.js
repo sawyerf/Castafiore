@@ -67,6 +67,15 @@ const Logs = () => {
 		setLogs([...logger.get()].reverse())
 	}, [])
 
+	React.useEffect(() => {
+		const timeoutId = setInterval(() => {
+			const currentLogs = [...logger.get()]
+			if (currentLogs.length !== logs.length) setLogs(currentLogs.reverse())
+		}, 1000)
+
+		return () => clearInterval(timeoutId)
+	}, [logs])
+
 	return (
 		<ScrollView
 			style={mainStyles.mainContainer(theme)}

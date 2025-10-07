@@ -48,9 +48,6 @@ export const deleteSongCache = async (_config, songId, streamFormat, _maxBitrate
 
 export const getListCacheSong = async () => {
 	return await FileSystem.readDirectoryAsync(getPathDir())
-		.then((files) => {
-			return files.map((file) => file.replace('.mp3', ''))
-		})
 		.catch(() => [])
 }
 

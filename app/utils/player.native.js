@@ -114,13 +114,22 @@ const downloadSong = async (urlStream, id) => {
 		const contentType = getHeader(res?.headers, 'content-type')
 		const contentLength = parseInt(getHeader(res?.headers, 'content-length'), 10)
 		const realSize = await FileSystem.getInfoAsync(fileUri).then(info => info.size)
-		if (res?.status === 200 && contentLength > 0 && contentType?.includes('audio') && realSize === contentLength) {
-			global.listCacheSong.push(`${id}.${global.streamFormat}`)
-			return fileUri
-		} else {
-			logger.error('downloadSong', 'Error downloading song', res?.status, contentType, contentLength)
+
+		if (res?.status !== 200) {
+			logger.error('downloadSong', `Error downloading song status not 200 (${res?.status})`)
 			await FileSystem.deleteAsync(fileUri)
 			return urlStream
+		} else if (!contentType?.includes('audio')) {
+			logger.error('downloadSong', `Error downloading song content-type not audio (${contentType})`)
+			await FileSystem.deleteAsync(fileUri)
+			return urlStream
+		} else if ((contentLength > 0 && realSize !== contentLength) || realSize === 0) {
+			logger.error('downloadSong', `Error downloading song size mismatch (real: ${realSize} / content-length: ${contentLength})`)
+			await FileSystem.deleteAsync(fileUri)
+			return urlStream
+		} else {
+			global.listCacheSong.push(`${id}.${global.streamFormat}`)
+			return fileUri
 		}
 	} catch (error) {
 		logger.error('downloadSong', error)

@@ -1,25 +1,35 @@
-import React from 'react';
-import { Platform, Share } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Platform, Share } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApi, getApiNetworkFirst, urlStream } from '~/utils/api';
-import { playSong, addToQueue } from '~/utils/player';
-import { SongContext, SongDispatchContext } from '~/contexts/song';
-import { urlCover } from '~/utils/api';
-import size from '~/styles/size';
-import OptionsPopup from '~/components/popup/OptionsPopup';
-import { SettingsContext } from '~/contexts/settings';
+import { ConfigContext } from '~/contexts/config'
+import { getApi, getApiNetworkFirst, urlStream } from '~/utils/api'
+import { isSongCached } from '~/utils/cache'
+import { playSong, addToQueue } from '~/utils/player'
+import { SettingsContext } from '~/contexts/settings'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { urlCover } from '~/utils/api'
+import OptionsPopup from '~/components/popup/OptionsPopup'
+import size from '~/styles/size'
 
 const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () => { }, idPlaylist = null }) => {
-	const { t } = useTranslation();
-	const navigation = useNavigation();
-	const song = React.useContext(SongContext);
-	const songDispatch = React.useContext(SongDispatchContext);
-	const config = React.useContext(ConfigContext);
-	const settings = React.useContext(SettingsContext);
-	const refOption = React.useRef();
+	const { t } = useTranslation()
+	const navigation = useNavigation()
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
+	const config = React.useContext(ConfigContext)
+	const settings = React.useContext(SettingsContext)
+	const refOption = React.useRef()
+	const [isCached, setIsCached] = React.useState(false)
+
+	React.useEffect(() => {
+		if (indexOptions < 0) return
+		isSongCached(config, songs[indexOptions]?.id, settings.streamFormat, settings.maxBitrate)
+			.then((cached) => {
+				setIsCached(cached ? true : false)
+			})
+	}, [indexOptions])
 
 	const playSimilarSongs = () => {
 		getApiNetworkFirst(config, 'getSimilarSongs', `id=${songs[indexOptions].id}&count=50`)
@@ -56,7 +66,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		borderRadius: size.radius.circle,
 		onPress: () => {
 			navigation.navigate('Artist', { id: artist.id, name: artist.name })
-			refOption.current.close();
+			refOption.current.close()
 		}
 	})
 
@@ -95,7 +105,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 						onPress: () => addToPlaylist(playlist)
 					}))
 				]
-				);
+				)
 			})
 			.catch(() => { })
 	}
@@ -123,13 +133,13 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		fetch(urlStream(config, songs[indexOptions].id))
 			.then((res) => res.blob())
 			.then((data) => {
-				const a = document.createElement('a');
-				a.download = `${songs[indexOptions].artist} - ${songs[indexOptions].title}.mp3`;
-				a.href = URL.createObjectURL(data);
+				const a = document.createElement('a')
+				a.download = `${songs[indexOptions].artist} - ${songs[indexOptions].title}.mp3`
+				a.href = URL.createObjectURL(data)
 				a.addEventListener('click', () => {
-					setTimeout(() => URL.revokeObjectURL(a.href), 1 * 1000);
-				});
-				a.click();
+					setTimeout(() => URL.revokeObjectURL(a.href), 1 * 1000)
+				})
+				a.click()
 			})
 			.catch(() => { })
 	}
@@ -146,6 +156,20 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 		refOption.current.close()
 	}
 
+	const playOnlyCached = async () => {
+		const cachedList = []
+		let indexPlay = 0
+
+		for (let index = 0; index < songs.length; index++) {
+			const cached = await isSongCached(config, songs[index].id, settings.streamFormat, settings.maxBitrate)
+			if (index === indexOptions) indexPlay = cachedList.length
+			if (cached) cachedList.push(songs[index])
+		}
+		playSong(config, songDispatch, cachedList, indexPlay)
+		refOption.current.close()
+	}
+
+	if (indexOptions < 0) return null
 	return (
 		<OptionsPopup
 			ref={refOption}
@@ -160,6 +184,12 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 					name: t('Play similar songs'),
 					icon: 'play',
 					onPress: playSimilarSongs
+				},
+				{
+					name: t('Play only cached songs'),
+					icon: 'cloud-download',
+					onPress: playOnlyCached,
+					hidden: !isCached
 				},
 				{
 					name: t('Play next'),
@@ -212,7 +242,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 					}
 				},
 			]} />
-	);
+	)
 }
 
-export default OptionsSongsList;
+export default OptionsSongsList

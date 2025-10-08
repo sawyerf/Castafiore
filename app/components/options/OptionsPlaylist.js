@@ -4,7 +4,9 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
-import { getApi } from '~/utils/api'
+import { getApi, urlStream } from '~/utils/api'
+import { downloadSong } from '~/utils/player'
+import { SettingsContext } from '~/contexts/settings'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
@@ -12,6 +14,7 @@ const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
   const navigation = useNavigation()
   const config = React.useContext(ConfigContext)
   const refOption = React.useRef()
+  const settings = React.useContext(SettingsContext)
 
   if (!playlist) return null
   return (
@@ -21,6 +24,16 @@ const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
       close={onClose}
       item={playlist}
       options={[
+        {
+          name: t('Cache all songs'),
+          icon: 'cloud-download',
+          onPress: async () => {
+            refOption.current.close()
+            for (const song of playlist.entry) {
+              await downloadSong(urlStream(config, song.id, settings.streamFormat, settings.maxBitRate), song.id)
+            }
+          }
+        },
         {
           name: t('Edit playlist'),
           icon: 'pencil',

@@ -46,6 +46,7 @@ const App = () => {
 			.then((settings) => {
 				setSettings(settings)
 			})
+		global.songsDownloading = []
 	}, [])
 
 	React.useEffect(() => {

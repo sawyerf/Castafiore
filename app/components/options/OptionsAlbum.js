@@ -4,17 +4,18 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
-import { getApi } from '~/utils/api'
-import { getApiNetworkFirst } from '~/utils/api'
-import { playSong } from '~/utils/player'
+import { getApi, getApiNetworkFirst, urlStream } from '~/utils/api'
+import { playSong, downloadSong } from '~/utils/player'
 import { SongDispatchContext } from '~/contexts/song'
+import { SettingsContext } from '~/contexts/settings'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsAlbum = ({ album, isOpen, onClose }) => {
   const { t } = useTranslation()
-  const navigation = useNavigation()
   const config = React.useContext(ConfigContext)
+  const navigation = useNavigation()
   const refOption = React.useRef()
+  const settings = React.useContext(SettingsContext)
   const songDispatch = React.useContext(SongDispatchContext)
 
   const playSimilarSongs = () => {
@@ -33,7 +34,7 @@ const OptionsAlbum = ({ album, isOpen, onClose }) => {
       visible={isOpen}
       close={() => {
         onClose()
-				refOption.current.clearVirtualOptions()
+        refOption.current.clearVirtualOptions()
       }}
       item={album}
       options={[
@@ -41,6 +42,16 @@ const OptionsAlbum = ({ album, isOpen, onClose }) => {
           name: t('Play similar songs'),
           icon: 'play',
           onPress: playSimilarSongs
+        },
+        {
+          name: t('Cache all songs'),
+          icon: 'cloud-download',
+          onPress: async () => {
+            refOption.current.close()
+            for (const song of album.song) {
+              await downloadSong(urlStream(config, song.id, settings.streamFormat, settings.maxBitRate), song.id)
+            }
+          }
         },
         {
           name: t('Go to genre'),

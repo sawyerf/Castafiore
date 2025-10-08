@@ -161,6 +161,10 @@ export const updateTime = () => {
 	return time
 }
 
+export const downloadSong = async (urlStream, _id) => {
+	return fetch(urlStream)
+}
+
 const downloadNextSong = async (config, queue, currentIndex) => {
 	if (!window.isSongCaching) return
 	const maxIndex = Math.min(window.cacheNextSong, queue.length)

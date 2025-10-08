@@ -105,9 +105,17 @@ const getHeader = (headers, key) => {
 	return header ? headers[header] : null
 }
 
-const downloadSong = async (urlStream, id) => {
+const returnFail = async (partUri, urlStream, id) => {
+	global.songsDownloading = global.songsDownloading.filter(songId => songId !== id)
+	await FileSystem.deleteAsync(partUri)
+	return urlStream
+}
+
+export const downloadSong = async (urlStream, id) => {
+	if (global.songsDownloading.indexOf(id) >= 0) return urlStream
 	const fileUri = getPathSong(id, global.streamFormat)
 	const partUri = `${fileUri}.part`
+	global.songsDownloading.push(id)
 
 	if (await isSongCached(null, id, global.streamFormat, global.maxBitRate)) return fileUri
 	try {
@@ -118,16 +126,13 @@ const downloadSong = async (urlStream, id) => {
 
 		if (res?.status !== 200) {
 			logger.error('downloadSong', `Error downloading song, status not 200 (${res?.status})`)
-			await FileSystem.deleteAsync(partUri)
-			return urlStream
+			return await returnFail(partUri, urlStream, id)
 		} else if (!contentType?.includes('audio')) {
 			logger.error('downloadSong', `Error downloading song, content-type not audio (${contentType})`)
-			await FileSystem.deleteAsync(partUri)
-			return urlStream
+			return await returnFail(partUri, urlStream, id)
 		} else if ((!isNaN(contentLength) && realSize !== contentLength) || realSize === 0) {
 			logger.error('downloadSong', `Error downloading song, size mismatch (real: ${realSize} / content-length: ${contentLength})`)
-			await FileSystem.deleteAsync(partUri)
-			return urlStream
+			return await returnFail(partUri, urlStream, id)
 		} else {
 			await FileSystem.moveAsync({ from: partUri, to: fileUri })
 			global.listCacheSong.push(`${id}.${global.streamFormat}`)
@@ -135,8 +140,7 @@ const downloadSong = async (urlStream, id) => {
 		}
 	} catch (error) {
 		logger.error('downloadSong', error)
-		await FileSystem.deleteAsync(partUri).catch(() => { })
-		return urlStream
+		return await returnFail(partUri, urlStream, id)
 	}
 }
 

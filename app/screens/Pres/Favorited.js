@@ -1,23 +1,25 @@
-import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LegendList } from "@legendapp/list"
-import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme';
-import { useCachedFirst } from '~/utils/api';
-import mainStyles from '~/styles/main';
-import OptionsSongsList from '~/components/options/OptionsSongsList';
-import PresHeaderIcon from '~/components/PresHeaderIcon';
-import RandomButton from '~/components/button/RandomButton';
-import size from '~/styles/size';
-import SongItem from '~/components/item/SongItem';
+import { ThemeContext } from '~/contexts/theme'
+import { useCachedFirst } from '~/utils/api'
+import mainStyles from '~/styles/main'
+import OptionsFavorited from '~/components/options/OptionsFavorited'
+import OptionsSongsList from '~/components/options/OptionsSongsList'
+import PresHeaderIcon from '~/components/PresHeaderIcon'
+import RandomButton from '~/components/button/RandomButton'
+import size from '~/styles/size'
+import SongItem from '~/components/item/SongItem'
 
 const Favorited = ({ route: { params } }) => {
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
-	const [indexOptions, setIndexOptions] = React.useState(-1);
-	const { t } = useTranslation();
+	const [indexOptions, setIndexOptions] = React.useState(-1)
+	const { t } = useTranslation()
+	const [isOption, setIsOption] = React.useState(false)
 
 	const [favorited] = useCachedFirst(params?.favorited || [], 'getStarred2', null, (json, setData) => {
 		setData(json?.starred2?.song || [])
@@ -33,10 +35,15 @@ const Favorited = ({ route: { params } }) => {
 				paddingHorizontal: 20,
 			}}
 		/>
-	), [favorited]);
+	), [favorited])
 
 	return (
 		<>
+			<OptionsFavorited
+				favorited={favorited}
+				isOpen={isOption}
+				onClose={() => setIsOption(false)}
+			/>
 			<LegendList
 				data={favorited}
 				keyExtractor={(item, index) => index}
@@ -50,6 +57,7 @@ const Favorited = ({ route: { params } }) => {
 						title={<><Icon name="heart" size={size.icon.small} color={theme.primaryTouch} /> {t('Favorited')}</>}
 						subTitle={`${favorited?.length || 0} ${t('songs')}`}
 						icon="heart"
+						onPressOption={() => setIsOption(true)}
 					>
 						<RandomButton songList={favorited} />
 					</PresHeaderIcon>
@@ -65,4 +73,4 @@ const Favorited = ({ route: { params } }) => {
 	)
 }
 
-export default Favorited;
+export default Favorited

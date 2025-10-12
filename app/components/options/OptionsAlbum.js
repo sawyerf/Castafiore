@@ -73,6 +73,7 @@ const OptionsAlbum = ({ album, isOpen, onClose }) => {
               ])
             } else {
               navigation.navigate('Genre', { name: album.genres[0].name })
+              refOption.current.close()
             }
           },
           hidden: !album.genres?.length

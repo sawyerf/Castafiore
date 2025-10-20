@@ -58,7 +58,7 @@ const Genre = ({ route: { params: { name, albumCount = 0, songCount = 0 } } }) =
 	}
 
 	const getRandomSongs = () => {
-		getApiNetworkFirst(config, 'getRandomSongs', { genre: name, count: 50 })
+		getApiNetworkFirst(config, 'getRandomSongs', { genre: name, size: 50 })
 			.then((json) => {
 				const songs = json.randomSongs?.song
 				if (!songs) return

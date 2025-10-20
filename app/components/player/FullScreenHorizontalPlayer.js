@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { ConfigContext } from '~/contexts/config'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import { urlCover } from '~/utils/api'
+import { urlCover, useCachedFirst } from '~/utils/api'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -76,6 +76,10 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const scroll = React.useRef(null)
 	const { height } = useWindowDimensions()
 
+	const [stars] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
+		setData(json?.starred2?.song)
+	}, [song.songInfo?.id])
+
 	React.useEffect(() => {
 		// if (isPreview == preview.LYRICS) setIsPreview(preview.COVER)
 		if (isPreview == preview.QUEUE) scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })
@@ -139,7 +143,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						<View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
 							<FavoritedButton
 								id={song?.songInfo?.id}
-								isFavorited={song?.songInfo?.starred}
+								isFavorited={stars.some(s => s.id === song.songInfo.id)}
 								size={size.icon.medium}
 								style={{ padding: 0, paddingBottom: 10, marginStart: 20, width: 'min-content' }}
 							/>

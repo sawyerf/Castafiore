@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { ConfigContext } from '~/contexts/config'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import { urlCover } from '~/utils/api'
+import { urlCover, useCachedFirst } from '~/utils/api'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -28,7 +28,7 @@ const preview = {
 	LYRICS: 2
 }
 
-const CoverItem = ({ isPreview, song, setFullScreen }) => {
+const CoverItem = ({ isPreview, song, setFullScreen, stars }) => {
 	const scroll = React.useRef(null)
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
@@ -76,7 +76,10 @@ const CoverItem = ({ isPreview, song, setFullScreen }) => {
 				onScrollToIndexFailed={() => { }}
 				renderItem={({ item, index }) => (
 					<SongItem
-						song={item}
+						song={{
+							...item,
+							starred: stars.some(s => s.id === item.id)
+						}}
 						queue={song.queue}
 						index={index}
 						setIndexOptions={setIndexOptions}
@@ -144,9 +147,9 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const [isOptArtists, setIsOptArtists] = React.useState(false)
 	const [isOpt, setIsOpt] = React.useState(false)
 
-	// React.useEffect(() => {
-	// 	setIsPreview(preview.COVER)
-	// }, [song.songInfo])
+	const [stars] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
+		setData(json?.starred2?.song)
+	}, [song.songInfo?.id])
 
 	return (
 		<Modal
@@ -183,7 +186,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					/>
 				</View>
 				<View style={styles.playerContainer}>
-					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} />
+					<CoverItem isPreview={isPreview} song={song} setFullScreen={setFullScreen} stars={stars} />
 					<View style={{ flexDirection: 'row', marginTop: 15, width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
 						<View style={{ flex: 1 }}>
 							<Pressable
@@ -216,7 +219,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 								setFullScreen={setFullScreen}
 							/>
 						</View>
-						<FavoritedButton id={song.songInfo.id} isFavorited={song.songInfo.starred} style={{ padding: 20, paddingEnd: 0 }} />
+						<FavoritedButton id={song.songInfo.id} isFavorited={stars.some(s => s.id === song.songInfo.id)} style={{ padding: 20, paddingEnd: 0 }} />
 					</View>
 					<TimeBar />
 					<View style={{ flexDirection: 'row', width: '100%', marginVertical: 30, alignItems: 'center', justifyContent: 'center', gap: 30 }}>

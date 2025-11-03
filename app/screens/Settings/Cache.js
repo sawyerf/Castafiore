@@ -23,7 +23,6 @@ const CacheSettings = () => {
 	const settings = React.useContext(SettingsContext)
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
-	const [cacheNextSong, setCacheNextSong] = React.useState(settings.cacheNextSong.toString())
 	const [statCache, setStatCache] = React.useState([
 		{ name: 'Loading...', count: '' },
 	])
@@ -38,17 +37,6 @@ const CacheSettings = () => {
 	React.useEffect(() => {
 		getStat()
 	}, [])
-
-	React.useEffect(() => {
-		setCacheNextSong(settings.cacheNextSong.toString())
-	}, [settings.cacheNextSong])
-
-	React.useEffect(() => {
-		if (cacheNextSong === '') return
-		const number = parseInt(cacheNextSong)
-		if (number === settings.cacheNextSong) return
-		setSettings({ ...settings, cacheNextSong: number })
-	}, [cacheNextSong])
 
 	return (
 		<ScrollView
@@ -71,13 +59,39 @@ const CacheSettings = () => {
 					/>
 					<OptionInput
 						title={t("settings.cache.Cache next song")}
-						value={cacheNextSong}
-						onChangeText={(text) => setCacheNextSong(text.replace(/[^0-9]/g, ''))}
+						value={settings.cacheNextSong.toString()}
+						onChangeText={(text) => {
+							const cleanedText = text.replace(/[^0-9]/g, '')
+							const number = cleanedText === '' ? 0 : parseInt(cleanedText)
+							setSettings({ ...settings, cacheNextSong: number })
+						}}
 						inputMode="numeric"
 						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>{t('settings.cache.Cache next song description')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.cache.Max cache size')}</Text>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
+					<ButtonSwitch
+						title={t("settings.cache.Enable max cache size")}
+						value={settings.enableMaxCacheSize}
+						onPress={() => setSettings({ ...settings, enableMaxCacheSize: !settings.enableMaxCacheSize })}
+					/>
+					<OptionInput
+						title={t("settings.cache.Max cache size GB")}
+						value={settings.maxCacheSize.toString()}
+						onChangeText={(text) => {
+							const cleanedText = text.replace(/[^0-9]/g, '')
+							const number = cleanedText === '' ? 0 : parseInt(cleanedText)
+							setSettings({ ...settings, maxCacheSize: number })
+						}}
+						inputMode="numeric"
+						disable={!settings.enableMaxCacheSize}
+						isLast
+					/>
+				</View>
+				<Text style={settingStyles.description(theme)}>{t('settings.cache.Max cache size description')}</Text>
+				<Text style={settingStyles.titleContainer(theme)}>{t('settings.cache.Clear cache')}</Text>
 				<View style={settingStyles.optionsContainer(theme)}>
 					<ButtonMenu
 						title={t("settings.cache.Clear API cache")}

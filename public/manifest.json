@@ -1,7 +1,7 @@
 {
   "name": "Castafiore",
   "short_name": "Castafiore",
-  "description": "Mobile app for navidrome",
+  "description": "Castafiore is a music player that support Navidrome and Subsonic API.",
   "lang": "en",
   "display": "standalone",
   "orientation": "portrait",

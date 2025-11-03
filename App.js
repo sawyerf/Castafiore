@@ -82,6 +82,14 @@ const App = () => {
 	}, [settings.isSongCaching])
 
 	React.useEffect(() => {
+		global.maxCacheSize = settings.maxCacheSize
+	}, [settings.maxCacheSize])
+
+	React.useEffect(() => {
+		global.enableMaxCacheSize = settings.enableMaxCacheSize
+	}, [settings.enableMaxCacheSize])
+
+	React.useEffect(() => {
 		const sysLang = localeLang()
 
 		logger.info('i18n', `System language: ${sysLang || 'Not found'}, App language: ${settings.language || 'Not set'}`)

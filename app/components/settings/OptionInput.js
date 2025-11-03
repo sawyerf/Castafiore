@@ -5,7 +5,7 @@ import { ThemeContext } from '~/contexts/theme';
 import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 
-const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false, secureTextEntry = undefined }) => {
+const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false, secureTextEntry = undefined, disable = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
@@ -16,6 +16,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 					flex: undefined,
 					maxWidth: '70%',
 					width: 'min-content',
+					opacity: disable ? 0.5 : 1,
 				}]}>{title}</Text>
 			<TextInput
 				style={{
@@ -29,7 +30,9 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 						web: { outline: 'none' }
 					}),
 					overflow: 'hidden',
+					opacity: disable ? 0.5 : 1,
 				}}
+				editable={!disable}
 				multiline={false}
 				placeholder={placeholder}
 				placeholderTextColor={theme.secondaryText}

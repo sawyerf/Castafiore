@@ -14,6 +14,7 @@ import HorizontalList from '~/components/lists/HorizontalList';
 import IconButton from '~/components/button/IconButton';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
+import ConnectButton from '~/components/connect/ConnectButton';
 
 const Home = () => {
 	const { t } = useTranslation();
@@ -85,7 +86,11 @@ const Home = () => {
 					onPress={clickRandomSong}>
 					<Text style={styles.textRandom(theme)}>{t('Random Song')}</Text>
 				</Pressable>
-				<View style={{ flexDirection: 'row' }}>
+				<View style={{ flexDirection: 'row', gap: "10px" }}>
+					<ConnectButton
+						size={size.icon.large}
+						style={{ width: 35, alignItems: 'center' }}
+					/>
 					{
 						settings.listenBrainzUser ?
 							<IconButton

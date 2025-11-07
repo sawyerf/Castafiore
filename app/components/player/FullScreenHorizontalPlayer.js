@@ -8,6 +8,7 @@ import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
 import { useCachedFirst } from '~/utils/api'
 import { urlCover } from '~/utils/url'
+import { useUpnp } from '~/contexts/upnp'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -19,6 +20,7 @@ import Player from '~/utils/player'
 import size from '~/styles/size'
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
+import ConnectButton from '../connect/ConnectButton'
 
 const preview = {
 	COVER: 0,
@@ -73,6 +75,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
+	const upnp = useUpnp()
 	const volume = Player.updateVolume()
 	const scroll = React.useRef(null)
 	const { height } = useWindowDimensions()
@@ -85,6 +88,12 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 		// if (isPreview == preview.LYRICS) setIsPreview(preview.COVER)
 		if (isPreview == preview.QUEUE) scroll.current.scrollToIndex({ index: song.index, animated: false, viewOffset: 0, viewPosition: 0.5 })
 	}, [song.index, song.songInfo])
+
+	// Force re-render when UPNP connection status changes
+	// This ensures PlayButton uses the correct player (local vs UPNP)
+	React.useEffect(() => {
+		// This effect intentionally empty - just creates dependency on upnp.isConnected
+	}, [upnp.isConnected])
 
 	return (
 		<Modal
@@ -264,6 +273,13 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
 							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
 							onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
+						/>
+						<ConnectButton
+							size={size.icon.small}
+							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
+							onPress={() => {
+								setFullScreen(false);
+							}}
 						/>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }}>

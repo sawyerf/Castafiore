@@ -18,19 +18,23 @@ import { localeLang } from '~/i18next/utils'
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi'
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song'
 import { ThemeContext, getTheme } from '~/contexts/theme'
+import { UpnpProvider, useUpnp } from '~/contexts/upnp'
 import { version } from '~/../package.json'
 import logger from '~/utils/logger'
 import Player from '~/utils/player'
+import * as LocalPlayer from '~/utils/playerLocal.native'
 
 const Tab = createBottomTabNavigator()
 
 global.maxBitRate = 0
 global.streamFormat = 'mp3'
 
-const App = () => {
+// Inner component that can use the useUpnp hook
+const AppContent = () => {
 	const [config, setConfig] = React.useState({})
 	const [settings, setSettings] = React.useState({})
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
+	const upnp = useUpnp()
 	const [theme, setTheme] = React.useState(getTheme())
 	const [updateApi, setUpdateApi] = React.useState({ path: '', query: '' })
 	const { i18n } = useTranslation()
@@ -50,6 +54,31 @@ const App = () => {
 			})
 		global.songsDownloading = []
 	}, [])
+
+	// Initialize player router when config is loaded
+	React.useEffect(() => {
+		if (config.url) {
+			Player.initPlayerRouter(upnp, config)
+			logger.info('App', 'Player router initialized with config')
+		}
+	}, [config.url])
+
+	// Update player router when device selection changes
+	React.useEffect(() => {
+		if (config.url && upnp) {
+			Player.initPlayerRouter(upnp, config)
+
+			if (upnp.selectedDevice) {
+				logger.info('App', `UPNP device selected: ${upnp.selectedDevice.name}`)
+				// Stop local player directly (not through router)
+				LocalPlayer.stopSong().then(() => {
+					logger.info('App', 'Local player stopped for UPNP mode')
+				})
+			} else {
+				logger.info('App', 'UPNP device deselected, switching back to local player')
+			}
+		}
+	}, [upnp.selectedDevice])
 
 	React.useEffect(() => {
 		if (!config.url) return
@@ -130,6 +159,15 @@ const App = () => {
 				</SetUpdateApiContext.Provider>
 			</SetSettingsContext.Provider>
 		</SetConfigContext.Provider>
+	)
+}
+
+// Main App wrapper with UpnpProvider
+const App = () => {
+	return (
+		<UpnpProvider>
+			<AppContent />
+		</UpnpProvider>
 	)
 }
 

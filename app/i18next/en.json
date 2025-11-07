@@ -154,6 +154,7 @@
     "No lyrics found": "No lyrics found",
     "No results": "No results",
     "Not connected": "Not connected",
+    "No UPNP/DLNA devices found on the network": "No UPNP/DLNA devices found on the network",
     "Open home page": "Open home page",
     "Open in Last.fm": "Open in Last.fm",
     "Open in MusicBrainz": "Open in MusicBrainz",
@@ -193,6 +194,11 @@
     "min": "min",
     "minutes": "minutes",
     "song": "song",
-    "songs": "songs"
+    "songs": "songs",
+    "UPNP/DLNA Devices": "UPNP/DLNA Devices",
+    "Available Devices": "Available Devices",
+    "Scanning for devices...": "Scanning for devices...",
+    "Currently Selected": "Currently Selected",
+    "UPNP/DLNA allows you to stream music to compatible devices on your network such as speakers, TVs, and media receivers.": "UPNP/DLNA allows you to stream music to compatible devices on your network such as speakers, TVs, and media receivers."
   }
 }

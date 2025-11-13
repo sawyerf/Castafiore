@@ -62,6 +62,10 @@ const App = () => {
 	}, [settings.theme, settings.themePlayer])
 
 	React.useEffect(() => {
+		if (window) window.document.documentElement.style.backgroundColor = theme.primaryBack
+	}, [theme])
+
+	React.useEffect(() => {
 		if (window) window.streamFormat = settings.streamFormat
 		else global.streamFormat = settings.streamFormat
 	}, [settings.streamFormat])

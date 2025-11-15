@@ -62,9 +62,9 @@
       },
       "player": {
         "Stream format": "Format du flux",
-        "Stream format description": "Spécifiez le format du flux à lire.",
+        "Stream format Description": "Spécifiez le format du flux à lire.",
         "Max bitrate": "Débit maximal",
-        "Max bitrate description": "Spécifiez le débit maximal en kilobits par seconde pour le flux à lire. Des débits plus bas consommeront moins de données mais peuvent entraîner une qualité audio inférieure.",
+        "Max bitrate Description": "Spécifiez le débit maximal en kilobits par seconde pour le flux à lire. Des débits plus bas consommeront moins de données mais peuvent entraîner une qualité audio inférieure.",
         "Play seed first": "Lire la référence en premier"
       },
       "theme": {
@@ -76,11 +76,17 @@
         "Show cached songs": "Afficher les musiques en cache",
         "Cache next song": "Musique suivante en cache",
         "Cache next song description": "Télécharger automatiquement les titres à venir (par défaut : 5)",
+        "Clear cache": "Vider le cache",
         "Clear API cache": "Vider le cache de l'API",
         "Clear song cache": "Vider le cache des musiques",
         "Clear cache alert message": "Êtes-vous sûr de vouloir vider le cache ?",
         "Cache stats": "Cache stats",
-        "No cache": "Aucun cache"
+        "No cache": "Aucun cache",
+        "Cache size": "Taille du cache",
+        "Max cache size": "Taille maximale du cache",
+        "Enable max cache size": "Activer la taille maximale du cache",
+        "Max cache size GB": "Taille maximale du cache (en Go)",
+        "Max cache size description": "Définissez une taille maximale pour le cache des musiques. Lorsque cette taille est atteinte, les musiques les moins récemment mis en cache seront supprimées du cache."
       },
       "shares": {
         "No shares found": "Aucun partage trouvé",

@@ -76,11 +76,17 @@
         "Show cached songs": "Show cached songs",
         "Cache next song": "Cache next song",
         "Cache next song description": "Auto download upcoming songs (default: 5)",
+        "Clear cache": "Clear cache",
         "Clear API cache": "Clear API cache",
         "Clear song cache": "Clear song cache",
         "Clear cache alert message": "Are you sure you want to clear the cache?",
         "Cache stats": "Cache stats",
-        "No cache": "No cache"
+        "No cache": "No cache",
+        "Cache size": "Cache size",
+        "Max cache size": "Max cache size",
+        "Enable max cache size": "Enable max cache size",
+        "Max cache size GB": "Max cache size (in GB)",
+        "Max cache size description": "Set a maximum size for the music cache. When this size is reached, the least recently cached music will be removed from the cache."
       },
       "shares": {
         "No shares found": "No shares found",

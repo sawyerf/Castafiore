@@ -3,7 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { urlCover, urlStream } from '~/utils/url';
-import { isSongCached, getPathSong } from '~/utils/cache';
+import { isSongCached, getPathSong, deleteOldCacheSongs } from '~/utils/cache';
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
 import logger from '~/utils/logger';
 
@@ -115,9 +115,13 @@ export const downloadSong = async (urlStream, id) => {
 	if (global.songsDownloading.indexOf(id) >= 0) return urlStream
 	const fileUri = getPathSong(id, global.streamFormat)
 	const partUri = `${fileUri}.part`
-	global.songsDownloading.push(id)
 
 	if (await isSongCached(null, id, global.streamFormat, global.maxBitRate)) return fileUri
+	if (global.enableMaxCacheSize && global.sizeCacheSong >= global.maxCacheSize * 1024 * 1024 * 1024) {
+		logger.info('downloadSong', 'Max cache size reached, skipping download')
+		return urlStream
+	}
+	global.songsDownloading.push(id)
 	try {
 		const res = await FileSystem.downloadAsync(urlStream, partUri)
 		const contentType = getHeader(res?.headers, 'content-type')
@@ -136,6 +140,7 @@ export const downloadSong = async (urlStream, id) => {
 		} else {
 			await FileSystem.moveAsync({ from: partUri, to: fileUri })
 			global.listCacheSong.push(`${id}.${global.streamFormat}`)
+			global.sizeCacheSong += realSize
 			return fileUri
 		}
 	} catch (error) {
@@ -148,6 +153,10 @@ export const downloadNextSong = async (queue, currentIndex) => {
 	if (!global.isSongCaching) return
 	const maxIndex = Math.min(global.cacheNextSong, queue.length)
 
+	if (global.enableMaxCacheSize && global.sizeCacheSong >= global.maxCacheSize * 1024 * 1024 * 1024) {
+		logger.info('downloadNextSong', 'Max cache size reached, deleting old cached songs')
+		await deleteOldCacheSongs()
+	}
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
 		if (!queue[index].isLiveStream && queue[index].id.match(/^[a-zA-Z0-9-]*$/)) {

@@ -81,6 +81,9 @@ export const initCacheSong = async () => {
 			logger.error('initCacheSong', error)
 		})
 	global.listCacheSong = await getListCacheSong() || []
+	global.sizeCacheSong = await FileSystem.getInfoAsync(getPathDir())
+		.then(info => info.size)
+		.catch(() => 0)
 }
 
 // Cache Settings
@@ -106,22 +109,48 @@ export const clearSongCache = async () => {
 export const getStatCache = async () => {
 	return [
 		{
-			name: 'Cache Api',
+			name: 'Cache API',
 			count: await AsyncStorage.getAllKeys()
 				.then(keys => keys.filter(key => key.startsWith('http')).length)
 				.catch(() => 0)
 		},
 		{
-			name: 'Cache Songs',
+			name: 'Cache songs',
 			count: await getListCacheSong()
 				.then(files => files.length)
 				.catch(() => 0)
 		},
 		{
-			name: 'Cache Songs Size',
+			name: 'Cache songs vize',
 			count: await FileSystem.getInfoAsync(getPathDir())
 				.then(info => `${(info.size / (1024 * 1024)) | 0 || 0} MB`)
 				.catch(() => '0.00')
 		},
 	]
+}
+
+export const deleteOldCacheSongs = async () => {
+	const files = await FileSystem.readDirectoryAsync(getPathDir())
+
+	console.log('Current cached songs:', files)
+	files.sort((a, b) => {
+		return b.modificationTime - a.modificationTime
+	})
+
+	for (let i = 0; i < 5; i++) {
+		const file = files[i]
+		console.log('Deleting old cached song:', `${file}`)
+		await FileSystem.deleteAsync(`${getPathDir()}${file}`)
+		global.listCacheSong = global.listCacheSong.filter(f => f !== file)
+	}
+	// delete part
+	files.filter(file => file.endsWith('.part')).forEach(async (file) => {
+		console.log('Deleting part file:', file)
+		// await FileSystem.deleteAsync(`${getPathDir()}${file}`)
+		// global.listCacheSong = global.listCacheSong.filter(f => f !== file)
+	})
+
+	global.sizeCacheSong = await FileSystem.getInfoAsync(getPathDir())
+		.then(info => info.size)
+		.catch(() => 0)
 }

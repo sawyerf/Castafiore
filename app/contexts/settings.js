@@ -54,6 +54,8 @@ export const defaultSettings = {
 	isSongCaching: false,
 	cacheNextSong: 5,
 	showCache: true,
+	enableMaxCacheSize: false,
+	maxCacheSize: 5,
 	// Player settings
 	streamFormat: 'raw',
 	maxBitRate: 0,

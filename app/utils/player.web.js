@@ -1,7 +1,8 @@
 import React from 'react'
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration'
 
-import { getApi, urlCover, urlStream } from '~/utils/api'
+import { getApi} from '~/utils/api'
+import { urlStream, urlCover } from './url'
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
 import logger from '~/utils/logger'
 
@@ -161,8 +162,8 @@ export const updateTime = () => {
 	return time
 }
 
-export const downloadSong = async (urlStream, _id) => {
-	return fetch(urlStream)
+export const downloadSong = async (url, _id) => {
+	return fetch(url)
 }
 
 const downloadNextSong = async (config, queue, currentIndex) => {

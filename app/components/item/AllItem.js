@@ -3,7 +3,7 @@ import { Pressable, Text, StyleSheet, Platform } from 'react-native';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';

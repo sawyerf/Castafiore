@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
-import { urlCover } from '~/utils/api'
+import { urlCover } from '~/utils/url'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 import size from '~/styles/size'
 

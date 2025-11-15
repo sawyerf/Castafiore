@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, PanResponder } from 'react-native';
+import { Animated, PanResponder, Platform } from 'react-native';
 
 import { ConfigContext } from '~/contexts/config';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
@@ -42,7 +42,7 @@ const SlideControl = ({ children, style }) => {
 			}
 			Animated.timing(position, {
 				toValue: 0,
-				useNativeDriver: true,
+				useNativeDriver: Platform.OS !== 'web',
 				duration: 200
 			}).start()
 		}

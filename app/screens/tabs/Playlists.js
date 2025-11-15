@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable } from 'react-native';
+import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -44,7 +44,7 @@ const Playlists = ({ navigation }) => {
 		Animated.timing(rotationValue, {
 			toValue: 1,
 			duration: 1000,
-			useNativeDriver: true,
+			useNativeDriver: Platform.OS !== 'web',
 		}).start()
 		refreshFavorited()
 		refreshPlaylists()

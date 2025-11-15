@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Animated, StyleSheet, Pressable } from 'react-native';
+import { Text, View, ScrollView, Animated, StyleSheet, Pressable, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -45,7 +45,7 @@ const Home = () => {
 		Animated.timing(rotationValue, {
 			toValue: 1,
 			duration: 1000,
-			useNativeDriver: true,
+			useNativeDriver: Platform.OS !== 'web',
 		}).start()
 	}
 

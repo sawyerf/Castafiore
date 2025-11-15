@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { ConfigContext } from '~/contexts/config'
 import { ThemeContext } from '~/contexts/theme'
-import { urlCover } from '~/utils/api'
+import { urlCover } from '~/utils/url'
 import ImageError from '~/components/ImageError'
 import CustomFlat from '~/components/lists/CustomFlat'
 import mainStyles from '~/styles/main'

@@ -1,4 +1,4 @@
-import { urlStream } from '~/utils/api'
+import { urlStream } from '~/utils/url'
 
 export const getCache = async (cacheName, key) => {
 	const caches = await window.caches.open(cacheName)

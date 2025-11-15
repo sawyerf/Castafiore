@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ConfigContext } from '~/contexts/config'
-import { urlCover } from '~/utils/api'
+import { urlCover } from '~/utils/url'
 import { ThemeContext } from '~/contexts/theme'
 import { SettingsContext } from '~/contexts/settings'
 import ImageError from '~/components/ImageError'

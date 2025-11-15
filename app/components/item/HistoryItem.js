@@ -8,7 +8,7 @@ import { ConfigContext } from '~/contexts/config';
 import { playSong } from '~/utils/player';
 import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import IconButton from '~/components/button/IconButton';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';

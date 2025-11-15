@@ -2,7 +2,7 @@ import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, 
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { urlCover, urlStream } from '~/utils/api';
+import { urlCover, urlStream } from '~/utils/url';
 import { isSongCached, getPathSong, deleteOldCacheSongs } from '~/utils/cache';
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
 import logger from '~/utils/logger';

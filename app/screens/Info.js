@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import { isSongCached, getSongCachedInfo, deleteSongCache } from '~/utils/cache';
 import ButtonMenu from '~/components/settings/ButtonMenu';
 import settingStyles from '~/styles/settings';

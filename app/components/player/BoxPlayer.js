@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import PlayButton from '~/components/button/PlayButton';
 import Player from '~/utils/player';
 import IconButton from '~/components/button/IconButton';

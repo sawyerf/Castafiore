@@ -8,7 +8,7 @@ import { playSong } from '~/utils/player';
 import { SettingsContext } from '~/contexts/settings';
 import { SongDispatchContext } from '~/contexts/song';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
@@ -49,10 +49,14 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
+	const settings = React.useContext(SettingsContext)
+	const [isHover, setIsHover] = React.useState(false)
 
 	return (
 		<Pressable
-			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song, style])}
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.song, style, { backgroundColor: isHover ? theme.secondaryBack : 'transparent' }])}
+			onHoverIn={() => { settings.isDesktop && setIsHover(true) }}
+			onHoverOut={() => { settings.isDesktop && setIsHover(false) }}
 			onPress={() => {
 				if (onPress(song, queue, index)) playSong(config, songDispatch, queue, index)
 			}}
@@ -87,9 +91,15 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 					{song.artist}
 				</Text>
 			</View>
+			{
+				settings.isDesktop ? (
+					<Text style={[mainStyles.smallText(theme.secondaryText), { marginHorizontal: 10 }]}>
+						{song.duration ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
+					</Text>
+				) : null}
 			<Cached song={song} />
 			<FavoritedButton id={song.id} isFavorited={song?.starred} style={{ padding: 5, paddingStart: 10 }} />
-		</Pressable >
+		</Pressable>
 	)
 }
 
@@ -99,6 +109,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: size.image.small,
 		marginBottom: 10,
+		borderRadius: 4,
 	},
 })
 

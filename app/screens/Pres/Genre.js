@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
 		color: '#F9F2F3',
 		fontSize: 50,
 		fontWeight: 'bold',
+		textAlign: 'center',
 	},
 	cover: {
 		width: "100%",

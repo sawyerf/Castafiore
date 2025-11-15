@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ConfigContext } from '~/contexts/config';
 import { getApi } from '~/utils/api';
 import { SongContext, SongDispatchContext } from '~/contexts/song';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import { removeFromQueue } from '~/utils/player';
 import size from '~/styles/size';
 import OptionsPopup from '~/components/popup/OptionsPopup';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Modal, ScrollView, Animated, Pressable } from 'react-native';
+import { View, Text, Modal, ScrollView, Animated, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import ImageError from '~/components/ImageError';
 import mainStyles from '~/styles/main';
 import size from '~/styles/size';
@@ -48,7 +48,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 		Animated.timing(slide, {
 			toValue: 0,
 			duration: 100,
-			useNativeDriver: true
+			useNativeDriver: Platform.OS !== 'web',
 		}).start()
 	}
 

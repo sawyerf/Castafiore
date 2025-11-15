@@ -3,7 +3,7 @@ import { Pressable, View, Text } from 'react-native';
 
 import { ConfigContext } from '~/contexts/config';
 import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/api';
+import { urlCover } from '~/utils/url';
 import ImageError from '~/components/ImageError';
 import FavoritedButton from '~/components/button/FavoritedButton';
 import size from '~/styles/size';

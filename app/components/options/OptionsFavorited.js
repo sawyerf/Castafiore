@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
-import { urlStream } from '~/utils/api'
+import { urlStream } from '~/utils/url'
 import { downloadSong } from '~/utils/player'
 import { SettingsContext } from '~/contexts/settings'
 import OptionsPopup from '~/components/popup/OptionsPopup'

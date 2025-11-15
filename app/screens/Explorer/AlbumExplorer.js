@@ -15,7 +15,7 @@ import size from '~/styles/size'
 import ExplorerItem from '~/components/item/ExplorerItem'
 import logger from '~/utils/logger'
 
-const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random']
+const TYPES = ['newest', 'highest', 'frequent', 'recent', 'starred', 'random', 'alphabeticalByName', 'alphabeticalByArtist']
 const PAGE_SIZE = 100
 
 const AlbumExplorer = () => {

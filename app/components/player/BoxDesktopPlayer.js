@@ -1,18 +1,18 @@
-import React from 'react';
-import { Pressable, Text, View, StyleSheet, Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Pressable, Text, View, StyleSheet, Platform } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config';
-import { SongContext, SongDispatchContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import Player from '~/utils/player';
-import IconButton from '~/components/button/IconButton';
-import ImageError from '~/components/ImageError';
-import SlideBar from '~/components/button/SlideBar';
-import FavoritedButton from '~/components/button/FavoritedButton';
-import size from '~/styles/size';
-import PlayButton from '~/components/button/PlayButton';
+import { ConfigContext } from '~/contexts/config'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import Player from '~/utils/player'
+import IconButton from '~/components/button/IconButton'
+import ImageError from '~/components/ImageError'
+import SlideBar from '~/components/button/SlideBar'
+import FavoritedButton from '~/components/button/FavoritedButton'
+import size from '~/styles/size'
+import PlayButton from '~/components/button/PlayButton'
 
 const BoxDesktopPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
@@ -161,4 +161,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default BoxDesktopPlayer;
+export default BoxDesktopPlayer

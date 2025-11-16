@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { ThemeContext } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
-import size from '~/styles/size';
+import size from '~/styles/size'
 
 const Header = ({ title, marginBottom=30 }) => {
 	const navigation = useNavigation()
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default Header;
+export default Header

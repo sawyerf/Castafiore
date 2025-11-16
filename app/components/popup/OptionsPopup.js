@@ -1,38 +1,91 @@
-import React from 'react';
-import { View, Text, Modal, ScrollView, Animated, Pressable, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { View, Text, Modal, ScrollView, Animated, Pressable, Platform } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { SettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import ImageError from '~/components/ImageError'
+import mainStyles from '~/styles/main'
+import size from '~/styles/size'
+
+const OptionItem = ({ option }) => {
+	const theme = React.useContext(ThemeContext)
+	const [isHover, setIsHover] = React.useState(false)
+	const settings = React.useContext(SettingsContext)
+
+	if (!option) return null
+	if (option.hidden) return null
+	return (
+		<Pressable
+			onHoverIn={() => settings.isDesktop && setIsHover(true)}
+			onHoverOut={() => setIsHover(false)}
+			style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
+				flexDirection: 'row',
+				alignItems: 'center',
+				paddingHorizontal: 20,
+				paddingStart: 20 + 15 * (option.indent || 0),
+				height: 45,
+				justifyContent: 'flex-start',
+				alignContent: 'center',
+				gap: 10,
+				backgroundColor: isHover ? 'rgba(0,0,0,0.1)' : theme.secondaryBack,
+			}])}
+			onPress={option.onPress}
+		>
+			{
+				option.icon && (
+					<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryText} style={{
+						width: 25,
+						textAlign: 'center'
+					}} />
+				)
+			}
+			{
+				option.image && (
+					<ImageError
+						style={{
+							width: 35,
+							height: 35,
+							borderRadius: option.borderRadius || 5,
+						}}
+						source={{ uri: option.image }}
+					/>
+				)
+			}
+			<Text
+				style={{ color: theme.primaryText, fontSize: size.text.large }}
+				numberOfLines={1}
+			>{option.name}</Text>
+		</Pressable>
+	)
+}
 
 const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
+	const { t } = useTranslation()
+	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const slide = React.useRef(new Animated.Value(-1000)).current
 	const isAnim = React.useRef(false)
 	const config = React.useContext(ConfigContext)
-	const navigation = useNavigation();
-	const [virtualOptions, setVirtualOptions] = React.useState();
+	const navigation = useNavigation()
+	const [virtualOptions, setVirtualOptions] = React.useState()
 
 	React.useImperativeHandle(ref, () => ({
 		close: close,
 		showInfo: (info) => {
-			navigation.navigate('Info', { info });
-			close();
+			navigation.navigate('Info', { info })
+			close()
 		},
 		setVirtualOptions: (opt) => {
-			setVirtualOptions(opt);
+			setVirtualOptions(opt)
 		},
 		clearVirtualOptions: () => {
-			setVirtualOptions(null);
+			setVirtualOptions(null)
 		}
 	}), [close])
 
@@ -52,7 +105,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 		}).start()
 	}
 
-	if (!visible) return null;
+	if (!visible) return null
 	return (
 		<Modal
 			transparent={true}
@@ -132,55 +185,13 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 						name: t('Cancel'),
 						icon: 'close',
 						onPress: close
-					}].map((option, index) => {
-						if (!option) return null
-						if (option.hidden) return null;
-						return (
-							<Pressable
-								style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
-									flexDirection: 'row',
-									alignItems: 'center',
-									paddingHorizontal: 20,
-									paddingStart: 20 + 15 * (option.indent || 0),
-									height: 45,
-									justifyContent: 'flex-start',
-									alignContent: 'center',
-									gap: 10,
-								}])}
-								key={index}
-								onPress={option.onPress}
-							>
-								{
-									option.icon && (
-										<Icon name={option.icon} size={size.icon.tiny} color={theme.secondaryText} style={{
-											width: 25,
-											textAlign: 'center'
-										}} />
-									)
-								}
-								{
-									option.image && (
-										<ImageError
-											style={{
-												width: 35,
-												height: 35,
-												borderRadius: option.borderRadius || 5,
-											}}
-											source={{ uri: option.image }}
-										/>
-									)
-								}
-								<Text
-									style={{ color: theme.primaryText, fontSize: size.text.large }}
-									numberOfLines={1}
-								>{option.name}</Text>
-							</Pressable>
-						)
-					})}
+					}].map((option, index) => (
+						<OptionItem key={index} option={option} />
+					))}
 				</Animated.View>
 			</ScrollView>
 		</Modal>
 	)
 }
 
-export default OptionsPopup;
+export default OptionsPopup

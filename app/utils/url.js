@@ -7,6 +7,7 @@ const realCover = (config, id, size = null) => {
 }
 
 export const urlCover = (config, id, size = null) => {
+	if (!id) return null
 	if (id === 'tuktuktuk') return 'https://github.com/sawyerf/Castafiore/blob/main/assets/icon.png?raw=true'
 	if (!config?.url || !config?.query) return null
 	if (typeof id === 'object') {

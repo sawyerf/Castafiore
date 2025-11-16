@@ -1,18 +1,18 @@
-import React from 'react';
-import { Text, StyleSheet, Pressable } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import { Text, StyleSheet, Pressable } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import CustomFlat from '~/components/lists/CustomFlat';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
-import OptionsArtists from '~/components/options/OptionsArtists';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import CustomFlat from '~/components/lists/CustomFlat'
+import ImageError from '~/components/ImageError'
+import mainStyles from '~/styles/main'
+import OptionsArtists from '~/components/options/OptionsArtists'
+import size from '~/styles/size'
 
 const HorizontalArtists = ({ artists, onPress = () => { } }) => {
-	const navigation = useNavigation();
+	const navigation = useNavigation()
 	const theme = React.useContext(ThemeContext)
 	const config = React.useContext(ConfigContext)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
@@ -38,7 +38,7 @@ const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 			/>
 			<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.text.medium, marginBottom: 2, width: 100, textAlign: 'center' }}>{item.name}</Text>
 		</Pressable>
-	), [theme, config, onPress]);
+	), [theme, config, onPress])
 
 	return (
 		<>
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default HorizontalArtists;
+export default HorizontalArtists

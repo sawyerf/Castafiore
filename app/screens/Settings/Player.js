@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import { SettingsContext } from '~/contexts/settings'
 import { SetSettingsContext } from '~/contexts/settings'
@@ -90,6 +90,15 @@ const PlayerSettings = () => {
             title={t('settings.player.Play seed first')}
             value={settings.playSeedFirst}
             onPress={() => setSettings({ ...settings, playSeedFirst: !settings.playSeedFirst })}
+            isLast
+          />
+        </View>
+        <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Save queue')}</Text>
+        <View style={settingStyles.optionsContainer(theme)}>
+          <ButtonSwitch
+            title={t('settings.player.Save queue')}
+            value={settings.saveQueue}
+            onPress={() => setSettings({ ...settings, saveQueue: !settings.saveQueue })}
             isLast
           />
         </View>

@@ -1,14 +1,14 @@
-import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress, Event, useTrackPlayerEvents } from 'react-native-track-player';
-import * as FileSystem from 'expo-file-system';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability, RepeatMode, State, useProgress, Event, useTrackPlayerEvents } from 'react-native-track-player'
+import * as FileSystem from 'expo-file-system'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { urlCover, urlStream } from '~/utils/url';
-import { isSongCached, getPathSong } from '~/utils/cache';
-import { nextRandomIndex, prevRandomIndex } from '~/utils/tools';
-import logger from '~/utils/logger';
+import { urlCover, urlStream } from '~/utils/url'
+import { isSongCached, getPathSong } from '~/utils/cache'
+import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
+import logger from '~/utils/logger'
 
 export const initService = async () => {
-	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'));
+	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'))
 }
 
 export const initPlayer = async (songDispatch) => {
@@ -186,6 +186,7 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	loadSong(config, queue, index)
 	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
+	saveQueue(config, queue, index)
 }
 
 export const secondToTime = (second) => {

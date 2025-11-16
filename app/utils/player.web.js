@@ -1,9 +1,9 @@
 import React from 'react'
 import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration'
 
-import { getApi} from '~/utils/api'
+import { getApi } from '~/utils/api'
 import { urlStream, urlCover } from './url'
-import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
+import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import logger from '~/utils/logger'
 
 const State = {
@@ -207,6 +207,7 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	await loadSong(config, queue, index)
 	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
+	saveQueue(config, queue, index)
 }
 
 export const setIndex = async (config, songDispatch, queue, index) => {

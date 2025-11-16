@@ -33,6 +33,7 @@ export const defaultSettings = {
 	// Home Settings
 	homeOrderV2: [
 		{ id: 'week-activity', enable: false },
+		{ id: 'last-queue', enable: false },
 		{ id: 'favorited-artist', enable: true },
 		{ id: 'genre', enable: false },
 		{ id: 'radio', enable: false },
@@ -55,6 +56,7 @@ export const defaultSettings = {
 	cacheNextSong: 5,
 	showCache: true,
 	// Player settings
+	saveQueue: false,
 	streamFormat: 'raw',
 	maxBitRate: 0,
 	playSeedFirst: false,
@@ -75,6 +77,16 @@ export const homeSections = [
 		path: '',
 		query: '',
 		getInfo: () => { },
+	},
+	{
+		icon: 'list',
+		id: 'last-queue',
+		title: 'Last queue',
+		type: 'queue',
+		isShowAll: false,
+		path: 'getPlayQueue',
+		query: '',
+		getInfo: (json, setList) => setList(json?.playQueue),
 	},
 	{
 		icon: 'user',

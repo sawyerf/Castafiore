@@ -86,6 +86,10 @@ const App = () => {
 	}, [settings.isSongCaching])
 
 	React.useEffect(() => {
+		global.saveQueue = settings.saveQueue
+	}, [settings.saveQueue])
+
+	React.useEffect(() => {
 		const sysLang = localeLang()
 
 		logger.info('i18n', `System language: ${sysLang || 'Not found'}, App language: ${settings.language || 'Not set'}`)

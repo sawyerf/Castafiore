@@ -1,19 +1,19 @@
-import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Text, View, ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import ButtonSwitch from '~/components/settings/ButtonSwitch';
-import Header from '~/components/Header';
-import HomeOrder from '~/components/settings/HomeOrder';
-import OptionInput from '~/components/settings/OptionInput';
-import mainStyles from '~/styles/main';
-import settingStyles from '~/styles/settings';
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import ButtonSwitch from '~/components/settings/ButtonSwitch'
+import Header from '~/components/Header'
+import HomeOrder from '~/components/settings/HomeOrder'
+import OptionInput from '~/components/settings/OptionInput'
+import mainStyles from '~/styles/main'
+import settingStyles from '~/styles/settings'
 
 const HomeSettings = () => {
-	const { t } = useTranslation();
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const settings = React.useContext(SettingsContext)
@@ -91,4 +91,4 @@ const HomeSettings = () => {
 	)
 }
 
-export default HomeSettings;
+export default HomeSettings

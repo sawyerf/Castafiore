@@ -10,6 +10,7 @@ import { ThemeContext } from '~/contexts/theme'
 import { SettingsContext, homeSections } from '~/contexts/settings'
 import { ConfigContext } from '~/contexts/config'
 import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi'
+import HorizontalQueue from '~/components/lists/HorizontalQueue'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
 import HorizontalArtists from '~/components/lists/HorizontalArtists'
 import HorizontalGenres from '~/components/lists/HorizontalGenres'
@@ -109,6 +110,7 @@ const HorizontalList = ({ refresh, id, enable }) => {
 					/>
 				}
 			</Pressable>
+			{section.type === 'queue' && <HorizontalQueue current={list.current} queue={list.entry} />}
 			{section.type === 'album' && <HorizontalAlbums albums={list} />}
 			{section.type === 'album_star' && <HorizontalAlbums albums={list} />}
 			{section.type === 'artist' && <HorizontalArtists artists={list} />}

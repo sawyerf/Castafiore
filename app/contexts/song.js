@@ -13,8 +13,7 @@ const newSong = (state, action, isCache = false) => {
 		...state,
 		...action,
 	}
-	if (window) window.song = song
-	else global.song = song
+	global.song = song
 	if (isCache && Platform.OS === 'android') {
 		AsyncStorage.setItem('song', JSON.stringify(song))
 			.catch((error) => logger.error('newSong', 'Error saving song to AsyncStorage:', error))

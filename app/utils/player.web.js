@@ -26,7 +26,7 @@ export const initService = async () => {
 
 export const initPlayer = async (songDispatch) => {
 	const sound = audio()
-	window.isVolumeSupported = false
+	global.isVolumeSupported = false
 	songDispatch({ type: 'init' })
 	sound.addEventListener('error', () => {
 		songDispatch({ type: 'setPlaying', state: State.Error })
@@ -59,14 +59,14 @@ export const initPlayer = async (songDispatch) => {
 		songDispatch({ type: 'setPlaying', state: State.Paused })
 	})
 	sound.addEventListener('volumechange', () => {
-		window.isVolumeSupported = true
+		global.isVolumeSupported = true
 	})
 	sound.volume = 0.99
 	sound.volume = 1
 	sound.addEventListener('ended', () => {
-		const songId = window.song.songInfo.id
+		const songId = global.song.songInfo.id
 
-		if (window.song.actionEndOfSong === 'repeat') {
+		if (global.song.actionEndOfSong === 'repeat') {
 			if (audio().duration < 1) {
 				reload()
 				// This return is necessary to avoid scrobble if a bug occurs
@@ -76,13 +76,13 @@ export const initPlayer = async (songDispatch) => {
 				resumeSong()
 			}
 		} else {
-			nextSong(window.config, window.song, songDispatch)
+			nextSong(global.config, global.song, songDispatch)
 		}
-		getApi(window.config, 'scrobble', `id=${songId}&submission=true`)
+		getApi(global.config, 'scrobble', `id=${songId}&submission=true`)
 			.catch(() => { })
 	})
 	sound.addEventListener('canplaythrough', () => {
-		downloadNextSong(window.config, window.song.queue, window.song.index)
+		downloadNextSong(global.config, global.song.queue, global.song.index)
 	})
 
 	navigator.mediaSession.setActionHandler("pause", () => {
@@ -95,29 +95,29 @@ export const initPlayer = async (songDispatch) => {
 		setPosition(details.seekTime)
 	})
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
-		previousSong(window.config, window.song, songDispatch)
+		previousSong(global.config, global.song, songDispatch)
 	})
 	navigator.mediaSession.setActionHandler("nexttrack", () => {
-		nextSong(window.config, window.song, songDispatch)
+		nextSong(global.config, global.song, songDispatch)
 	})
 	navigator.mediaSession.setActionHandler("seekbackward", () => {
-		previousSong(window.config, window.song, songDispatch)
+		previousSong(global.config, global.song, songDispatch)
 	})
 	navigator.mediaSession.setActionHandler("seekforward", () => {
-		nextSong(window.config, window.song, songDispatch)
+		nextSong(global.config, global.song, songDispatch)
 	})
 
 	addEventListener('keydown', (e) => {
 		if (e.key === ' ') {
-			if (window.song.state === State.Playing) pauseSong()
+			if (global.song.state === State.Playing) pauseSong()
 			else resumeSong()
 			e.preventDefault()
 		} else if (e.key === 'ArrowRight') {
-			nextSong(window.config, window.song, songDispatch)
+			nextSong(global.config, global.song, songDispatch)
 			e.preventDefault()
 		}
 		else if (e.key === 'ArrowLeft') {
-			previousSong(window.config, window.song, songDispatch)
+			previousSong(global.config, global.song, songDispatch)
 			e.preventDefault()
 		}
 		else if (e.key === 'ArrowUp') {
@@ -167,13 +167,13 @@ export const downloadSong = async (url, _id) => {
 }
 
 const downloadNextSong = async (config, queue, currentIndex) => {
-	if (!window.isSongCaching) return
-	const maxIndex = Math.min(window.cacheNextSong, queue.length)
+	if (!global.isSongCaching) return
+	const maxIndex = Math.min(global.cacheNextSong, queue.length)
 
 	for (let i = -1; i < maxIndex; i++) {
 		const index = (currentIndex + queue.length + i) % queue.length
 		if (!queue[index].isDownloaded && queue[index].id.match(/^[a-zA-Z0-9-]*$/)) {
-			await fetch(urlStream(config, queue[index].id, window.streamFormat, window.maxBitRate))
+			await fetch(urlStream(config, queue[index].id, global.streamFormat, global.maxBitRate))
 				.then(() => { queue[index].isDownloaded = true })
 				.catch(() => { })
 		}
@@ -186,7 +186,7 @@ const loadSong = async (config, queue, index) => {
 	const song = queue[index]
 	const sound = audio()
 
-	sound.src = urlStream(config, song.id, window.streamFormat, window.maxBitRate)
+	sound.src = urlStream(config, song.id, global.streamFormat, global.maxBitRate)
 	sound.play()
 		.then(() => {
 			getApi(config, 'scrobble', `id=${song.id}&submission=false`)
@@ -316,7 +316,7 @@ export const setRepeat = async (songdispatch, action) => {
 }
 
 export const isVolumeSupported = () => {
-	return window.isVolumeSupported
+	return global.isVolumeSupported
 }
 
 export const resetAudio = (songDispatch) => {

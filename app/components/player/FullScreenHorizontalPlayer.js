@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, View, Text, Image, FlatList, Pressable, StyleSheet, useWindowDimensions } from 'react-native'
+import { Modal, View, Text, Image, FlatList, Pressable, StyleSheet, useWindowDimensions, Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -89,7 +89,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	return (
 		<Modal
 			statusBarTranslucent={true}
-			navigationBarTranslucent={true}
+			navigationBarTranslucent={Platform.OS === 'android' && parseInt(Platform.Version, 10) > 34 ? false : true}
 			onRequestClose={() => setFullScreen(false)}
 		>
 			<Image

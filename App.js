@@ -1,5 +1,6 @@
 import React from 'react'
-import { StatusBar, Platform } from 'react-native'
+import { Platform } from 'react-native'
+import { SystemBars } from 'react-native-edge-to-edge'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
@@ -53,8 +54,7 @@ const App = () => {
 	React.useEffect(() => {
 		if (!config.url) return
 		const folderCache = config.url.replace(/[^a-zA-Z0-9]/g, '_')
-		if (window) window.config = { ...config, folderCache }
-		else global.config = { ...config, folderCache }
+		global.config = { ...config, folderCache }
 		initCacheSong()
 	}, [config])
 
@@ -63,7 +63,7 @@ const App = () => {
 	}, [settings.theme, settings.themePlayer])
 
 	React.useEffect(() => {
-		if (window) window.document.documentElement.style.backgroundColor = theme.primaryBack
+		if (Platform.OS === 'web') window.document.documentElement.style.backgroundColor = theme.primaryBack
 	}, [theme])
 
 	React.useEffect(() => {
@@ -100,7 +100,7 @@ const App = () => {
 														}
 													}}
 												>
-													<StatusBar barStyle={theme.barStyle} backgroundColor={'rgba(0, 0, 0, 0)'} translucent={true} />
+													<SystemBars style={theme.barStyle} />
 													<Tab.Navigator
 														tabBar={(props) => <TabBar {...props} />}
 														screenOptions={{

@@ -1,6 +1,6 @@
 {
   "name": "castafiore",
-  "version": "2025.11.12",
+  "version": "2025.11.23",
   "main": "index.js",
   "homepage": ".",
   "scripts": {
@@ -19,7 +19,7 @@
     "@react-navigation/bottom-tabs": "^7.3.13",
     "@react-navigation/native": "^7.1.9",
     "@react-navigation/native-stack": "^7.3.13",
-    "expo": "^53.0.0",
+    "expo": "~53.0.24",
     "expo-build-properties": "~0.14.8",
     "expo-dev-client": "~5.2.4",
     "expo-file-system": "~18.1.11",
@@ -28,8 +28,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-i18next": "^15.6.0",
-    "react-native": "0.79.5",
-    "react-native-edge-to-edge": "^1.6.2",
+    "react-native": "0.79.6",
+    "react-native-edge-to-edge": "^1.6.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-track-player": "4.1.1-nightly-c46c8fb107e0de61d9b33c28e7228002077b4f20",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@eslint/js": "^9.17.0",
-    "@expo/metro-runtime": "^5.0.4",
+    "@expo/metro-runtime": "~5.0.5",
     "babel-plugin-root-import": "^6.6.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.17.0",

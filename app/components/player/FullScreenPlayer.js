@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable } from 'react-native'
+import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable, Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 
@@ -155,7 +155,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	return (
 		<Modal
 			statusBarTranslucent={true}
-			navigationBarTranslucent={true}
+			navigationBarTranslucent={Platform.OS === 'android' && parseInt(Platform.Version, 10) > 34 ? false : true}
 			onRequestClose={() => setFullScreen(false)}
 		>
 			<View style={[mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>

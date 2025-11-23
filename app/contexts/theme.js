@@ -34,7 +34,7 @@ export const themes = {
 		playerSecondaryText: '#808080',
 		playerButton: '#cd1921',
 
-		barStyle: 'light-content',
+		barStyle: 'light',
 	},
 	deezer: {
 		primaryBack: '#000000',
@@ -52,7 +52,7 @@ export const themes = {
 		playerSecondaryText: '#FFFFFF',
 		playerButton: '#FFFFFF',
 
-		barStyle: 'light-content',
+		barStyle: 'light',
 	},
 	spotify: {
 		primaryBack: '#000000',
@@ -70,7 +70,7 @@ export const themes = {
 		playerSecondaryText: '#B3B3B3',
 		playerButton: '#1DB954',
 
-		barStyle: 'light-content',
+		barStyle: 'light',
 	},
 	appleMusic: {
 		primaryBack: '#000000',
@@ -88,7 +88,7 @@ export const themes = {
 		playerSecondaryText: '#B3B3B3',
 		playerButton: '#FF2D55',
 
-		barStyle: 'light-content',
+		barStyle: 'light',
 	},
 	reddit: {
 		primaryBack: '#1A1A1B',
@@ -106,7 +106,7 @@ export const themes = {
 		playerSecondaryText: '#D7DADC',
 		playerButton: '#FF4500',
 
-		barStyle: 'light-content',
+		barStyle: 'light',
 	},
 	soundCloud: {
 		primaryBack: '#FFFFFF',
@@ -124,7 +124,7 @@ export const themes = {
 		playerSecondaryText: '#f3e3d6',
 		playerButton: '#FFFFFF',
 
-		barStyle: 'dark-content',
+		barStyle: 'dark',
 	},
 	lightMode: {
 		primaryBack: '#f2f2f6',
@@ -144,7 +144,7 @@ export const themes = {
 		playerSecondaryText: '#1e1e1e',
 		playerButton: '#fe3c30',
 
-		barStyle: 'dark-content',
+		barStyle: 'dark',
 	},
 	'blue lightMode': {
 		primaryBack: '#ffffff',
@@ -164,7 +164,7 @@ export const themes = {
 		playerSecondaryText: '#1e1e1e',
 		playerButton: '#4a65f0',
 
-		barStyle: 'dark-content',
+		barStyle: 'dark',
 	},
 }
 

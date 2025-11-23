@@ -217,23 +217,19 @@ export const getSettings = async () => {
 
 export const updateGlobalSettings = async (settings) => {
 	React.useEffect(() => {
-		if (window) window.streamFormat = settings.streamFormat
-		else global.streamFormat = settings.streamFormat
+		global.streamFormat = settings.streamFormat
 	}, [settings.streamFormat])
 
 	React.useEffect(() => {
-		if (window) window.maxBitRate = settings.maxBitRate
-		else global.maxBitRate = settings.maxBitRate
+		global.maxBitRate = settings.maxBitRate
 	}, [settings.maxBitRate])
 
 	React.useEffect(() => {
-		if (window) window.cacheNextSong = settings.cacheNextSong
-		else global.cacheNextSong = settings.cacheNextSong
+		global.cacheNextSong = settings.cacheNextSong
 	}, [settings.cacheNextSong])
 
 	React.useEffect(() => {
-		if (window) window.isSongCaching = settings.isSongCaching
-		else global.isSongCaching = settings.isSongCaching
+		global.isSongCaching = settings.isSongCaching
 	}, [settings.isSongCaching])
 
 	React.useEffect(() => {

@@ -11,7 +11,7 @@ import TabBar from '~/components/bar/TabBar'
 
 import '~/i18next/i18next'
 import { ConfigContext, SetConfigContext, getConfig } from '~/contexts/config'
-import { getSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { getSettings, updateGlobalSettings, SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { initCacheSong } from '~/utils/cache'
 import { localeLang } from '~/i18next/utils'
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi'
@@ -34,6 +34,7 @@ const App = () => {
 	const [updateApi, setUpdateApi] = React.useState({ path: '', query: '' })
 	const { i18n } = useTranslation()
 	Player.useEvent(song, dispatch)
+	updateGlobalSettings(settings)
 
 	React.useEffect(() => {
 		logger.info('App', `App started (version: ${version}, platform: ${Platform.OS} ${Platform.Version})`)
@@ -64,30 +65,6 @@ const App = () => {
 	React.useEffect(() => {
 		if (window) window.document.documentElement.style.backgroundColor = theme.primaryBack
 	}, [theme])
-
-	React.useEffect(() => {
-		if (window) window.streamFormat = settings.streamFormat
-		else global.streamFormat = settings.streamFormat
-	}, [settings.streamFormat])
-
-	React.useEffect(() => {
-		if (window) window.maxBitRate = settings.maxBitRate
-		else global.maxBitRate = settings.maxBitRate
-	}, [settings.maxBitRate])
-
-	React.useEffect(() => {
-		if (window) window.cacheNextSong = settings.cacheNextSong
-		else global.cacheNextSong = settings.cacheNextSong
-	}, [settings.cacheNextSong])
-
-	React.useEffect(() => {
-		if (window) window.isSongCaching = settings.isSongCaching
-		else global.isSongCaching = settings.isSongCaching
-	}, [settings.isSongCaching])
-
-	React.useEffect(() => {
-		global.saveQueue = settings.saveQueue
-	}, [settings.saveQueue])
 
 	React.useEffect(() => {
 		const sysLang = localeLang()

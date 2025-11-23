@@ -93,15 +93,21 @@ const PlayerSettings = () => {
             isLast
           />
         </View>
-        <Text style={settingStyles.titleContainer(theme)}>{t('settings.player.Save queue')}</Text>
-        <View style={settingStyles.optionsContainer(theme)}>
+        <Text style={settingStyles.titleContainer(theme)}>{t('Queue')}</Text>
+        <View style={settingStyles.optionsContainer(theme, true)}>
           <ButtonSwitch
-            title={t('settings.player.Save queue')}
+            title={t('Enable repeat queue')}
+            value={settings.repeatQueue}
+            onPress={() => setSettings({ ...settings, repeatQueue: !settings.repeatQueue })}
+          />
+          <ButtonSwitch
+            title={t('settings.player.Save last queue')}
             value={settings.saveQueue}
             onPress={() => setSettings({ ...settings, saveQueue: !settings.saveQueue })}
             isLast
           />
         </View>
+        <Text style={settingStyles.description(theme)}>{t('settings.player.Save last queue Description')}</Text>
       </View>
     </ScrollView>
   )

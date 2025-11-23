@@ -66,7 +66,9 @@
         "Stream format Description": "Specify the format of the stream to be played.",
         "Max bitrate": "Max bitrate",
         "Max bitrate Description": "Specify the maximum bit rate in kilobits per second for the stream to be played. Lower bit rates will consume less data but may result in lower audio quality.",
-        "Play seed first": "Play seed song first"
+        "Play seed first": "Play seed song first",
+        "Save last queue": "Save last queue",
+        "Save last queue Description": "Automatically save the last queue you played. You activate the 'Last queue' section on the home page to access it."
       },
       "theme": {
         "Player Theme": "Player Theme"
@@ -123,10 +125,12 @@
     "Delete": "Delete",
     "Description": "Description",
     "Desktop": "Desktop",
+    "Disable repeat queue": "Disable repeat queue",
     "Disconnect": "Disconnect",
     "Download": "Download",
     "Edit playlist": "Edit playlist",
     "Edit radio": "Edit radio",
+    "Enable repeat queue": "Enable repeat queue",
     "Enter radio details": "Enter radio details",
     "Explore": "Explore",
     "Favorited songs": "Favorited songs",
@@ -162,6 +166,7 @@
     "Playlist": "Playlist",
     "Playlists": "Playlists",
     "Public": "Public",
+    "Queue": "Queue",
     "Random Song": "Random Song",
     "Remove from queue": "Remove from queue",
     "Remove radio": "Remove radio",

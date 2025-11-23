@@ -1,23 +1,23 @@
-import React from 'react';
-import { Linking } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Linking } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
-import { SongContext, SongDispatchContext } from '~/contexts/song';
-import { urlCover } from '~/utils/url';
-import { removeFromQueue } from '~/utils/player';
-import size from '~/styles/size';
-import OptionsPopup from '~/components/popup/OptionsPopup';
+import { ConfigContext } from '~/contexts/config'
+import { getApi } from '~/utils/api'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { urlCover } from '~/utils/url'
+import { removeFromQueue } from '~/utils/player'
+import size from '~/styles/size'
+import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => {
-	const { t } = useTranslation();
-	const navigation = useNavigation();
-	const song = React.useContext(SongContext);
-	const songDispatch = React.useContext(SongDispatchContext);
-	const config = React.useContext(ConfigContext);
-	const refOption = React.useRef();
+	const { t } = useTranslation()
+	const navigation = useNavigation()
+	const song = React.useContext(SongContext)
+	const songDispatch = React.useContext(SongDispatchContext)
+	const config = React.useContext(ConfigContext)
+	const refOption = React.useRef()
 
 	const goToArtist = () => {
 		if (queue[indexOptions].artists?.length > 1) {
@@ -31,7 +31,7 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 					borderRadius: size.radius.circle,
 					onPress: () => {
 						navigation.navigate('Artist', { id: artist.id, name: artist.name })
-						refOption.current.close();
+						refOption.current.close()
 						closePlayer()
 					}
 				}))
@@ -64,7 +64,7 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 						onPress: () => addToPlaylist(playlist)
 					}))
 				]
-				);
+				)
 			})
 			.catch(() => { })
 	}
@@ -126,7 +126,7 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 					hidden: song.index === indexOptions
 				}
 			]} />
-	);
+	)
 }
 
-export default OptionsQueue;
+export default OptionsQueue

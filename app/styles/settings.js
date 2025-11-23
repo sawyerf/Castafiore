@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import size from '~/styles/size';
+import size from '~/styles/size'
 
 export default StyleSheet.create({
 	titleContainer: theme => ({
@@ -11,14 +11,14 @@ export default StyleSheet.create({
 		marginBottom: 5,
 		marginStart: 10,
 	}),
-	optionsContainer: theme => ({
+	optionsContainer: (theme, isDescription = false) => ({
 		flexDirection: 'column',
 		width: '100%',
 		paddingVertical: 1,
 		paddingHorizontal: 17,
 		backgroundColor: theme.secondaryBack,
 		borderRadius: 10,
-		marginBottom: 30,
+		marginBottom: isDescription ? 5 : 20,
 	}),
 	description: theme => ({
 		color: theme.secondaryText,
@@ -44,7 +44,7 @@ export default StyleSheet.create({
 		paddingEnd: 5,
 		alignItems: 'center',
 		borderBottomColor: theme.secondaryText,
-		borderBottomWidth: isLast ? 0 : .5,
+		borderBottomWidth: isLast ? 0 : 1,
 		flexDirection: 'row',
 	}),
 	primaryText: (theme) => ({

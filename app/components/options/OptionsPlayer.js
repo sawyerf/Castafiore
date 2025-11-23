@@ -4,13 +4,16 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { getApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import size from '~/styles/size'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
-const OptionPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
+const OptionsPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 	const { t } = useTranslation()
+	const settings = React.useContext(SettingsContext)
+	const setSettings = React.useContext(SetSettingsContext)
 	const navigation = useNavigation()
 	const config = React.useContext(ConfigContext)
 	const refOption = React.useRef()
@@ -112,6 +115,14 @@ const OptionPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 					hidden: !song.homePageUrl
 				},
 				{
+					name: t(settings.repeatQueue ? 'Disable repeat queue' : 'Enable repeat queue'),
+					icon: 'repeat',
+					onPress: () => {
+						setSettings({ ...settings, repeatQueue: !settings.repeatQueue })
+						refOption.current.close()
+					}
+				},
+				{
 					name: t('Info'),
 					icon: 'info',
 					onPress: () => {
@@ -124,4 +135,4 @@ const OptionPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 	)
 }
 
-export default OptionPlayer
+export default OptionsPlayer

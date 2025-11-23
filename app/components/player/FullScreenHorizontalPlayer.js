@@ -16,7 +16,7 @@ import mainStyles from '~/styles/main'
 import OptionsQueue from '~/components/options/OptionsQueue'
 import PlayButton from '~/components/button/PlayButton'
 import Player from '~/utils/player'
-import size from '~/styles/size';
+import size from '~/styles/size'
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 

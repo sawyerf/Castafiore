@@ -2,6 +2,9 @@ import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import md5 from 'md5'
 
+export const SettingsContext = React.createContext()
+export const SetSettingsContext = React.createContext()
+
 export const demoServers = [
 	{
 		name: 'Demo LMS',
@@ -212,5 +215,32 @@ export const getSettings = async () => {
 	}
 }
 
-export const SettingsContext = React.createContext()
-export const SetSettingsContext = React.createContext()
+export const updateGlobalSettings = async (settings) => {
+	React.useEffect(() => {
+		if (window) window.streamFormat = settings.streamFormat
+		else global.streamFormat = settings.streamFormat
+	}, [settings.streamFormat])
+
+	React.useEffect(() => {
+		if (window) window.maxBitRate = settings.maxBitRate
+		else global.maxBitRate = settings.maxBitRate
+	}, [settings.maxBitRate])
+
+	React.useEffect(() => {
+		if (window) window.cacheNextSong = settings.cacheNextSong
+		else global.cacheNextSong = settings.cacheNextSong
+	}, [settings.cacheNextSong])
+
+	React.useEffect(() => {
+		if (window) window.isSongCaching = settings.isSongCaching
+		else global.isSongCaching = settings.isSongCaching
+	}, [settings.isSongCaching])
+
+	React.useEffect(() => {
+		global.saveQueue = settings.saveQueue
+	}, [settings.saveQueue])
+
+	React.useEffect(() => {
+		global.repeatQueue = settings.repeatQueue
+	}, [settings.repeatQueue])
+}

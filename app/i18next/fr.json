@@ -65,7 +65,9 @@
         "Stream format description": "Spécifiez le format du flux à lire.",
         "Max bitrate": "Débit maximal",
         "Max bitrate description": "Spécifiez le débit maximal en kilobits par seconde pour le flux à lire. Des débits plus bas consommeront moins de données mais peuvent entraîner une qualité audio inférieure.",
-        "Play seed first": "Lire la référence en premier"
+        "Play seed first": "Lire la référence en premier",
+        "Save last queue": "Sauvegarder la dernière file",
+        "Save last queue Description": "Sauvegarder automatiquement la dernière file que vous avez jouée. Vous pouvez activer la section 'Dernière file' sur la page d'accueil pour y accéder."
       },
       "theme": {
         "Player Theme": "Thème du lecteur"
@@ -123,10 +125,12 @@
     "Description": "Description",
     "Desktop": "Ordinateur",
     "Disconnect": "Déconnecter",
+    "Disable repeat queue": "Désactiver la répétition de la file",
     "Download": "Télécharger",
     "Edit playlist": "Modifier la playlist",
     "Edit radio": "Modifier la radio",
     "Enter radio details": "Entrez les détails de la radio",
+    "Enable repeat queue": "Activer la répétition de la file",
     "Explore": "Explorer",
     "Favorited songs": "Titres favoris",
     "Favorited": "Favori",
@@ -161,6 +165,7 @@
     "Playlist": "Playlist",
     "Playlists": "Playlists",
     "Public": "Public",
+    "Queue": "File d'attente",
     "Random Song": "Musique aléatoire",
     "Remove from queue": "Retirer de la file",
     "Remove radio": "Supprimer la radio",

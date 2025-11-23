@@ -29,7 +29,7 @@ const GenreItem = ({ genre, color }) => {
             <ImageError source={{ uri: urlCover(config, album, 100) }} style={styles.albumCover} />
             <ImageError
               source={{ uri: urlCover(config, album.artistId, 100) }}
-              style={[styles.artistCover, { borderColor: color }]}
+              style={[styles.artistCover, { borderColor: color, backgroundColor: color }]}
             />
           </>
         )

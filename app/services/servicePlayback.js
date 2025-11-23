@@ -57,6 +57,8 @@ module.exports = async () => {
 		if (global.song.actionEndOfSong === 'repeat') {
 			TrackPlayer.seekTo(0)
 			TrackPlayer.play()
+		} else if (!global.repeatQueue && global.song.index === global.song.queue.length - 1) {
+			TrackPlayer.stop()
 		} else Player.nextSong(global.config, global.song, fakeSongDispatch)
 	})
 	TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (event) => {

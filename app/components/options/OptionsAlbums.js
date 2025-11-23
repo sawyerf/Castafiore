@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next'
 import { getApi } from '~/utils/api'
 import { ConfigContext } from '~/contexts/config'
 import OptionsPopup from '~/components/popup/OptionsPopup'
-import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
-import { getApiNetworkFirst } from '~/utils/api'
+import { playSong, addToQueue } from '~/utils/player'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { getApiNetworkFirst, getApiCacheFirst } from '~/utils/api'
 
 const OptionsAlbums = ({ albums, indexOptions, setIndexOptions }) => {
   const { t } = useTranslation()
+  const song = React.useContext(SongContext)
   const navigation = useNavigation()
   const config = React.useContext(ConfigContext)
   const refOption = React.useRef()
@@ -37,6 +38,23 @@ const OptionsAlbums = ({ albums, indexOptions, setIndexOptions }) => {
           name: t('Play similar songs'),
 					icon: 'play',
 					onPress: playSimilarSongs
+        },
+        {
+          name: t('Add to queue'),
+					icon: 'list-ul',
+          onPress: () => {
+            refOption.current.close()
+            getApiCacheFirst(config, 'getAlbum', { id: albums[indexOptions].id })
+              .then((json) => {
+                if (json.album?.song?.length) {
+                  for (const song of json.album.song) {
+                    addToQueue(songDispatch, song)
+                  }
+                }
+              })
+              .catch(() => { })
+          },
+          hidden: !song.queue?.length
         },
         {
           name: t('Go to artist'),

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { ConfigContext } from '~/contexts/config'
 import { getApi, getApiNetworkFirst } from '~/utils/api'
 import { urlStream } from '~/utils/url'
-import { playSong, downloadSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
+import { playSong, downloadSong, addToQueue } from '~/utils/player'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { SettingsContext } from '~/contexts/settings'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
@@ -18,6 +18,7 @@ const OptionsAlbum = ({ album, isOpen, onClose }) => {
   const refOption = React.useRef()
   const settings = React.useContext(SettingsContext)
   const songDispatch = React.useContext(SongDispatchContext)
+  const song = React.useContext(SongContext)
 
   const playSimilarSongs = () => {
     getApiNetworkFirst(config, 'getSimilarSongs', `id=${album.id}&count=50`)
@@ -43,6 +44,17 @@ const OptionsAlbum = ({ album, isOpen, onClose }) => {
           name: t('Play similar songs'),
           icon: 'play',
           onPress: playSimilarSongs
+        },
+        {
+          name: t('Add to queue'),
+					icon: 'list-ul',
+          onPress: () => {
+            refOption.current.close()
+            for (const song of album.song) {
+              addToQueue(songDispatch, song)
+            }
+          },
+          hidden: !song.queue?.length
         },
         {
           name: t('Cache all songs'),

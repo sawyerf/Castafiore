@@ -47,14 +47,14 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	}
 
 	const addQueue = () => {
-		if (song.queue) addToQueue(config, songDispatch, songs[indexOptions])
+		if (song.queue) addToQueue(songDispatch, songs[indexOptions])
 		else playSong(config, songDispatch, [songs[indexOptions]], 0)
 		refOption.current.close()
 	}
 
 	const playNext = () => {
 		if (song.queue) {
-			addToQueue(config, songDispatch, songs[indexOptions], song.index + 1)
+			addToQueue(songDispatch, songs[indexOptions], song.index + 1)
 		} else {
 			playSong(config, songDispatch, [songs[indexOptions]], 0)
 		}

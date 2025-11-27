@@ -180,8 +180,6 @@ export const playOnDevice = async (device, url, metadata = {}) => {
  * @returns {Promise<boolean>} Success status
  */
 export const pauseOnDevice = async (device) => {
-	logger.info('UPNP', `Pausing on device: ${device.name}`)
-
 	try {
 		const result = await sendSoapRequest(device, 'Pause', {
 			InstanceID: '0',
@@ -199,8 +197,6 @@ export const pauseOnDevice = async (device) => {
  * @returns {Promise<boolean>} Success status
  */
 export const stopOnDevice = async (device) => {
-	logger.info('UPNP', `Stopping on device: ${device.name}`)
-
 	try {
 		const result = await sendSoapRequest(device, 'Stop', {
 			InstanceID: '0',
@@ -219,8 +215,6 @@ export const stopOnDevice = async (device) => {
  * @returns {Promise<boolean>} Success status
  */
 export const seekOnDevice = async (device, position) => {
-	logger.info('UPNP', `Seeking on device: ${device.name} to ${position}s`)
-
 	try {
 		const result = await sendSoapRequest(device, 'Seek', {
 			InstanceID: '0',
@@ -241,8 +235,6 @@ export const seekOnDevice = async (device, position) => {
  * @returns {Promise<boolean>} Success status
  */
 export const setVolumeOnDevice = async (device, volume) => {
-	logger.info('UPNP', `Setting volume on device: ${device.name} to ${volume}`)
-
 	try {
 		const result = await sendSoapRequest(device, 'SetVolume', {
 			InstanceID: '0',
@@ -264,27 +256,67 @@ export const setVolumeOnDevice = async (device, volume) => {
  */
 export const getDeviceStatus = async (device) => {
 	try {
+		// Get transport state (playing/paused/stopped)
 		const transportResult = await sendSoapRequest(device, 'GetTransportInfo', {
 			InstanceID: '0',
 		})
 
-		// Parse XML response to extract status
-		// This is simplified - a full implementation would use proper XML parsing
+		// Parse XML response to extract state
 		const state = transportResult.data?.includes('PLAYING') ? 'playing' :
 		             transportResult.data?.includes('PAUSED_PLAYBACK') ? 'paused' :
 		             'stopped'
 
-		// TODO: Implement GetPositionInfo and GetVolume for full status
+		// Get position info (current position and duration)
+		const positionResult = await sendSoapRequest(device, 'GetPositionInfo', {
+			InstanceID: '0',
+		})
+
+		// Parse position info from XML response
+		let position = 0
+		let duration = 0
+
+		if (positionResult.data) {
+			// Extract RelTime (current position) - format is HH:MM:SS
+			const relTimeMatch = positionResult.data.match(/<RelTime>([^<]+)<\/RelTime>/)
+			if (relTimeMatch && relTimeMatch[1] !== 'NOT_IMPLEMENTED') {
+				position = parseTimeToSeconds(relTimeMatch[1])
+			}
+
+			// Extract TrackDuration - format is HH:MM:SS
+			const durationMatch = positionResult.data.match(/<TrackDuration>([^<]+)<\/TrackDuration>/)
+			if (durationMatch && durationMatch[1] !== 'NOT_IMPLEMENTED') {
+				duration = parseTimeToSeconds(durationMatch[1])
+			}
+		}
+
 		return {
 			state,
-			volume: 50, // Placeholder - need to call GetVolume on RenderingControl
-			position: 0, // Placeholder - need to parse GetPositionInfo response
-			duration: 0, // Placeholder - need to parse GetPositionInfo response
+			position,
+			duration,
+			volume: 50, // Volume requires RenderingControl service
 		}
 	} catch (error) {
 		logger.error('UPNP', 'Get status error:', error)
 		return null
 	}
+}
+
+/**
+ * Parse time string (HH:MM:SS) to seconds
+ * @param {string} timeStr - Time string in HH:MM:SS format
+ * @returns {number} Time in seconds
+ */
+const parseTimeToSeconds = (timeStr) => {
+	if (!timeStr || timeStr === 'NOT_IMPLEMENTED') return 0
+
+	const parts = timeStr.split(':')
+	if (parts.length !== 3) return 0
+
+	const hours = parseInt(parts[0], 10) || 0
+	const minutes = parseInt(parts[1], 10) || 0
+	const seconds = parseInt(parts[2], 10) || 0
+
+	return hours * 3600 + minutes * 60 + seconds
 }
 
 /**

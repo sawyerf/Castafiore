@@ -3,6 +3,7 @@ module.exports = ({ config }) => {
 		expo: {
 			name: "Castafiore",
 			slug: "Castafiore",
+			scheme: "castafiore",
 			description: "Castafiore is a music player that support Navidrome and Subsonic API.",
 			version: config.version,
 			orientation: "default",
@@ -69,6 +70,30 @@ module.exports = ({ config }) => {
 				],
 				[
 					'./plugins/asyncStorage.js'
+				],
+				[
+					"react-native-android-widget",
+					{
+						fonts: [
+							'./node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf'
+						],
+						widgets: [
+							{
+								name: "Favorited",
+								targetCellWidth: 2,
+								targetCellHeight: 2,
+								minWidth: '110dp',
+								minHeight: '110dp'
+							},
+							{
+								name: "Player",
+								targetCellWidth: 4,
+								targetCellHeight: 2,
+								minWidth: '220dp',
+								minHeight: '110dp',
+							}
+						]
+					}
 				]
 			]
 		}

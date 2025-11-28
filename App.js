@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useTranslation } from 'react-i18next'
+import * as Linking from 'expo-linking'
 
 import { HomeStack, SearchStack, PlaylistsStack, SettingsStack } from '~/screens/Stacks'
 import TabBar from '~/components/bar/TabBar'
@@ -94,6 +95,10 @@ const App = () => {
 										<UpdateApiContext.Provider value={updateApi}>
 											<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 												<NavigationContainer
+													linking={{
+														enabled: 'auto',
+														prefixes: [ Linking.createURL('/') ]
+													}}
 													documentTitle={{
 														formatter: () => {
 															return `Castafiore`

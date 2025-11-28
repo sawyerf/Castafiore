@@ -5,7 +5,7 @@
 
 import React from 'react'
 import * as UPNP from '~/utils/upnp.native'
-import { urlCover, urlStream } from '~/utils/api'
+import { urlCover, urlStream } from '~/utils/url'
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
 import logger from '~/utils/logger'
 import * as LocalPlayer from '~/utils/playerLocal.native'

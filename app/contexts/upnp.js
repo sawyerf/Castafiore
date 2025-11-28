@@ -1,5 +1,4 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react'
-import logger from '~/utils/logger'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ConfigContext } from '~/contexts/config'
 
@@ -33,33 +32,22 @@ export const UpnpProvider = ({ children, Player, LocalPlayer }) => {
 		if (!config?.url || !Player || !LocalPlayer) return
 
 		// Initialize player router with current UPNP state
-		Player.initPlayerRouter({ selectedDevice, devices, isConnected, currentStatus }, config)
+		const updateStatus = (status) => {
+			setCurrentStatus(prev => ({ ...prev, ...status }))
+		}
+		Player.initPlayerRouter({ selectedDevice, devices, isConnected, currentStatus, updateStatus }, config)
 
-		if (selectedDevice) {
-			logger.info('UpnpContext', `UPNP device selected: ${selectedDevice.name}`)
-
-			// If a song is currently playing, transfer it to UPNP
+		if (selectedDevice) {// If a song is currently playing, transfer it to UPNP
 			if (song?.queue && song?.index !== undefined && song?.songInfo) {
-				logger.info('UpnpContext', 'Transferring current playback to UPNP')
-				// Stop local player first
 				LocalPlayer.stopSong().then(() => {
-					logger.info('UpnpContext', 'Local player stopped, starting UPNP playback')
-					// Start same song on UPNP device
 					Player.playSong(config, dispatch, song.queue, song.index)
 				})
 			} else {
-				// No song playing, just stop local player
-				LocalPlayer.stopSong().then(() => {
-					logger.info('UpnpContext', 'Local player stopped for UPNP mode')
-				})
+				LocalPlayer.stopSong()
 			}
 		} else if (song?.queue && song?.index !== undefined && song?.songInfo) {
 			// UPNP device deselected - transfer playback back to local player
-			logger.info('UpnpContext', 'UPNP device deselected, transferring playback to local player')
-			// The router is already updated, so Player.playSong will use LocalPlayer
 			Player.playSong(config, dispatch, song.queue, song.index)
-		} else {
-			logger.info('UpnpContext', 'UPNP device deselected, no song to transfer')
 		}
 	}, [selectedDevice, config?.url])
 

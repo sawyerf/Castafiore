@@ -134,6 +134,7 @@ const Settings = ({ navigation }) => {
 					title="Github"
 					icon="github"
 					onPress={() => Linking.openURL('https://github.com/sawyerf/Castafiore')}
+					onLongPress={() => navigation.navigate('Settings/TestWidget')}
 					isLast
 				/>
 			</View>

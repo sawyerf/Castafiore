@@ -80,11 +80,17 @@ module.exports = ({ config }) => {
 						widgets: [
 							{
 								name: "Favorited",
-								tabel: "Favorited Widget",
 								targetCellWidth: 2,
 								targetCellHeight: 2,
 								minWidth: '110dp',
 								minHeight: '110dp'
+							},
+							{
+								name: "Player",
+								targetCellWidth: 4,
+								targetCellHeight: 2,
+								minWidth: '220dp',
+								minHeight: '110dp',
 							}
 						]
 					}

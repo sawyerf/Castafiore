@@ -3,7 +3,7 @@ import { FlexWidget, IconWidget } from 'react-native-android-widget'
 import * as Linking from 'expo-linking'
 
 
-const unicodeStar = '\uF004'
+const heart = '\uF004'
 
 const FavoritedWidget = () => {
 	return (
@@ -21,7 +21,7 @@ const FavoritedWidget = () => {
 		>
 			<IconWidget
 				font="FontAwesome"
-				icon={unicodeStar}
+				icon={heart}
 				size={64}
 				style={{
 					color: "#cd1921"

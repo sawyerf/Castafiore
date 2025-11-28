@@ -65,11 +65,14 @@ export const initService = async () => {
 
 /**
  * Initialize the track player
- * Routes to local player only (UPNP doesn't need TrackPlayer setup)
+ * Initializes both local and UPNP players with songDispatch
  */
 export const initPlayer = async (songDispatch) => {
-	logger.info('PlayerRouter', 'initPlayer - always using local player')
-	return LocalPlayer.initPlayer(songDispatch)
+	logger.info('PlayerRouter', 'initPlayer - initializing both players')
+	// Initialize local player (sets up TrackPlayer)
+	await LocalPlayer.initPlayer(songDispatch)
+	// Initialize UPNP player (stores songDispatch for UI updates)
+	await UpnpPlayer.initPlayer(songDispatch)
 }
 
 /**
@@ -204,7 +207,20 @@ export const secondToTime = LocalPlayer.secondToTime
 export const unloadSong = LocalPlayer.unloadSong
 export const tuktuktuk = LocalPlayer.tuktuktuk
 export const updateVolume = LocalPlayer.updateVolume
-export const updateTime = LocalPlayer.updateTime
+
+/**
+ * Update time hook - routes to correct player implementation
+ * IMPORTANT: This must be a hook, not a regular function
+ */
+export const updateTime = () => {
+	// Call both hooks unconditionally (required by React hooks rules)
+	const localTime = LocalPlayer.updateTime()
+	const upnpTime = UpnpPlayer.updateTime()
+
+	// Return the appropriate one based on mode
+	return isUpnpActive() ? upnpTime : localTime
+}
+
 export const isVolumeSupported = () => {
 	return isUpnpActive() ? UpnpPlayer.isVolumeSupported() : LocalPlayer.isVolumeSupported()
 }

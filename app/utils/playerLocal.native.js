@@ -70,7 +70,10 @@ export const useEvent = (song, songDispatch) => {
 export const previousSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, prevRandomIndex())
-		else await setIndex(config, songDispatch, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		else {
+			if (!global.repeatQueue && song.index === 0) return
+			await setIndex(config, songDispatch, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		}
 		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
@@ -78,7 +81,10 @@ export const previousSong = async (config, song, songDispatch) => {
 export const nextSong = async (config, song, songDispatch) => {
 	if (song.queue) {
 		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, nextRandomIndex())
-		else await setIndex(config, songDispatch, song.queue, (song.index + 1) % song.queue.length)
+		else {
+			if (!global.repeatQueue && song.index === song.queue.length - 1) return
+			await setIndex(config, songDispatch, song.queue, (song.index + 1) % song.queue.length)
+		}
 		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
@@ -186,6 +192,7 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	loadSong(config, queue, index)
 	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
+	saveQueue(config, queue, index)
 }
 
 export const secondToTime = (second) => {
@@ -271,7 +278,8 @@ export const removeFromQueue = async (songDispatch, index) => {
 	songDispatch({ type: 'removeFromQueue', index })
 }
 
-export const addToQueue = async (config, songDispatch, track, index = null) => {
+// when index is null, add to the end of the queue
+export const addToQueue = (songDispatch, track, index = null) => {
 	songDispatch({ type: 'addToQueue', track, index })
 }
 

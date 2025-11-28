@@ -1,6 +1,7 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ConfigContext } from '~/contexts/config'
+import logger from '~/utils/logger'
 
 const UpnpContext = React.createContext()
 
@@ -37,17 +38,34 @@ export const UpnpProvider = ({ children, Player, LocalPlayer }) => {
 		}
 		Player.initPlayerRouter({ selectedDevice, devices, isConnected, currentStatus, updateStatus }, config)
 
-		if (selectedDevice) {// If a song is currently playing, transfer it to UPNP
+		if (selectedDevice) {
+			logger.info('UpnpContext', `UPNP device selected: ${selectedDevice.name}`)
+			// If a song is currently playing, transfer it to UPNP
 			if (song?.queue && song?.index !== undefined && song?.songInfo) {
-				LocalPlayer.stopSong().then(() => {
-					Player.playSong(config, dispatch, song.queue, song.index)
-				})
-			} else {
 				LocalPlayer.stopSong()
+					.then(() => {
+						logger.info('UpnpContext', 'Local player stopped, starting UPNP playback')
+						Player.playSong(config, dispatch, song.queue, song.index)
+					})
+					.catch((error) => {
+						logger.error('UpnpContext', 'Failed to stop local player, attempting UPNP playback anyway', error)
+						// Try to start UPNP even if local stop failed
+						Player.playSong(config, dispatch, song.queue, song.index)
+					})
+			} else {
+				LocalPlayer.stopSong().catch((error) => {
+					logger.error('UpnpContext', 'Failed to stop local player', error)
+				})
 			}
 		} else if (song?.queue && song?.index !== undefined && song?.songInfo) {
 			// UPNP device deselected - transfer playback back to local player
+			logger.info('UpnpContext', 'UPNP device deselected, transferring to local player')
 			Player.playSong(config, dispatch, song.queue, song.index)
+				.catch((error) => {
+					logger.error('UpnpContext', 'Failed to transfer playback to local player', error)
+				})
+		} else if (!selectedDevice) {
+			logger.info('UpnpContext', 'UPNP device deselected, no song to transfer')
 		}
 	}, [selectedDevice, config?.url])
 

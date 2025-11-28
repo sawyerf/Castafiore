@@ -1,4 +1,0 @@
-services:
-  android-builder:
-    image: eclipse-temurin:17-jdk
-    platform: linux/amd64

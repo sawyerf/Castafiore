@@ -124,6 +124,10 @@ export const resumeSong = async () => {
 
 export const stopSong = async () => {
 	const device = getUpnpDevice()
+
+	// Always stop polling, even if no device (cleanup)
+	stopStatusPolling()
+
 	if (!device) {
 		logger.error('UPNP-Player', 'No device selected')
 		return false
@@ -133,7 +137,6 @@ export const stopSong = async () => {
 	if (success) {
 		updateStatus({ state: 'stopped' })
 		globalSongDispatch?.({ type: 'setPlaying', state: State.Stopped })
-		stopStatusPolling()
 	}
 	return success
 }
@@ -249,6 +252,8 @@ export const setRepeat = async (songDispatch, action) => {
 }
 
 export const resetAudio = (songDispatch) => {
+	// Stop polling immediately to prevent memory leaks
+	stopStatusPolling()
 	songDispatch({ type: 'reset' })
 	stopSong()
 }

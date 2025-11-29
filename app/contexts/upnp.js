@@ -1,4 +1,5 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react'
+import { Platform } from 'react-native'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ConfigContext } from '~/contexts/config'
 import logger from '~/utils/logger'
@@ -30,7 +31,7 @@ export const UpnpProvider = ({ children, Player, LocalPlayer }) => {
 
 	// Handle UPNP device selection changes and player routing
 	useEffect(() => {
-		if (!config?.url || !Player || !LocalPlayer) return
+		if (Platform.OS === 'web' || !config?.url || !Player || !LocalPlayer) return
 
 		// Initialize player router with current UPNP state
 		const updateStatus = (status) => {

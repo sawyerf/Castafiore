@@ -8,7 +8,6 @@
  */
 
 import logger from '~/utils/logger'
-import { quickScan, scanNetwork } from '~/utils/upnpHttp.native'
 import { discoverViaSsdp } from '~/utils/upnpSsdp.native'
 
 /**
@@ -32,15 +31,12 @@ export const discoverDevices = async (onDeviceFound = null) => {
 			}
 		}
 
-		// Run both SSDP and HTTP scans in parallel for faster discovery
-		const [ssdpDevices, httpDevices] = await Promise.allSettled([
-			discoverViaSsdp(5000, deviceCallback),
-			quickScan(deviceCallback)
-		])
+		// Scan SSDP
+		const [ssdpDevices, httpDevices] = await discoverViaSsdp(5000, deviceCallback)
 
 		// Collect successful results
-		const ssdp = ssdpDevices.status === 'fulfilled' ? ssdpDevices.value : []
-		const http = httpDevices.status === 'fulfilled' ? httpDevices.value : []
+		const ssdp = ssdpDevices?.status === 'fulfilled' ? ssdpDevices.value : []
+		const http = httpDevices?.status === 'fulfilled' ? httpDevices.value : []
 
 		logger.info('UPNP', `SSDP found ${ssdp.length} devices, HTTP found ${http.length} devices`)
 
@@ -367,28 +363,8 @@ const formatTime = (seconds) => {
 	return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
 }
 
-/**
- * Full network scan (slower but more thorough)
- * @param {string} ipPrefix - Network prefix (e.g., '192.168.1')
- * @param {number} startIp - Starting IP last octet
- * @param {number} endIp - Ending IP last octet
- * @returns {Promise<Array>} Array of discovered devices
- */
-export const fullNetworkScan = async (ipPrefix, startIp = 1, endIp = 254) => {
-	logger.info('UPNP', 'Starting full network scan...')
-	try {
-		const devices = await scanNetwork(ipPrefix, startIp, endIp)
-		logger.info('UPNP', `Full scan completed, found ${devices.length} devices`)
-		return devices
-	} catch (error) {
-		logger.error('UPNP', 'Full scan error:', error)
-		return []
-	}
-}
-
 export default {
 	discoverDevices,
-	fullNetworkScan,
 	connectToDevice,
 	playOnDevice,
 	pauseOnDevice,

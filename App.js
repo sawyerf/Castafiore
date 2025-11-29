@@ -22,7 +22,7 @@ import { UpnpProvider } from '~/contexts/upnp'
 import { version } from '~/../package.json'
 import logger from '~/utils/logger'
 import Player from '~/utils/player'
-import * as LocalPlayer from '~/utils/playerLocal.native'
+import * as LocalPlayer from '~/utils/player'
 
 const Tab = createBottomTabNavigator()
 

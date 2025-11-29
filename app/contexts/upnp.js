@@ -29,44 +29,43 @@ export const UpnpProvider = ({ children, Player, LocalPlayer }) => {
 	const song = useContext(SongContext)
 	const dispatch = useContext(SongDispatchContext)
 
-	// Handle UPNP device selection changes and player routing
+	// Handle device selection changes and player routing
 	useEffect(() => {
 		if (Platform.OS === 'web' || !config?.url || !Player || !LocalPlayer) return
 
-		// Initialize player router with current UPNP state
+		// Initialize player router with current state
 		const updateStatus = (status) => {
 			setCurrentStatus(prev => ({ ...prev, ...status }))
 		}
 		Player.initPlayerRouter({ selectedDevice, devices, isConnected, currentStatus, updateStatus }, config)
 
-		if (selectedDevice) {
-			logger.info('UpnpContext', `UPNP device selected: ${selectedDevice.name}`)
-			// If a song is currently playing, transfer it to UPNP
-			if (song?.queue && song?.index !== undefined && song?.songInfo) {
-				LocalPlayer.stopSong()
-					.then(() => {
-						logger.info('UpnpContext', 'Local player stopped, starting UPNP playback')
-						Player.playSong(config, dispatch, song.queue, song.index)
-					})
-					.catch((error) => {
-						logger.error('UpnpContext', 'Failed to stop local player, attempting UPNP playback anyway', error)
-						// Try to start UPNP even if local stop failed
-						Player.playSong(config, dispatch, song.queue, song.index)
-					})
-			} else {
-				LocalPlayer.stopSong().catch((error) => {
-					logger.error('UpnpContext', 'Failed to stop local player', error)
-				})
+		const { State } = Player
+		const wasPlaying = song?.state === State.Playing
+		const hasSong = song?.queue && song?.index !== undefined && song?.songInfo
+		const shouldTransfer = hasSong && song.state !== State.Stopped && song.state !== State.None
+
+		// Helper to transfer and preserve playback state
+		const transferPlayback = async () => {
+			try {
+				await Player.playSong(config, dispatch, song.queue, song.index)
+				if (!wasPlaying) {
+					await Player.pauseSong()
+				}
+			} catch (error) {
+				logger.error('UpnpContext', 'Transfer playback failed', error)
 			}
-		} else if (song?.queue && song?.index !== undefined && song?.songInfo) {
-			// UPNP device deselected - transfer playback back to local player
-			logger.info('UpnpContext', 'UPNP device deselected, transferring to local player')
-			Player.playSong(config, dispatch, song.queue, song.index)
-				.catch((error) => {
-					logger.error('UpnpContext', 'Failed to transfer playback to local player', error)
-				})
-		} else if (!selectedDevice) {
-			logger.info('UpnpContext', 'UPNP device deselected, no song to transfer')
+		}
+
+		if (selectedDevice) {
+			LocalPlayer.stopSong().catch((error) => {
+				logger.error('UpnpContext', 'Failed to stop local player', error)
+			})
+
+			if (shouldTransfer) {
+				transferPlayback()
+			}
+		} else if (shouldTransfer) {
+			transferPlayback()
 		}
 	}, [selectedDevice, config?.url])
 

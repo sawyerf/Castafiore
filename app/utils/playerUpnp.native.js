@@ -19,6 +19,12 @@ let currentPlaybackUrl = null
 let currentPlaybackMetadata = null
 let currentTime = 0
 let currentDuration = 0
+let isPolling = false
+let currentPlayerState = 'stopped'
+
+// Polling intervals
+const POLL_INTERVAL_PLAYING = 1000  // 1s when playing
+const POLL_INTERVAL_PAUSED = 3000   // 3s when paused
 
 export const initUpnpPlayer = (context) => {
 	upnpContext = context
@@ -35,15 +41,25 @@ const updateStatus = (status) => {
 	upnpContext?.updateStatus?.(status)
 }
 
-const startStatusPolling = () => {
+const startStatusPolling = (state = 'playing') => {
 	stopStatusPolling()
 
-	statusPollingInterval = setInterval(async () => {
+	currentPlayerState = state
+	const interval = state === 'playing' ? POLL_INTERVAL_PLAYING : POLL_INTERVAL_PAUSED
+
+	const pollStatus = async () => {
 		const device = getUpnpDevice()
 		if (!device || !globalSongDispatch) {
 			stopStatusPolling()
 			return
 		}
+
+		// Skip if already polling (prevent concurrent requests)
+		if (isPolling) {
+			return
+		}
+
+		isPolling = true
 
 		try {
 			const status = await UPNP.getDeviceStatus(device)
@@ -68,21 +84,45 @@ const startStatusPolling = () => {
 						type: 'setPlaying',
 						state: stateMap[status.state]
 					})
+
+					// Adjust polling interval if state changed
+					if (status.state !== currentPlayerState) {
+						currentPlayerState = status.state
+
+						// Restart polling with new interval if needed
+						if (status.state === 'playing' || status.state === 'paused') {
+							stopStatusPolling()
+							startStatusPolling(status.state)
+						} else if (status.state === 'stopped') {
+							stopStatusPolling()
+						}
+					}
 				}
 
 				updateStatus(status)
 			}
 		} catch (error) {
 			logger.error('UPNP-Player', 'Polling error:', error.message)
+		} finally {
+			isPolling = false
 		}
-	}, 1000)
+	}
+
+	// Initial poll
+	pollStatus()
+
+	// Set up interval
+	statusPollingInterval = setInterval(pollStatus, interval)
 }
 
 const stopStatusPolling = () => {
 	if (statusPollingInterval) {
 		clearInterval(statusPollingInterval)
 		statusPollingInterval = null
+		logger.info('UPNP-Player', 'Polling stopped')
 	}
+	currentPlayerState = 'stopped'
+	isPolling = false
 }
 
 export const pauseSong = async () => {
@@ -96,7 +136,8 @@ export const pauseSong = async () => {
 	if (success) {
 		updateStatus({ state: 'paused' })
 		globalSongDispatch?.({ type: 'setPlaying', state: State.Paused })
-		stopStatusPolling()
+		// Switch to slow polling when paused
+		startStatusPolling('paused')
 	}
 	return success
 }
@@ -117,7 +158,8 @@ export const resumeSong = async () => {
 	if (success) {
 		updateStatus({ state: 'playing' })
 		globalSongDispatch?.({ type: 'setPlaying', state: State.Playing })
-		startStatusPolling()
+		// Fast polling when playing
+		startStatusPolling('playing')
 	}
 	return success
 }
@@ -171,7 +213,8 @@ export const setIndex = async (config, songDispatch, queue, index) => {
 		songDispatch({ type: 'setIndex', index })
 		songDispatch({ type: 'setPlaying', state: State.Playing })
 		updateStatus({ state: 'playing' })
-		startStatusPolling()
+		// Fast polling when playing
+		startStatusPolling('playing')
 	}
 
 	return success

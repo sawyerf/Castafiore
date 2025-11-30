@@ -8,7 +8,6 @@ import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
 import { useCachedFirst } from '~/utils/api'
 import { urlCover } from '~/utils/url'
-import { useUpnp } from '~/contexts/upnp'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -144,7 +143,6 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
 	const song = React.useContext(SongContext)
-	const upnp = useUpnp()
 	const insets = useSafeAreaInsets()
 	const navigation = useNavigation()
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
@@ -154,12 +152,6 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const [stars] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
 		setData(json?.starred2?.song || [])
 	}, [song.songInfo?.id])
-
-	// Force re-render when UPNP connection status changes
-	// This ensures PlayButton uses the correct player (local vs UPNP)
-	React.useEffect(() => {
-		// This effect intentionally empty - just creates dependency on upnp.isConnected
-	}, [upnp.isConnected])
 
 	return (
 		<Modal

@@ -6,6 +6,7 @@ import { ConfigContext } from '~/contexts/config'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
+import { useUpnp } from '~/contexts/upnp'
 import Player from '~/utils/player'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -19,9 +20,16 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const theme = React.useContext(ThemeContext)
+	const upnp = useUpnp()
 	const time = Player.updateTime()
 	const volume = Player.updateVolume()
 	const [fakeTime, setFakeTime] = React.useState(-1)
+
+	// Force re-render when UPNP connection status changes
+	// This ensures PlayButton uses the correct player (local vs UPNP)
+	React.useEffect(() => {
+		// This effect intentionally empty - just creates dependency on upnp.isConnected
+	}, [upnp.isConnected])
 
 	return (
 		<View

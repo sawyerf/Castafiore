@@ -1,31 +1,31 @@
-import React from 'react';
-import { Text, View, ScrollView, Animated, StyleSheet, Pressable, Platform } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Text, View, ScrollView, Animated, StyleSheet, Pressable, Platform } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApi, getApiNetworkFirst } from '~/utils/api';
-import { playSong } from '~/utils/player';
-import { SettingsContext } from '~/contexts/settings';
-import { SongDispatchContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import HorizontalList from '~/components/lists/HorizontalList';
-import IconButton from '~/components/button/IconButton';
-import mainStyles from '~/styles/main';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { getApi, getApiNetworkFirst } from '~/utils/api'
+import { playSong } from '~/utils/player'
+import { SettingsContext } from '~/contexts/settings'
+import { SongDispatchContext } from '~/contexts/song'
+import { ThemeContext } from '~/contexts/theme'
+import HorizontalList from '~/components/lists/HorizontalList'
+import IconButton from '~/components/button/IconButton'
+import mainStyles from '~/styles/main'
+import size from '~/styles/size'
 
 const Home = () => {
-	const { t } = useTranslation();
-	const navigation = useNavigation();
-	const insets = useSafeAreaInsets();
+	const { t } = useTranslation()
+	const navigation = useNavigation()
+	const insets = useSafeAreaInsets()
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const theme = React.useContext(ThemeContext)
-	const [statusRefresh, setStatusRefresh] = React.useState();
-	const [refresh, setRefresh] = React.useState(0);
-	const rotationValue = React.useRef(new Animated.Value(0)).current;
+	const [statusRefresh, setStatusRefresh] = React.useState()
+	const [refresh, setRefresh] = React.useState(0)
+	const rotationValue = React.useRef(new Animated.Value(0)).current
 	const rotation = rotationValue.interpolate({
 		inputRange: [0, 1],
 		outputRange: ['0deg', '360deg']
@@ -97,8 +97,7 @@ const Home = () => {
 							/> : null
 					}
 					{statusRefresh ?
-						<Pressable onPress={forceRefresh} style={mainStyles.opacity}
-						>
+						<Pressable onPress={forceRefresh} style={mainStyles.opacity}>
 							<Text style={mainStyles.subTitle(theme)}>
 								{statusRefresh.count}°
 							</Text>
@@ -121,7 +120,7 @@ const Home = () => {
 				<HorizontalList key={index} refresh={refresh}{...value} />
 			)}
 		</ScrollView>
-	);
+	)
 }
 
 const styles = StyleSheet.create({
@@ -140,4 +139,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default Home;
+export default Home

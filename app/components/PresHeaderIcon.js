@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ThemeContext } from '~/contexts/theme'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import BackButton from '~/components/button/BackButton'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import IconButton from '~/components/button/IconButton'
 import presStyles from '~/styles/pres'
 

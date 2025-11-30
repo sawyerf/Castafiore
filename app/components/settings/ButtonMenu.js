@@ -7,13 +7,14 @@ import settingStyles from '~/styles/settings';
 import size from '~/styles/size';
 import mainStyles from '~/styles/main';
 
-const ButtonMenu = ({ title, onPress, icon, endText = "", isLast = false }) => {
+const ButtonMenu = ({ title, onPress, onLongPress = () => {}, icon, endText = "", isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
 
 	return (
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed }), settingStyles.optionItem(theme, isLast)])}
 			onPress={onPress}
+			onLongPress={onLongPress}
 		>
 			<View
 				style={{

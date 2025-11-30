@@ -19,11 +19,7 @@ const ConnectButton = ({ size = 23, color, style = {} }) => {
 		<>
 			<IconButton
 				icon="tv"
-				style={({ pressed }) => ([
-					mainStyles.opacity({ pressed }),
-					{ justifyContent: 'center' },
-					StyleSheet.flatten(style)
-				])}
+				style={style}
 				color={upnp.isConnected ? theme.primaryTouch : (color || theme.primaryText)}
 				size={size}
 				onPress={() => setModalVisible(true)}

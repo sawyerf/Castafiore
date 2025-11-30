@@ -10,7 +10,7 @@ import { ThemeContext } from '~/contexts/theme'
 import { useUpnp } from '~/contexts/upnp'
 import ButtonMenu from '~/components/settings/ButtonMenu'
 import size from '~/styles/size'
-import { discoverDevices } from '~/utils/upnp.native'
+import { discoverDevices } from '~/utils/upnp'
 
 const ConnectDevices = ({ visible, onClose }) => {
 	const { t } = useTranslation()

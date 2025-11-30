@@ -4,11 +4,11 @@
  */
 
 import React from 'react'
-import * as UPNP from '~/utils/upnp.native'
+import * as UPNP from '~/utils/upnp'
 import { urlCover, urlStream } from '~/utils/url'
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
 import logger from '~/utils/logger'
-import * as LocalPlayer from '~/utils/playerLocal.native'
+import * as LocalPlayer from '~/utils/playerLocal'
 import { State } from 'react-native-track-player'
 
 // Global state

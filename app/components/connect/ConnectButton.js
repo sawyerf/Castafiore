@@ -1,13 +1,13 @@
-import React from 'react';
-import { Pressable, StyleSheet, Platform } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import React from 'react'
+import { StyleSheet, Platform } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import ConnectDevices from './ConnectDevices';
-import { useUpnp } from '../../contexts/upnp';
+import { ThemeContext } from '~/contexts/theme'
+import mainStyles from '~/styles/main'
+import ConnectDevices from './ConnectDevices'
+import { useUpnp } from '../../contexts/upnp'
+import IconButton from '~/components/button/IconButton'
 
-const ConnectButton = ({ size = 23, color, style = {}, styleIcon = {}, pressEffect = true, onLongPress, delayLongPress = 200 }) => {
+const ConnectButton = ({ size = 23, color, style = {} }) => {
 	const theme = React.useContext(ThemeContext)
 	const upnp = useUpnp()
 	const [modalVisible, setModalVisible] = React.useState(false)
@@ -17,28 +17,17 @@ const ConnectButton = ({ size = 23, color, style = {}, styleIcon = {}, pressEffe
 
 	return (
 		<>
-			<Pressable
+			<IconButton
+				icon="tv"
 				style={({ pressed }) => ([
-					mainStyles.opacity({ pressed, enable: pressEffect }),
+					mainStyles.opacity({ pressed }),
 					{ justifyContent: 'center' },
 					StyleSheet.flatten(style)
 				])}
-				onLongPress={onLongPress}
-				delayLongPress={delayLongPress}
+				color={upnp.isConnected ? theme.primaryTouch : (color || theme.primaryText)}
+				size={size}
 				onPress={() => setModalVisible(true)}
-				onContextMenu={(ev) => {
-					ev.preventDefault()
-					onLongPress?.()
-				}}
-			>
-				<Icon
-					name="cast"
-					size={size}
-					color={upnp.isConnected ? theme.primaryTouch : (color || theme.primaryText)}
-					style={styleIcon}
-				/>
-			</Pressable>
-
+			/>
 			<ConnectDevices
 				visible={modalVisible}
 				onClose={() => setModalVisible(false)}
@@ -47,4 +36,4 @@ const ConnectButton = ({ size = 23, color, style = {}, styleIcon = {}, pressEffe
 	)
 }
 
-export default ConnectButton;
+export default ConnectButton

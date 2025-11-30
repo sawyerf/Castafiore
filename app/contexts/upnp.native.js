@@ -1,12 +1,14 @@
 import React, { useState, useContext, useMemo, useEffect } from 'react'
-import { Platform } from 'react-native'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ConfigContext } from '~/contexts/config'
 import logger from '~/utils/logger'
 
+import Player from '~/utils/player'
+import LocalPlayer from '~/utils/playerLocal'
+
 const UpnpContext = React.createContext()
 
-export const defaultUpnp = {
+const defaultUpnp = {
 	devices: [],
 	selectedDevice: null,
 	isConnected: false,
@@ -18,7 +20,7 @@ export const defaultUpnp = {
 	}
 }
 
-export const UpnpProvider = ({ children, Player, LocalPlayer }) => {
+export const UpnpProvider = ({ children }) => {
 	const [devices, setDevices] = useState([])
 	const [selectedDevice, setSelectedDevice] = useState(null)
 	const [isConnected, setIsConnected] = useState(false)
@@ -31,7 +33,7 @@ export const UpnpProvider = ({ children, Player, LocalPlayer }) => {
 
 	// Handle device selection changes and player routing
 	useEffect(() => {
-		if (Platform.OS === 'web' || !config?.url || !Player || !LocalPlayer) return
+		if (!config?.url || !Player || !LocalPlayer) return
 
 		// Initialize player router with current state
 		const updateStatus = (status) => {

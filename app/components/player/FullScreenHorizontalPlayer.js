@@ -78,7 +78,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const { height } = useWindowDimensions()
 
 	const [stars] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
-		setData(json?.starred2?.song)
+		setData(json?.starred2?.song || [])
 	}, [song.songInfo?.id])
 
 	React.useEffect(() => {

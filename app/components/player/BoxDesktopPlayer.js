@@ -6,6 +6,7 @@ import { ConfigContext } from '~/contexts/config'
 import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
+import { useCachedFirst } from '~/utils/api'
 import Player from '~/utils/player'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -22,6 +23,10 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 	const time = Player.updateTime()
 	const volume = Player.updateVolume()
 	const [fakeTime, setFakeTime] = React.useState(-1)
+
+	const [stars] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
+		setData(json?.starred2?.song || [])
+	}, [song.songInfo?.id])
 
 	return (
 		<View
@@ -44,7 +49,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 				</View>
 				<FavoritedButton
 					id={song?.songInfo?.id}
-					isFavorited={song?.songInfo?.starred}
+					isFavorited={stars.some(s => s.id === song.songInfo.id)}
 					size={19}
 					style={{ marginHorizontal: 15, padding: 5 }}
 				/>

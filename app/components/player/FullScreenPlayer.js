@@ -149,7 +149,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const [isOpt, setIsOpt] = React.useState(false)
 
 	const [stars] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
-		setData(json?.starred2?.song)
+		setData(json?.starred2?.song || [])
 	}, [song.songInfo?.id])
 
 	return (

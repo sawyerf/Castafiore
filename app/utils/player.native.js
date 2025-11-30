@@ -11,8 +11,8 @@
  * When you import '~/utils/player' in native code, Metro finds this file.
  */
 
-import * as LocalPlayer from './playerLocal.native'
-import * as UpnpPlayer from './playerUpnp.native'
+import * as LocalPlayer from './playerLocal'
+import * as UpnpPlayer from './playerUpnp'
 import { State } from 'react-native-track-player'
 import logger from './logger'
 

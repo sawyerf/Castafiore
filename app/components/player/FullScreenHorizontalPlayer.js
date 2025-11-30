@@ -277,9 +277,6 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						<ConnectButton
 							size={size.icon.small}
 							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
-							onPress={() => {
-								setFullScreen(false);
-							}}
 						/>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }}>

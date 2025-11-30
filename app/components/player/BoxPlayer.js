@@ -3,19 +3,17 @@ import { Text, View, Pressable, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ConfigContext } from '~/contexts/config'
+import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import { useUpnp } from '~/contexts/upnp'
 import { urlCover } from '~/utils/url'
-
-import PlayButton from '~/components/button/PlayButton'
-import Player from '~/utils/player'
+import { useUpnp } from '~/contexts/upnp'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
+import PlayButton from '~/components/button/PlayButton'
+import Player from '~/utils/player'
 import size from '~/styles/size'
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
-import ConnectButton from '~/components/connect/ConnectButton'
 
 const BoxPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
@@ -60,10 +58,6 @@ const BoxPlayer = ({ setFullScreen }) => {
 				<Text style={{ color: theme.playerPrimaryText, textAlign: 'left', flex: 1, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
 				<Text style={{ color: theme.playerSecondaryText, textAlign: 'left', flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 			</View>
-			<ConnectButton
-				size={size.icon.small}
-				style={{ width: 35, alignItems: 'center' }}
-			/>
 			<IconButton
 				icon="step-forward"
 				size={size.icon.small}

@@ -22,7 +22,6 @@ import { UpnpProvider } from '~/contexts/upnp'
 import { version } from '~/../package.json'
 import logger from '~/utils/logger'
 import Player from '~/utils/player'
-import * as LocalPlayer from '~/utils/player'
 
 const Tab = createBottomTabNavigator()
 
@@ -94,7 +93,7 @@ const App = () => {
 								<ThemeContext.Provider value={theme}>
 									<SongContext.Provider value={song}>
 										<UpdateApiContext.Provider value={updateApi}>
-											<UpnpProvider Player={Player} LocalPlayer={LocalPlayer}>
+											<UpnpProvider>
 												<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 												<NavigationContainer
 													documentTitle={{

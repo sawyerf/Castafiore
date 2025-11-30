@@ -53,13 +53,6 @@ export const songReducer = (state, action) => {
 				state: action.state,
 			})
 		}
-		case 'setTime': {
-			// Update time and duration (used by UPNP polling)
-			return newSong(state, {
-				time: action.time,
-				duration: action.duration,
-			})
-		}
 		case 'addToQueue': {
 			if (!state.songInfo || !state.queue) return state
 			const newQueue = [...state.queue]

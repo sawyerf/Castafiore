@@ -5,16 +5,11 @@
  * Requires: react-native-udp package and CHANGE_WIFI_MULTICAST_STATE permission (Android)
  */
 
-import { Buffer } from 'buffer'
 import logger from '~/utils/logger'
 
 // Try to import dgram
 let dgram = null
-try {
-	dgram = require('react-native-udp')
-} catch {
-	logger.error('UPNP-SSDP', 'react-native-udp not available')
-}
+dgram = require('react-native-udp')
 
 const SSDP_ADDRESS = '239.255.255.250'
 const SSDP_PORT = 1900
@@ -23,7 +18,7 @@ const SSDP_PORT = 1900
  * Create M-SEARCH packet for discovering MediaRenderer devices
  */
 const createMSearchPacket = () => {
-	return Buffer.from(
+	return (
 		'M-SEARCH * HTTP/1.1\r\n' +
 		`HOST: ${SSDP_ADDRESS}:${SSDP_PORT}\r\n` +
 		'MAN: "ssdp:discover"\r\n' +

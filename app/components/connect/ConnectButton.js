@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet, Platform } from 'react-native'
+import { Platform } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
-import mainStyles from '~/styles/main'
-import ConnectDevices from './ConnectDevices'
-import { useUpnp } from '../../contexts/upnp'
+import ConnectDevices from '~/components/connect/ConnectDevices'
+import { useUpnp } from '~/contexts/upnp'
 import IconButton from '~/components/button/IconButton'
 
 const ConnectButton = ({ size = 23, color, style = {} }) => {

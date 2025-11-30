@@ -16,11 +16,9 @@
   "dependencies": {
     "@legendapp/list": "^1.1.4",
     "@react-native-async-storage/async-storage": "2.1.2",
-    "@react-native-community/netinfo": "^11.4.1",
     "@react-navigation/bottom-tabs": "^7.3.13",
     "@react-navigation/native": "^7.1.9",
     "@react-navigation/native-stack": "^7.3.13",
-    "buffer": "^6.0.3",
     "expo": "~53.0.24",
     "expo-build-properties": "~0.14.8",
     "expo-dev-client": "~5.2.4",

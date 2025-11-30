@@ -67,12 +67,6 @@ const startStatusPolling = (state = 'playing') => {
 				currentTime = status.position
 				currentDuration = status.duration
 
-				globalSongDispatch({
-					type: 'setTime',
-					time: status.position,
-					duration: status.duration
-				})
-
 				const stateMap = {
 					'playing': State.Playing,
 					'paused': State.Paused,

@@ -36,7 +36,18 @@ const HorizontalList = ({ refresh, id, enable }) => {
 		if (config.query) {
 			getList()
 		}
-	}, [config, refresh, enable])
+		return () => {
+			setList(null)
+		}
+	}, [config, enable, id])
+
+	React.useEffect(() => {
+		if (!enable) return
+		if (!refresh) return
+		if (config.query) {
+			getList()
+		}
+	}, [refresh])
 
 	React.useEffect(() => {
 		if (!enable) return

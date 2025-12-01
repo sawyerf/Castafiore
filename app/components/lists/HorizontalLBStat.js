@@ -1,8 +1,8 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React from 'react'
+import { Text, View, StyleSheet } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme';
-import size from '~/styles/size';
+import { ThemeContext } from '~/contexts/theme'
+import size from '~/styles/size'
 
 const HorizontalLBStat = ({ stats }) => {
 	const theme = React.useContext(ThemeContext)
@@ -10,7 +10,8 @@ const HorizontalLBStat = ({ stats }) => {
 
 	React.useEffect(() => {
 		if (typeof stats === 'string') return
-		let maxCount = 1;
+		if (!stats || !stats.length) return
+		let maxCount = 1
 		stats?.forEach((stat) => {
 			if (stat.listen_count > maxCount) maxCount = stat.listen_count
 		})
@@ -25,6 +26,8 @@ const HorizontalLBStat = ({ stats }) => {
 			marginVertical: 50
 		}}>{stats}</Text>
 	)
+	
+	if (!stats || !stats.length) return (null)
 	return (
 		<View style={styles.scrollContainer(stats?.length)}>
 			{
@@ -72,4 +75,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default HorizontalLBStat;
+export default HorizontalLBStat

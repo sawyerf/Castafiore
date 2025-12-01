@@ -9,7 +9,7 @@ const ImageMemo = React.memo(Image, (prevProps, nextProps) => {
 	return prevProps.source?.uri === nextProps.source?.uri
 })
 
-const ImageError = ({ source, style = {}, children = null, iconError = null }) => {
+const ImageError = ({ source, style = {}, children = null, iconError = null, blurRadius = undefined }) => {
 	const [isImage, setIsImage] = React.useState(false)
 	const [lastSource, setLastSource] = React.useState({ uri: null })
 	const theme = React.useContext(ThemeContext)
@@ -25,7 +25,7 @@ const ImageError = ({ source, style = {}, children = null, iconError = null }) =
 		}
 	}, [source, source?.uri])
 
-	if (isImage) return <ImageMemo source={lastSource} onError={() => setIsImage(false)} style={style} />
+	if (isImage) return <ImageMemo source={lastSource} onError={() => setIsImage(false)} style={style} blurRadius={blurRadius} />
 	if (children) return children
 	if (iconError) return (
 		<View style={[{ justifyContent: 'center', alignItems: 'center' }, style]}>
@@ -40,4 +40,4 @@ const ImageError = ({ source, style = {}, children = null, iconError = null }) =
 	)
 }
 
-export default ImageError;
+export default ImageError

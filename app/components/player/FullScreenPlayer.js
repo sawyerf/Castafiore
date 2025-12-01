@@ -22,6 +22,7 @@ import size from '~/styles/size'
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import SongItem from '~/components/item/SongItem'
+import ConnectButton from '../connect/ConnectButton'
 
 const preview = {
 	COVER: 0,
@@ -272,6 +273,11 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingHorizontal: 10 }}
 							onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
+						/>
+						<ConnectButton
+							size={20}
+							color={theme.secondaryText}
+							style={{ paddingVertical: 10, paddingStart: 10 }}
 						/>
 						<IconButton
 							icon="bars"

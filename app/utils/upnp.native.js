@@ -55,34 +55,6 @@ export const discoverDevices = async (onDeviceFound = null) => {
 }
 
 /**
- * Connect to a UPNP/DLNA device
- * @param {Object} device - Device object with host and port
- * @returns {Promise<boolean>} Success status
- */
-export const connectToDevice = async (device) => {
-	logger.info('UPNP', `Connecting to device: ${device.name}`)
-
-	try {
-		// Test connection by fetching device description
-		const response = await fetch(`${device.serviceUrl}/description.xml`, {
-			method: 'GET',
-			timeout: 5000,
-		})
-
-		if (response.ok) {
-			logger.info('UPNP', 'Device connection successful')
-			return true
-		}
-
-		logger.error('UPNP', 'Device connection failed:', response.status)
-		return false
-	} catch (error) {
-		logger.error('UPNP', 'Connection error:', error)
-		return false
-	}
-}
-
-/**
  * Send SOAP request to device
  * @param {Object} device - Target device
  * @param {string} action - SOAP action
@@ -183,6 +155,24 @@ export const pauseOnDevice = async (device) => {
 		return result.success
 	} catch (error) {
 		logger.error('UPNP', 'Pause error:', error)
+		return false
+	}
+}
+
+/**
+ * Resume playback on the device (without reloading the URI)
+ * @param {Object} device - Target device
+ * @returns {Promise<boolean>} Success status
+ */
+export const resumeOnDevice = async (device) => {
+	try {
+		const result = await sendSoapRequest(device, 'Play', {
+			InstanceID: '0',
+			Speed: '1',
+		})
+		return result.success
+	} catch (error) {
+		logger.error('UPNP', 'Resume error:', error)
 		return false
 	}
 }
@@ -365,9 +355,9 @@ const formatTime = (seconds) => {
 
 export default {
 	discoverDevices,
-	connectToDevice,
 	playOnDevice,
 	pauseOnDevice,
+	resumeOnDevice,
 	stopOnDevice,
 	seekOnDevice,
 	setVolumeOnDevice,

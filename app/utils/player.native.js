@@ -23,15 +23,12 @@ let upnpContext = null
  * Initialize the player router with UPNP context and config
  * Must be called before any player operations
  */
-export const initPlayerRouter = (context, config) => {
+export const initPlayerRouter = (context, _config) => {
 	upnpContext = context
-
-	// Initialize UPNP player with context
 	UpnpPlayer.initUpnpPlayer(context)
 
 	logger.info('PlayerRouter', 'Initialized with context', {
 		hasContext: !!context,
-		hasConfig: !!config,
 		selectedDevice: context?.selectedDevice?.name
 	})
 }
@@ -83,120 +80,70 @@ export const useEvent = (song, songDispatch) => {
 	return LocalPlayer.useEvent(song, songDispatch)
 }
 
-/**
- * Pause song - routes to local or UPNP
- */
 export const pauseSong = async () => {
 	return getPlayer().pauseSong()
 }
 
-/**
- * Resume song - routes to local or UPNP
- */
 export const resumeSong = async () => {
 	return getPlayer().resumeSong()
 }
 
-/**
- * Stop song - routes to local or UPNP
- */
 export const stopSong = async () => {
 	return getPlayer().stopSong()
 }
 
-/**
- * Play song - routes to local or UPNP
- */
 export const playSong = async (config, songDispatch, queue, index) => {
-	const player = getPlayer()
 	const mode = isUpnpActive() ? 'UPNP' : 'LOCAL'
 	logger.info('PlayerRouter', `playSong - routing to ${mode}`, {
 		hasQueue: !!queue,
 		queueLength: queue?.length,
 		index
 	})
-	return player.playSong(config, songDispatch, queue, index)
+	return getPlayer().playSong(config, songDispatch, queue, index)
 }
 
-/**
- * Set index - routes to local or UPNP
- */
 export const setIndex = async (config, songDispatch, queue, index) => {
 	return getPlayer().setIndex(config, songDispatch, queue, index)
 }
 
-/**
- * Next song - routes to local or UPNP
- */
 export const nextSong = async (config, song, songDispatch) => {
 	return getPlayer().nextSong(config, song, songDispatch)
 }
 
-/**
- * Previous song - routes to local or UPNP
- */
 export const previousSong = async (config, song, songDispatch) => {
 	return getPlayer().previousSong(config, song, songDispatch)
 }
 
-/**
- * Set position - routes to local or UPNP
- */
 export const setPosition = async (position) => {
 	return getPlayer().setPosition(position)
 }
 
-/**
- * Set volume - routes to local or UPNP
- */
 export const setVolume = async (volume) => {
 	return getPlayer().setVolume(volume)
 }
 
-/**
- * Get volume - routes to local or UPNP
- */
 export const getVolume = () => {
 	return getPlayer().getVolume()
 }
 
-/**
- * Reload - routes to local or UPNP
- */
 export const reload = async () => {
 	return getPlayer().reload()
 }
 
-/**
- * Set repeat mode
- */
 export const setRepeat = async (songDispatch, action) => {
-	const player = getPlayer()
-	return player.setRepeat(songDispatch, action)
+	return getPlayer().setRepeat(songDispatch, action)
 }
 
-/**
- * Reset audio
- */
 export const resetAudio = (songDispatch) => {
-	const player = getPlayer()
-	return player.resetAudio(songDispatch)
+	return getPlayer().resetAudio(songDispatch)
 }
 
-/**
- * Remove from queue
- */
 export const removeFromQueue = async (songDispatch, index) => {
-	const player = getPlayer()
-	return player.removeFromQueue(songDispatch, index)
+	return getPlayer().removeFromQueue(songDispatch, index)
 }
 
-/**
- * Add to queue
- */
 export const addToQueue = async (config, songDispatch, track, index = null) => {
-	const player = getPlayer()
-	return player.addToQueue(config, songDispatch, track, index)
+	return getPlayer().addToQueue(config, songDispatch, track, index)
 }
 
 // ============================================================================

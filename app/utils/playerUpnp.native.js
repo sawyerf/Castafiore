@@ -15,8 +15,6 @@ import { State } from 'react-native-track-player'
 let upnpContext = null
 let globalSongDispatch = null
 let statusPollingInterval = null
-let currentPlaybackUrl = null
-let currentPlaybackMetadata = null
 let currentTime = 0
 let currentDuration = 0
 let isPolling = false
@@ -143,12 +141,8 @@ export const resumeSong = async () => {
 		return false
 	}
 
-	if (!currentPlaybackUrl) {
-		logger.warn('UPNP-Player', 'No URL stored for resume')
-		return false
-	}
-
-	const success = await UPNP.playOnDevice(device, currentPlaybackUrl, currentPlaybackMetadata)
+	// Just send Play command without reloading the URI
+	const success = await UPNP.resumeOnDevice(device)
 	if (success) {
 		updateStatus({ state: 'playing' })
 		globalSongDispatch?.({ type: 'setPlaying', state: State.Playing })
@@ -202,12 +196,9 @@ export const setIndex = async (config, songDispatch, queue, index) => {
 	const success = await UPNP.playOnDevice(device, streamUrl, metadata)
 
 	if (success) {
-		currentPlaybackUrl = streamUrl
-		currentPlaybackMetadata = metadata
 		songDispatch({ type: 'setIndex', index })
 		songDispatch({ type: 'setPlaying', state: State.Playing })
 		updateStatus({ state: 'playing' })
-		// Fast polling when playing
 		startStatusPolling('playing')
 	}
 
@@ -274,8 +265,8 @@ export const setVolume = async (volume) => {
 export const getVolume = async () => {
 	const device = getUpnpDevice()
 	if (!device) return 1.0
-	const volume = await UPNP.getVolumeFromDevice(device)
-	return volume / 100
+	const status = await UPNP.getDeviceStatus(device)
+	return status ? status.volume / 100 : 1.0
 }
 
 export const secondToTime = (second) => {
@@ -289,8 +280,6 @@ export const setRepeat = async (songDispatch, action) => {
 }
 
 export const resetAudio = (songDispatch) => {
-	// Stop polling immediately to prevent memory leaks
-	stopStatusPolling()
 	songDispatch({ type: 'reset' })
 	stopSong()
 }

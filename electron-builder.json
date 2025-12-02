@@ -1,0 +1,15 @@
+{
+  "appId": "com.sawyerf.castafiore",
+  "files": [
+    "web-build/**/*",
+    "electron.js"
+  ],
+  "win": {
+    "target": [
+      "nsis"
+    ]
+  },
+  "extraMetadata": {
+    "main": "electron.js"
+  }
+}

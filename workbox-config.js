@@ -1,6 +1,6 @@
 module.exports = {
-  globDirectory: './dist/',
-  swDest: 'dist/serviceWorker.js',
+  globDirectory: './web-build/',
+  swDest: 'web-build/serviceWorker.js',
   globPatterns: ["**/*.{html,js,css,png,jpg,jpeg,gif,svg,json,woff2,woff,eot,ttf}",],
   dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
   globIgnores: [

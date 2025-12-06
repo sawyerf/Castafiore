@@ -11,7 +11,8 @@
     "web": "cross-env PLATFORM=web expo start --web",
     "export:web": "cross-env PLATFORM=web expo export -p web && workbox generateSW workbox-config.js",
     "eslint": "eslint app index.js App.js -c eslint.config.mjs",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@legendapp/list": "^1.1.4",
@@ -30,6 +31,7 @@
     "react-i18next": "^15.6.0",
     "react-native": "0.79.6",
     "react-native-edge-to-edge": "^1.6.0",
+    "react-native-google-cast": "^4.9.1",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-track-player": "4.1.1-nightly-c46c8fb107e0de61d9b33c28e7228002077b4f20",

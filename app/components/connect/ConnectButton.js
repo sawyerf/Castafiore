@@ -3,15 +3,15 @@ import { Platform } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 import ConnectDevices from '~/components/connect/ConnectDevices'
-import { useUpnp } from '~/contexts/upnp'
+import { useRemote } from '~/contexts/remote'
 import IconButton from '~/components/button/IconButton'
 
 const ConnectButton = ({ size = 23, color, style = {} }) => {
 	const theme = React.useContext(ThemeContext)
-	const upnp = useUpnp()
+	const remote = useRemote()
 	const [modalVisible, setModalVisible] = React.useState(false)
 
-	// UPNP/DLNA is not supported on web
+	// Remote players (UPNP/Chromecast) are not supported on web
 	if (Platform.OS === 'web') return null
 
 	return (
@@ -19,7 +19,7 @@ const ConnectButton = ({ size = 23, color, style = {} }) => {
 			<IconButton
 				icon="tv"
 				style={style}
-				color={upnp.isConnected ? theme.primaryTouch : (color || theme.primaryText)}
+				color={remote.isConnected ? theme.primaryTouch : (color || theme.primaryText)}
 				size={size}
 				onPress={() => setModalVisible(true)}
 			/>

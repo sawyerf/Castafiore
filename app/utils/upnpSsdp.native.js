@@ -75,6 +75,7 @@ const fetchDeviceDescription = async (deviceInfo) => {
 			serviceUrl: `http://${deviceInfo.ip}:${deviceInfo.port}`,
 			controlUrl: controlUrlMatch ? controlUrlMatch[1] : '/upnp/control/rendertransport1',
 			isMediaRenderer: true,
+			type: 'upnp',
 		}
 	} catch (error) {
 		logger.error('UPNP-SSDP', 'Fetch error:', error)

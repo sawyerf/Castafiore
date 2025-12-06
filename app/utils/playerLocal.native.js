@@ -283,6 +283,30 @@ export const addToQueue = (songDispatch, track, index = null) => {
 	songDispatch({ type: 'addToQueue', track, index })
 }
 
+export const saveState = async () => {
+	const progress = await TrackPlayer.getProgress()
+	const state = await TrackPlayer.getPlaybackState()
+	return {
+		position: progress.position || 0,
+		isPlaying: state.state === State.Playing
+	}
+}
+
+export const restoreState = async (state) => {
+	if (!state) return
+
+	// Wait a bit for the track to load
+	await new Promise(resolve => setTimeout(resolve, 200))
+
+	if (state.position > 0) {
+		await setPosition(state.position)
+	}
+
+	if (state.isPlaying) {
+		await resumeSong()
+	}
+}
+
 export default {
 	initService,
 	initPlayer,
@@ -308,5 +332,7 @@ export default {
 	removeFromQueue,
 	addToQueue,
 	setIndex,
+	saveState,
+	restoreState,
 	State,
 }

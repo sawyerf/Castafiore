@@ -195,10 +195,16 @@
     "minutes": "minutes",
     "song": "song",
     "songs": "songs",
-    "UPNP/DLNA Devices": "UPNP/DLNA Devices",
-    "Available Devices": "Available Devices",
     "Scanning for devices...": "Scanning for devices...",
-    "Currently Selected": "Currently Selected",
-    "UPNP/DLNA allows you to stream music to compatible devices on your network such as speakers, TVs, and media receivers.": "UPNP/DLNA allows you to stream music to compatible devices on your network such as speakers, TVs, and media receivers."
+    "Remote Devices": "Remote Devices",
+    "Connected Device": "Connected Device",
+    "Connect to Chromecast device": "Connect to Chromecast device",
+    "Connect to UPNP/DLNA device": "Connect to UPNP/DLNA device",
+    "No Chromecast devices found or connection cancelled": "No Chromecast devices found or connection cancelled",
+    "Error connecting to Chromecast": "Error connecting to Chromecast",
+    "No UPNP/DLNA devices found": "No UPNP/DLNA devices found",
+    "Error scanning for devices": "Error scanning for devices",
+    "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.": "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.",
+    "Chromecast": "Chromecast"
   }
 }

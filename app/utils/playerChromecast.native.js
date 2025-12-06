@@ -1,17 +1,17 @@
 /**
- * UPNP/DLNA Player Module
- * Handles audio playback to external UPNP/DLNA devices via SOAP commands.
+ * Chromecast Player Module
+ * Handles audio playback to Chromecast devices via react-native-google-cast.
  */
 
 import React from 'react'
-import UPNP from '~/utils/upnp'
+import GoogleCast from 'react-native-google-cast'
 import { urlCover, urlStream } from '~/utils/url'
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
 import logger from '~/utils/logger'
 import LocalPlayer from '~/utils/playerLocal'
 import { State } from 'react-native-track-player'
 
-let upnpContext = null
+let remoteContext = null
 let globalSongDispatch = null
 let statusPollingInterval = null
 let currentTime = 0
@@ -23,19 +23,26 @@ let currentPlayerState = 'stopped'
 const POLL_INTERVAL_PLAYING = 1000
 const POLL_INTERVAL_PAUSED = 3000
 
-export const initUpnpPlayer = (context) => {
-	upnpContext = context
+export const initChromecastPlayer = (context) => {
+	remoteContext = context
 }
 
 export const initPlayer = async (songDispatch) => {
 	globalSongDispatch = songDispatch
 	songDispatch({ type: 'init' })
+
+	// Initialize Chromecast session
+	try {
+		await GoogleCast.getCastState()
+	} catch (error) {
+		logger.debug('Chromecast-Player', 'Init error:', error)
+	}
 }
 
-const getUpnpDevice = () => upnpContext?.selectedDevice
+const getChromecastDevice = () => remoteContext?.selectedDevice
 
 const updateStatus = (status) => {
-	upnpContext?.updateStatus?.(status)
+	remoteContext?.updateStatus?.(status)
 }
 
 const startStatusPolling = (state = 'playing') => {
@@ -45,7 +52,7 @@ const startStatusPolling = (state = 'playing') => {
 	const interval = state === 'playing' ? POLL_INTERVAL_PLAYING : POLL_INTERVAL_PAUSED
 
 	const pollStatus = async () => {
-		const device = getUpnpDevice()
+		const device = getChromecastDevice()
 		if (!device || !globalSongDispatch) {
 			stopStatusPolling()
 			return
@@ -59,41 +66,54 @@ const startStatusPolling = (state = 'playing') => {
 		isPolling = true
 
 		try {
-			const status = await UPNP.getDeviceStatus(device)
-			if (status) {
-				currentTime = status.position
-				currentDuration = status.duration
+			const client = GoogleCast.getClient()
+			const mediaStatus = await client.getMediaStatus()
+
+			if (mediaStatus) {
+				currentTime = mediaStatus.streamPosition || 0
+				currentDuration = mediaStatus.mediaInfo?.streamDuration || 0
 
 				const stateMap = {
-					'playing': State.Playing,
-					'paused': State.Paused,
-					'stopped': State.Stopped
+					'PLAYING': State.Playing,
+					'PAUSED': State.Paused,
+					'IDLE': State.Stopped,
+					'BUFFERING': State.Loading,
 				}
 
-				if (stateMap[status.state]) {
+				const playerState = mediaStatus.playerState
+				if (stateMap[playerState]) {
 					globalSongDispatch({
 						type: 'setPlaying',
-						state: stateMap[status.state]
+						state: stateMap[playerState]
 					})
 
+					// Update internal state
+					const normalizedState = playerState === 'PLAYING' ? 'playing' :
+					                       playerState === 'PAUSED' ? 'paused' : 'stopped'
+
 					// Adjust polling interval if state changed
-					if (status.state !== currentPlayerState) {
-						currentPlayerState = status.state
+					if (normalizedState !== currentPlayerState) {
+						currentPlayerState = normalizedState
 
 						// Restart polling with new interval if needed
-						if (status.state === 'playing' || status.state === 'paused') {
+						if (normalizedState === 'playing' || normalizedState === 'paused') {
 							stopStatusPolling()
-							startStatusPolling(status.state)
-						} else if (status.state === 'stopped') {
+							startStatusPolling(normalizedState)
+						} else if (normalizedState === 'stopped') {
 							stopStatusPolling()
 						}
 					}
-				}
 
-				updateStatus(status)
+					updateStatus({
+						state: normalizedState,
+						position: currentTime,
+						duration: currentDuration,
+						volume: mediaStatus.volume?.level || 0.5
+					})
+				}
 			}
 		} catch (error) {
-			logger.debug('UPNP-Player', 'Polling error:', error.message)
+			logger.debug('Chromecast-Player', 'Polling error:', error.message)
 		} finally {
 			isPolling = false
 		}
@@ -116,75 +136,107 @@ const stopStatusPolling = () => {
 }
 
 export const pauseSong = async () => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 	if (!device) return false
 
-	const success = await UPNP.pauseOnDevice(device)
-	if (success) {
-		updateStatus({ state: 'paused' })
-		globalSongDispatch?.({ type: 'setPlaying', state: State.Paused })
-		// Switch to slow polling when paused
-		startStatusPolling('paused')
+	try {
+		const client = GoogleCast.getClient()
+		const success = await client.pause()
+		if (success) {
+			updateStatus({ state: 'paused' })
+			globalSongDispatch?.({ type: 'setPlaying', state: State.Paused })
+			// Switch to slow polling when paused
+			startStatusPolling('paused')
+		}
+		return success
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Pause error:', error)
+		return false
 	}
-	return success
 }
 
 export const resumeSong = async () => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 	if (!device) return false
 
-	// Just send Play command without reloading the URI
-	const success = await UPNP.resumeOnDevice(device)
-	if (success) {
-		updateStatus({ state: 'playing' })
-		globalSongDispatch?.({ type: 'setPlaying', state: State.Playing })
-		// Fast polling when playing
-		startStatusPolling('playing')
+	try {
+		const client = GoogleCast.getClient()
+		const success = await client.play()
+		if (success) {
+			updateStatus({ state: 'playing' })
+			globalSongDispatch?.({ type: 'setPlaying', state: State.Playing })
+			// Fast polling when playing
+			startStatusPolling('playing')
+		}
+		return success
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Resume error:', error)
+		return false
 	}
-	return success
 }
 
 export const stopSong = async () => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 
 	stopStatusPolling()
 
 	if (!device) return false
 
-	const success = await UPNP.stopOnDevice(device)
-	if (success) {
-		updateStatus({ state: 'stopped' })
-		globalSongDispatch?.({ type: 'setPlaying', state: State.Stopped })
+	try {
+		const client = GoogleCast.getClient()
+		const success = await client.stop()
+		if (success) {
+			updateStatus({ state: 'stopped' })
+			globalSongDispatch?.({ type: 'setPlaying', state: State.Stopped })
+		}
+		return success
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Stop error:', error)
+		return false
 	}
-	return success
 }
 
 export const setIndex = async (config, songDispatch, queue, index) => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 	if (!device) return false
 
 	const song = queue[index]
 	if (!song || !config) return false
 
 	const streamUrl = urlStream(config, song.id, global.streamFormat || 'mp3', global.maxBitRate || 0)
-	const metadata = {
-		title: song.title,
-		artist: song.artist,
-		album: song.album,
-		coverUrl: song.coverArt ? urlCover(config, song) : '',
-	}
+	const coverUrl = song.coverArt ? urlCover(config, song) : ''
 
 	await LocalPlayer.stopSong()
-	const success = await UPNP.playOnDevice(device, streamUrl, metadata)
 
-	if (success) {
-		songDispatch({ type: 'setIndex', index })
-		songDispatch({ type: 'setPlaying', state: State.Playing })
-		updateStatus({ state: 'playing' })
-		startStatusPolling('playing')
+	try {
+		const client = GoogleCast.getClient()
+
+		const mediaInfo = {
+			contentUrl: streamUrl,
+			contentType: 'audio/mpeg',
+			metadata: {
+				type: 'musicTrack',
+				title: song.title || 'Unknown',
+				artist: song.artist || 'Unknown',
+				albumName: song.album || 'Unknown',
+				images: coverUrl ? [{ url: coverUrl }] : []
+			}
+		}
+
+		const success = await client.loadMedia(mediaInfo)
+
+		if (success) {
+			songDispatch({ type: 'setIndex', index })
+			songDispatch({ type: 'setPlaying', state: State.Playing })
+			updateStatus({ state: 'playing' })
+			startStatusPolling('playing')
+		}
+
+		return success
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Load media error:', error)
+		return false
 	}
-
-	return success
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
@@ -221,22 +273,45 @@ export const previousSong = async (config, song, songDispatch) => {
 }
 
 export const setPosition = async (position) => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 	if (!device) return false
-	return UPNP.seekOnDevice(device, position)
+
+	try {
+		const client = GoogleCast.getClient()
+		await client.seek({ position })
+		return true
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Seek error:', error)
+		return false
+	}
 }
 
 export const setVolume = async (volume) => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 	if (!device) return false
-	return UPNP.setVolumeOnDevice(device, volume * 100)
+
+	try {
+		const client = GoogleCast.getClient()
+		await client.setVolume(volume)
+		return true
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Set volume error:', error)
+		return false
+	}
 }
 
 export const getVolume = async () => {
-	const device = getUpnpDevice()
+	const device = getChromecastDevice()
 	if (!device) return 1.0
-	const status = await UPNP.getDeviceStatus(device)
-	return status ? status.volume / 100 : 1.0
+
+	try {
+		const client = GoogleCast.getClient()
+		const mediaStatus = await client.getMediaStatus()
+		return mediaStatus?.volume?.level || 1.0
+	} catch (error) {
+		logger.error('Chromecast-Player', 'Get volume error:', error)
+		return 1.0
+	}
 }
 
 export const secondToTime = (second) => {
@@ -311,7 +386,7 @@ export const updateTime = () => {
 export { State }
 
 export default {
-	initUpnpPlayer,
+	initChromecastPlayer,
 	initService,
 	initPlayer,
 	previousSong,

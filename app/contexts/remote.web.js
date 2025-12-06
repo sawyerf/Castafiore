@@ -1,4 +1,4 @@
-const defaultUpnp = {
+const defaultRemote = {
 	devices: [],
 	selectedDevice: null,
 	isConnected: false,
@@ -10,10 +10,10 @@ const defaultUpnp = {
 	}
 }
 
-export const UpnpProvider = ({ children }) => {
+export const RemoteProvider = ({ children }) => {
 	return children
 }
 
-export const useUpnp = () => {
-	return defaultUpnp
+export const useRemote = () => {
+	return defaultRemote
 }

@@ -96,8 +96,6 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
 		})
 
 		const text = await response.text()
-		logger.debug('UPNP', `${action} response:`, text)
-
 		return { success: response.ok, data: text }
 	} catch (error) {
 		logger.error('UPNP', `${action} error:`, error)

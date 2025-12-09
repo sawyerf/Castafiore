@@ -45,26 +45,8 @@ export const RemoteProvider = ({ children }) => {
 				isConnected,
 				currentStatus: playbackState,
 				updateStatus: updatePlaybackState
-			},
-			config
+			}
 		)
-
-		UpnpPlayer.initUpnpPlayer({
-			selectedDevice,
-			devices,
-			isConnected,
-			currentStatus: playbackState,
-			updateStatus: updatePlaybackState
-		})
-
-		ChromecastPlayer.initChromecastPlayer({
-			selectedDevice,
-			devices,
-			isConnected,
-			currentStatus: playbackState,
-			updateStatus: updatePlaybackState
-		})
-
 	}, [selectedDevice, devices, isConnected, config?.url])
 
 	// Handle device changes and transfer playback

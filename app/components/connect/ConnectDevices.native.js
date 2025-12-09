@@ -6,14 +6,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome6'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 
+import { discoverDevices as discoverUpnpDevices } from '~/utils/upnp'
+import { ThemeContext } from '~/contexts/theme'
+import { useRemote } from '~/contexts/remote'
+import Player from '~/utils/player'
+import ButtonMenu from '~/components/settings/ButtonMenu'
+import logger from '~/utils/logger'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size'
-import { ThemeContext } from '~/contexts/theme'
-import { useRemote } from '~/contexts/remote'
-import ButtonMenu from '~/components/settings/ButtonMenu'
-import { discoverDevices as discoverUpnpDevices } from '~/utils/upnp'
-import logger from '~/utils/logger'
 
 const CLOSE_DELAY_MS = 300
 
@@ -109,8 +110,7 @@ const ConnectDevices = ({ visible, onClose }) => {
 	const handleDisconnect = async () => {
 		// Stop remote playback before disconnecting
 		if (remote.selectedDevice?.type === 'upnp') {
-			const Player = await import('~/utils/player')
-			await Player.default.stopSong()
+			await Player.stopSong()
 		}
 
 		remote.selectDevice(null)

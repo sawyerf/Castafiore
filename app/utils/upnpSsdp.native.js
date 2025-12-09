@@ -6,10 +6,7 @@
  */
 
 import logger from '~/utils/logger'
-
-// Try to import dgram
-let dgram = null
-dgram = require('react-native-udp')
+import dgram from 'react-native-udp'
 
 const SSDP_ADDRESS = '239.255.255.250'
 const SSDP_PORT = 1900

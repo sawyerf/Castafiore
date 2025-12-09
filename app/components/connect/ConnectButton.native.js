@@ -1,5 +1,4 @@
 import React from 'react'
-import { Platform } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 import ConnectDevices from '~/components/connect/ConnectDevices'
@@ -10,9 +9,6 @@ const ConnectButton = ({ size = 23, color, style = {} }) => {
 	const theme = React.useContext(ThemeContext)
 	const remote = useRemote()
 	const [modalVisible, setModalVisible] = React.useState(false)
-
-	// Remote players (UPNP/Chromecast) are not supported on web
-	if (Platform.OS === 'web') return null
 
 	return (
 		<>

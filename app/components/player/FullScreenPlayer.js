@@ -22,7 +22,7 @@ import size from '~/styles/size'
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import SongItem from '~/components/item/SongItem'
-import ConnectButton from '../connect/ConnectButton'
+import ConnectButton from '~/components/connect/ConnectButton'
 
 const preview = {
 	COVER: 0,

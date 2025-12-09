@@ -7,7 +7,6 @@ import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import { useCachedFirst } from '~/utils/api'
-
 import Player from '~/utils/player'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'

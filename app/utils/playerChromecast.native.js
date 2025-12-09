@@ -5,11 +5,12 @@
 
 import React from 'react'
 import GoogleCast from 'react-native-google-cast'
-import { urlCover, urlStream } from '~/utils/url'
-import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
-import logger from '~/utils/logger'
-import LocalPlayer from '~/utils/playerLocal'
 import { State } from 'react-native-track-player'
+
+import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
+import { urlCover, urlStream } from '~/utils/url'
+import LocalPlayer from '~/utils/playerLocal'
+import logger from '~/utils/logger'
 
 let remoteContext = null
 let globalSongDispatch = null
@@ -382,8 +383,6 @@ export const updateTime = () => {
 		buffered: 0
 	}
 }
-
-export { State }
 
 export default {
 	initChromecastPlayer,

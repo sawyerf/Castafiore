@@ -1,8 +1,8 @@
 import { State } from 'react-native-track-player'
 
-import LocalPlayer from '~/utils/playerLocal'
-import UpnpPlayer from '~/utils/playerUpnp'
-import ChromecastPlayer from '~/utils/playerChromecast'
+import LocalPlayer from '~/utils/player/playerLocal'
+import UpnpPlayer from '~/utils/player/playerUpnp'
+import ChromecastPlayer from '~/utils/player/playerChromecast'
 
 let remoteContext = null
 

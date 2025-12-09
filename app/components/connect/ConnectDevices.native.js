@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome6'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 
-import { discoverDevices as discoverUpnpDevices } from '~/utils/upnp'
+import { discoverDevices as discoverUpnpDevices } from '~/utils/remote/upnp'
 import { ThemeContext } from '~/contexts/theme'
 import { useRemote } from '~/contexts/remote'
 import Player from '~/utils/player'

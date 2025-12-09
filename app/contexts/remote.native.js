@@ -4,9 +4,9 @@ import { ConfigContext } from '~/contexts/config'
 import logger from '~/utils/logger'
 
 import Player from '~/utils/player'
-import LocalPlayer from '~/utils/playerLocal'
-import UpnpPlayer from '~/utils/playerUpnp'
-import ChromecastPlayer from '~/utils/playerChromecast'
+import LocalPlayer from '~/utils/player/playerLocal'
+import UpnpPlayer from '~/utils/player/playerUpnp'
+import ChromecastPlayer from '~/utils/player/playerChromecast'
 
 const RemoteContext = React.createContext()
 

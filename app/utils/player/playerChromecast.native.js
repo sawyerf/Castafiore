@@ -9,7 +9,7 @@ import { State } from 'react-native-track-player'
 
 import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
 import { urlCover, urlStream } from '~/utils/url'
-import LocalPlayer from '~/utils/playerLocal'
+import LocalPlayer from '~/utils/player/playerLocal'
 import logger from '~/utils/logger'
 
 let remoteContext = null

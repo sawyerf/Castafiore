@@ -8,7 +8,7 @@
  */
 
 import logger from '~/utils/logger'
-import { discoverViaSsdp } from '~/utils/upnpSsdp'
+import { discoverViaSsdp } from '~/utils/remote/upnpSsdp'
 
 /**
  * Discover UPNP/DLNA devices on the network using SSDP and HTTP in parallel

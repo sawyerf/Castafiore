@@ -19,6 +19,7 @@ let currentTime = 0
 let currentDuration = 0
 let isPolling = false
 let currentPlayerState = 'stopped'
+let trackEnded = false
 
 // Polling intervals
 const POLL_INTERVAL_PLAYING = 1000
@@ -77,9 +78,25 @@ const startStatusPolling = (state = 'playing') => {
 						state: stateMap[status.state]
 					})
 
+					// Check if track ended and play next song
+					if (status.duration > 0 && status.position >= status.duration && !trackEnded) {
+						trackEnded = true
+						if (global.song?.actionEndOfSong === 'repeat') {
+							await setPosition(0)
+							await resumeSong()
+						} else if (global.song?.queue && global.config) {
+							await nextSong(global.config, global.song, globalSongDispatch)
+						}
+					}
+
 					// Adjust polling interval if state changed
 					if (status.state !== currentPlayerState) {
 						currentPlayerState = status.state
+
+						// Reset trackEnded when new track starts playing
+						if (status.state === 'playing') {
+							trackEnded = false
+						}
 
 						// Restart polling with new interval if needed
 						if (status.state === 'playing' || status.state === 'paused') {

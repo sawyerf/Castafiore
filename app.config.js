@@ -80,6 +80,9 @@ module.exports = ({ config }) => {
 				],
 				[
 					'./plugins/asyncStorage.js'
+				],
+				[
+					'react-native-google-cast'
 				]
 			]
 		}

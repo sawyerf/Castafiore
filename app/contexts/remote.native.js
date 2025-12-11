@@ -11,16 +11,9 @@ import ChromecastPlayer from '~/utils/player/playerChromecast'
 const RemoteContext = React.createContext()
 
 export const RemoteProvider = ({ children }) => {
-	const [devices, setDevices] = useState([])
 	const [selectedDevice, setSelectedDevice] = useState(null)
-	const [isConnected, setIsConnected] = useState(false)
 
 	// Playback state shared between players
-	const [playbackState, setPlaybackState] = useState({
-		position: 0,
-		isPlaying: false,
-		volume: 50,
-	})
 
 	const config = useContext(ConfigContext)
 	const song = useContext(SongContext)
@@ -34,20 +27,12 @@ export const RemoteProvider = ({ children }) => {
 	useEffect(() => {
 		if (!config?.url || !Player) return
 
-		const updatePlaybackState = (state) => {
-			setPlaybackState(prev => ({ ...prev, ...state }))
-		}
-
 		Player.initPlayerRouter(
 			{
 				selectedDevice,
-				devices,
-				isConnected,
-				currentStatus: playbackState,
-				updateStatus: updatePlaybackState
 			}
 		)
-	}, [selectedDevice, devices, isConnected, config?.url])
+	}, [selectedDevice, config?.url])
 
 	// Handle device changes and transfer playback
 	useEffect(() => {
@@ -74,8 +59,8 @@ export const RemoteProvider = ({ children }) => {
 				// 1. Get the previous player and save its state
 				const getPreviousPlayer = () => {
 					if (prevDevice === null) return LocalPlayer
-					if (prevDevice.type === 'upnp') return UpnpPlayer
 					if (prevDevice.type === 'chromecast') return ChromecastPlayer
+					if (prevDevice.type === 'upnp') return UpnpPlayer
 					return null
 				}
 
@@ -104,31 +89,14 @@ export const RemoteProvider = ({ children }) => {
 	}, [selectedDevice])
 
 	const value = React.useMemo(() => ({
-		devices,
 		selectedDevice,
-		isConnected,
-		playbackState,
-		// Helper functions
-		setDevices,
 		selectDevice: (device) => {
 			setSelectedDevice(device)
-			setIsConnected(device !== null)
 		},
-		updatePlaybackState: (state) => {
-			setPlaybackState(prev => ({ ...prev, ...state }))
-		},
-		setConnected: setIsConnected,
 		reset: () => {
-			setDevices([])
 			setSelectedDevice(null)
-			setIsConnected(false)
-			setPlaybackState({
-				position: 0,
-				isPlaying: false,
-				volume: 50,
-			})
 		}
-	}), [devices, selectedDevice, isConnected, playbackState])
+	}), [selectedDevice])
 
 	return (
 		<RemoteContext.Provider value={value}>

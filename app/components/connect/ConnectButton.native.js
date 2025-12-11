@@ -15,7 +15,7 @@ const ConnectButton = ({ size = 23, color, style = {} }) => {
 			<IconButton
 				icon="tv"
 				style={style}
-				color={remote.isConnected ? theme.primaryTouch : (color || theme.primaryText)}
+				color={remote.selectedDevice ? theme.primaryTouch : (color || theme.primaryText)}
 				size={size}
 				onPress={() => setModalVisible(true)}
 			/>

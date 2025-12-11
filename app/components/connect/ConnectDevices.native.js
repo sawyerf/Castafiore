@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, View, Text, ScrollView, ActivityIndicator, Pressable } from 'react-native'
+import { Modal, View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import GoogleCast, { useDevices } from 'react-native-google-cast'
@@ -25,13 +25,13 @@ const ConnectDevices = ({ visible, onClose }) => {
 	const [upnpError, setUpnpError] = React.useState(null)
 	const devices = useDevices()
 	const sessionManager = GoogleCast.getSessionManager()
+	const [devicesUpnp, setDevicesUpnp] = React.useState([])
 
 	React.useEffect(() => {
 		if (scanningUpnp) return
 		if (visible) {
 			setScanningUpnp(false)
 			setUpnpError(null)
-			remote.setDevices([])
 			scanUpnpDevices()
 		}
 	}, [visible])
@@ -39,11 +39,11 @@ const ConnectDevices = ({ visible, onClose }) => {
 	const scanUpnpDevices = async () => {
 		setScanningUpnp(true)
 		setUpnpError(null)
-		remote.setDevices([])
+		setDevicesUpnp([])
 
 		try {
 			const onDeviceFound = (device) => {
-				remote.setDevices(prevDevices => {
+				setDevicesUpnp(prevDevices => {
 					if (remote.selectedDevice?.id === device.id || prevDevices.some(d => d.id === device.id)) {
 						return prevDevices
 					}
@@ -74,7 +74,6 @@ const ConnectDevices = ({ visible, onClose }) => {
 		}
 
 		remote.selectDevice(null)
-		remote.setDevices([])
 		setUpnpError(null)
 	}
 
@@ -107,7 +106,7 @@ const ConnectDevices = ({ visible, onClose }) => {
 
 				<View style={settingStyles.contentMainContainer}>
 					{/* UPNP Error */}
-					{upnpError && remote.devices.length === 0 && (
+					{upnpError && devicesUpnp.length === 0 && (
 						<View style={{
 							padding: 12,
 							backgroundColor: theme.secondaryBack,
@@ -131,14 +130,14 @@ const ConnectDevices = ({ visible, onClose }) => {
 						/>
 
 						{
-							remote.devices.map((device, index) => (
+							devicesUpnp.map((device, index) => (
 								<ButtonMenu
 									key={device.id || index}
 									title={device.name}
 									endText={device.manufacturer || ''}
 									icon="volume-up"
 									onPress={() => handleSelectDevice(device)}
-									isLast={index === remote.devices.length - 1}
+									isLast={index === devicesUpnp.length - 1}
 								/>
 							))
 						}
@@ -150,6 +149,11 @@ const ConnectDevices = ({ visible, onClose }) => {
 									icon="tv"
 									onPress={async () => {
 										sessionManager.startSession(device.deviceId)
+										console.log('chibre', await sessionManager.getCurrentCastSession())
+										remote.selectDevice({
+											...device,
+											type: 'chromecast',
+										})
 									}}
 									isLast={index === devices.length - 1}
 								/>

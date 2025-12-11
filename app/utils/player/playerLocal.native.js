@@ -295,9 +295,6 @@ export const saveState = async () => {
 export const restoreState = async (state) => {
 	if (!state) return
 
-	// Wait a bit for the track to load
-	await new Promise(resolve => setTimeout(resolve, 200))
-
 	if (state.position > 0) {
 		await setPosition(state.position)
 	}

@@ -76,6 +76,15 @@ const ConnectDevices = ({ visible, onClose }) => {
 		remote.selectDevice(null)
 		setUpnpError(null)
 	}
+	
+	const refresh = () => {
+		// GoogleCast rescan
+		const discoveryManager = GoogleCast.getDiscoveryManager()
+		discoveryManager.stopDiscovery()
+		discoveryManager.startDiscovery()
+		// UPNP rescan
+		scanUpnpDevices()
+	}
 
 	return (
 		<Modal
@@ -121,6 +130,14 @@ const ConnectDevices = ({ visible, onClose }) => {
 						</View>
 					)}
 
+					<IconButton
+						icon="refresh"
+						onPress={refresh}
+						color={theme.primaryText}
+						style={{
+							padding: 8,
+						}}
+					/>
 					<View style={settingStyles.optionsContainer(theme, true)}>
 						<ButtonMenu
 							title={t('My device')}
@@ -148,8 +165,7 @@ const ConnectDevices = ({ visible, onClose }) => {
 									title={device.friendlyName || t('Chromecast Device')}
 									icon="tv"
 									onPress={async () => {
-										sessionManager.startSession(device.deviceId)
-										console.log('chibre', await sessionManager.getCurrentCastSession())
+										await sessionManager.startSession(device.deviceId)
 										remote.selectDevice({
 											...device,
 											type: 'chromecast',

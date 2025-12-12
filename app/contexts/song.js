@@ -1,5 +1,4 @@
 import React from 'react'
-import Player from '~/utils/player'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Platform } from 'react-native'
 
@@ -122,5 +121,5 @@ export const defaultSong = {
 	index: 0,
 	actionEndOfSong: 'next',
 	randomIndex: [],
-	state: Player.State.Stopped,
+	state: 'stopped'
 }

@@ -6,7 +6,7 @@ import logger from '~/utils/logger'
 import Player from '~/utils/player'
 import LocalPlayer from '~/utils/player/playerLocal'
 import UpnpPlayer from '~/utils/player/playerUpnp'
-import ChromecastPlayer from '~/utils/player/playerChromecast'
+import CastPlayer from '~/utils/player/playerCast'
 
 const RemoteContext = React.createContext()
 
@@ -55,33 +55,28 @@ export const RemoteProvider = ({ children }) => {
 		const transferPlayback = async () => {
 			isTransferringRef.current = true
 
-			try {
-				// 1. Get the previous player and save its state
-				const getPreviousPlayer = () => {
-					if (prevDevice === null) return LocalPlayer
-					if (prevDevice.type === 'chromecast') return ChromecastPlayer
-					if (prevDevice.type === 'upnp') return UpnpPlayer
-					return null
-				}
-
-				const previousPlayer = getPreviousPlayer()
-				let savedState = null
-
-				if (previousPlayer) {
-					savedState = await previousPlayer.saveState()
-					await previousPlayer.stopSong()
-				}
-
-				// 2. Start new player and restore state
-				await Player.playSong(config, dispatch, song.queue, song.index)
-				await Player.restoreState(savedState)
-
-			} catch (error) {
-				logger.error('RemoteContext', 'Transfer failed', error)
-			} finally {
-				isTransferringRef.current = false
-				prevSelectedDeviceRef.current = currentDevice
+			// 1. Get the previous player and save its state
+			const getPreviousPlayer = () => {
+				if (prevDevice === null) return LocalPlayer
+				if (prevDevice.type === 'chromecast') return CastPlayer
+				if (prevDevice.type === 'upnp') return UpnpPlayer
+				return null
 			}
+
+			const previousPlayer = getPreviousPlayer()
+			let savedState = null
+
+			if (previousPlayer) {
+				savedState = await previousPlayer.saveState()
+				await previousPlayer.stopSong()
+			}
+
+			// 2. Start new player and restore state
+			await Player.playSong(config, dispatch, song.queue, song.index)
+			await Player.restoreState(savedState)
+
+			isTransferringRef.current = false
+			prevSelectedDeviceRef.current = currentDevice
 		}
 
 		transferPlayback()

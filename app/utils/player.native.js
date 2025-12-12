@@ -2,14 +2,14 @@ import { State } from 'react-native-track-player'
 
 import LocalPlayer from '~/utils/player/playerLocal'
 import UpnpPlayer from '~/utils/player/playerUpnp'
-import ChromecastPlayer from '~/utils/player/playerChromecast'
+import CastPlayer from '~/utils/player/playerCast'
 
 let remoteContext = null
 
 export const initPlayerRouter = (context) => {
 	remoteContext = context
 	UpnpPlayer.initUpnpPlayer(context)
-	ChromecastPlayer.initChromecastPlayer(context)
+	CastPlayer.initChromecastPlayer(context)
 }
 
 const isRemoteActive = () => {
@@ -20,7 +20,7 @@ const getPlayer = () => {
 	if (!isRemoteActive()) return LocalPlayer
 
 	const deviceType = remoteContext?.selectedDevice?.type
-	if (deviceType === 'chromecast') return ChromecastPlayer
+	if (deviceType === 'chromecast') return CastPlayer
 	else if (deviceType === 'upnp') return UpnpPlayer
 	return LocalPlayer
 }
@@ -32,11 +32,12 @@ export const initService = async () => {
 export const initPlayer = async (songDispatch) => {
 	await LocalPlayer.initPlayer(songDispatch)
 	await UpnpPlayer.initPlayer(songDispatch)
-	await ChromecastPlayer.initPlayer(songDispatch)
+	await CastPlayer.initPlayer(songDispatch)
 }
 
 export const useEvent = (song, songDispatch) => {
-	return LocalPlayer.useEvent(song, songDispatch)
+	LocalPlayer.useEvent(song, songDispatch)
+	CastPlayer.useEvent(song, songDispatch)
 }
 
 export const pauseSong = async () => {
@@ -115,7 +116,7 @@ export const updateVolume = LocalPlayer.updateVolume
 export const updateTime = () => {
 	const localTime = LocalPlayer.updateTime()
 	const upnpTime = UpnpPlayer.updateTime()
-	const chromecastTime = ChromecastPlayer.updateTime()
+	const chromecastTime = CastPlayer.updateTime()
 
 	if (!isRemoteActive()) {
 		return localTime

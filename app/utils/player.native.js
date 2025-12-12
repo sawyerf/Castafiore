@@ -1,32 +1,25 @@
-import { State } from 'react-native-track-player'
-
 import LocalPlayer from '~/utils/player/playerLocal'
 import UpnpPlayer from '~/utils/player/playerUpnp'
 import CastPlayer from '~/utils/player/playerCast'
 
-let remoteContext = null
-
-export const initPlayerRouter = (context) => {
-	remoteContext = context
-	UpnpPlayer.initUpnpPlayer(context)
-	CastPlayer.initChromecastPlayer(context)
-}
-
-const isRemoteActive = () => {
-	return remoteContext?.selectedDevice != null
+let remoteContext = {
+	type: 'local',
+	selectedDevice: null,
 }
 
 const getPlayer = () => {
-	if (!isRemoteActive()) return LocalPlayer
-
-	const deviceType = remoteContext?.selectedDevice?.type
+	const deviceType = remoteContext?.type
 	if (deviceType === 'chromecast') return CastPlayer
 	else if (deviceType === 'upnp') return UpnpPlayer
 	return LocalPlayer
 }
 
-export const initService = async () => {
-	return LocalPlayer.initService()
+export const initService = LocalPlayer.initService
+
+export const initPlayerRouter = (context) => {
+	remoteContext = context
+	UpnpPlayer.initUpnpPlayer(context)
+	CastPlayer.initChromecastPlayer(context)
 }
 
 export const initPlayer = async (songDispatch) => {
@@ -38,6 +31,18 @@ export const initPlayer = async (songDispatch) => {
 export const useEvent = (song, songDispatch) => {
 	LocalPlayer.useEvent(song, songDispatch)
 	CastPlayer.useEvent(song, songDispatch)
+}
+
+export const previousSong = async (config, song, songDispatch) => {
+	return getPlayer().previousSong(config, song, songDispatch)
+}
+
+export const nextSong = async (config, song, songDispatch) => {
+	return getPlayer().nextSong(config, song, songDispatch)
+}
+
+export const reload = async () => {
+	return getPlayer().reload()
 }
 
 export const pauseSong = async () => {
@@ -52,20 +57,26 @@ export const stopSong = async () => {
 	return getPlayer().stopSong()
 }
 
+export const downloadSong = async (urlStream, id) => {
+	return getPlayer().downloadSong(urlStream, id)
+}
+
+export const downloadNextSong = async (queue, currentIndex) => {
+	return getPlayer().downloadNextSong(queue, currentIndex)
+}
+
 export const playSong = async (config, songDispatch, queue, index) => {
 	return getPlayer().playSong(config, songDispatch, queue, index)
 }
 
-export const setIndex = async (config, songDispatch, queue, index) => {
-	return getPlayer().setIndex(config, songDispatch, queue, index)
+export const restoreState = async (savedState) => {
+	return getPlayer().restoreState(savedState)
 }
 
-export const nextSong = async (config, song, songDispatch) => {
-	return getPlayer().nextSong(config, song, songDispatch)
-}
-
-export const previousSong = async (config, song, songDispatch) => {
-	return getPlayer().previousSong(config, song, songDispatch)
+export const secondToTime = (second) => {
+	if (!second) return '00:00'
+	if (second === Infinity) return '∞:∞'
+	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 }
 
 export const setPosition = async (position) => {
@@ -80,12 +91,32 @@ export const getVolume = () => {
 	return getPlayer().getVolume()
 }
 
-export const reload = async () => {
-	return getPlayer().reload()
+export const setRepeat = async (songdispatch, action) => {
+	return getPlayer().setRepeat(songdispatch, action)
 }
 
-export const setRepeat = async (songDispatch, action) => {
-	return getPlayer().setRepeat(songDispatch, action)
+export const unloadSong = async () => { }
+export const tuktuktuk = async (songDispatch) => {
+	return getPlayer().tuktuktuk(songDispatch)
+}
+
+export const setIndex = async (config, songDispatch, queue, index) => {
+	return getPlayer().setIndex(config, songDispatch, queue, index)
+}
+
+export const updateVolume = () => { }
+export const updateTime = () => {
+	const localTime = LocalPlayer.updateTime()
+	const upnpTime = UpnpPlayer.updateTime()
+	const chromecastTime = CastPlayer.updateTime()
+
+	if (remoteContext.type === 'chromecast') return chromecastTime
+	else if (remoteContext.type === 'upnp') return upnpTime
+	return localTime
+}
+
+export const isVolumeSupported = () => {
+	return false
 }
 
 export const resetAudio = (songDispatch) => {
@@ -93,43 +124,12 @@ export const resetAudio = (songDispatch) => {
 }
 
 export const removeFromQueue = async (songDispatch, index) => {
-	return getPlayer().removeFromQueue(songDispatch, index)
+	songDispatch({ type: 'removeFromQueue', index })
 }
 
-export const addToQueue = async (config, songDispatch, track, index = null) => {
-	return getPlayer().addToQueue(config, songDispatch, track, index)
-}
-
-export const saveState = async () => {
-	return getPlayer().saveState()
-}
-
-export const restoreState = async (state) => {
-	return getPlayer().restoreState(state)
-}
-
-export const secondToTime = LocalPlayer.secondToTime
-export const unloadSong = LocalPlayer.unloadSong
-export const tuktuktuk = LocalPlayer.tuktuktuk
-export const updateVolume = LocalPlayer.updateVolume
-
-export const updateTime = () => {
-	const localTime = LocalPlayer.updateTime()
-	const upnpTime = UpnpPlayer.updateTime()
-	const chromecastTime = CastPlayer.updateTime()
-
-	if (!isRemoteActive()) {
-		return localTime
-	}
-
-	const deviceType = remoteContext?.selectedDevice?.type
-	if (deviceType === 'chromecast') return chromecastTime
-	else if (deviceType === 'upnp') return upnpTime
-	return localTime
-}
-
-export const isVolumeSupported = () => {
-	return getPlayer().isVolumeSupported()
+// when index is null, add to the end of the queue
+export const addToQueue = (songDispatch, track, index = null) => {
+	songDispatch({ type: 'addToQueue', track, index })
 }
 
 export default {
@@ -158,7 +158,6 @@ export default {
 	removeFromQueue,
 	addToQueue,
 	setIndex,
-	saveState,
 	restoreState,
-	State,
+	State: LocalPlayer.State,
 }

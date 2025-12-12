@@ -27,26 +27,27 @@ export const useEvent = (_song, songDispatch) => {
 	const client = useRemoteMediaClient()
 
 	React.useEffect(() => {
+		const events = []
 		if (!client) return
 
-		client.onMediaStatusUpdated((mediaStatus) => {
+		events.push(client.onMediaStatusUpdated((mediaStatus) => {
 			if (!mediaStatus) return
 			songDispatch({ type: 'setPlaying', state: convertState[mediaStatus?.playerState || 'stopped'] })
-		})
+		}))
 
-		client.onMediaPlaybackEnded((_mediaStatus) => {
+		events.push(client.onMediaPlaybackEnded((_mediaStatus) => {
 			if (!global.song?.queue?.length) return
 			getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
 				.catch(() => { })
 			if (global.song.actionEndOfSong === 'repeat') {
 				client.seek(0)
-			} else if (!global.song.repeatQueue && global.song.index === global.song.queue.length - 1) {
+			} else if (!global.repeatQueue && global.song.index === global.song.queue.length - 1) {
 				client.stop()
 			} else nextSong(global.config, global.song, songDispatch)
-		})
+		}))
 
+		return () => events.forEach((event) => event.remove())
 	}, [client])
-
 }
 
 const getClient = async () => {
@@ -137,12 +138,6 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	songDispatch({ type: 'setQueue', queue, index })
 	setRepeat(songDispatch, 'next')
 	saveQueue(config, queue, index)
-}
-
-export const secondToTime = (second) => {
-	if (!second) return '00:00'
-	if (second === Infinity) return '∞:∞'
-	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
 }
 
 export const setPosition = async (position) => {
@@ -247,7 +242,6 @@ export default {
 	resumeSong,
 	stopSong,
 	playSong,
-	secondToTime,
 	setPosition,
 	setVolume,
 	getVolume,
@@ -265,4 +259,6 @@ export default {
 	setIndex,
 	saveState,
 	restoreState,
+	downloadNextSong,
+	downloadSong,
 }

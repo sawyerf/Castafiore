@@ -195,12 +195,6 @@ export const playSong = async (config, songDispatch, queue, index) => {
 	saveQueue(config, queue, index)
 }
 
-export const secondToTime = (second) => {
-	if (!second) return '00:00'
-	if (second === Infinity) return '∞:∞'
-	return `${String((second - second % 60) / 60).padStart(2, '0')}:${String((second - second % 1) % 60).padStart(2, '0')}`
-}
-
 export const setPosition = async (position) => {
 	if (position < 0 || !position) position = 0
 	if (position === Infinity) return
@@ -313,7 +307,6 @@ export default {
 	resumeSong,
 	stopSong,
 	playSong,
-	secondToTime,
 	setPosition,
 	setVolume,
 	getVolume,
@@ -331,5 +324,7 @@ export default {
 	setIndex,
 	saveState,
 	restoreState,
+	downloadNextSong,
+	downloadSong,
 	State,
 }

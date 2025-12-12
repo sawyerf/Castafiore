@@ -1,4 +1,5 @@
 const defaultRemote = {
+	type: 'local',
 	selectedDevice: null,
 }
 

@@ -7,55 +7,47 @@ import GoogleCast, { useDevices } from 'react-native-google-cast'
 import { discoverDevices as discoverUpnpDevices } from '~/utils/remote/upnp'
 import { ThemeContext } from '~/contexts/theme'
 import { useRemote } from '~/contexts/remote'
-import ButtonMenu from '~/components/settings/ButtonMenu'
+import SelectItem from '~/components/settings/SelectItem'
 import IconButton from '~/components/button/IconButton'
 import logger from '~/utils/logger'
 import mainStyles from '~/styles/main'
-import Player from '~/utils/player'
 import settingStyles from '~/styles/settings'
 
 const CLOSE_DELAY_MS = 300
 
 const ConnectDevices = ({ visible, onClose }) => {
 	const { t } = useTranslation()
+	const devices = useDevices()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
 	const remote = useRemote()
+	const theme = React.useContext(ThemeContext)
+	const [devicesUpnp, setDevicesUpnp] = React.useState([])
 	const [scanningUpnp, setScanningUpnp] = React.useState(false)
 	const [upnpError, setUpnpError] = React.useState(null)
-	const devices = useDevices()
-	const sessionManager = GoogleCast.getSessionManager()
-	const [devicesUpnp, setDevicesUpnp] = React.useState([])
 
 	React.useEffect(() => {
 		if (scanningUpnp) return
 		if (visible) {
 			setScanningUpnp(false)
-			setUpnpError(null)
 			scanUpnpDevices()
 		}
 	}, [visible])
 
 	const scanUpnpDevices = async () => {
 		setScanningUpnp(true)
-		setUpnpError(null)
 		setDevicesUpnp([])
 
 		try {
-			const onDeviceFound = (device) => {
+			await discoverUpnpDevices((device) => {
 				setDevicesUpnp(prevDevices => {
 					if (remote.selectedDevice?.id === device.id || prevDevices.some(d => d.id === device.id)) {
 						return prevDevices
 					}
 					return [...prevDevices, device]
 				})
-			}
-
-			await discoverUpnpDevices(onDeviceFound)
-
+			})
 		} catch (error) {
 			logger.error('ConnectDevices', 'UPNP scan error:', error)
-			setUpnpError(error.message || t('Error scanning for devices'))
 		} finally {
 			setScanningUpnp(false)
 		}
@@ -68,11 +60,6 @@ const ConnectDevices = ({ visible, onClose }) => {
 	}
 
 	const handleDisconnect = async () => {
-		// Stop remote playback before disconnecting
-		if (remote.selectedDevice?.type === 'upnp') {
-			await Player.stopSong()
-		}
-
 		remote.selectDevice(null)
 		setUpnpError(null)
 	}
@@ -114,22 +101,6 @@ const ConnectDevices = ({ visible, onClose }) => {
 				</View>
 
 				<View style={settingStyles.contentMainContainer}>
-					{/* UPNP Error */}
-					{upnpError && devicesUpnp.length === 0 && (
-						<View style={{
-							padding: 12,
-							backgroundColor: theme.secondaryBack,
-							borderRadius: 8,
-							marginBottom: 10,
-							borderLeftWidth: 3,
-							borderLeftColor: '#ff6b6b',
-						}}>
-							<Text style={mainStyles.smallText(theme.secondaryText)}>
-								{upnpError}
-							</Text>
-						</View>
-					)}
-
 					<IconButton
 						icon="refresh"
 						onPress={refresh}
@@ -139,38 +110,40 @@ const ConnectDevices = ({ visible, onClose }) => {
 						}}
 					/>
 					<View style={settingStyles.optionsContainer(theme, true)}>
-						<ButtonMenu
-							title={t('My device')}
+						<SelectItem
+							text={t('My device')}
 							icon="mobile"
 							onPress={handleDisconnect}
-							disabled={!remote.selectedDevice && devices.length === 0}
+							isSelect={!remote.selectedDevice}
 						/>
 
 						{
 							devicesUpnp.map((device, index) => (
-								<ButtonMenu
+								<SelectItem
 									key={device.id || index}
-									title={device.name}
-									endText={device.manufacturer || ''}
+									text={device.name}
 									icon="volume-up"
 									onPress={() => handleSelectDevice(device)}
+									isSelect={remote.selectedDevice?.id === device.id}
 									isLast={index === devicesUpnp.length - 1}
 								/>
 							))
 						}
 						{
 							devices.map((device, index) => (
-								<ButtonMenu
-									key={device.id || index}
-									title={device.friendlyName || t('Chromecast Device')}
+								<SelectItem
+									key={device.deviceId || index}
+									text={device.friendlyName || t('Chromecast Device')}
 									icon="tv"
 									onPress={async () => {
+										const sessionManager = GoogleCast.getSessionManager()
 										await sessionManager.startSession(device.deviceId)
 										remote.selectDevice({
-											...device,
+											id: device.deviceId,
 											type: 'chromecast',
 										})
 									}}
+									isSelect={remote.selectedDevice?.id === device.deviceId}
 									isLast={index === devices.length - 1}
 								/>
 							))

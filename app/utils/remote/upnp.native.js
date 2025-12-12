@@ -16,7 +16,7 @@ import { discoverViaSsdp } from '~/utils/remote/upnpSsdp'
  * @returns {Promise<Array>} Array of discovered devices
  */
 export const discoverDevices = async (onDeviceFound = null) => {
-	logger.info('UPNP', 'Starting device discovery (SSDP + HTTP in parallel)...')
+	
 
 	const foundDeviceIds = new Set() // Track devices already reported
 
@@ -38,7 +38,7 @@ export const discoverDevices = async (onDeviceFound = null) => {
 		const ssdp = ssdpDevices?.status === 'fulfilled' ? ssdpDevices.value : []
 		const http = httpDevices?.status === 'fulfilled' ? httpDevices.value : []
 
-		logger.info('UPNP', `SSDP found ${ssdp.length} devices, HTTP found ${http.length} devices`)
+		
 
 		// Combine and deduplicate devices (by id)
 		const allDevices = [...ssdp, ...http]
@@ -46,7 +46,7 @@ export const discoverDevices = async (onDeviceFound = null) => {
 			new Map(allDevices.map(d => [d.id, d])).values()
 		)
 
-		logger.info('UPNP', `Discovery completed, found ${uniqueDevices.length} unique devices`)
+		
 		return uniqueDevices
 	} catch (error) {
 		logger.error('UPNP', 'Discovery error:', error)
@@ -111,7 +111,7 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
  * @returns {Promise<boolean>} Success status
  */
 export const playOnDevice = async (device, url, metadata = {}) => {
-	logger.info('UPNP', `Playing on device: ${device.name}`, { url })
+	
 
 	try {
 		// Step 1: Set the URI

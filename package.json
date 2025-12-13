@@ -23,6 +23,7 @@
     "expo-build-properties": "~0.14.8",
     "expo-dev-client": "~5.2.4",
     "expo-file-system": "~18.1.11",
+    "fast-xml-parser": "^5.3.3",
     "i18next": "^25.3.1",
     "md5": "^2.3.0",
     "react": "19.0.0",

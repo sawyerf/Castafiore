@@ -8,51 +8,11 @@
  */
 
 import logger from '~/utils/logger'
-import { discoverViaSsdp } from '~/utils/remote/upnpSsdp'
+import { XMLParser } from 'fast-xml-parser'
 
-/**
- * Discover UPNP/DLNA devices on the network using SSDP and HTTP in parallel
- * @param {Function} onDeviceFound - Optional callback called when each device is found
- * @returns {Promise<Array>} Array of discovered devices
- */
-export const discoverDevices = async (onDeviceFound = null) => {
-	
-
-	const foundDeviceIds = new Set() // Track devices already reported
-
-	try {
-		// Create callback wrapper that deduplicates and calls user callback
-		const deviceCallback = (device) => {
-			if (device && device.id && !foundDeviceIds.has(device.id)) {
-				foundDeviceIds.add(device.id)
-				if (onDeviceFound) {
-					onDeviceFound(device)
-				}
-			}
-		}
-
-		// Scan SSDP
-		const [ssdpDevices, httpDevices] = await discoverViaSsdp(5000, deviceCallback)
-
-		// Collect successful results
-		const ssdp = ssdpDevices?.status === 'fulfilled' ? ssdpDevices.value : []
-		const http = httpDevices?.status === 'fulfilled' ? httpDevices.value : []
-
-		
-
-		// Combine and deduplicate devices (by id)
-		const allDevices = [...ssdp, ...http]
-		const uniqueDevices = Array.from(
-			new Map(allDevices.map(d => [d.id, d])).values()
-		)
-
-		
-		return uniqueDevices
-	} catch (error) {
-		logger.error('UPNP', 'Discovery error:', error)
-		return []
-	}
-}
+const parser = new XMLParser({
+	removeNSPrefix: true,
+})
 
 /**
  * Send SOAP request to device
@@ -84,7 +44,6 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
 
 	try {
 		const url = `${device.serviceUrl}${controlUrl}`
-		logger.debug('UPNP', `Sending ${action} to ${url}`)
 
 		const response = await fetch(url, {
 			method: 'POST',
@@ -96,7 +55,7 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
 		})
 
 		const text = await response.text()
-		return { success: response.ok, data: text }
+		return { success: response.ok, data: parser.parse(text) }
 	} catch (error) {
 		logger.error('UPNP', `${action} error:`, error)
 		return { success: false, error }
@@ -111,8 +70,6 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
  * @returns {Promise<boolean>} Success status
  */
 export const playOnDevice = async (device, url, metadata = {}) => {
-	
-
 	try {
 		// Step 1: Set the URI
 		const didl = createDIDL(metadata, url)
@@ -233,6 +190,16 @@ export const setVolumeOnDevice = async (device, volume) => {
 	}
 }
 
+const STATE_VALUES = {
+	PLAYING: 'playing',
+	PAUSED_PLAYBACK: 'paused',
+	STOPPED: 'stopped',
+}
+
+const convertState = (upnpState) => {
+	return STATE_VALUES[upnpState] || 'stopped'
+}
+
 /**
  * Get current playback status from device
  * @param {Object} device - Target device
@@ -245,10 +212,7 @@ export const getDeviceStatus = async (device) => {
 			InstanceID: '0',
 		})
 
-		// Parse XML response to extract state
-		const state = transportResult.data?.includes('PLAYING') ? 'playing' :
-		             transportResult.data?.includes('PAUSED_PLAYBACK') ? 'paused' :
-		             'stopped'
+		const state = convertState(transportResult.data?.Envelope?.Body?.GetTransportInfoResponse?.CurrentTransportState)
 
 		// Get position info (current position and duration)
 		const positionResult = await sendSoapRequest(device, 'GetPositionInfo', {
@@ -261,15 +225,15 @@ export const getDeviceStatus = async (device) => {
 
 		if (positionResult.data) {
 			// Extract RelTime (current position) - format is HH:MM:SS
-			const relTimeMatch = positionResult.data.match(/<RelTime>([^<]+)<\/RelTime>/)
-			if (relTimeMatch && relTimeMatch[1] !== 'NOT_IMPLEMENTED') {
-				position = parseTimeToSeconds(relTimeMatch[1])
+			const relTimeMatch = positionResult?.data?.Envelope?.Body?.GetPositionInfoResponse?.RelTime
+			if (relTimeMatch !== 'NOT_IMPLEMENTED') {
+				position = parseTimeToSeconds(relTimeMatch)
 			}
 
 			// Extract TrackDuration - format is HH:MM:SS
-			const durationMatch = positionResult.data.match(/<TrackDuration>([^<]+)<\/TrackDuration>/)
-			if (durationMatch && durationMatch[1] !== 'NOT_IMPLEMENTED') {
-				duration = parseTimeToSeconds(durationMatch[1])
+			const durationMatch = positionResult?.data?.Envelope?.Body?.GetPositionInfoResponse?.TrackDuration
+			if (durationMatch !== 'NOT_IMPLEMENTED') {
+				duration = parseTimeToSeconds(durationMatch)
 			}
 		}
 
@@ -352,7 +316,6 @@ const formatTime = (seconds) => {
 }
 
 export default {
-	discoverDevices,
 	playOnDevice,
 	pauseOnDevice,
 	resumeOnDevice,

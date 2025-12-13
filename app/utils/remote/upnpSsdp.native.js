@@ -7,13 +7,15 @@
 
 import logger from '~/utils/logger'
 import dgram from 'react-native-udp'
+import { XMLParser } from 'fast-xml-parser'
 
 const SSDP_ADDRESS = '239.255.255.250'
 const SSDP_PORT = 1900
 
-/**
- * Create M-SEARCH packet for discovering MediaRenderer devices
- */
+const parser = new XMLParser({
+	removeNSPrefix: true,
+})
+
 const createMSearchPacket = () => {
 	return (
 		'M-SEARCH * HTTP/1.1\r\n' +
@@ -25,9 +27,6 @@ const createMSearchPacket = () => {
 	)
 }
 
-/**
- * Parse SSDP response to extract device location
- */
 const parseSsdpResponse = (response) => {
 	try {
 		const responseStr = response.toString()
@@ -49,28 +48,26 @@ const parseSsdpResponse = (response) => {
 	}
 }
 
-/**
- * Fetch and parse device description XML
- */
 const fetchDeviceDescription = async (deviceInfo) => {
 	try {
 		const response = await fetch(deviceInfo.location)
 		if (!response.ok) return null
 
-		const xml = await response.text()
-		const friendlyNameMatch = xml.match(/<friendlyName>([^<]+)<\/friendlyName>/)
-		const manufacturerMatch = xml.match(/<manufacturer>([^<]+)<\/manufacturer>/)
-		const udnMatch = xml.match(/<UDN>([^<]+)<\/UDN>/)
-		const controlUrlMatch = xml.match(/<serviceType>urn:schemas-upnp-org:service:AVTransport:1<\/serviceType>[\s\S]*?<controlURL>([^<]+)<\/controlURL>/)
+		let xml = null;
+		try {
+			xml = parser.parse(await response.text())
+		} catch (error) {
+			logger.error('UPNP-SSDP', 'XML Parse error:', error)
+		}
 
 		return {
-			id: udnMatch ? udnMatch[1] : `uuid:${deviceInfo.ip}:${deviceInfo.port}`,
-			name: friendlyNameMatch ? friendlyNameMatch[1] : `Device at ${deviceInfo.ip}`,
+			id: xml?.root?.device?.UDN || `uuid:${deviceInfo.ip}:${deviceInfo.port}`,
+			name: xml?.root?.device?.friendlyName || `Device at ${deviceInfo.ip}`,
 			host: deviceInfo.ip,
 			port: deviceInfo.port,
-			manufacturer: manufacturerMatch ? manufacturerMatch[1] : 'Unknown',
+			manufacturer: xml?.root?.device?.manufacturer || 'Unknown',
 			serviceUrl: `http://${deviceInfo.ip}:${deviceInfo.port}`,
-			controlUrl: controlUrlMatch ? controlUrlMatch[1] : '/upnp/control/rendertransport1',
+			controlUrl: xml?.root?.device?.serviceList?.service?.find(s => s.serviceType === 'urn:schemas-upnp-org:service:AVTransport:1')?.controlURL || '/upnp/control/rendertransport1',
 			isMediaRenderer: true,
 			type: 'upnp',
 		}
@@ -80,10 +77,7 @@ const fetchDeviceDescription = async (deviceInfo) => {
 	}
 }
 
-/**
- * Discover UPNP MediaRenderer devices using SSDP M-SEARCH
- */
-export const discoverViaSsdp = (timeout = 5000, onDeviceFound = null) => {
+const discoverViaSsdp = (timeout = 5000, onDeviceFound = null) => {
 	return new Promise((resolve, reject) => {
 		if (!dgram?.createSocket) {
 			reject(new Error('react-native-udp not available'))
@@ -134,4 +128,44 @@ export const discoverViaSsdp = (timeout = 5000, onDeviceFound = null) => {
 	})
 }
 
-export default { discoverViaSsdp }
+/**
+ * Discover UPNP/DLNA devices on the network using SSDP and HTTP in parallel
+ * @param {Function} onDeviceFound - Optional callback called when each device is found
+ * @returns {Promise<Array>} Array of discovered devices
+ */
+export const discoverDevices = async (onDeviceFound = null) => {
+	const foundDeviceIds = new Set() // Track devices already reported
+
+	try {
+		// Create callback wrapper that deduplicates and calls user callback
+		const deviceCallback = (device) => {
+			if (device && device.id && !foundDeviceIds.has(device.id)) {
+				foundDeviceIds.add(device.id)
+				if (onDeviceFound) {
+					onDeviceFound(device)
+				}
+			}
+		}
+
+		// Scan SSDP
+		const [ssdpDevices, httpDevices] = await discoverViaSsdp(5000, deviceCallback)
+
+		// Collect successful results
+		const ssdp = ssdpDevices?.status === 'fulfilled' ? ssdpDevices.value : []
+		const http = httpDevices?.status === 'fulfilled' ? httpDevices.value : []
+
+		
+
+		// Combine and deduplicate devices (by id)
+		const allDevices = [...ssdp, ...http]
+		const uniqueDevices = Array.from(
+			new Map(allDevices.map(d => [d.id, d])).values()
+		)
+
+		
+		return uniqueDevices
+	} catch (error) {
+		logger.error('UPNP', 'Discovery error:', error)
+		return []
+	}
+}

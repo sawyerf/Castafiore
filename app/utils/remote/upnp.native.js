@@ -69,32 +69,20 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
  * @param {Object} metadata - Track metadata (title, artist, album, etc.)
  * @returns {Promise<boolean>} Success status
  */
-export const playOnDevice = async (device, url, metadata = {}) => {
-	try {
-		// Step 1: Set the URI
-		const didl = createDIDL(metadata, url)
-		const setUriResult = await sendSoapRequest(device, 'SetAVTransportURI', {
-			InstanceID: '0',
-			CurrentURI: url,
-			CurrentURIMetaData: didl,
-		})
+const play = async (device, url, metadata = {}) => {
+	// Step 1: Set the URI
+	const didl = createDIDL(metadata, url)
+	const setUriResult = await sendSoapRequest(device, 'SetAVTransportURI', {
+		InstanceID: '0',
+		CurrentURI: url,
+		CurrentURIMetaData: didl,
+	})
 
-		if (!setUriResult.success) {
-			logger.error('UPNP', 'Failed to set URI')
-			return false
-		}
-
-		// Step 2: Send Play command
-		const playResult = await sendSoapRequest(device, 'Play', {
-			InstanceID: '0',
-			Speed: '1',
-		})
-
-		return playResult.success
-	} catch (error) {
-		logger.error('UPNP', 'Play error:', error)
+	if (!setUriResult.success) {
+		logger.error('UPNP', 'Failed to set URI')
 		return false
 	}
+	return true
 }
 
 /**
@@ -102,16 +90,11 @@ export const playOnDevice = async (device, url, metadata = {}) => {
  * @param {Object} device - Target device
  * @returns {Promise<boolean>} Success status
  */
-export const pauseOnDevice = async (device) => {
-	try {
-		const result = await sendSoapRequest(device, 'Pause', {
-			InstanceID: '0',
-		})
-		return result.success
-	} catch (error) {
-		logger.error('UPNP', 'Pause error:', error)
-		return false
-	}
+const pause = async (device) => {
+	const result = await sendSoapRequest(device, 'Pause', {
+		InstanceID: '0',
+	})
+	return result.success
 }
 
 /**
@@ -119,17 +102,12 @@ export const pauseOnDevice = async (device) => {
  * @param {Object} device - Target device
  * @returns {Promise<boolean>} Success status
  */
-export const resumeOnDevice = async (device) => {
-	try {
-		const result = await sendSoapRequest(device, 'Play', {
-			InstanceID: '0',
-			Speed: '1',
-		})
-		return result.success
-	} catch (error) {
-		logger.error('UPNP', 'Resume error:', error)
-		return false
-	}
+const resume = async (device) => {
+	const result = await sendSoapRequest(device, 'Play', {
+		InstanceID: '0',
+		Speed: '1',
+	})
+	return result.success
 }
 
 /**
@@ -137,16 +115,11 @@ export const resumeOnDevice = async (device) => {
  * @param {Object} device - Target device
  * @returns {Promise<boolean>} Success status
  */
-export const stopOnDevice = async (device) => {
-	try {
-		const result = await sendSoapRequest(device, 'Stop', {
-			InstanceID: '0',
-		})
-		return result.success
-	} catch (error) {
-		logger.error('UPNP', 'Stop error:', error)
-		return false
-	}
+const stop = async (device) => {
+	const result = await sendSoapRequest(device, 'Stop', {
+		InstanceID: '0',
+	})
+	return result.success
 }
 
 /**
@@ -155,18 +128,13 @@ export const stopOnDevice = async (device) => {
  * @param {number} position - Position in seconds
  * @returns {Promise<boolean>} Success status
  */
-export const seekOnDevice = async (device, position) => {
-	try {
-		const result = await sendSoapRequest(device, 'Seek', {
-			InstanceID: '0',
-			Unit: 'REL_TIME',
-			Target: formatTime(position),
-		})
-		return result.success
-	} catch (error) {
-		logger.error('UPNP', 'Seek error:', error)
-		return false
-	}
+const seek = async (device, position) => {
+	const result = await sendSoapRequest(device, 'Seek', {
+		InstanceID: '0',
+		Unit: 'REL_TIME',
+		Target: formatTime(position),
+	})
+	return result.success
 }
 
 /**
@@ -175,19 +143,14 @@ export const seekOnDevice = async (device, position) => {
  * @param {number} volume - Volume level (0-100)
  * @returns {Promise<boolean>} Success status
  */
-export const setVolumeOnDevice = async (device, volume) => {
-	try {
-		const result = await sendSoapRequest(device, 'SetVolume', {
-			InstanceID: '0',
-			Channel: 'Master',
-			DesiredVolume: Math.round(volume).toString(),
-		}, 'RenderingControl')
+const setVolume = async (device, volume) => {
+	const result = await sendSoapRequest(device, 'SetVolume', {
+		InstanceID: '0',
+		Channel: 'Master',
+		DesiredVolume: Math.round(volume).toString(),
+	}, 'RenderingControl')
 
-		return result.success
-	} catch (error) {
-		logger.error('UPNP', 'Set volume error:', error)
-		return false
-	}
+	return result.success
 }
 
 const STATE_VALUES = {
@@ -205,47 +168,43 @@ const convertState = (upnpState) => {
  * @param {Object} device - Target device
  * @returns {Promise<Object>} Playback status
  */
-export const getDeviceStatus = async (device) => {
-	try {
-		// Get transport state (playing/paused/stopped)
-		const transportResult = await sendSoapRequest(device, 'GetTransportInfo', {
-			InstanceID: '0',
-		})
+const getState = async (device) => {
+	// Get transport state (playing/paused/stopped)
+	const transportResult = await sendSoapRequest(device, 'GetTransportInfo', {
+		InstanceID: '0',
+	})
 
-		const state = convertState(transportResult.data?.Envelope?.Body?.GetTransportInfoResponse?.CurrentTransportState)
+	console.log('Transport Result:', transportResult.data?.Envelope?.Body?.GetTransportInfoResponse.CurrentTransportState)
+	return convertState(transportResult.data?.Envelope?.Body?.GetTransportInfoResponse?.CurrentTransportState)
+}
 
-		// Get position info (current position and duration)
-		const positionResult = await sendSoapRequest(device, 'GetPositionInfo', {
-			InstanceID: '0',
-		})
+const getPosition = async (device) => {
+	// Get position info (current position and duration)
+	const positionResult = await sendSoapRequest(device, 'GetPositionInfo', {
+		InstanceID: '0',
+	})
 
-		// Parse position info from XML response
-		let position = 0
-		let duration = 0
+	// Parse position info from XML response
+	let position = 0
+	let duration = 0
 
-		if (positionResult.data) {
-			// Extract RelTime (current position) - format is HH:MM:SS
-			const relTimeMatch = positionResult?.data?.Envelope?.Body?.GetPositionInfoResponse?.RelTime
-			if (relTimeMatch !== 'NOT_IMPLEMENTED') {
-				position = parseTimeToSeconds(relTimeMatch)
-			}
-
-			// Extract TrackDuration - format is HH:MM:SS
-			const durationMatch = positionResult?.data?.Envelope?.Body?.GetPositionInfoResponse?.TrackDuration
-			if (durationMatch !== 'NOT_IMPLEMENTED') {
-				duration = parseTimeToSeconds(durationMatch)
-			}
+	if (positionResult.data) {
+		// Extract RelTime (current position) - format is HH:MM:SS
+		const relTimeMatch = positionResult?.data?.Envelope?.Body?.GetPositionInfoResponse?.RelTime
+		if (relTimeMatch !== 'NOT_IMPLEMENTED') {
+			position = parseTimeToSeconds(relTimeMatch)
 		}
 
-		return {
-			state,
-			position,
-			duration,
-			volume: 50, // Volume requires RenderingControl service
+		// Extract TrackDuration - format is HH:MM:SS
+		const durationMatch = positionResult?.data?.Envelope?.Body?.GetPositionInfoResponse?.TrackDuration
+		if (durationMatch !== 'NOT_IMPLEMENTED') {
+			duration = parseTimeToSeconds(durationMatch)
 		}
-	} catch (error) {
-		logger.error('UPNP', 'Get status error:', error)
-		return null
+	}
+
+	return {
+		position,
+		duration,
 	}
 }
 
@@ -316,11 +275,12 @@ const formatTime = (seconds) => {
 }
 
 export default {
-	playOnDevice,
-	pauseOnDevice,
-	resumeOnDevice,
-	stopOnDevice,
-	seekOnDevice,
-	setVolumeOnDevice,
-	getDeviceStatus,
+	play,
+	pause,
+	resume,
+	stop,
+	seek,
+	setVolume,
+	getState,
+	getPosition,
 }

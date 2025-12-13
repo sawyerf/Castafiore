@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import GoogleCast, { useDevices } from 'react-native-google-cast'
 
-import { discoverDevices } from '~/utils/remote/upnp'
+import { discoverDevices } from '~/utils/remote/upnpSsdp'
 import { ThemeContext } from '~/contexts/theme'
 import { useRemote } from '~/contexts/remote'
 import logger from '~/utils/logger'
@@ -32,7 +32,15 @@ const ConnectDevices = ({ visible, onClose }) => {
 		setDevicesUpnp([])
 
 		try {
-			setDevicesUpnp(await discoverDevices())
+			discoverDevices((device) => {
+				setDevicesUpnp((prevDevices) => {
+					// Avoid duplicates
+					if (prevDevices.find((d) => d.id === device.id)) {
+						return prevDevices
+					}
+					return [...prevDevices, device]
+				})
+			})
 		} catch (error) {
 			logger.error('ConnectDevices', 'UPNP scan error:', error)
 		}

@@ -3,17 +3,8 @@ import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { ConfigContext } from '~/contexts/config'
 
 import Player from '~/utils/player'
-import LocalPlayer from '~/utils/player/playerLocal'
-import UpnpPlayer from '~/utils/player/playerUpnp'
-import CastPlayer from '~/utils/player/playerCast'
 
 const RemoteContext = React.createContext()
-
-const getPlayer = (type) => {
-	if (type === 'chromecast') return CastPlayer
-	else if (type === 'upnp') return UpnpPlayer
-	return LocalPlayer
-}
 
 export const RemoteProvider = ({ children }) => {
 	const [selectedDevice, setSelectedDevice] = React.useState(null)
@@ -21,16 +12,6 @@ export const RemoteProvider = ({ children }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const prevSelectedDeviceRef = React.useRef(null)
-
-	React.useEffect(() => {
-		Player.initPlayerRouter(
-			{
-				type: selectedDevice?.type || 'local',
-				selectedDevice,
-			}
-		)
-	}, [selectedDevice])
-
 
 	React.useEffect(() => {
 		const prevDevice = prevSelectedDeviceRef.current
@@ -42,16 +23,13 @@ export const RemoteProvider = ({ children }) => {
 		const hasSong = song?.queue && song?.index !== undefined && song?.songInfo
 		if (hasSong || config?.url) {
 			(async () => {
-				const previousPlayer = getPlayer(prevDevice?.type)
-				let savedState = null
+				// Action on previous player
+				const savedState = await Player.saveState()
+				await Player.stopSong()
+				await Player.disconnect(prevDevice)
 
-				if (previousPlayer) {
-					savedState = await previousPlayer.saveState()
-					await previousPlayer.stopSong()
-					await previousPlayer.disconnect(prevDevice)
-				}
-
-				await Player.connect(currentDevice)
+				// Action on current player
+				await Player.connect(currentDevice, currentDevice?.type || 'local')
 				await Player.playSong(config, songDispatch, song.queue, song.index)
 				await Player.restoreState(savedState)
 			})()

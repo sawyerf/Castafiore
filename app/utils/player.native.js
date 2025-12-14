@@ -2,25 +2,16 @@ import LocalPlayer from '~/utils/player/playerLocal'
 import UpnpPlayer from '~/utils/player/playerUpnp'
 import CastPlayer from '~/utils/player/playerCast'
 
-let remoteContext = {
-	type: 'local',
-	selectedDevice: null,
-}
+let type = 'local'
 
 const getPlayer = () => {
-	const deviceType = remoteContext?.type
+	const deviceType = type
 	if (deviceType === 'chromecast') return CastPlayer
 	else if (deviceType === 'upnp') return UpnpPlayer
 	return LocalPlayer
 }
 
 export const initService = LocalPlayer.initService
-
-export const initPlayerRouter = (context) => {
-	remoteContext = context
-	UpnpPlayer.initUpnpPlayer(context)
-	CastPlayer.initChromecastPlayer(context)
-}
 
 export const initPlayer = async (songDispatch) => {
 	await LocalPlayer.initPlayer(songDispatch)
@@ -111,8 +102,8 @@ export const updateTime = () => {
 	const upnpTime = UpnpPlayer.updateTime()
 	const chromecastTime = CastPlayer.updateTime()
 
-	if (remoteContext.type === 'chromecast') return chromecastTime
-	else if (remoteContext.type === 'upnp') return upnpTime
+	if (type === 'chromecast') return chromecastTime
+	else if (type === 'upnp') return upnpTime
 	return localTime
 }
 
@@ -133,7 +124,8 @@ export const addToQueue = (songDispatch, track, index = null) => {
 	songDispatch({ type: 'addToQueue', track, index })
 }
 
-export const connect = async (device) => {
+export const connect = async (device, newType) => {
+	type = newType
 	return getPlayer().connect(device)
 }
 
@@ -141,9 +133,11 @@ export const disconnect = async (device) => {
 	return getPlayer().disconnect(device)
 }
 
+export const saveState = async () => {
+	return getPlayer().saveState()
+}
+
 export default {
-	initPlayerRouter,
-	initService,
 	initPlayer,
 	previousSong,
 	nextSong,
@@ -168,6 +162,7 @@ export default {
 	addToQueue,
 	setIndex,
 	restoreState,
+	saveState,
 	connect,
 	disconnect,
 	State: LocalPlayer.State,

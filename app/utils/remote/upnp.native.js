@@ -24,7 +24,7 @@ const parser = new XMLParser({
  * @returns {Promise<Object>} Response
  */
 const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTransport') => {
-	console.log('action:', action)
+	console.log('action: ', action)
 	// Fallback URLs if device doesn't specify controlUrl
 	const defaultServiceUrls = {
 		AVTransport: '/AVTransport/control',
@@ -92,7 +92,7 @@ const connect = (device) => {
 				prevState = state
 				if (state === 'stopped') {
 					const progress = await getPosition(device)
-					if (progress.position >= progress.duration) {
+					if (progress.position >= progress.duration - 1) { // -1 because some devices report position slightly less than duration
 						UpnpEvent.emit(Events.TRACK_ENDED, { device })
 						clearInterval(intervalState)
 						intervalState = null
@@ -165,6 +165,7 @@ const pause = async (device) => {
 	const result = await sendSoapRequest(device, 'Pause', {
 		InstanceID: '0',
 	})
+	if (result.success) UpnpEvent.emit(Events.STATE_CHANGED, { device, state: 'paused' })
 	return result.success
 }
 
@@ -178,6 +179,7 @@ const resume = async (device) => {
 		InstanceID: '0',
 		Speed: '1',
 	})
+	if (result.success) UpnpEvent.emit(Events.STATE_CHANGED, { device, state: 'playing' })
 	return result.success
 }
 

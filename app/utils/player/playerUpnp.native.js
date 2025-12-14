@@ -8,12 +8,6 @@ import UpnpEvent, { Events } from '~/utils/remote/upnpEvents'
 
 let device = null
 
-export const initUpnpPlayer = (context) => {
-	device = context.selectedDevice
-}
-
-export const initService = async () => { }
-
 export const initPlayer = async (_songDispatch) => { }
 
 export const useEvent = (song, songDispatch) => {
@@ -172,7 +166,7 @@ export const addToQueue = (songDispatch, track, index = null) => {
 
 export const saveState = async () => {
 	const progress = await UPNP.getPosition(device)
-	const state = await UPNP.getTransportInfo(device)
+	const state = await UPNP.getState(device)
 	return {
 		position: progress.position || 0,
 		isPlaying: state.state === 'playing'
@@ -191,7 +185,8 @@ export const restoreState = async (state) => {
 	}
 }
 
-export const connect = async (device) => {
+export const connect = async (newDevice) => {
+	device = newDevice
 	UPNP.connect(device)
 }
 
@@ -201,8 +196,6 @@ export const disconnect = async (device) => {
 }
 
 export default {
-	initUpnpPlayer,
-	initService,
 	initPlayer,
 	previousSong,
 	nextSong,

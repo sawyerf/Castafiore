@@ -6,14 +6,7 @@ import { urlCover, urlStream } from '~/utils/url'
 import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import { SongContext } from '~/contexts/song'
 
-export const initChromecastPlayer = () => {
-}
-
-export const initService = async () => {
-}
-
-export const initPlayer = async (_songDispatch) => {
-}
+export const initPlayer = async (_songDispatch) => { }
 
 const convertState = {
 	'buffering': 'loading',
@@ -243,8 +236,6 @@ export const disconnect = async (_device) => {
 }
 
 export default {
-	initChromecastPlayer,
-	initService,
 	initPlayer,
 	previousSong,
 	nextSong,

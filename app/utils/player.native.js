@@ -4,11 +4,12 @@ import CastPlayer from '~/utils/player/playerCast'
 
 let type = 'local'
 
-const getPlayer = () => {
-	const deviceType = type
-	if (deviceType === 'chromecast') return CastPlayer
+const getPlayer = (forceType = null) => {
+	const deviceType = forceType || type
+	if (deviceType === 'local') return LocalPlayer
+	else if (deviceType === 'chromecast') return CastPlayer
 	else if (deviceType === 'upnp') return UpnpPlayer
-	return LocalPlayer
+	return null
 }
 
 export const initService = LocalPlayer.initService
@@ -125,8 +126,9 @@ export const addToQueue = (songDispatch, track, index = null) => {
 }
 
 export const connect = async (device, newType) => {
+	type = null
+	await getPlayer(newType).connect(device)
 	type = newType
-	return getPlayer().connect(device)
 }
 
 export const disconnect = async (device) => {

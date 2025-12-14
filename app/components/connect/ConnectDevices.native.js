@@ -57,6 +57,10 @@ const ConnectDevices = ({ visible, onClose }) => {
 		scanUpnpDevices()
 	}
 
+	const connect = (device) => {
+		if (remote.selectDevice(device)) onClose()
+	}
+
 	return (
 		<Modal
 			transparent={true}
@@ -119,34 +123,34 @@ const ConnectDevices = ({ visible, onClose }) => {
 							<SelectItem
 								text={t('My device')}
 								icon="mobile"
-								onPress={() => remote.selectDevice(null)}
+								onPress={() => connect(null)}
 								isSelect={!remote.selectedDevice}
 							/>
 
-							{
-								devicesUpnp.map((device, index) => (
-									<SelectItem
-										key={device.id || index}
-										text={device.name}
-										icon="volume-up"
-										onPress={() => remote.selectDevice(device)}
-										isSelect={remote.selectedDevice?.id === device.id}
-										isLast={index === devicesUpnp.length - 1}
-									/>
-								))
-							}
 							{
 								devices.map((device, index) => (
 									<SelectItem
 										key={device.deviceId || index}
 										text={device.friendlyName || t('Chromecast Device')}
 										icon="tv"
-										onPress={async () => remote.selectDevice({
+										onPress={() => connect({
 											id: device.deviceId,
 											type: 'chromecast',
 										})}
 										isSelect={remote.selectedDevice?.id === device.deviceId}
 										isLast={index === devices.length - 1}
+									/>
+								))
+							}
+							{
+								devicesUpnp.map((device, index) => (
+									<SelectItem
+										key={device.id || index}
+										text={device.name}
+										icon="volume-up"
+										onPress={() => connect(device)}
+										isSelect={remote.selectedDevice?.id === device.id}
+										isLast={index === devicesUpnp.length - 1}
 									/>
 								))
 							}

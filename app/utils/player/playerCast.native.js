@@ -225,15 +225,25 @@ export const restoreState = async (state) => {
 	}
 }
 
-export const connect = (device) => {
+const connectAndWait = (deviceId) => {
 	return new Promise((resolve) => {
 		const sessionManager = GoogleCast.getSessionManager()
 		const event = sessionManager.onSessionStarted(() => {
 			event.remove()
 			resolve()
 		})
-		sessionManager.startSession(device.id)
+		sessionManager.startSession(deviceId)
 	})
+}
+
+export const connect = async (device) => {
+	const sessionManager = GoogleCast.getSessionManager()
+	const currentSession = await sessionManager.getCurrentCastSession()
+	if (currentSession) {
+		const currentDevice = await currentSession.getCastDevice()
+		if (device.id === currentDevice?.deviceId) return
+	}
+	await connectAndWait(device.id)
 }
 
 export const disconnect = async (_device) => {

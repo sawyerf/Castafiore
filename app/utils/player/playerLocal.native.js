@@ -7,6 +7,8 @@ import { isSongCached, getPathSong } from '~/utils/cache'
 import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import logger from '~/utils/logger'
 
+let isConnected = true
+
 export const initService = async () => {
 	TrackPlayer.registerPlaybackService(() => require('~/services/servicePlayback'))
 }
@@ -57,6 +59,7 @@ export const useEvent = (song, songDispatch) => {
 			Event.PlaybackActiveTrackChanged,
 		],
 		async (event) => {
+			if (!isConnected) return
 			if (event.type === Event.PlaybackState) {
 				songDispatch({ type: 'setPlaying', state: event.state })
 			} else if (event.type === Event.PlaybackActiveTrackChanged) {
@@ -298,10 +301,12 @@ export const restoreState = async (state) => {
 	}
 }
 
-export const connect = async (_device) => { }
+export const connect = async (_device) => {
+	isConnected = true	
+}
 
 export const disconnect = async (_device) => {
-	await TrackPlayer.stop()
+	isConnected = false
 }
 
 export default {

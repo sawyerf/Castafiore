@@ -6,6 +6,8 @@ import Player from '~/utils/player'
 
 const RemoteContext = React.createContext()
 
+let isTransferring = false
+
 export const RemoteProvider = ({ children }) => {
 	const [selectedDevice, setSelectedDevice] = React.useState(null)
 	const config = React.useContext(ConfigContext)
@@ -23,15 +25,18 @@ export const RemoteProvider = ({ children }) => {
 		const hasSong = song?.queue && song?.index !== undefined && song?.songInfo
 		if (hasSong || config?.url) {
 			(async () => {
+				isTransferring = true
 				// Action on previous player
 				const savedState = await Player.saveState()
 				await Player.stopSong()
 				await Player.disconnect(prevDevice)
 
 				// Action on current player
+				songDispatch({ type: 'setPlaying', state: Player.State.Loading })
 				await Player.connect(currentDevice, currentDevice?.type || 'local')
 				await Player.playSong(config, songDispatch, song.queue, song.index)
 				await Player.restoreState(savedState)
+				isTransferring = false
 			})()
 		}
 	}, [selectedDevice])
@@ -40,7 +45,9 @@ export const RemoteProvider = ({ children }) => {
 		type: selectedDevice?.type || 'local',
 		selectedDevice,
 		selectDevice: (device) => {
+			if (isTransferring) return false
 			setSelectedDevice(device)
+			return true
 		},
 		reset: () => {
 			setSelectedDevice(null)

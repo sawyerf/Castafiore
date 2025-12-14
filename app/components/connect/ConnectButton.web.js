@@ -1,7 +1,3 @@
-import React from 'react'
-
-const ConnectButton = ({ size = 23, color, style = {} }) => {
-	return null
-}
+const ConnectButton = () => null
 
 export default ConnectButton

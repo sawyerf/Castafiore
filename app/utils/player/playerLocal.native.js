@@ -298,6 +298,12 @@ export const restoreState = async (state) => {
 	}
 }
 
+export const connect = async (_device) => { }
+
+export const disconnect = async (_device) => {
+	await TrackPlayer.stop()
+}
+
 export default {
 	initService,
 	initPlayer,
@@ -326,5 +332,7 @@ export default {
 	restoreState,
 	downloadNextSong,
 	downloadSong,
+	connect,
+	disconnect,
 	State,
 }

@@ -9,6 +9,7 @@
 
 import logger from '~/utils/logger'
 import { XMLParser } from 'fast-xml-parser'
+import UpnpEvent, { Events } from '~/utils/remote/upnpEvents'
 
 const parser = new XMLParser({
 	removeNSPrefix: true,
@@ -23,6 +24,7 @@ const parser = new XMLParser({
  * @returns {Promise<Object>} Response
  */
 const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTransport') => {
+	console.log('action:', action)
 	// Fallback URLs if device doesn't specify controlUrl
 	const defaultServiceUrls = {
 		AVTransport: '/AVTransport/control',
@@ -62,6 +64,74 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
 	}
 }
 
+let intervalState = null
+let intervalPosition = null
+let events = []
+
+const addPositionInterval = (device) => {
+	if (intervalPosition) return
+
+	intervalPosition = setInterval(async () => {
+		const progress = await getPosition(device)
+
+		UpnpEvent.emit(Events.PROGRESS_CHANGED, { device, position: progress.position, duration: progress.duration })
+	}, 1000)
+}
+
+const connect = (device) => {
+	events.push(UpnpEvent.addListener(Events.TRACK_ADDED, (payload) => {
+		if (intervalState) return
+		if (payload.device.id === device.id) {
+			let prevState = null
+
+			intervalState = setInterval(async () => {
+				const state = await getState(device)
+				if (state === prevState) return
+
+				UpnpEvent.emit(Events.STATE_CHANGED, { device, state })
+				prevState = state
+				if (state === 'stopped') {
+					const progress = await getPosition(device)
+					if (progress.position >= progress.duration) {
+						UpnpEvent.emit(Events.TRACK_ENDED, { device })
+						clearInterval(intervalState)
+						intervalState = null
+					}
+				}
+			}, 1000)
+		}
+	}))
+
+	if (UpnpEvent.listenerCount(Events.PROGRESS_CHANGED) > 0) {
+		addPositionInterval(device)
+	}
+
+	events.push(UpnpEvent.addListener('newListener', (event) => {
+		if (event === Events.PROGRESS_CHANGED) {
+			addPositionInterval(device)
+		}
+	}))
+
+	events.push(UpnpEvent.addListener('removeListener', (event) => {
+		if (event === Events.PROGRESS_CHANGED) {
+			if (UpnpEvent.listenerCount(Events.PROGRESS_CHANGED) === 0) {
+				clearInterval(intervalPosition)
+				intervalPosition = null
+			}
+		}
+	}))
+}
+
+const disconnect = (_device) => {
+	events.forEach(unsub => unsub())
+	clearInterval(intervalState)
+	clearInterval(intervalPosition)
+
+	events = []
+	intervalPosition = null
+	intervalState = null
+}
+
 /**
  * Play audio on the UPNP device
  * @param {Object} device - Target device
@@ -69,7 +139,7 @@ const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTra
  * @param {Object} metadata - Track metadata (title, artist, album, etc.)
  * @returns {Promise<boolean>} Success status
  */
-const play = async (device, url, metadata = {}) => {
+const load = async (device, url, metadata = {}) => {
 	// Step 1: Set the URI
 	const didl = createDIDL(metadata, url)
 	const setUriResult = await sendSoapRequest(device, 'SetAVTransportURI', {
@@ -82,6 +152,7 @@ const play = async (device, url, metadata = {}) => {
 		logger.error('UPNP', 'Failed to set URI')
 		return false
 	}
+	UpnpEvent.emit(Events.TRACK_ADDED, { device, track: { url, metadata } })
 	return true
 }
 
@@ -174,7 +245,6 @@ const getState = async (device) => {
 		InstanceID: '0',
 	})
 
-	console.log('Transport Result:', transportResult.data?.Envelope?.Body?.GetTransportInfoResponse.CurrentTransportState)
 	return convertState(transportResult.data?.Envelope?.Body?.GetTransportInfoResponse?.CurrentTransportState)
 }
 
@@ -275,7 +345,9 @@ const formatTime = (seconds) => {
 }
 
 export default {
-	play,
+	connect,
+	disconnect,
+	load,
 	pause,
 	resume,
 	stop,

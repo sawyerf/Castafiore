@@ -141,14 +141,10 @@ const ConnectDevices = ({ visible, onClose }) => {
 										key={device.deviceId || index}
 										text={device.friendlyName || t('Chromecast Device')}
 										icon="tv"
-										onPress={async () => {
-											const sessionManager = GoogleCast.getSessionManager()
-											await sessionManager.startSession(device.deviceId)
-											remote.selectDevice({
-												id: device.deviceId,
-												type: 'chromecast',
-											})
-										}}
+										onPress={async () => remote.selectDevice({
+											id: device.deviceId,
+											type: 'chromecast',
+										})}
 										isSelect={remote.selectedDevice?.id === device.deviceId}
 										isLast={index === devices.length - 1}
 									/>

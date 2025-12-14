@@ -232,6 +232,16 @@ export const restoreState = async (state) => {
 	}
 }
 
+export const connect = async (device) => {
+	const sessionManager = GoogleCast.getSessionManager()
+	await sessionManager.startSession(device.id)
+}
+
+export const disconnect = async (_device) => {
+	const sessionManager = GoogleCast.getSessionManager()
+	await sessionManager.endCurrentSession(true)
+}
+
 export default {
 	initChromecastPlayer,
 	initService,
@@ -261,4 +271,6 @@ export default {
 	restoreState,
 	downloadNextSong,
 	downloadSong,
+	connect,
+	disconnect,
 }

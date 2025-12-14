@@ -1,186 +1,186 @@
-/**
- * UPNP/DLNA Player Module
- * Handles audio playback to external UPNP/DLNA devices via SOAP commands.
- */
-
 import React from 'react'
-import { State } from 'react-native-track-player'
 
-import { nextRandomIndex, prevRandomIndex } from '~/utils/tools'
+import { getApi } from '~/utils/api'
+import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import { urlCover, urlStream } from '~/utils/url'
-import { useRemote } from '~/contexts/remote'
-import LocalPlayer from '~/utils/player/playerLocal'
 import UPNP from '~/utils/remote/upnp'
+import UpnpEvent, { Events } from '~/utils/remote/upnpEvents'
 
-let upnpContext = null
-let globalSongDispatch = null
-let currentTime = 0
-let currentPlayerState = 'stopped'
+let device = null
 
 export const initUpnpPlayer = (context) => {
-	upnpContext = context
+	device = context.selectedDevice
 }
 
-export const initPlayer = async (songDispatch) => {
-	globalSongDispatch = songDispatch
-}
+export const initService = async () => { }
 
-const getUpnpDevice = () => upnpContext?.selectedDevice
+export const initPlayer = async (_songDispatch) => { }
 
-export const pauseSong = async () => {
-	const device = getUpnpDevice()
-	if (!device) return false
+export const useEvent = (song, songDispatch) => {
+	React.useEffect(() => {
+		let events = []
 
-	const success = await UPNP.pause(device)
-	if (success) {
-		updateStatus({ state: 'paused' })
-		globalSongDispatch?.({ type: 'setPlaying', state: State.Paused })
-		// Switch to slow polling when paused
-		startStatusPolling('paused')
-	}
-	return success
-}
+		events.push(UpnpEvent.addListener(Events.STATE_CHANGED, ({ state }) => {
+			songDispatch({ type: 'setPlaying', state })
+		}))
 
-export const resumeSong = async () => {
-	const device = getUpnpDevice()
-	if (!device) return false
+		events.push(UpnpEvent.addListener(Events.TRACK_ENDED, async () => {
+			if (!global.song?.queue?.length) return
+			getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
+				.catch(() => { })
+			if (global.song.actionEndOfSong === 'repeat') {
+				UPNP.seek(device, 0)
+			} else if (!global.repeatQueue && global.song.index === global.song.queue.length - 1) {
+				UPNP.stop(device)
+			} else nextSong(global.config, global.song, songDispatch)
+		}))
 
-	// Just send Play command without reloading the URI
-	const success = await UPNP.resume(device)
-	if (success) {
-		updateStatus({ state: 'playing' })
-		globalSongDispatch?.({ type: 'setPlaying', state: State.Playing })
-		// Fast polling when playing
-		startStatusPolling('playing')
-	}
-	return success
-}
-
-export const stopSong = async () => {
-	const device = getUpnpDevice()
-
-	stopStatusPolling()
-
-	if (!device) return false
-
-	const success = await UPNP.stop(device)
-	if (success) {
-		updateStatus({ state: 'stopped' })
-		globalSongDispatch?.({ type: 'setPlaying', state: State.Stopped })
-	}
-	return success
-}
-
-export const setIndex = async (config, songDispatch, queue, index) => {
-	const device = getUpnpDevice()
-	if (!device) return false
-
-	const song = queue[index]
-	if (!song || !config) return false
-
-	const streamUrl = urlStream(config, song.id, global.streamFormat || 'mp3', global.maxBitRate || 0)
-	const metadata = {
-		title: song.title,
-		artist: song.artist,
-		album: song.album,
-		coverUrl: song.coverArt ? urlCover(config, song) : '',
-	}
-
-	await LocalPlayer.stopSong()
-	const success = await UPNP.play(device, streamUrl, metadata)
-	await UPNP.resume(device)
-
-	if (success) {
-		songDispatch({ type: 'setIndex', index })
-		songDispatch({ type: 'setPlaying', state: State.Playing })
-		updateStatus({ state: 'playing' })
-		startStatusPolling('playing')
-	}
-
-	return success
-}
-
-export const playSong = async (config, songDispatch, queue, index) => {
-	songDispatch({ type: 'setQueue', queue, index })
-	return setIndex(config, songDispatch, queue, index)
-}
-
-export const nextSong = async (config, song, songDispatch) => {
-	if (!song.queue) return
-
-	const nextIndex = song.actionEndOfSong === 'random'
-		? nextRandomIndex()
-		: (song.index + 1) % song.queue.length
-
-	await setIndex(config, songDispatch, song.queue, nextIndex)
-
-	if (song.actionEndOfSong === 'repeat') {
-		songDispatch({ type: 'setActionEndOfSong', action: 'next' })
-	}
+		return () => events.forEach(unsub => unsub())
+	}, [songDispatch])
 }
 
 export const previousSong = async (config, song, songDispatch) => {
-	if (!song.queue) return
-
-	const prevIndex = song.actionEndOfSong === 'random'
-		? prevRandomIndex()
-		: (song.queue.length + song.index - 1) % song.queue.length
-
-	await setIndex(config, songDispatch, song.queue, prevIndex)
-
-	if (song.actionEndOfSong === 'repeat') {
-		songDispatch({ type: 'setActionEndOfSong', action: 'next' })
+	if (song.queue) {
+		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, prevRandomIndex())
+		else {
+			if (!global.repeatQueue && song.index === 0) return
+			await setIndex(config, songDispatch, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		}
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
 	}
 }
 
+export const nextSong = async (config, song, songDispatch) => {
+	if (song.queue) {
+		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, nextRandomIndex())
+		else {
+			if (!global.repeatQueue && song.index === song.queue.length - 1) return
+			await setIndex(config, songDispatch, song.queue, (song.index + 1) % song.queue.length)
+		}
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
+	}
+}
+
+export const reload = async () => {
+	// await TrackPlayer.retry()
+}
+
+export const pauseSong = async () => {
+	await UPNP.pause(device)
+}
+
+export const resumeSong = async () => {
+	await UPNP.resume(device)
+}
+
+export const stopSong = async () => {
+	await UPNP.stop(device)
+}
+
+export const downloadSong = async (_urlStream, _id) => { }
+
+export const downloadNextSong = async (_queue, _currentIndex) => { }
+
+const loadSong = async (config, queue, index) => {
+	await UPNP.load(device,
+		urlStream(config, queue[index].id, global.streamFormat, global.maxBitRate),
+		{
+			title: queue[index].title,
+			artist: queue[index].artist,
+			album: queue[index].album,
+			coverUrl: queue[index].coverArt ? urlCover(config, queue[index]) : '',
+		}
+	)
+	await UPNP.resume(device)
+}
+
+export const playSong = async (config, songDispatch, queue, index) => {
+	await loadSong(config, queue, index)
+	songDispatch({ type: 'setQueue', queue, index })
+	setRepeat(songDispatch, 'next')
+	saveQueue(config, queue, index)
+}
+
 export const setPosition = async (position) => {
-	const device = getUpnpDevice()
-	if (!device) return false
-	return UPNP.seek(device, position)
+	if (position < 0 || !position) position = 0
+	if (position === Infinity) return
+
+	await UPNP.seek(device, position)
 }
 
 export const setVolume = async (volume) => {
-	const device = getUpnpDevice()
-	if (!device) return false
-	return UPNP.setVolume(device, volume * 100)
+	if (volume > 1) volume = 1
+	if (volume < 0) volume = 0
+	await UPNP.setVolume(device, volume * 100)
 }
 
 export const getVolume = async () => {
-	const device = getUpnpDevice()
-	if (!device) return 1.0
 	const status = await UPNP.getDeviceStatus(device)
 	return status ? status.volume / 100 : 1.0
 }
 
-export const setRepeat = async (songDispatch, action) => {
-	songDispatch({ type: 'setActionEndOfSong', action })
+export const setRepeat = async (songdispatch, action) => {
+	songdispatch({ type: 'setActionEndOfSong', action })
+}
+
+export const unloadSong = async () => { }
+export const tuktuktuk = async (_songDispatch) => { }
+
+export const setIndex = async (config, songDispatch, queue, index) => {
+	if (queue && index >= 0 && index < queue.length) {
+		loadSong(config, queue, index)
+		songDispatch({ type: 'setIndex', index })
+	}
+}
+
+export const updateVolume = () => { }
+export const updateTime = () => {
+	// const remote = useRemote()
+	const [progress, setProgress] = React.useState({
+		position: 0,
+		duration: 0
+	})
+
+	React.useEffect(() => {
+		const unsubscribe = UpnpEvent.addListener(Events.PROGRESS_CHANGED, ({ position, duration }) => {
+			setProgress({ position, duration })
+		})
+
+		return unsubscribe
+	}, [])
+
+	return progress
+}
+
+export const isVolumeSupported = () => {
+	return false
 }
 
 export const resetAudio = (songDispatch) => {
 	songDispatch({ type: 'reset' })
-	stopSong()
+	UPNP.stop(device) // TODO: delete track
 }
 
 export const removeFromQueue = async (songDispatch, index) => {
 	songDispatch({ type: 'removeFromQueue', index })
 }
 
-export const addToQueue = async (config, songDispatch, track, index = null) => {
+// when index is null, add to the end of the queue
+export const addToQueue = (songDispatch, track, index = null) => {
 	songDispatch({ type: 'addToQueue', track, index })
 }
 
 export const saveState = async () => {
+	const progress = await UPNP.getPosition(device)
+	const state = await UPNP.getTransportInfo(device)
 	return {
-		position: currentTime || 0,
-		isPlaying: currentPlayerState === 'playing'
+		position: progress.position || 0,
+		isPlaying: state.state === 'playing'
 	}
 }
 
 export const restoreState = async (state) => {
 	if (!state) return
-
-	// Wait for the track to load
-	await new Promise(resolve => setTimeout(resolve, 500))
 
 	if (state.position > 0) {
 		await setPosition(state.position)
@@ -191,40 +191,13 @@ export const restoreState = async (state) => {
 	}
 }
 
-// Compatibility stubs
-export const initService = async () => {}
-export const useEvent = () => {}
-export const reload = async () => await resumeSong()
-export const unloadSong = async () => {}
-export const tuktuktuk = async () => {}
-export const updateVolume = () => {}
-export const isVolumeSupported = () => true
+export const connect = async (device) => {
+	UPNP.connect(device)
+}
 
-export const updateTime = () => {
-	const remote = useRemote()
-	const [progress, setProgress] = React.useState({
-		position: 0,
-		duration: 0
-	})
-
-	React.useEffect(() => {
-		if (remote.type !== 'upnp') return
-		const interval = setInterval(() => {
-			UPNP.getPosition(remote.selectedDevice)
-				.then((status) => {
-					if (status) {
-						setProgress({
-							position: status.position,
-							duration: status.duration
-						})
-					}
-				})
-		}, 1000)
-
-		return () => clearInterval(interval)
-	}, [remote])
-
-	return progress
+export const disconnect = async (device) => {
+	await UPNP.stop(device)
+	UPNP.disconnect(device)
 }
 
 export default {
@@ -254,5 +227,8 @@ export default {
 	setIndex,
 	saveState,
 	restoreState,
-	State,
+	downloadNextSong,
+	downloadSong,
+	connect,
+	disconnect,
 }

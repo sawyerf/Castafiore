@@ -48,8 +48,10 @@ export const RemoteProvider = ({ children }) => {
 				if (previousPlayer) {
 					savedState = await previousPlayer.saveState()
 					await previousPlayer.stopSong()
+					await previousPlayer.disconnect(prevDevice)
 				}
 
+				await Player.connect(currentDevice)
 				await Player.playSong(config, songDispatch, song.queue, song.index)
 				await Player.restoreState(savedState)
 			})()

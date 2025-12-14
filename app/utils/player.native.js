@@ -31,6 +31,7 @@ export const initPlayer = async (songDispatch) => {
 export const useEvent = (song, songDispatch) => {
 	LocalPlayer.useEvent(song, songDispatch)
 	CastPlayer.useEvent(song, songDispatch)
+	UpnpPlayer.useEvent(song, songDispatch)
 }
 
 export const previousSong = async (config, song, songDispatch) => {
@@ -132,6 +133,14 @@ export const addToQueue = (songDispatch, track, index = null) => {
 	songDispatch({ type: 'addToQueue', track, index })
 }
 
+export const connect = async (device) => {
+	return getPlayer().connect(device)
+}
+
+export const disconnect = async (device) => {
+	return getPlayer().disconnect(device)
+}
+
 export default {
 	initPlayerRouter,
 	initService,
@@ -159,5 +168,7 @@ export default {
 	addToQueue,
 	setIndex,
 	restoreState,
+	connect,
+	disconnect,
 	State: LocalPlayer.State,
 }

@@ -6,7 +6,7 @@ import { useRemote } from '~/contexts/remote'
 import DiscoveryPanel from '~/components/popup/DiscoveryPanel'
 import IconButton from '~/components/button/IconButton'
 
-const ConnectButton = ({ size = 23, color, style = {} }) => {
+const ConnectButton = ({ size = 23, color = null, style = {} }) => {
 	const theme = React.useContext(ThemeContext)
 	const remote = useRemote()
 	const [modalVisible, setModalVisible] = React.useState(false)

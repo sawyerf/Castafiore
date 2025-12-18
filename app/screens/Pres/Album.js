@@ -2,9 +2,9 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { useCachedAndApi } from '~/utils/api'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import mainStyles from '~/styles/main'
@@ -18,8 +18,8 @@ import OptionsAlbum from '~/components/options/OptionsAlbum'
 
 const Album = ({ navigation, route: { params } }) => {
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [isStarred, setStarred] = React.useState(params.starred || false)
 	const [album, setAlbum] = React.useState(null)
 	const [isOptArtists, setIsOptArtists] = React.useState(false)

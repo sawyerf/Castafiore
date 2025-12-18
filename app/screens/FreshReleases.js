@@ -4,8 +4,8 @@ import { LegendList } from '@legendapp/list'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
-import { SettingsContext } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
 import mainStyles from '~/styles/main'
 import PresHeaderIcon from '~/components/PresHeaderIcon'
 import LBAlbumItem from '~/components/item/LBAlbumItem'
@@ -14,8 +14,8 @@ import logger from '~/utils/logger'
 const AlbumExplorer = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
+	const theme = useTheme()
+	const settings = useSettings()
 	const [albums, setAlbums] = React.useState([])
 
 	React.useEffect(() => {

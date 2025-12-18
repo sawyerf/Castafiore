@@ -6,15 +6,15 @@ import { useTranslation } from 'react-i18next'
 
 import { useCachedAndApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import pkg from '~/../package.json'
 import size from '~/styles/size'
 import mainStyles from '~/styles/main'
 import ImageError from '~/components/ImageError'
 
 const FavoritedItem = ({ navigation, t }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [isHover, setIsHover] = React.useState(false)
 
 	return (
@@ -52,8 +52,8 @@ const FavoritedItem = ({ navigation, t }) => {
 }
 
 const PlaylistItem = ({ item, navigation, t }) => {
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [isHover, setIsHover] = React.useState(false)
 
 	return (
@@ -99,8 +99,8 @@ const PlaylistItem = ({ item, navigation, t }) => {
 
 const SideBar = ({ state, descriptors, navigation }) => {
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [hoverIndex, setHoverIndex] = React.useState(-1)
 	const [refresh, setRefresh] = React.useState(0)
 	const { t } = useTranslation()

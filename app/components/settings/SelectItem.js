@@ -2,13 +2,13 @@ import React from 'react'
 import { Pressable, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size'
 
 const SelectItem = ({ text, onPress, icon = null, emoji = null, colorIcon = null, isSelect = false, disabled = false }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Pressable

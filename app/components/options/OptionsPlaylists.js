@@ -3,7 +3,7 @@ import { Platform, Share } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { confirmAlert } from '~/utils/alert'
 import { getApi } from '~/utils/api'
 import OptionsPopup from '~/components/popup/OptionsPopup'
@@ -11,7 +11,7 @@ import OptionsPopup from '~/components/popup/OptionsPopup'
 const OptionsPlaylists = ({ playlists, indexOption, setIndexOption, deletePlaylists, setDeletePlaylists, onRefresh }) => {
 	const { t } = useTranslation()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const refOption = React.useRef()
 
 	const isPin = (index) => {

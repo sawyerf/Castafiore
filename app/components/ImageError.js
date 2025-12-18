@@ -3,7 +3,7 @@ import { View, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import size from '~/styles/size'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 
 const ImageMemo = React.memo(Image, (prevProps, nextProps) => {
 	return prevProps.source?.uri === nextProps.source?.uri
@@ -12,7 +12,7 @@ const ImageMemo = React.memo(Image, (prevProps, nextProps) => {
 const ImageError = ({ source, style = {}, children = null, iconError = null, blurRadius = undefined }) => {
 	const [isImage, setIsImage] = React.useState(false)
 	const [lastSource, setLastSource] = React.useState({ uri: null })
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	React.useEffect(() => {
 		if (lastSource.uri === source?.uri) return

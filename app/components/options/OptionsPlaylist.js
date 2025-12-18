@@ -3,19 +3,19 @@ import { Platform, Share } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
 import { urlStream } from '~/utils/url'
 import { downloadSong } from '~/utils/player'
-import { SettingsContext } from '~/contexts/settings'
+import { useSettings } from '~/contexts/settings'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
 	const { t } = useTranslation()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const refOption = React.useRef()
-	const settings = React.useContext(SettingsContext)
+	const settings = useSettings()
 
 	if (!playlist) return null
 	return (

@@ -2,13 +2,13 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import SongItem from '~/components/item/SongItem'
 import size from '~/styles/size'
 import OptionsSongsList from '~/components/options/OptionsSongsList'
 
 const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => true }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const isMultiCD = React.useMemo(() => songs?.some(item => item.discNumber !== songs[0].discNumber), [songs])
 

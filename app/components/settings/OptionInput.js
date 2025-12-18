@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text, View, TextInput, Platform } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size'
 
 const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false, secureTextEntry = undefined }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<View style={settingStyles.optionItem(theme, isLast)}>

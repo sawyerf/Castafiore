@@ -40,12 +40,12 @@ import PlaylistsSettings from '~/screens/Settings/Playlists'
 import SharesSettings from '~/screens/Settings/Shares'
 import ThemeSettings from '~/screens/Settings/Theme'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 
 const Stack = createNativeStackNavigator()
 
 export const HomeStack = () => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Stack.Navigator
@@ -78,7 +78,7 @@ export const HomeStack = () => {
 }
 
 export const SearchStack = () => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Stack.Navigator
@@ -110,7 +110,7 @@ export const SearchStack = () => {
 }
 
 export const PlaylistsStack = () => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Stack.Navigator
@@ -141,7 +141,7 @@ export const PlaylistsStack = () => {
 }
 
 export const SettingsStack = () => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Stack.Navigator

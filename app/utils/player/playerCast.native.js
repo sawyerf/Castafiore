@@ -4,7 +4,7 @@ import GoogleCast, { useStreamPosition, useRemoteMediaClient } from 'react-nativ
 import { getApi } from '~/utils/api'
 import { urlCover, urlStream } from '~/utils/url'
 import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
-import { SongContext } from '~/contexts/song'
+import { useSong } from '~/contexts/song'
 import logger from '~/utils/logger'
 
 export const initPlayer = async (_songDispatch) => { }
@@ -187,7 +187,7 @@ export const setIndex = async (config, songDispatch, queue, index) => {
 export const updateVolume = () => { }
 export const updateTime = () => {
 	const streamPosition = useStreamPosition()
-	const song = React.useContext(SongContext)
+	const song = useSong()
 
 	if (streamPosition !== null) {
 		return {

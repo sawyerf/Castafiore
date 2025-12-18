@@ -3,15 +3,15 @@ import { View, Text, PanResponder, Animated, Pressable } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { SettingsContext, SetSettingsContext, homeSections } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings, useSetSettings, homeSections } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
 
 const HomeOrder = () => {
 	const { t } = useTranslation()
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const settings = useSettings()
+	const setSettings = useSetSettings()
+	const theme = useTheme()
 	const [indexMoving, setIndexMoving] = React.useState(-1)
 	const [moveToIndex, setMoveToIndex] = React.useState(-1)
 

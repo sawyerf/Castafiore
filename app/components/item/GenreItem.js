@@ -4,13 +4,13 @@ import { useNavigation } from '@react-navigation/native'
 
 import { useCachedFirst } from '~/utils/api'
 import { urlCover } from '~/utils/url'
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 
 const GenreItem = ({ genre, color }) => {
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const navigation = useNavigation()
 
 	const [album] = useCachedFirst(null, 'getAlbumList2', { type: 'byGenre', genre: genre.value, size: 1 }, (json, setData) => {

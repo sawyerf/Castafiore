@@ -3,13 +3,13 @@ import { Platform, Share } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi, getApiNetworkFirst } from '~/utils/api'
 import { urlStream } from '~/utils/url'
 import { isSongCached } from '~/utils/cache'
 import { playSong, addToQueue } from '~/utils/player'
-import { SettingsContext } from '~/contexts/settings'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { useSettings } from '~/contexts/settings'
+import { useSong, useSongDispatch } from '~/contexts/song'
 import { urlCover } from '~/utils/url'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 import size from '~/styles/size'
@@ -17,10 +17,10 @@ import size from '~/styles/size'
 const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () => { }, idPlaylist = null }) => {
 	const { t } = useTranslation()
 	const navigation = useNavigation()
-	const song = React.useContext(SongContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
-	const settings = React.useContext(SettingsContext)
+	const song = useSong()
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
+	const settings = useSettings()
 	const refOption = React.useRef()
 	const [isCached, setIsCached] = React.useState(false)
 

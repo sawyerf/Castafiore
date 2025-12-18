@@ -2,13 +2,13 @@ import React from 'react'
 import { Text, View, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size'
 import mainStyles from '~/styles/main'
 
 const ButtonMenu = ({ title, onPress, icon, endText = "", isLast = false }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Pressable

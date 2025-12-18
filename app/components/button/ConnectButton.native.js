@@ -1,13 +1,13 @@
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { useRemote } from '~/contexts/remote'
 import DiscoveryPanel from '~/components/popup/DiscoveryPanel'
 import IconButton from '~/components/button/IconButton'
 
 const ConnectButton = ({ size = 23, color = null, style = {} }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const remote = useRemote()
 	const [modalVisible, setModalVisible] = React.useState(false)
 

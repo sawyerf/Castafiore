@@ -1,11 +1,11 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import size from '~/styles/size'
 
 const HorizontalLBStat = ({ stats }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [maxCount, setMaxCount] = React.useState(0)
 
 	React.useEffect(() => {

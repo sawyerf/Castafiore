@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 
 const SectionTitle = ({ title, onPress = null, button = false }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<Pressable

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import CustomFlat from '~/components/lists/CustomFlat'
 import GenreItem from '~/components/item/GenreItem'
 import size from '~/styles/size'
@@ -17,7 +17,7 @@ const colorBakcground = [
 ]
 
 const HorizontalGenres = ({ genres }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	const renderItem = React.useCallback(({ item, index }) => (
 		<GenreItem genre={item} color={colorBakcground[index % colorBakcground.length]} />

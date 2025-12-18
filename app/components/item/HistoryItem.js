@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
@@ -16,9 +16,9 @@ import size from '~/styles/size'
 
 const HistoryItem = ({ itemHist, index, setQuery, delItemHistory }) => {
 	const { t } = useTranslation()
-	const config = React.useContext(ConfigContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const songDispatch = useSongDispatch()
+	const theme = useTheme()
 	const navigation = useNavigation()
 
 	const handlePress = () => {

@@ -1,16 +1,16 @@
 import React from 'react'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
 import presStyles from '~/styles/pres'
 
 const RandomButton = ({ songList, size = 23 }) => {
-	const theme = React.useContext(ThemeContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
+	const theme = useTheme()
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
 
 	const shuffle = (array) => {
 		return array.map(value => ({ value, sort: Math.random() }))

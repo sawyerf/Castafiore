@@ -1,14 +1,14 @@
 import React from 'react'
 
-import { ConfigContext } from '~/contexts/config'
-import { SettingsContext } from '~/contexts/settings'
+import { useConfig } from '~/contexts/config'
+import { useSettings } from '~/contexts/settings'
 import Player from '~/components/player/Player'
 import BottomBar from '~/components/bar/BottomBar'
 import SideBar from '~/components/bar/SideBar'
 
 const TabBar = ({ state, descriptors, navigation }) => {
-	const config = React.useContext(ConfigContext)
-	const settings = React.useContext(SettingsContext)
+	const config = useConfig()
+	const settings = useSettings()
 
 	React.useEffect(() => {
 		if (config.query === null) {

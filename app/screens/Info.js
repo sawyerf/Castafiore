@@ -3,8 +3,8 @@ import { View, ScrollView, Text } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import { isSongCached, getSongCachedInfo, deleteSongCache } from '~/utils/cache'
 import ButtonMenu from '~/components/settings/ButtonMenu'
@@ -18,8 +18,8 @@ import size from '~/styles/size'
 const Info = ({ route: { params: { info } } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [statsCache, setStatsCache] = React.useState([])
 
 	React.useEffect(() => {

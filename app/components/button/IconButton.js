@@ -2,11 +2,11 @@ import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 
 const IconButton = ({ icon, size = 23, color = undefined, style = {}, styleIcon = {}, pressEffect = true, onPress, onLongPress = null, delayLongPress = 200 }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	return (
 		<Pressable
 			style={({ pressed }) => ([mainStyles.opacity({ pressed, enable: pressEffect }), { justifyContent: 'center' }, StyleSheet.flatten(style)])}

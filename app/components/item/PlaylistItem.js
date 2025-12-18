@@ -4,20 +4,20 @@ import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { urlCover } from '~/utils/url'
-import { ThemeContext } from '~/contexts/theme'
-import { SettingsContext } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 
 const PlaylistItem = ({ playlist, index, setIndexOption }) => {
 	const { t } = useTranslation()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [isHover, setIsHover] = React.useState(false)
-	const settings = React.useContext(SettingsContext)
+	const settings = useSettings()
 	const navigation = useNavigation()
 
 	return (

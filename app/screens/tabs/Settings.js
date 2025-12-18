@@ -4,11 +4,11 @@ import { Text, View, Image, ScrollView, Pressable, Linking } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { confirmAlert } from '~/utils/alert'
-import { SetSettingsContext, defaultSettings, SettingsContext } from '~/contexts/settings'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSetSettings, defaultSettings, useSettings } from '~/contexts/settings'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import ButtonMenu from '~/components/settings/ButtonMenu'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import mainStyles from '~/styles/main'
@@ -19,11 +19,11 @@ import size from '~/styles/size'
 const Settings = ({ navigation }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
-	const setSettings = React.useContext(SetSettingsContext)
-	const setting = React.useContext(SettingsContext)
-	const songDispatch = React.useContext(SongDispatchContext)
+	const config = useConfig()
+	const theme = useTheme()
+	const setSettings = useSetSettings()
+	const setting = useSettings()
+	const songDispatch = useSongDispatch()
 
 	return (
 		<ScrollView

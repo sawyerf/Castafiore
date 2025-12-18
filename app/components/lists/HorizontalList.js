@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { getCachedAndApi, getUrl } from '~/utils/api'
 import { getJsonCache } from '~/utils/cache'
-import { ThemeContext } from '~/contexts/theme'
-import { SettingsContext, homeSections } from '~/contexts/settings'
-import { ConfigContext } from '~/contexts/config'
-import { UpdateApiContext, isUpdatable } from '~/contexts/updateApi'
+import { useTheme } from '~/contexts/theme'
+import { useSettings, homeSections } from '~/contexts/settings'
+import { useConfig } from '~/contexts/config'
+import { useUpdateApi, isUpdatable } from '~/contexts/updateApi'
 import HorizontalQueue from '~/components/lists/HorizontalQueue'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
 import HorizontalArtists from '~/components/lists/HorizontalArtists'
@@ -24,11 +24,11 @@ import logger from '~/utils/logger'
 const HorizontalList = ({ refresh, id, enable }) => {
 	const { t } = useTranslation()
 	const [list, setList] = React.useState()
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
+	const theme = useTheme()
+	const settings = useSettings()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
-	const updateApi = React.useContext(UpdateApiContext)
+	const config = useConfig()
+	const updateApi = useUpdateApi()
 	const section = React.useMemo(() => homeSections.find(s => s.id === id), [id])
 
 	React.useEffect(() => {

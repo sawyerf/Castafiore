@@ -3,7 +3,7 @@ import { Text, View, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import size from '~/styles/size'
 import logger from '~/utils/logger'
 import Header from '~/components/Header'
@@ -18,7 +18,7 @@ const colorLevel = (level) => {
 }
 
 const LogItem = ({ level, message, timestamp, source, isLast = false }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<View style={[settingStyles.optionItem(theme, isLast), {
@@ -60,7 +60,7 @@ const LogItem = ({ level, message, timestamp, source, isLast = false }) => {
 const Logs = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [logs, setLogs] = React.useState([])
 
 	React.useEffect(() => {

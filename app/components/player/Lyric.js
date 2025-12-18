@@ -2,8 +2,8 @@ import React from 'react'
 import { Text, FlatList, Pressable } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
-import { ConfigContext } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
 import { parseLrc } from '~/utils/lrc'
 import Player from '~/utils/player'
@@ -14,9 +14,9 @@ const Lyric = ({ song, style, color = null, sizeText = 23 }) => {
 	const [indexCurrent, setIndex] = React.useState(0)
 	const [lyrics, setLyrics] = React.useState([])
 	const [isLayout, setIsLayout] = React.useState(false)
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const refScroll = React.useRef(null)
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const time = Player.updateTime()
 
 	React.useEffect(() => {

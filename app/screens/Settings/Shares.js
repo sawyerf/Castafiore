@@ -3,9 +3,9 @@ import { View, Text, ScrollView, Platform, Share } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { confirmAlert } from '~/utils/alert'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { useCachedAndApi, getApi } from '~/utils/api'
 import ButtonText from '~/components/settings/ButtonText'
 import Header from '~/components/Header'
@@ -17,9 +17,9 @@ import TableItem from '~/components/settings/TableItem'
 const SharesSettings = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const refOption = React.useRef()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const [shares, refresh] = useCachedAndApi([], 'getShares', null, (json, setData) => {

@@ -3,9 +3,9 @@ import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { SettingsContext } from '~/contexts/settings'
-import { SetSettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
+import { useSetSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
@@ -37,9 +37,9 @@ const BITRATES = [
 const PlayerSettings = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
+	const theme = useTheme()
+	const settings = useSettings()
+	const setSettings = useSetSettings()
 
 	return (
 		<ScrollView

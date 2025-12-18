@@ -5,9 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { getApiNetworkFirst } from '~/utils/api'
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import mainStyles from '~/styles/main'
 import PresHeaderIcon from '~/components/PresHeaderIcon'
 import Selector from '~/components/Selector'
@@ -21,9 +21,9 @@ const PAGE_SIZE = 100
 const AlbumExplorer = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const [albums, setAlbums] = React.useState([])
 	const [type, setType] = React.useState('newest')
 	const [offset, setOffset] = React.useState(0)

@@ -3,8 +3,8 @@ import { Text, View, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings, useSetSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import { themes, themesPlayer } from '~/contexts/theme'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
@@ -14,9 +14,9 @@ import SelectItem from '~/components/settings/SelectItem'
 const Theme = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const settings = useSettings()
+	const setSettings = useSetSettings()
+	const theme = useTheme()
 
 	return (
 		<ScrollView

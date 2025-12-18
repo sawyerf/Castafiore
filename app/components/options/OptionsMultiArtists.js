@@ -2,14 +2,14 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { urlCover } from '~/utils/url'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 import size from '~/styles/size'
 
 const OptionsMultiArtists = ({ artists, albumArtists = [], close, visible, setFullScreen = () => { } }) => {
 	const { t } = useTranslation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const navigation = useNavigation()
 
 	const artistOpt = (artist) => ({

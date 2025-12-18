@@ -9,3 +9,6 @@ export const getConfig = async () => {
 
 export const ConfigContext = React.createContext()
 export const SetConfigContext = React.createContext()
+
+export const useConfig = () => React.useContext(ConfigContext)
+export const useSetConfig = () => React.useContext(SetConfigContext)

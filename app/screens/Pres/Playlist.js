@@ -3,11 +3,11 @@ import { LegendList } from "@legendapp/list"
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { useCachedAndApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
-import { SettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import PresHeader from '~/components/PresHeader'
 import mainStyles from '~/styles/main'
 import OptionsSongsList from '~/components/options/OptionsSongsList'
@@ -19,9 +19,9 @@ import OptionsPlaylist from '../../components/options/OptionsPlaylist'
 const Playlist = ({ route: { params } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
+	const config = useConfig()
+	const theme = useTheme()
+	const settings = useSettings()
 	const [info, setInfo] = React.useState(null)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const [isOption, setIsOption] = React.useState(false)

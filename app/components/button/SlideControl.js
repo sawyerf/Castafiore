@@ -1,14 +1,14 @@
 import React from 'react'
 import { Animated, PanResponder, Platform } from 'react-native'
 
-import { ConfigContext } from '~/contexts/config'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { useConfig } from '~/contexts/config'
+import { useSong, useSongDispatch } from '~/contexts/song'
 import Player from '~/utils/player'
 
 const SlideControl = ({ children, style }) => {
-	const song = React.useContext(SongContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
+	const song = useSong()
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
 	const startMove = React.useRef(0)
 	const position = React.useRef(new Animated.Value(0)).current
 	const previousTap = React.useRef(0)

@@ -2,15 +2,15 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking } from 'react-native'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApiCacheFirst } from '~/utils/api'
 import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
+import { useSongDispatch } from '~/contexts/song'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
 	const { t } = useTranslation()
 	const refOption = React.useRef()
 

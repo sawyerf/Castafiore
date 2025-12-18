@@ -7,6 +7,9 @@ import logger from '~/utils/logger'
 export const SongContext = React.createContext()
 export const SongDispatchContext = React.createContext()
 
+export const useSong = () => React.useContext(SongContext)
+export const useSongDispatch = () => React.useContext(SongDispatchContext)
+
 const newSong = (state, action, isCache = false) => {
 	const song = {
 		...state,

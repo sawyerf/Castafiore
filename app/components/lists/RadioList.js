@@ -4,11 +4,11 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
 import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import CustomFlat from '~/components/lists/CustomFlat'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
@@ -19,9 +19,9 @@ const RadioList = ({ radios }) => {
 	const { t } = useTranslation()
 	const [optionRadio, setOptionRadio] = React.useState(null)
 	const refOption = React.useRef()
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
-	const songDispatch = React.useContext(SongDispatchContext)
+	const theme = useTheme()
+	const config = useConfig()
+	const songDispatch = useSongDispatch()
 	const navigation = useNavigation()
 
 	const playRadio = React.useCallback((index) => {

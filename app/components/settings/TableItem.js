@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, Pressable, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size'
 
@@ -26,7 +26,7 @@ const objectToString = (obj) => {
 }
 
 const TableItem = ({ title, value, toCopy = null, onLongPress = () => { }, isLast = false }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [isCopied, setIsCopied] = React.useState(false)
 
 	const onPress = () => {

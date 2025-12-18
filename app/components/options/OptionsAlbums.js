@@ -4,19 +4,19 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { getApi } from '~/utils/api'
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 import { playSong, addToQueue } from '~/utils/player'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { useSong, useSongDispatch } from '~/contexts/song'
 import { getApiNetworkFirst, getApiCacheFirst } from '~/utils/api'
 
 const OptionsAlbums = ({ albums, indexOptions, setIndexOptions }) => {
 	const { t } = useTranslation()
-	const song = React.useContext(SongContext)
+	const song = useSong()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const refOption = React.useRef()
-	const songDispatch = React.useContext(SongDispatchContext)
+	const songDispatch = useSongDispatch()
 
 	const playSimilarSongs = () => {
 		getApiNetworkFirst(config, 'getSimilarSongs', `id=${albums[indexOptions].id}&count=50`)

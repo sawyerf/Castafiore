@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApiNetworkFirst } from '~/utils/api'
-import { SettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
 import HorizontalArtists from '~/components/lists/HorizontalArtists'
 import mainStyles from '~/styles/main'
@@ -29,7 +29,7 @@ const STATES = {
 
 const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory }) => {
 	const { t } = useTranslation()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const navigation = useNavigation()
 
 	const delItemHistory = async (index) => {
@@ -170,9 +170,9 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 const Search = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const settings = React.useContext(SettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const settings = useSettings()
+	const theme = useTheme()
 	const [history, setHistory] = React.useState([])
 	const [query, setQuery] = React.useState('')
 	const [results, setResults] = React.useState()

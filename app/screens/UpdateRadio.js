@@ -4,9 +4,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import OptionInput from '~/components/settings/OptionInput'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
@@ -16,9 +16,9 @@ import size from '~/styles/size'
 
 const UpdateRadio = ({ navigation, route: { params } }) => {
 	const { t } = useTranslation()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const [name, setName] = React.useState('')
 	const [streamUrl, setStreamUrl] = React.useState('')
 	const [homePageUrl, setHomePageUrl] = React.useState('')

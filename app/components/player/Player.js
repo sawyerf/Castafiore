@@ -1,16 +1,16 @@
 import React from 'react'
 import { useWindowDimensions } from 'react-native'
 
-import { SettingsContext } from '~/contexts/settings'
-import { SongContext } from '~/contexts/song'
+import { useSettings } from '~/contexts/settings'
+import { useSong } from '~/contexts/song'
 import BoxDesktopPlayer from '~/components/player/BoxDesktopPlayer'
 import BoxPlayer from '~/components/player/BoxPlayer'
 import FullScreenHorizontalPlayer from '~/components/player/FullScreenHorizontalPlayer'
 import FullScreenPlayer from '~/components/player/FullScreenPlayer'
 
 const Player = ({ state }) => {
-	const song = React.useContext(SongContext)
-	const settings = React.useContext(SettingsContext)
+	const song = useSong()
+	const settings = useSettings()
 	const { height, width } = useWindowDimensions()
 	const [fullScreen, setFullScreen] = React.useState(false)
 

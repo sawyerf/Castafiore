@@ -1,12 +1,12 @@
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
 
-import { SongContext } from '~/contexts/song'
+import { useSong } from '~/contexts/song'
 import Player from '~/utils/player'
 import IconButton from '~/components/button/IconButton'
 
 const PlayButton = ({ style = {}, size, color }) => {
-	const song = React.useContext(SongContext)
+	const song = useSong()
 	const [icon, setIcon] = React.useState('pause')
 	const timeout = React.useRef(null)
 

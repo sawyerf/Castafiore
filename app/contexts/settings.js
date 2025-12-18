@@ -5,6 +5,9 @@ import md5 from 'md5'
 export const SettingsContext = React.createContext()
 export const SetSettingsContext = React.createContext()
 
+export const useSettings = () => React.useContext(SettingsContext)
+export const useSetSettings = () => React.useContext(SetSettingsContext)
+
 export const demoServers = [
 	{
 		name: 'Demo LMS',

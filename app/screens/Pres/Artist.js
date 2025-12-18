@@ -4,9 +4,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { SongDispatchContext } from '~/contexts/song'
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useSongDispatch } from '~/contexts/song'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import { playSong } from '~/utils/player'
 import { useCachedAndApi, getApiNetworkFirst } from '~/utils/api'
 import { urlCover } from '~/utils/url'
@@ -25,9 +25,9 @@ import OptionsArtist from '../../components/options/OptionsArtist'
 const Artist = ({ navigation, route: { params } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const songDispatch = useSongDispatch()
+	const theme = useTheme()
 	const allSongs = React.useRef([])
 	const [sortAlbum, setSortAlbum] = React.useState([])
 	const [isOption, setIsOption] = React.useState(false)

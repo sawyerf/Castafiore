@@ -2,8 +2,8 @@ import React from 'react'
 import { Text, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import CustomFlat from '~/components/lists/CustomFlat'
 import ImageError from '~/components/ImageError'
@@ -13,8 +13,8 @@ import size from '~/styles/size'
 
 const HorizontalArtists = ({ artists, onPress = () => { } }) => {
 	const navigation = useNavigation()
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
+	const theme = useTheme()
+	const config = useConfig()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const renderItem = React.useCallback(({ item, index }) => (

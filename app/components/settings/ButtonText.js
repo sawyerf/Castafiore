@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 
 const ButtonText = ({ text, onPress, disabled = false }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<View style={styles.main}>

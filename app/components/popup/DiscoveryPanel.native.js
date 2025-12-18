@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import GoogleCast, { useDevices } from 'react-native-google-cast'
 
 import { discoverDevices } from '~/utils/remote/upnpSsdp'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { useRemote } from '~/contexts/remote'
 import logger from '~/utils/logger'
 import mainStyles from '~/styles/main'
@@ -18,7 +18,7 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 	const devices = useDevices()
 	const insets = useSafeAreaInsets()
 	const remote = useRemote()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [devicesUpnp, setDevicesUpnp] = React.useState([])
 	const scanningUpnp = React.useRef(false)
 

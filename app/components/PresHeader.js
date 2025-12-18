@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View, Pressable } from 'react-native'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import BackButton from '~/components/button/BackButton'
@@ -10,7 +10,7 @@ import ImageError from '~/components/ImageError'
 import IconButton from '~/components/button/IconButton'
 
 const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, onPressOption = null, children = null }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const insets = useSafeAreaInsets()
 
 	return (

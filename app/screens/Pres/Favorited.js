@@ -4,7 +4,7 @@ import { LegendList } from "@legendapp/list"
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { useCachedFirst } from '~/utils/api'
 import mainStyles from '~/styles/main'
 import OptionsFavorited from '~/components/options/OptionsFavorited'
@@ -16,7 +16,7 @@ import SongItem from '~/components/item/SongItem'
 
 const Favorited = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const { t } = useTranslation()
 	const [isOption, setIsOption] = React.useState(false)

@@ -5,11 +5,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApiNetworkFirst } from '~/utils/api'
 import { playSong } from '~/utils/player'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import { useCachedAndApi } from '~/utils/api'
 import BackButton from '~/components/button/BackButton'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
@@ -23,9 +23,9 @@ import SongsList from '~/components/lists/SongsList'
 
 const Genre = ({ route: { params: { name, albumCount = 0, songCount = 0 } } }) => {
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const songDispatch = useSongDispatch()
+	const theme = useTheme()
 	const navigation = useNavigation()
 	const [artists, setArtists] = React.useState({})
 	const { t } = useTranslation()

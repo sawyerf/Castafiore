@@ -1,8 +1,8 @@
 import React from "react"
 
-import { ConfigContext } from "~/contexts/config"
+import { useConfig } from "~/contexts/config"
 import { getJsonCache, setJsonCache } from "~/utils/cache"
-import { SetUpdateApiContext, UpdateApiContext, isUpdatable } from "~/contexts/updateApi"
+import { useUpdateApi, useSetUpdateApi, isUpdatable } from "~/contexts/updateApi"
 import logger from "~/utils/logger"
 
 export const getUrl = (config, path, query = '') => {
@@ -104,9 +104,9 @@ export const refreshApi = (config, path, query = '') => {
  * 
 */
 export const useCachedAndApi = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
-	const config = React.useContext(ConfigContext)
-	const updateApi = React.useContext(UpdateApiContext)
-	const setUpdateApi = React.useContext(SetUpdateApiContext)
+	const config = useConfig()
+	const updateApi = useUpdateApi()
+	const setUpdateApi = useSetUpdateApi()
 	const [data, setData] = React.useState(initialState)
 	const uid = React.useRef(Date.now())
 
@@ -148,8 +148,8 @@ export const useCachedAndApi = (initialState, path, query = '', setFunc = () => 
 }
 
 export const useCachedFirst = (initialState, path, query = '', setFunc = () => { }, deps = []) => {
-	const config = React.useContext(ConfigContext)
-	const updateApi = React.useContext(UpdateApiContext)
+	const config = useConfig()
+	const updateApi = useUpdateApi()
 	const [data, setData] = React.useState(initialState)
 
 	React.useEffect(() => {

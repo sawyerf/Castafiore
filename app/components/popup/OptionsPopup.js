@@ -5,18 +5,18 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
-import { SettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 
 const OptionItem = ({ option }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [isHover, setIsHover] = React.useState(false)
-	const settings = React.useContext(SettingsContext)
+	const settings = useSettings()
 
 	if (!option) return null
 	if (option.hidden) return null
@@ -68,10 +68,10 @@ const OptionItem = ({ option }) => {
 const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const slide = React.useRef(new Animated.Value(-1000)).current
 	const isAnim = React.useRef(false)
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const navigation = useNavigation()
 	const [virtualOptions, setVirtualOptions] = React.useState()
 

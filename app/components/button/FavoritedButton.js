@@ -1,17 +1,17 @@
 import React from 'react'
 
-import { SetUpdateApiContext } from '~/contexts/updateApi'
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useSetUpdateApi } from '~/contexts/updateApi'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import { getApi, refreshApi } from '~/utils/api'
 import IconButton from '~/components/button/IconButton'
 import logger from '~/utils/logger'
 
 const FavoritedButton = ({ id, isFavorited = false, style = {}, size = 23 }) => {
 	const [favorited, setFavorited] = React.useState(isFavorited)
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
-	const setUpdateApi = React.useContext(SetUpdateApiContext)
+	const theme = useTheme()
+	const config = useConfig()
+	const setUpdateApi = useSetUpdateApi()
 
 	React.useEffect(() => {
 		setFavorited(isFavorited)

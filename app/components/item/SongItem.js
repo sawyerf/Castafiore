@@ -2,12 +2,12 @@ import React from 'react'
 import { Text, View, StyleSheet, Pressable } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { isSongCached } from '~/utils/cache'
 import { playSong } from '~/utils/player'
-import { SettingsContext } from '~/contexts/settings'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
 import ImageError from '~/components/ImageError'
@@ -16,9 +16,9 @@ import size from '~/styles/size'
 
 const Cached = ({ song }) => {
 	const [isCached, setIsCached] = React.useState(false)
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
-	const config = React.useContext(ConfigContext)
+	const theme = useTheme()
+	const settings = useSettings()
+	const config = useConfig()
 
 	React.useEffect(() => {
 		cached(song)
@@ -46,10 +46,10 @@ const Cached = ({ song }) => {
 }
 
 const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => true, style = {} }) => {
-	const songDispatch = React.useContext(SongDispatchContext)
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
-	const settings = React.useContext(SettingsContext)
+	const songDispatch = useSongDispatch()
+	const theme = useTheme()
+	const config = useConfig()
+	const settings = useSettings()
 	const [isHover, setIsHover] = React.useState(false)
 
 	return (

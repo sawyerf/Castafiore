@@ -3,9 +3,9 @@ import { Modal, View, Text, Image, FlatList, Pressable, StyleSheet, useWindowDim
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useSong, useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import { useCachedFirst } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
@@ -34,9 +34,9 @@ const color = {
 
 const TimeBar = () => {
 	const [fakeTime, setFakeTime] = React.useState(-1)
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const time = Player.updateTime()
-	const song = React.useContext(SongContext)
+	const song = useSong()
 	const [duration, setDuration] = React.useState(0)
 
 	React.useEffect(() => {
@@ -69,11 +69,11 @@ const TimeBar = () => {
 const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const insets = useSafeAreaInsets()
-	const song = React.useContext(SongContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const theme = React.useContext(ThemeContext)
+	const song = useSong()
+	const songDispatch = useSongDispatch()
+	const theme = useTheme()
 	const volume = Player.updateVolume()
 	const scroll = React.useRef(null)
 	const { height } = useWindowDimensions()

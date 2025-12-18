@@ -3,8 +3,8 @@ import { Text, View, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings, useSetSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
 import HomeOrder from '~/components/settings/HomeOrder'
@@ -15,9 +15,9 @@ import settingStyles from '~/styles/settings'
 const HomeSettings = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
+	const theme = useTheme()
+	const settings = useSettings()
+	const setSettings = useSetSettings()
 	const [sizeOfList, setSizeOfList] = React.useState(settings.sizeOfList.toString())
 	const [LBUser, setLBUser] = React.useState(settings.listenBrainzUser)
 	const timeoutRef = React.useRef(null)

@@ -4,9 +4,9 @@ import { LegendList } from '@legendapp/list'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { getApiNetworkFirst } from '~/utils/api'
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import SongItem from '~/components/item/SongItem'
 import mainStyles from '~/styles/main'
 import Header from '~/components/Header'
@@ -18,8 +18,8 @@ const PAGE_SIZE = 50
 const GenreSong = ({ route: { params: { genre, items } } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
+	const theme = useTheme()
+	const config = useConfig()
 	const [songs, setSongs] = React.useState(items || [])
 	const [offset, setOffset] = React.useState(items?.length || 0)
 	const [isLoading, setIsLoading] = React.useState(false)

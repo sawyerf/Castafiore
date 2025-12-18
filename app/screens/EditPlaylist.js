@@ -4,12 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import { refreshApi } from '~/utils/api'
-import { SetUpdateApiContext } from '~/contexts/updateApi'
-import { ThemeContext } from '~/contexts/theme'
+import { useSetUpdateApi } from '~/contexts/updateApi'
+import { useTheme } from '~/contexts/theme'
 import ImageError from '~/components/ImageError'
 import BackButton from '~/components/button/BackButton'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
@@ -23,10 +23,10 @@ import settingStyles from '~/styles/settings'
 const EditPlaylist = ({ route: { params } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const navigation = useNavigation()
-	const setUpdateApi = React.useContext(SetUpdateApiContext)
+	const setUpdateApi = useSetUpdateApi()
 	const [name, setName] = React.useState('')
 	const [isPublic, setIsPublic] = React.useState(false)
 	const [comment, setComment] = React.useState('')

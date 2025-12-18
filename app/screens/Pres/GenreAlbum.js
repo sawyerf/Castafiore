@@ -5,9 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { getApiNetworkFirst } from '~/utils/api'
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 import ExplorerItem from '~/components/item/ExplorerItem'
@@ -19,9 +19,9 @@ const PAGE_SIZE = 20
 const GenreAlbum = ({ route: { params: { name, albums } } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const [items, setItems] = React.useState(albums || [])
 	const [offset, setOffset] = React.useState(albums?.length || 0)
 	const [isLoading, setIsLoading] = React.useState(false)

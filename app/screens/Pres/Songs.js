@@ -2,7 +2,7 @@ import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LegendList } from "@legendapp/list"
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 import OptionsSongsList from '~/components/options/OptionsSongsList'
 import Header from '~/components/Header'
@@ -10,7 +10,7 @@ import SongItem from '~/components/item/SongItem'
 
 const Songs = ({ route: { params } }) => {
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const renderItem = React.useCallback(({ item, index }) => (

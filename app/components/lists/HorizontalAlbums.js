@@ -2,8 +2,8 @@ import React from 'react'
 import { Text, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import ImageError from '~/components/ImageError'
 import CustomFlat from '~/components/lists/CustomFlat'
@@ -13,8 +13,8 @@ import size from '~/styles/size'
 
 const HorizontalAlbums = ({ albums, year = false, onPress = () => { } }) => {
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const renderItem = React.useCallback(({ item, index }) => (

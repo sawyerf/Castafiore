@@ -3,8 +3,8 @@ import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { useConfig } from '~/contexts/config'
+import { useSettings, useSetSettings } from '~/contexts/settings'
 import { getApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import size from '~/styles/size'
@@ -12,10 +12,10 @@ import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 	const { t } = useTranslation()
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
+	const settings = useSettings()
+	const setSettings = useSetSettings()
 	const navigation = useNavigation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const refOption = React.useRef()
 
 	const goToArtist = () => {

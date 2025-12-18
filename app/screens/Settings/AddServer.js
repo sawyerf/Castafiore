@@ -6,10 +6,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import md5 from 'md5'
 
-import { SetConfigContext } from '~/contexts/config'
+import { useSetConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings, useSetSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import ButtonText from '~/components/settings/ButtonText'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
@@ -22,10 +22,10 @@ import logger from '~/utils/logger'
 const AddServer = ({ navigation }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const setConfig = React.useContext(SetConfigContext)
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const setConfig = useSetConfig()
+	const settings = useSettings()
+	const setSettings = useSetSettings()
+	const theme = useTheme()
 	const [name, setName] = React.useState('')
 	const [url, setUrl] = React.useState('')
 	const [username, setUsername] = React.useState('')

@@ -2,9 +2,9 @@ import React from 'react'
 import { Pressable, Text, View, StyleSheet, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useSong, useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import { useCachedFirst } from '~/utils/api'
 import Player from '~/utils/player'
@@ -16,10 +16,10 @@ import size from '~/styles/size'
 import PlayButton from '~/components/button/PlayButton'
 
 const BoxDesktopPlayer = ({ setFullScreen }) => {
-	const song = React.useContext(SongContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const song = useSong()
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
+	const theme = useTheme()
 	const time = Player.updateTime()
 	const volume = Player.updateVolume()
 	const [fakeTime, setFakeTime] = React.useState(-1)

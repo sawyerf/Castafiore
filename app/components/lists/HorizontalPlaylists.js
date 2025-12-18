@@ -4,10 +4,10 @@ import { Text, View, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
-import { SettingsContext } from '~/contexts/settings'
+import { useConfig } from '~/contexts/config'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
 import { useCachedAndApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
@@ -20,11 +20,11 @@ import size from '~/styles/size'
 // TODO: made this component beautiful
 const ItemPlaylist = ({ item }) => {
 	const { t } = useTranslation()
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
-	const settings = React.useContext(SettingsContext)
+	const theme = useTheme()
+	const config = useConfig()
+	const settings = useSettings()
 	const navigation = useNavigation()
-	const songDispatch = React.useContext(SongDispatchContext)
+	const songDispatch = useSongDispatch()
 
 	const [songList] = useCachedAndApi([], 'getPlaylist', `id=${item.id}`, (json, setData) => {
 		if (settings.reversePlaylist) setData(json?.playlist?.entry.reverse() || [])
@@ -85,7 +85,7 @@ const ItemPlaylist = ({ item }) => {
 }
 
 const HorizontalPlaylists = ({ playlists }) => {
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 
 	return (
 		<CustomFlat

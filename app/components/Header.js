@@ -2,13 +2,13 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
 import size from '~/styles/size'
 
 const Header = ({ title, marginBottom = 30 }) => {
 	const navigation = useNavigation()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<View style={[styles.header, { marginBottom }]}>

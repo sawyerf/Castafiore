@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 
 import { clearCache, clearSongCache, getStatCache } from '~/utils/cache'
 import { confirmAlert } from '~/utils/alert'
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings, useSetSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import ButtonMenu from '~/components/settings/ButtonMenu'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
@@ -20,9 +20,9 @@ import TableItem from '~/components/settings/TableItem'
 const CacheSettings = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const settings = useSettings()
+	const setSettings = useSetSettings()
+	const theme = useTheme()
 	const [cacheNextSong, setCacheNextSong] = React.useState(settings.cacheNextSong.toString())
 	const [statCache, setStatCache] = React.useState([
 		{ name: 'Loading...', count: '' },

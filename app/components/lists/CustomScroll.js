@@ -2,13 +2,13 @@ import React from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native'
 
 import IconButton from '~/components/button/IconButton'
-import { ThemeContext } from '~/contexts/theme'
-import { SettingsContext } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
 import size from '~/styles/size'
 
 const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
-	const theme = React.useContext(ThemeContext)
-	const settings = React.useContext(SettingsContext)
+	const theme = useTheme()
+	const settings = useSettings()
 	const indexScroll = React.useRef(0)
 	const refScroll = React.useRef(null)
 

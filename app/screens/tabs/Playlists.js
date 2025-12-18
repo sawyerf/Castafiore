@@ -4,10 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { useCachedAndApi, getApi } from '~/utils/api'
-import { SettingsContext } from '~/contexts/settings'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
+import { useTheme } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
 import SongsList from '~/components/lists/SongsList'
@@ -16,10 +16,10 @@ import size from '~/styles/size'
 
 const Playlists = ({ navigation }) => {
 	const { t } = useTranslation()
-	const config = React.useContext(ConfigContext)
+	const config = useConfig()
 	const insets = useSafeAreaInsets()
-	const settings = React.useContext(SettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const settings = useSettings()
+	const theme = useTheme()
 	const [newPlaylist, setNewPlaylist] = React.useState(null)
 	const rotationValue = React.useRef(new Animated.Value(0)).current
 	const rotation = rotationValue.interpolate({

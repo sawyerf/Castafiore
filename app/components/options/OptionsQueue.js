@@ -3,9 +3,9 @@ import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { useSong, useSongDispatch } from '~/contexts/song'
 import { urlCover } from '~/utils/url'
 import { removeFromQueue } from '~/utils/player'
 import size from '~/styles/size'
@@ -14,9 +14,9 @@ import OptionsPopup from '~/components/popup/OptionsPopup'
 const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => {
 	const { t } = useTranslation()
 	const navigation = useNavigation()
-	const song = React.useContext(SongContext)
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
+	const song = useSong()
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
 	const refOption = React.useRef()
 
 	const goToArtist = () => {

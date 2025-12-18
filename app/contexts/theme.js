@@ -13,6 +13,8 @@ export const getTheme = (settings = undefined) => {
 
 export const ThemeContext = React.createContext()
 
+export const useTheme = () => React.useContext(ThemeContext)
+
 export const themes = {
 	castafiore: {
 		// Use for background

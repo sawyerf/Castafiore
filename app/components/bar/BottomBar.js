@@ -4,16 +4,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
 const TabItem = ({ route, index, state, descriptors, navigation }) => {
 	const { t } = useTranslation()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 
 	const options = React.useMemo(() => descriptors[route.key].options, [])
 	const isFocused = React.useMemo(() => state.index === index, [state.index, index])
@@ -64,8 +64,8 @@ const TabItem = ({ route, index, state, descriptors, navigation }) => {
 
 const BottomBar = ({ state, descriptors, navigation }) => {
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const keyboardIsOpen = useKeyboardIsOpen()
 
 	if (!config.url) return null

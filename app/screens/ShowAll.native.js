@@ -3,9 +3,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { LegendList } from '@legendapp/list'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getCachedAndApi } from '~/utils/api'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import size from '~/styles/size'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
@@ -14,8 +14,8 @@ import ExplorerItem from '~/components/item/ExplorerItem'
 const ShowAll = ({ navigation, route: { params: { section } } }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
+	const config = useConfig()
+	const theme = useTheme()
 	const [list, setList] = React.useState([])
 
 	React.useEffect(() => {

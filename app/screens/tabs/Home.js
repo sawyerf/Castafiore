@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { getApi, getApiNetworkFirst } from '~/utils/api'
 import { playSong } from '~/utils/player'
-import { SettingsContext } from '~/contexts/settings'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings } from '~/contexts/settings'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import HorizontalList from '~/components/lists/HorizontalList'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
@@ -19,10 +19,10 @@ const Home = () => {
 	const { t } = useTranslation()
 	const navigation = useNavigation()
 	const insets = useSafeAreaInsets()
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
-	const settings = React.useContext(SettingsContext)
-	const theme = React.useContext(ThemeContext)
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
+	const settings = useSettings()
+	const theme = useTheme()
 	const [statusRefresh, setStatusRefresh] = React.useState()
 	const [refresh, setRefresh] = React.useState(0)
 	const rotationValue = React.useRef(new Animated.Value(0)).current

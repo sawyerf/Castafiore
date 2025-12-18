@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import { useCachedAndApi } from '~/utils/api'
 import ExplorerItem from '~/components/item/ExplorerItem'
 import mainStyles from '~/styles/main'
@@ -16,7 +16,7 @@ import size from '~/styles/size'
 const ArtistExplorer = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const navigation = useNavigation()
 	const [alpha, setAlpha] = React.useState([])
 	const refScroll = React.useRef(null)

@@ -3,9 +3,9 @@ import { Text, View, Modal, FlatList, StyleSheet, useWindowDimensions, Pressable
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 
-import { ConfigContext } from '~/contexts/config'
-import { SongContext, SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useConfig } from '~/contexts/config'
+import { useSong, useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import { useCachedFirst } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
@@ -32,9 +32,9 @@ const preview = {
 
 const CoverItem = ({ isPreview, song, setFullScreen, stars }) => {
 	const scroll = React.useRef(null)
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
-	const songDispatch = React.useContext(SongDispatchContext)
+	const config = useConfig()
+	const theme = useTheme()
+	const songDispatch = useSongDispatch()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const { width } = useWindowDimensions()
 
@@ -103,8 +103,8 @@ const CoverItem = ({ isPreview, song, setFullScreen, stars }) => {
 const TimeBar = () => {
 	const [duration, setDuration] = React.useState(0)
 	const [fakeTime, setFakeTime] = React.useState(-1)
-	const song = React.useContext(SongContext)
-	const theme = React.useContext(ThemeContext)
+	const song = useSong()
+	const theme = useTheme()
 	const time = Player.updateTime()
 
 	React.useEffect(() => {
@@ -139,10 +139,10 @@ const TimeBar = () => {
 }
 
 const FullScreenPlayer = ({ setFullScreen }) => {
-	const songDispatch = React.useContext(SongDispatchContext)
-	const config = React.useContext(ConfigContext)
-	const theme = React.useContext(ThemeContext)
-	const song = React.useContext(SongContext)
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
+	const theme = useTheme()
+	const song = useSong()
 	const insets = useSafeAreaInsets()
 	const navigation = useNavigation()
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)

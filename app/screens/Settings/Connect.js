@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext, SetConfigContext } from '~/contexts/config'
+import { useConfig, useSetConfig } from '~/contexts/config'
 import { confirmAlert } from '~/utils/alert'
 import { getApi } from '~/utils/api'
-import { SettingsContext, SetSettingsContext, demoServers } from '~/contexts/settings'
-import { SongDispatchContext } from '~/contexts/song'
-import { ThemeContext } from '~/contexts/theme'
+import { useSettings, useSetSettings, demoServers } from '~/contexts/settings'
+import { useSongDispatch } from '~/contexts/song'
+import { useTheme } from '~/contexts/theme'
 import ButtonText from '~/components/settings/ButtonText'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
@@ -23,12 +23,12 @@ import Player from '~/utils/player'
 const Connect = ({ navigation }) => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const config = React.useContext(ConfigContext)
-	const setConfig = React.useContext(SetConfigContext)
-	const settings = React.useContext(SettingsContext)
-	const setSettings = React.useContext(SetSettingsContext)
-	const theme = React.useContext(ThemeContext)
-	const songDispatch = React.useContext(SongDispatchContext)
+	const config = useConfig()
+	const setConfig = useSetConfig()
+	const settings = useSettings()
+	const setSettings = useSetSettings()
+	const theme = useTheme()
+	const songDispatch = useSongDispatch()
 	const [error, setError] = React.useState('')
 	const [serverOption, setServerOption] = React.useState(null)
 	const [info, setInfo] = React.useState(null)

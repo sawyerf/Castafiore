@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Platform, PanResponder, StyleSheet, Dimensions } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 
 const SlideBar = ({
 	progress = 0,
@@ -16,7 +16,7 @@ const SlideBar = ({
 	sizeBitogno = 12,
 	disable = false
 }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 	const layoutBar = React.useRef({ width: 0, height: 0, x: 0 })
 	const viewRef = React.useRef(null)
 	const prog = React.useRef(0)

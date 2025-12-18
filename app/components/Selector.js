@@ -1,9 +1,9 @@
 import React from 'react'
 import { ScrollView, Pressable, Text } from 'react-native'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 
 const Selector = ({ current, items, setData }) => {
-	const theme = React.useContext(ThemeContext)
+	const theme = useTheme()
 
 	return (
 		<ScrollView

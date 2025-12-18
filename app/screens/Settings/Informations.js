@@ -3,9 +3,9 @@ import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config'
+import { useConfig } from '~/contexts/config'
 import { useCachedAndApi } from '~/utils/api'
-import { ThemeContext } from '~/contexts/theme'
+import { useTheme } from '~/contexts/theme'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
@@ -30,8 +30,8 @@ const ROLES = [
 const InformationsSettings = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
-	const theme = React.useContext(ThemeContext)
-	const config = React.useContext(ConfigContext)
+	const theme = useTheme()
+	const config = useConfig()
 	const [server, setServer] = React.useState({})
 
 	const [user] = useCachedAndApi([], 'getUser', {}, (json, setData) => {

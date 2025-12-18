@@ -23,6 +23,21 @@ const transfer = async (fromDevice, toDevice, config, song, songDispatch) => {
 	await Player.restoreState(savedState)
 }
 
+const transferSameType = async (fromDevice, toDevice, config, song, songDispatch) => {
+	// Save state from previous player
+	const savedState = await Player.saveState()
+	await Player.stopSong()
+	await Player.disconnect(fromDevice)
+
+	// Connect to new player
+	await Player.connect(toDevice, toDevice?.type || 'local')
+	await Player.switchPlayer(toDevice?.type || 'local')
+
+	// Restore state on new player
+	await Player.playSong(config, songDispatch, song.queue, song.index)
+	await Player.restoreState(savedState)
+}
+
 const STATUS = {
 	Transferring: 'transferring',
 	Connected: 'connected'
@@ -47,14 +62,25 @@ export const RemoteProvider = ({ children }) => {
 		const hasSong = song?.queue && song?.index !== undefined && song?.songInfo
 		if (hasSong || config?.url) {
 			setStatus(STATUS.Transferring)
-			transfer(prevDevice, currentDevice, config, song, songDispatch)
-				.then(() => setStatus(STATUS.Connected))
-				.catch(async (error) => {
-					logger.error('RemoteProvider', 'Error transferring playback:', error)
-					prevSelectedDeviceRef.current = null
-					setStatus(STATUS.Connected)
-					setSelectedDevice(prevDevice)
-				})
+			if (prevDevice?.type === currentDevice?.type) {
+				transferSameType(prevDevice, currentDevice, config, song, songDispatch)
+					.then(() => setStatus(STATUS.Connected))
+					.catch(async (error) => {
+						logger.error('RemoteProvider', 'Error transferring playback (same type):', error)
+						prevSelectedDeviceRef.current = null
+						setStatus(STATUS.Connected)
+						setSelectedDevice(null)
+					})
+			} else {
+				transfer(prevDevice, currentDevice, config, song, songDispatch)
+					.then(() => setStatus(STATUS.Connected))
+					.catch(async (error) => {
+						logger.error('RemoteProvider', 'Error transferring playback:', error)
+						prevSelectedDeviceRef.current = null
+						setStatus(STATUS.Connected)
+						setSelectedDevice(prevDevice)
+					})
+			}
 		}
 	}, [selectedDevice])
 

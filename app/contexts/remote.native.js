@@ -41,13 +41,13 @@ export const RemoteProvider = ({ children }) => {
 		if (hasSong || config?.url) {
 			transfer(prevDevice, currentDevice, config, song, songDispatch)
 				.then(() => isTransferring = false)
-				.catch((error) => {
+				.catch(async (error) => {
 					logger.error('RemoreContext', 'Error during device transfer', error)
 					isTransferring = false
 					prevSelectedDeviceRef.current = null
 					setSelectedDevice(null)
-					Player.connect(null, 'local')
-					songDispatch({ type: 'setPlaying', state: Player.State.Stopped })
+					await Player.connect(null, 'local')
+					await Player.playSong(config, songDispatch, song.queue, song.index)
 				})
 		}
 	}, [selectedDevice])

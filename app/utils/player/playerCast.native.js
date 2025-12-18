@@ -5,6 +5,7 @@ import { getApi } from '~/utils/api'
 import { urlCover, urlStream } from '~/utils/url'
 import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import { SongContext } from '~/contexts/song'
+import logger from '~/utils/logger'
 
 export const initPlayer = async (_songDispatch) => { }
 
@@ -22,6 +23,18 @@ export const useEvent = (_song, songDispatch) => {
 	React.useEffect(() => {
 		const events = []
 		if (!client) return
+		const sessionManager = GoogleCast.getSessionManager()
+
+		// endCurrentSession
+		events.push(sessionManager.onSessionEnded(() => {
+			logger.info('RemotePlayer', 'Session ended')
+			songDispatch({ type: 'setPlaying', state: 'stopped' })
+		}))
+
+		events.push(sessionManager.onSessionSuspended(() => {
+			logger.info('RemotePlayer', 'Session suspended')
+			songDispatch({ type: 'setPlaying', state: 'stopped' })
+		}))
 
 		events.push(client.onMediaStatusUpdated((mediaStatus) => {
 			if (!mediaStatus) return
@@ -226,12 +239,23 @@ export const restoreState = async (state) => {
 }
 
 const connectAndWait = (deviceId) => {
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
+		const events = []
 		const sessionManager = GoogleCast.getSessionManager()
-		const event = sessionManager.onSessionStarted(() => {
-			event.remove()
+		const timeoutId = setTimeout(() => {
+			events.forEach((event) => event.remove())
+			reject(new Error('Connection to device timed out'))
+		}, 60 * 1000)
+		events.push(sessionManager.onSessionStarted(() => {
+			clearTimeout(timeoutId)
+			events.forEach((event) => event.remove())
 			resolve()
-		})
+		}))
+		events.push(sessionManager.onSessionStartFailed((_session, error) => {
+			clearTimeout(timeoutId)
+			events.forEach((event) => event.remove())
+			reject(error)
+		}))
 		sessionManager.startSession(deviceId)
 	})
 }

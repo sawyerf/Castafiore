@@ -19,6 +19,7 @@ import Player from '~/utils/player'
 import size from '~/styles/size'
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
+import ConnectButton from '~/components/button/ConnectButton'
 
 const preview = {
 	COVER: 0,
@@ -234,7 +235,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							icon="repeat"
 							style={{ width: 30, alignItems: 'end' }}
 							size={size.icon.small}
-							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
+							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : color.secondary}
 							onPress={() => {
 								Player.setRepeat(songDispatch, song.actionEndOfSong === 'repeat' ? 'next' : 'repeat')
 							}}
@@ -262,16 +263,21 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 							icon="random"
 							size={size.icon.small}
 							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
-							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
+							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : color.secondary}
 							onPress={() => Player.setRepeat(songDispatch, song.actionEndOfSong === 'random' ? 'next' : 'random')}
 						/>
 					</View>
 					<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 5 }}>
+						<ConnectButton
+							size={size.icon.small - 2}
+							color={color.secondary}
+							style={{ width: 30, alignItems: 'start', justifyContent: 'center', marginEnd: 8 }}
+						/>
 						<IconButton
 							icon="bars"
 							size={size.icon.small}
 							style={{ width: 30, alignItems: 'start', justifyContent: 'center' }}
-							color={theme.secondaryText}
+							color={color.secondary}
 							onPress={() => setIsPreview(isPreview == preview.QUEUE ? preview.COVER : preview.QUEUE)}
 						/>
 						{

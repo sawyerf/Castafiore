@@ -24,6 +24,9 @@ module.exports = ({ config }) => {
 			android: {
 				package: "com.sawyerf.castafiore",
 				edgeToEdgeEnabled: true,
+				permissions: [
+					"CHANGE_WIFI_MULTICAST_STATE",
+				],
 				adaptiveIcon: {
 					foregroundImage: "./assets/foreground-icon.png",
 					backgroundColor: "#660000"
@@ -69,6 +72,9 @@ module.exports = ({ config }) => {
 				],
 				[
 					'./plugins/asyncStorage.js'
+				],
+				[
+					'react-native-google-cast'
 				]
 			]
 		}

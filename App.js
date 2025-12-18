@@ -18,6 +18,7 @@ import { localeLang } from '~/i18next/utils'
 import { SetUpdateApiContext, UpdateApiContext } from '~/contexts/updateApi'
 import { SongContext, SongDispatchContext, defaultSong, songReducer } from '~/contexts/song'
 import { ThemeContext, getTheme } from '~/contexts/theme'
+import { RemoteProvider } from '~/contexts/remote'
 import { version } from '~/../package.json'
 import logger from '~/utils/logger'
 import Player from '~/utils/player'
@@ -92,7 +93,8 @@ const App = () => {
 								<ThemeContext.Provider value={theme}>
 									<SongContext.Provider value={song}>
 										<UpdateApiContext.Provider value={updateApi}>
-											<SafeAreaProvider initialMetrics={initialWindowMetrics}>
+											<RemoteProvider>
+												<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 												<NavigationContainer
 													documentTitle={{
 														formatter: () => {
@@ -120,7 +122,8 @@ const App = () => {
 														<Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
 													</Tab.Navigator>
 												</NavigationContainer>
-											</SafeAreaProvider>
+												</SafeAreaProvider>
+											</RemoteProvider>
 										</UpdateApiContext.Provider>
 									</SongContext.Provider>
 								</ThemeContext.Provider>

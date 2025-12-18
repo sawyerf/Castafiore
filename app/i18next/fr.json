@@ -153,6 +153,7 @@
     "No lyrics found": "Aucun texte trouvé",
     "No results": "Aucun résultat",
     "Not connected": "Non connecté",
+    "No UPNP/DLNA devices found on the network": "Aucun appareil UPNP/DLNA trouvé sur le réseau",
     "Open home page": "Page d'accueil",
     "Open in Last.fm": "Ouvrir dans Last.fm",
     "Open in MusicBrainz": "Ouvrir dans MusicBrainz",
@@ -192,6 +193,17 @@
     "min": "min",
     "minutes": "minutes",
     "song": "titre",
-    "songs": "titres"
+    "songs": "titres",
+    "Scanning for devices...": "Recherche d'appareils...",
+    "Remote Devices": "Appareils distants",
+    "Connected Device": "Appareil connecté",
+    "Connect to Chromecast device": "Se connecter à un Chromecast",
+    "Connect to UPNP/DLNA device": "Se connecter en UPNP/DLNA",
+    "No Chromecast devices found or connection cancelled": "Aucun Chromecast trouvé ou connexion annulée",
+    "Error connecting to Chromecast": "Erreur de connexion au Chromecast",
+    "No UPNP/DLNA devices found": "Aucun appareil UPNP/DLNA trouvé",
+    "Error scanning for devices": "Erreur lors de la recherche d'appareils",
+    "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.": "Diffusez de la musique vers des appareils compatibles : Chromecast, enceintes UPNP/DLNA, téléviseurs et lecteurs multimédia.",
+    "Chromecast": "Chromecast"
   }
 }

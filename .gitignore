@@ -44,3 +44,5 @@ android/**
 node_modules
 dist
 *.swp
+
+docker-compose.override.yml

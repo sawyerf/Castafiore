@@ -154,6 +154,7 @@
     "No lyrics found": "No lyrics found",
     "No results": "No results",
     "Not connected": "Not connected",
+    "No UPNP/DLNA devices found on the network": "No UPNP/DLNA devices found on the network",
     "Open home page": "Open home page",
     "Open in Last.fm": "Open in Last.fm",
     "Open in MusicBrainz": "Open in MusicBrainz",
@@ -193,6 +194,17 @@
     "min": "min",
     "minutes": "minutes",
     "song": "song",
-    "songs": "songs"
+    "songs": "songs",
+    "Scanning for devices...": "Scanning for devices...",
+    "Remote Devices": "Remote Devices",
+    "Connected Device": "Connected Device",
+    "Connect to Chromecast device": "Connect to Chromecast device",
+    "Connect to UPNP/DLNA device": "Connect to UPNP/DLNA device",
+    "No Chromecast devices found or connection cancelled": "No Chromecast devices found or connection cancelled",
+    "Error connecting to Chromecast": "Error connecting to Chromecast",
+    "No UPNP/DLNA devices found": "No UPNP/DLNA devices found",
+    "Error scanning for devices": "Error scanning for devices",
+    "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.": "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.",
+    "Chromecast": "Chromecast"
   }
 }

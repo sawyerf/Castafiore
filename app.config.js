@@ -17,12 +17,7 @@ module.exports = ({ config }) => {
 				infoPlist: {
 					UIBackgroundModes: [
 						"audio"
-					],
-					NSBonjourServices: [
-						"_upnp._tcp",
-						"_services._dns-sd._udp"
-					],
-					NSLocalNetworkUsageDescription: "Castafiore needs access to your local network to discover and stream music to UPNP/DLNA devices like speakers and TVs."
+					]
 				},
 				bundleIdentifier: "com.sawyerf.castafiore"
 			},
@@ -30,10 +25,7 @@ module.exports = ({ config }) => {
 				package: "com.sawyerf.castafiore",
 				edgeToEdgeEnabled: true,
 				permissions: [
-					"INTERNET",
-					"ACCESS_WIFI_STATE",
 					"CHANGE_WIFI_MULTICAST_STATE",
-					"ACCESS_NETWORK_STATE"
 				],
 				adaptiveIcon: {
 					foregroundImage: "./assets/foreground-icon.png",

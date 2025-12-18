@@ -53,7 +53,7 @@ const fetchDeviceDescription = async (deviceInfo) => {
 		const response = await fetch(deviceInfo.location)
 		if (!response.ok) return null
 
-		let xml = null;
+		let xml = null
 		try {
 			xml = parser.parse(await response.text())
 		} catch (error) {

@@ -254,9 +254,6 @@ const connectAndWait = (deviceId) => {
 			events.forEach((event) => event.remove())
 			reject(new Error('Connection to device timed out'))
 		}, 60 * 1000)
-		events.push(sessionManager.onSessionStarting(() => {
-			logger.info('RemotePlayer', 'Starting session...')
-		}))
 		events.push(sessionManager.onSessionStarted(() => {
 			clearTimeout(timeoutId)
 			events.forEach((event) => event.remove())

@@ -13,7 +13,7 @@ import RotateIconButton from '~/components/button/RotateIconButton'
 import SelectItem from '~/components/settings/SelectItem'
 import settingStyles from '~/styles/settings'
 
-const ConnectDevices = ({ visible, onClose }) => {
+const DiscoveryPanel = ({ visible, onClose }) => {
 	const { t } = useTranslation()
 	const devices = useDevices()
 	const insets = useSafeAreaInsets()
@@ -99,22 +99,29 @@ const ConnectDevices = ({ visible, onClose }) => {
 					borderTopRightRadius: 20,
 				}}
 				>
-					<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: 20, marginTop: 10, marginBottom: 20 }}>
-						<Text style={[mainStyles.mainTitle(theme), { marginBottom: 0, marginTop: 0, marginStart: 0 }]}>
-							{t("Remote Devices")}
-						</Text>
-						<RotateIconButton
-							icon="refresh"
-							onPress={refresh}
-							color={theme.primaryText}
-							style={{
-								padding: 8,
-								borderRadius: 20,
-							}}
-						/>
-					</View>
-
 					<View style={settingStyles.contentMainContainer}>
+						<View style={{
+							flexDirection: 'row',
+							alignItems: 'center',
+							justifyContent: 'space-between',
+							marginTop: 10,
+							marginBottom: 20,
+							width: '100%',
+						}}>
+							<Text style={[mainStyles.mainTitle(theme), { marginBottom: 0, marginTop: 0, marginStart: 0 }]}>
+								{t("Remote Devices")}
+							</Text>
+							<RotateIconButton
+								icon="refresh"
+								onPress={refresh}
+								color={theme.primaryText}
+								style={{
+									padding: 8,
+									borderRadius: 20,
+								}}
+							/>
+						</View>
+
 						<Text style={settingStyles.titleContainer(theme)}>
 							{t('Devices')}
 						</Text>
@@ -176,4 +183,4 @@ const ConnectDevices = ({ visible, onClose }) => {
 	)
 }
 
-export default ConnectDevices
+export default DiscoveryPanel

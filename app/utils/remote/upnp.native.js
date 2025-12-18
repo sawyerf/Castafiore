@@ -24,7 +24,6 @@ const parser = new XMLParser({
  * @returns {Promise<Object>} Response
  */
 const sendSoapRequest = async (device, action, params = {}, serviceType = 'AVTransport') => {
-	console.log('action: ', action)
 	// Fallback URLs if device doesn't specify controlUrl
 	const defaultServiceUrls = {
 		AVTransport: '/AVTransport/control',

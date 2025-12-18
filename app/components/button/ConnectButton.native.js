@@ -2,8 +2,8 @@ import React from 'react'
 import { ActivityIndicator } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
-import ConnectDevices from '~/components/connect/ConnectDevices'
 import { useRemote } from '~/contexts/remote'
+import DiscoveryPanel from '~/components/popup/DiscoveryPanel'
 import IconButton from '~/components/button/IconButton'
 
 const ConnectButton = ({ size = 23, color, style = {} }) => {
@@ -26,7 +26,7 @@ const ConnectButton = ({ size = 23, color, style = {} }) => {
 					/>
 				)
 			}
-			<ConnectDevices
+			<DiscoveryPanel
 				visible={modalVisible}
 				onClose={() => setModalVisible(false)}
 			/>

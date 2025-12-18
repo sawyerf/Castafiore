@@ -1,19 +1,19 @@
 import React from 'react'
 import { View, Text, Linking, StyleSheet, Pressable } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
-import { playSong } from '~/utils/player';
-import { SongDispatchContext } from '~/contexts/song';
+import { ConfigContext } from '~/contexts/config'
+import { getApi } from '~/utils/api'
+import { playSong } from '~/utils/player'
+import { SongDispatchContext } from '~/contexts/song'
 import { ThemeContext } from '~/contexts/theme'
-import CustomFlat from '~/components/lists/CustomFlat';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
-import OptionsPopup from '~/components/popup/OptionsPopup';
-import size from '~/styles/size';
+import CustomFlat from '~/components/lists/CustomFlat'
+import ImageError from '~/components/ImageError'
+import mainStyles from '~/styles/main'
+import OptionsPopup from '~/components/popup/OptionsPopup'
+import size from '~/styles/size'
 
 const RadioList = ({ radios }) => {
 	const { t } = useTranslation()
@@ -208,4 +208,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default RadioList;
+export default RadioList

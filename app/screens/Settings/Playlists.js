@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
 import { ThemeContext } from '~/contexts/theme'
@@ -9,7 +9,7 @@ import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
-import SelectItem from '~/components/settings/SelectItem';
+import SelectItem from '~/components/settings/SelectItem'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 
 const orders = {
@@ -106,4 +106,4 @@ const PlaylistsSettings = () => {
 	)
 }
 
-export default PlaylistsSettings;
+export default PlaylistsSettings

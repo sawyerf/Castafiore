@@ -1,16 +1,16 @@
-import React from 'react';
-import { Pressable, Text, StyleSheet, Platform } from 'react-native';
+import React from 'react'
+import { Pressable, Text, StyleSheet, Platform } from 'react-native'
 
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import ImageError from '~/components/ImageError'
+import mainStyles from '~/styles/main'
+import size from '~/styles/size'
 
 const AllItem = ({ item, type, onPress }) => {
-  const config = React.useContext(ConfigContext);
-  const theme = React.useContext(ThemeContext);
+  const config = React.useContext(ConfigContext)
+  const theme = React.useContext(ThemeContext)
 
   return (
     <Pressable
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   }),
 })
 
-export default AllItem;
+export default AllItem

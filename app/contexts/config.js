@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React from 'react'
 
 export const getConfig = async () => {
 	const config = await AsyncStorage.getItem('config')

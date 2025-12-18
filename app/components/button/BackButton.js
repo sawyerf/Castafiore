@@ -1,13 +1,13 @@
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import IconButton from '~/components/button/IconButton';
-import size from '~/styles/size';
+import IconButton from '~/components/button/IconButton'
+import size from '~/styles/size'
 
 const BackButton = () => {
-	const navigation = useNavigation();
-	const insets = useSafeAreaInsets();
+	const navigation = useNavigation()
+	const insets = useSafeAreaInsets()
 
 	return (
 		<IconButton
@@ -22,7 +22,7 @@ const BackButton = () => {
 			size={size.icon.small}
 			color="#fff"
 		/>
-	);
+	)
 }
 
-export default BackButton;
+export default BackButton

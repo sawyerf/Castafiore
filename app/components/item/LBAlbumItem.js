@@ -1,16 +1,16 @@
-import React from 'react';
-import { Pressable, View, Text, Linking } from 'react-native';
+import React from 'react'
+import { Pressable, View, Text, Linking } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
+import { ThemeContext } from '~/contexts/theme'
+import ImageError from '~/components/ImageError'
+import mainStyles from '~/styles/main'
 
 const LBAlbumItem = ({ item }) => {
-	const theme = React.useContext(ThemeContext);
+	const theme = React.useContext(ThemeContext)
 	const coverUrl = React.useMemo(() => {
-		if (typeof item === 'string') return '';
-		return `http://coverartarchive.org/release/${item.release_mbid}/front`;
-	}, [item]);
+		if (typeof item === 'string') return ''
+		return `http://coverartarchive.org/release/${item.release_mbid}/front`
+	}, [item])
 
 	if (typeof item === 'string') return (
 		<Text style={[mainStyles.mediumText(theme.primaryText), {
@@ -59,7 +59,7 @@ const LBAlbumItem = ({ item }) => {
 				</Text>
 			</View>
 		</Pressable>
-	);
+	)
 }
 
-export default LBAlbumItem;
+export default LBAlbumItem

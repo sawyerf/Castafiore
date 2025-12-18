@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, PanResponder, Animated, Pressable } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { View, Text, PanResponder, Animated, Pressable } from 'react-native'
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { SettingsContext, SetSettingsContext, homeSections } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import settingStyles from '~/styles/settings';
+import { SettingsContext, SetSettingsContext, homeSections } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import settingStyles from '~/styles/settings'
 
 const HomeOrder = () => {
 	const { t } = useTranslation()
@@ -125,4 +125,4 @@ const HomeOrder = () => {
 	)
 }
 
-export default HomeOrder;
+export default HomeOrder

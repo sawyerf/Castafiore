@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import { ConfigContext } from '~/contexts/config';
-import { playSong } from '~/utils/player';
-import { SongDispatchContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import IconButton from '~/components/button/IconButton';
-import presStyles from '~/styles/pres';
+import { ConfigContext } from '~/contexts/config'
+import { playSong } from '~/utils/player'
+import { SongDispatchContext } from '~/contexts/song'
+import { ThemeContext } from '~/contexts/theme'
+import IconButton from '~/components/button/IconButton'
+import presStyles from '~/styles/pres'
 
 const RandomButton = ({ songList, size = 23 }) => {
 	const theme = React.useContext(ThemeContext)
@@ -32,7 +32,7 @@ const RandomButton = ({ songList, size = 23 }) => {
 			size={size}
 			color={theme.primaryText}
 		/>
-	);
+	)
 }
 
-export default RandomButton;
+export default RandomButton

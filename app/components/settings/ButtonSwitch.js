@@ -1,9 +1,9 @@
-import React from 'react';
-import { Text, View, Pressable } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, View, Pressable } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme';
-import settingStyles from '~/styles/settings';
+import { ThemeContext } from '~/contexts/theme'
+import settingStyles from '~/styles/settings'
 
 const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) => {
 	const theme = React.useContext(ThemeContext)
@@ -56,4 +56,4 @@ const ButtonSwitch = ({ title, value, onPress, icon = null, isLast = false }) =>
 	)
 }
 
-export default ButtonSwitch;
+export default ButtonSwitch

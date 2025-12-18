@@ -1,17 +1,17 @@
-import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LegendList } from "@legendapp/list"
 
-import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import OptionsSongsList from '~/components/options/OptionsSongsList';
-import Header from '~/components/Header';
-import SongItem from '~/components/item/SongItem';
+import { ThemeContext } from '~/contexts/theme'
+import mainStyles from '~/styles/main'
+import OptionsSongsList from '~/components/options/OptionsSongsList'
+import Header from '~/components/Header'
+import SongItem from '~/components/item/SongItem'
 
 const Songs = ({ route: { params } }) => {
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
-	const [indexOptions, setIndexOptions] = React.useState(-1);
+	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const renderItem = React.useCallback(({ item, index }) => (
 		<SongItem
@@ -23,7 +23,7 @@ const Songs = ({ route: { params } }) => {
 				paddingHorizontal: 20,
 			}}
 		/>
-	), [params.songs]);
+	), [params.songs])
 
 	return (
 		<>
@@ -47,4 +47,4 @@ const Songs = ({ route: { params } }) => {
 	)
 }
 
-export default Songs;
+export default Songs

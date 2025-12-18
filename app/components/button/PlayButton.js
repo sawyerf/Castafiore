@@ -1,9 +1,9 @@
-import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import React from 'react'
+import { ActivityIndicator } from 'react-native'
 
-import { SongContext } from '~/contexts/song';
-import Player from '~/utils/player';
-import IconButton from '~/components/button/IconButton';
+import { SongContext } from '~/contexts/song'
+import Player from '~/utils/player'
+import IconButton from '~/components/button/IconButton'
 
 const PlayButton = ({ style = {}, size, color }) => {
 	const song = React.useContext(SongContext)
@@ -60,4 +60,4 @@ const PlayButton = ({ style = {}, size, color }) => {
 	)
 }
 
-export default PlayButton;
+export default PlayButton

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Text, View, TextInput, Platform } from 'react-native';
+import React from 'react'
+import { Text, View, TextInput, Platform } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme';
-import settingStyles from '~/styles/settings';
-import size from '~/styles/size';
+import { ThemeContext } from '~/contexts/theme'
+import settingStyles from '~/styles/settings'
+import size from '~/styles/size'
 
 const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, autoComplete = 'off', inputMode = undefined, isLast = false, secureTextEntry = undefined }) => {
 	const theme = React.useContext(ThemeContext)
@@ -43,7 +43,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				onChangeText={value => onChangeText(value)}
 				onFocus={(ev)	=> {
 					if (ev.target && ev.target.value) {
-						ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length);
+						ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length)
 					}
 				}}
 			/>
@@ -51,4 +51,4 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 	)
 }
 
-export default OptionInput;
+export default OptionInput

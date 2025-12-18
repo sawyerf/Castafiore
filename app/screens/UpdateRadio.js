@@ -1,28 +1,28 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { useTranslation } from 'react-i18next'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApi } from '~/utils/api';
-import { ThemeContext } from '~/contexts/theme';
-import OptionInput from '~/components/settings/OptionInput';
-import Header from '~/components/Header';
-import mainStyles from '~/styles/main';
-import settingStyles from '~/styles/settings';
-import ButtonText from '~/components/settings/ButtonText';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { getApi } from '~/utils/api'
+import { ThemeContext } from '~/contexts/theme'
+import OptionInput from '~/components/settings/OptionInput'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import settingStyles from '~/styles/settings'
+import ButtonText from '~/components/settings/ButtonText'
+import size from '~/styles/size'
 
 const UpdateRadio = ({ navigation, route: { params } }) => {
-	const { t } = useTranslation();
+	const { t } = useTranslation()
 	const theme = React.useContext(ThemeContext)
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
-	const [name, setName] = React.useState('');
-	const [streamUrl, setStreamUrl] = React.useState('');
-	const [homePageUrl, setHomePageUrl] = React.useState('');
-	const [error, setError] = React.useState('');
+	const [name, setName] = React.useState('')
+	const [streamUrl, setStreamUrl] = React.useState('')
+	const [homePageUrl, setHomePageUrl] = React.useState('')
+	const [error, setError] = React.useState('')
 
 	React.useEffect(() => {
 		if (params?.name) setName(params.name)
@@ -119,4 +119,4 @@ const UpdateRadio = ({ navigation, route: { params } }) => {
 	)
 }
 
-export default UpdateRadio;
+export default UpdateRadio

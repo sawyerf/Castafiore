@@ -1,11 +1,11 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, View } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme';
-import SongItem from '~/components/item/SongItem';
-import size from '~/styles/size';
-import OptionsSongsList from '~/components/options/OptionsSongsList';
+import { ThemeContext } from '~/contexts/theme'
+import SongItem from '~/components/item/SongItem'
+import size from '~/styles/size'
+import OptionsSongsList from '~/components/options/OptionsSongsList'
 
 const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true, indexPlaying = null, idPlaylist = null, onUpdate = () => { }, onPress = () => true }) => {
 	const theme = React.useContext(ThemeContext)
@@ -50,4 +50,4 @@ const SongsList = ({ songs, isIndex = false, listToPlay = null, isMargin = true,
 	)
 }
 
-export default SongsList;
+export default SongsList

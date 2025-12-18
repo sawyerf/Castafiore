@@ -1,15 +1,15 @@
-import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Text, View, ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { SettingsContext, SetSettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import { themes, themesPlayer } from '~/contexts/theme';
-import Header from '~/components/Header';
-import mainStyles from '~/styles/main';
-import settingStyles from '~/styles/settings';
-import SelectItem from '~/components/settings/SelectItem';
+import { SettingsContext, SetSettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import { themes, themesPlayer } from '~/contexts/theme'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import settingStyles from '~/styles/settings'
+import SelectItem from '~/components/settings/SelectItem'
 
 const Theme = () => {
 	const { t } = useTranslation()
@@ -64,4 +64,4 @@ const Theme = () => {
 	)
 }
 
-export default Theme;
+export default Theme

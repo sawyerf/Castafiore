@@ -1,20 +1,20 @@
-import React from 'react';
-import { LegendList } from '@legendapp/list';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { LegendList } from '@legendapp/list'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
-import Header from '~/components/Header';
-import ExplorerItem from '~/components/item/ExplorerItem';
-import OptionsAlbums from '~/components/options/OptionsAlbums';
+import { ThemeContext } from '~/contexts/theme'
+import mainStyles from '~/styles/main'
+import Header from '~/components/Header'
+import ExplorerItem from '~/components/item/ExplorerItem'
+import OptionsAlbums from '~/components/options/OptionsAlbums'
 
 
 const AristAlbums = ({ navigation, route: { params: { albums } } }) => {
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
-	const theme = React.useContext(ThemeContext);
-	const [indexOptions, setIndexOptions] = React.useState(-1);
+	const { t } = useTranslation()
+	const insets = useSafeAreaInsets()
+	const theme = React.useContext(ThemeContext)
+	const [indexOptions, setIndexOptions] = React.useState(-1)
 
 	const renderItem = React.useCallback(({ item, index }) => (
 		<ExplorerItem

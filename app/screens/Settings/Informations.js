@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
 import { useCachedAndApi } from '~/utils/api'
@@ -140,4 +140,4 @@ const InformationsSettings = () => {
 	)
 }
 
-export default InformationsSettings;
+export default InformationsSettings

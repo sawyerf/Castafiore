@@ -1,9 +1,9 @@
-import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Pressable, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ThemeContext } from '~/contexts/theme';
-import mainStyles from '~/styles/main';
+import { ThemeContext } from '~/contexts/theme'
+import mainStyles from '~/styles/main'
 
 const IconButton = ({ icon, size = 23, color = undefined, style = {}, styleIcon = {}, pressEffect = true, onPress, onLongPress = null, delayLongPress = 200 }) => {
 	const theme = React.useContext(ThemeContext)
@@ -23,4 +23,4 @@ const IconButton = ({ icon, size = 23, color = undefined, style = {}, styleIcon 
 	)
 }
 
-export default IconButton;
+export default IconButton

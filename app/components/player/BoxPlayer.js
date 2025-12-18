@@ -1,24 +1,24 @@
-import React from 'react';
-import { Text, View, Pressable, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, View, Pressable, StyleSheet } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { SongContext, SongDispatchContext } from '~/contexts/song';
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import PlayButton from '~/components/button/PlayButton';
-import Player from '~/utils/player';
-import IconButton from '~/components/button/IconButton';
-import ImageError from '~/components/ImageError';
-import size from '~/styles/size';
-import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen';
+import { SongContext, SongDispatchContext } from '~/contexts/song'
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import PlayButton from '~/components/button/PlayButton'
+import Player from '~/utils/player'
+import IconButton from '~/components/button/IconButton'
+import ImageError from '~/components/ImageError'
+import size from '~/styles/size'
+import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
 const BoxPlayer = ({ setFullScreen }) => {
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const config = React.useContext(ConfigContext)
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const theme = React.useContext(ThemeContext)
 	const isKeyboardOpen = useKeyboardIsOpen()
 
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default BoxPlayer;
+export default BoxPlayer

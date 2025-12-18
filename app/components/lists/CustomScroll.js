@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import React from 'react'
+import { View, ScrollView, StyleSheet } from 'react-native'
 
-import IconButton from '~/components/button/IconButton';
-import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext } from '~/contexts/settings';
-import size from '~/styles/size';
+import IconButton from '~/components/button/IconButton'
+import { ThemeContext } from '~/contexts/theme'
+import { SettingsContext } from '~/contexts/settings'
+import size from '~/styles/size'
 
 const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 } }) => {
 	const theme = React.useContext(ThemeContext)
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default CustomScroll;
+export default CustomScroll

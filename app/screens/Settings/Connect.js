@@ -1,27 +1,27 @@
-import React from 'react';
-import { Text, View, ScrollView, Pressable } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, View, ScrollView, Pressable } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext, SetConfigContext } from '~/contexts/config';
-import { confirmAlert } from '~/utils/alert';
-import { getApi } from '~/utils/api';
-import { SettingsContext, SetSettingsContext, demoServers } from '~/contexts/settings';
-import { SongDispatchContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import ButtonText from '~/components/settings/ButtonText';
-import Header from '~/components/Header';
-import mainStyles from '~/styles/main';
-import OptionsPopup from '~/components/popup/OptionsPopup';
-import settingStyles from '~/styles/settings';
-import size from '~/styles/size';
-import TableItem from '~/components/settings/TableItem';
-import Player from '~/utils/player';
+import { ConfigContext, SetConfigContext } from '~/contexts/config'
+import { confirmAlert } from '~/utils/alert'
+import { getApi } from '~/utils/api'
+import { SettingsContext, SetSettingsContext, demoServers } from '~/contexts/settings'
+import { SongDispatchContext } from '~/contexts/song'
+import { ThemeContext } from '~/contexts/theme'
+import ButtonText from '~/components/settings/ButtonText'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import OptionsPopup from '~/components/popup/OptionsPopup'
+import settingStyles from '~/styles/settings'
+import size from '~/styles/size'
+import TableItem from '~/components/settings/TableItem'
+import Player from '~/utils/player'
 
 const Connect = ({ navigation }) => {
-	const { t } = useTranslation();
+	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const setConfig = React.useContext(SetConfigContext)
@@ -29,7 +29,7 @@ const Connect = ({ navigation }) => {
 	const setSettings = React.useContext(SetSettingsContext)
 	const theme = React.useContext(ThemeContext)
 	const songDispatch = React.useContext(SongDispatchContext)
-	const [error, setError] = React.useState('');
+	const [error, setError] = React.useState('')
 	const [serverOption, setServerOption] = React.useState(null)
 	const [info, setInfo] = React.useState(null)
 
@@ -169,4 +169,4 @@ const Connect = ({ navigation }) => {
 	)
 }
 
-export default Connect;
+export default Connect

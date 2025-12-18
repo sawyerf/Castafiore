@@ -1,8 +1,8 @@
-import { registerRootComponent } from 'expo';
+import { registerRootComponent } from 'expo'
 
-import App from './App';
-import { initService } from '~/utils/player';
+import App from './App'
+import { initService } from '~/utils/player'
 
-registerRootComponent(App);
+registerRootComponent(App)
 
 initService()

@@ -14,7 +14,7 @@ import ListMap from '~/components/lists/ListMap'
 import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
 import settingStyles from '~/styles/settings'
-import size from '~/styles/size';
+import size from '~/styles/size'
 import TableItem from '~/components/settings/TableItem'
 
 const CacheSettings = () => {
@@ -129,4 +129,4 @@ const CacheSettings = () => {
 	)
 }
 
-export default CacheSettings;
+export default CacheSettings

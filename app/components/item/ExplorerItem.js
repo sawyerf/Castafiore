@@ -1,17 +1,17 @@
-import React from 'react';
-import { Pressable, View, Text } from 'react-native';
+import React from 'react'
+import { Pressable, View, Text } from 'react-native'
 
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import ImageError from '~/components/ImageError';
-import FavoritedButton from '~/components/button/FavoritedButton';
-import size from '~/styles/size';
-import mainStyles from '~/styles/main';
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import ImageError from '~/components/ImageError'
+import FavoritedButton from '~/components/button/FavoritedButton'
+import size from '~/styles/size'
+import mainStyles from '~/styles/main'
 
 const ExplorerItem = ({ item, title, subTitle, onPress, onLongPress, borderRadius = 0, iconError = null, isFavorited = null }) => {
-	const theme = React.useContext(ThemeContext);
-	const config = React.useContext(ConfigContext);
+	const theme = React.useContext(ThemeContext)
+	const config = React.useContext(ConfigContext)
 
 	return (
 		<Pressable
@@ -57,7 +57,7 @@ const ExplorerItem = ({ item, title, subTitle, onPress, onLongPress, borderRadiu
 				size={size.icon.medium}
 			/>
 		</Pressable>
-	);
+	)
 }
 
-export default ExplorerItem;
+export default ExplorerItem

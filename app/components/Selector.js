@@ -1,6 +1,6 @@
-import React from 'react';
-import { ScrollView, Pressable, Text } from 'react-native';
-import { ThemeContext } from '~/contexts/theme';
+import React from 'react'
+import { ScrollView, Pressable, Text } from 'react-native'
+import { ThemeContext } from '~/contexts/theme'
 
 const Selector = ({ current, items, setData }) => {
 	const theme = React.useContext(ThemeContext)
@@ -31,4 +31,4 @@ const Selector = ({ current, items, setData }) => {
 	)
 }
 
-export default Selector;
+export default Selector

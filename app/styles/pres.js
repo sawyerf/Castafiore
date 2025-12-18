@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import size from '~/styles/size';
+import { StyleSheet } from 'react-native'
+import size from '~/styles/size'
 
 export default StyleSheet.create({
 	cover: {

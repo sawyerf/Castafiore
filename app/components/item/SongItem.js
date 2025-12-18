@@ -1,18 +1,18 @@
-import React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, View, StyleSheet, Pressable } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config';
-import { isSongCached } from '~/utils/cache';
-import { playSong } from '~/utils/player';
-import { SettingsContext } from '~/contexts/settings';
-import { SongDispatchContext } from '~/contexts/song';
-import { ThemeContext } from '~/contexts/theme';
-import { urlCover } from '~/utils/url';
-import FavoritedButton from '~/components/button/FavoritedButton';
-import ImageError from '~/components/ImageError';
-import mainStyles from '~/styles/main';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { isSongCached } from '~/utils/cache'
+import { playSong } from '~/utils/player'
+import { SettingsContext } from '~/contexts/settings'
+import { SongDispatchContext } from '~/contexts/song'
+import { ThemeContext } from '~/contexts/theme'
+import { urlCover } from '~/utils/url'
+import FavoritedButton from '~/components/button/FavoritedButton'
+import ImageError from '~/components/ImageError'
+import mainStyles from '~/styles/main'
+import size from '~/styles/size'
 
 const Cached = ({ song }) => {
 	const [isCached, setIsCached] = React.useState(false)
@@ -113,4 +113,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default SongItem;
+export default SongItem

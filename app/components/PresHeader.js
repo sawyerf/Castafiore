@@ -1,17 +1,17 @@
-import React from 'react';
-import { Text, View, Pressable } from 'react-native';
-import { ThemeContext } from '~/contexts/theme';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react'
+import { Text, View, Pressable } from 'react-native'
+import { ThemeContext } from '~/contexts/theme'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import BackButton from '~/components/button/BackButton';
-import mainStyles from '~/styles/main';
-import presStyles from '~/styles/pres';
-import ImageError from '~/components/ImageError';
-import IconButton from '~/components/button/IconButton';
+import BackButton from '~/components/button/BackButton'
+import mainStyles from '~/styles/main'
+import presStyles from '~/styles/pres'
+import ImageError from '~/components/ImageError'
+import IconButton from '~/components/button/IconButton'
 
 const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, onPressOption = null, children = null }) => {
-	const theme = React.useContext(ThemeContext);
-	const insets = useSafeAreaInsets();
+	const theme = React.useContext(ThemeContext)
+	const insets = useSafeAreaInsets()
 
 	return (
 		<>
@@ -52,4 +52,4 @@ const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, onPressOptio
 	)
 }
 
-export default PresHeader;
+export default PresHeader

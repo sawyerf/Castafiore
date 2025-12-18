@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { ThemeContext } from '~/contexts/theme'
 import settingStyles from '~/styles/settings'
-import size from '~/styles/size';
+import size from '~/styles/size'
 
 const objectToString = (obj) => {
 	if (obj === null || obj === undefined) {

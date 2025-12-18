@@ -1,27 +1,27 @@
-import React from 'react';
-import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable, Platform } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config';
-import { useCachedAndApi, getApi } from '~/utils/api';
-import { SettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import IconButton from '~/components/button/IconButton';
-import mainStyles from '~/styles/main';
-import SongsList from '~/components/lists/SongsList';
-import VerticalPlaylist from '~/components/lists/VerticalPlaylist';
-import size from '~/styles/size';
+import { ConfigContext } from '~/contexts/config'
+import { useCachedAndApi, getApi } from '~/utils/api'
+import { SettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import IconButton from '~/components/button/IconButton'
+import mainStyles from '~/styles/main'
+import SongsList from '~/components/lists/SongsList'
+import VerticalPlaylist from '~/components/lists/VerticalPlaylist'
+import size from '~/styles/size'
 
 const Playlists = ({ navigation }) => {
-	const { t } = useTranslation();
+	const { t } = useTranslation()
 	const config = React.useContext(ConfigContext)
-	const insets = useSafeAreaInsets();
+	const insets = useSafeAreaInsets()
 	const settings = React.useContext(SettingsContext)
 	const theme = React.useContext(ThemeContext)
-	const [newPlaylist, setNewPlaylist] = React.useState(null);
-	const rotationValue = React.useRef(new Animated.Value(0)).current;
+	const [newPlaylist, setNewPlaylist] = React.useState(null)
+	const rotationValue = React.useRef(new Animated.Value(0)).current
 	const rotation = rotationValue.interpolate({
 		inputRange: [0, 1],
 		outputRange: ['0deg', '360deg']
@@ -163,4 +163,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default Playlists;
+export default Playlists

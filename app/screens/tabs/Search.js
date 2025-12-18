@@ -1,22 +1,22 @@
-import React from 'react';
-import { Text, View, TextInput, ScrollView, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, View, TextInput, ScrollView, Pressable, StyleSheet, ActivityIndicator } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { ConfigContext } from '~/contexts/config';
-import { getApiNetworkFirst } from '~/utils/api';
-import { SettingsContext } from '~/contexts/settings';
-import { ThemeContext } from '~/contexts/theme';
-import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
-import HorizontalArtists from '~/components/lists/HorizontalArtists';
-import mainStyles from '~/styles/main';
-import SongsList from '~/components/lists/SongsList';
-import HistoryItem from '~/components/item/HistoryItem';
-import size from '~/styles/size';
-import SectionTitle from '../../components/SectionTitle';
+import { ConfigContext } from '~/contexts/config'
+import { getApiNetworkFirst } from '~/utils/api'
+import { SettingsContext } from '~/contexts/settings'
+import { ThemeContext } from '~/contexts/theme'
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
+import HorizontalArtists from '~/components/lists/HorizontalArtists'
+import mainStyles from '~/styles/main'
+import SongsList from '~/components/lists/SongsList'
+import HistoryItem from '~/components/item/HistoryItem'
+import size from '~/styles/size'
+import SectionTitle from '../../components/SectionTitle'
 
 const STATES = {
 	INIT: 'init',
@@ -51,7 +51,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				<Pressable
 					style={styles.explorer(theme)}
 					onPress={() => {
-						navigation.navigate('ArtistExplorer');
+						navigation.navigate('ArtistExplorer')
 					}}>
 					<Text numberOfLines={1} style={{
 						color: theme.primaryText,
@@ -62,7 +62,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				<Pressable
 					style={styles.explorer(theme)}
 					onPress={() => {
-						navigation.navigate('AlbumExplorer');
+						navigation.navigate('AlbumExplorer')
 					}}>
 					<Text numberOfLines={1} style={{
 						color: theme.primaryText,
@@ -73,7 +73,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				<Pressable
 					style={styles.explorer(theme)}
 					onPress={() => {
-						navigation.navigate('SongExplorer');
+						navigation.navigate('SongExplorer')
 					}}>
 					<Text numberOfLines={1} style={{
 						color: theme.primaryText,
@@ -168,16 +168,16 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 }
 
 const Search = () => {
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
+	const { t } = useTranslation()
+	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const settings = React.useContext(SettingsContext)
 	const theme = React.useContext(ThemeContext)
-	const [history, setHistory] = React.useState([]);
-	const [query, setQuery] = React.useState('');
-	const [results, setResults] = React.useState();
-	const [state, setState] = React.useState(STATES.INIT);
-	const timeout = React.useRef(null);
+	const [history, setHistory] = React.useState([])
+	const [query, setQuery] = React.useState('')
+	const [results, setResults] = React.useState()
+	const [state, setState] = React.useState(STATES.INIT)
+	const timeout = React.useRef(null)
 
 	React.useEffect(() => {
 		if (history.length) return
@@ -290,4 +290,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default Search;
+export default Search

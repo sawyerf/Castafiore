@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import React from 'react'
+import { View, FlatList, StyleSheet } from 'react-native'
 
-import { ThemeContext } from '~/contexts/theme';
-import { SettingsContext } from '~/contexts/settings';
-import IconButton from '~/components/button/IconButton';
-import size from '~/styles/size';
+import { ThemeContext } from '~/contexts/theme'
+import { SettingsContext } from '~/contexts/settings'
+import IconButton from '~/components/button/IconButton'
+import size from '~/styles/size'
 
 const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContainerStyle = { paddingHorizontal: 20, columnGap: 10 }, widthItem = 0 }) => {
 	const theme = React.useContext(ThemeContext)
@@ -14,8 +14,8 @@ const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContai
 	const refView = React.useRef(null)
 	const [isScrollHelper, setIsScrollHelper] = React.useState(false)
 	const visibleItems = React.useRef(0)
-	const [isLeftVisible, setIsLeftVisible] = React.useState(false);
-	const [isRightVisible, setIsRightVisible] = React.useState(true);
+	const [isLeftVisible, setIsLeftVisible] = React.useState(false)
+	const [isRightVisible, setIsRightVisible] = React.useState(true)
 
 	const goRight = () => {
 		if (Math.floor(indexScroll.current) + Math.floor(visibleItems.current) >= data.length) indexScroll.current = data.length - 1
@@ -41,7 +41,7 @@ const CustomFlat = ({ data, renderItem, style = { width: '100%' }, contentContai
 	}
 
 	// https://github.com/facebook/react-native/issues/39421
-	if (!data || data.length === 0) return null;
+	if (!data || data.length === 0) return null
 
 	return (
 		<View
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default CustomFlat;
+export default CustomFlat

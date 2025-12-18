@@ -1,14 +1,14 @@
-import React from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
+import React from 'react'
+import { Text, View, ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
-import { ThemeContext } from '~/contexts/theme';
-import size from '~/styles/size';
-import logger from '~/utils/logger';
-import Header from '~/components/Header';
-import mainStyles from '~/styles/main';
-import settingStyles from '~/styles/settings';
+import { ThemeContext } from '~/contexts/theme'
+import size from '~/styles/size'
+import logger from '~/utils/logger'
+import Header from '~/components/Header'
+import mainStyles from '~/styles/main'
+import settingStyles from '~/styles/settings'
 
 const colorLevel = (level) => {
 	if (level === 'info') return '#16B87C'
@@ -108,4 +108,4 @@ const Logs = () => {
 	)
 }
 
-export default Logs;
+export default Logs

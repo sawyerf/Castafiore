@@ -99,4 +99,4 @@ const styles = StyleSheet.create({
 	})
 })
 
-export default SlideBar;
+export default SlideBar

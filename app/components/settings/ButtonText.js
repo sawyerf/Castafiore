@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 import mainStyles from '~/styles/main'
-import size from '~/styles/size';
+import size from '~/styles/size'
 
 const ButtonText = ({ text, onPress, disabled = false }) => {
 	const theme = React.useContext(ThemeContext)

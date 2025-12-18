@@ -1,30 +1,30 @@
-import React from 'react';
-import { Text, ScrollView, Pressable } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { Text, ScrollView, Pressable } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { SongDispatchContext } from '~/contexts/song';
-import { ConfigContext } from '~/contexts/config';
-import { ThemeContext } from '~/contexts/theme';
-import { playSong } from '~/utils/player';
-import { useCachedAndApi, getApiNetworkFirst } from '~/utils/api';
-import { urlCover } from '~/utils/url';
-import { shuffle } from '~/utils/tools';
-import mainStyles from '~/styles/main';
-import presStyles from '~/styles/pres';
-import FavoritedButton from '~/components/button/FavoritedButton';
-import HorizontalAlbums from '~/components/lists/HorizontalAlbums';
-import HorizontalArtists from '~/components/lists/HorizontalArtists';
-import IconButton from '~/components/button/IconButton';
-import SongsList from '~/components/lists/SongsList';
-import size from '~/styles/size';
-import PresHeader from '~/components/PresHeader';
-import OptionsArtist from '../../components/options/OptionsArtist';
+import { SongDispatchContext } from '~/contexts/song'
+import { ConfigContext } from '~/contexts/config'
+import { ThemeContext } from '~/contexts/theme'
+import { playSong } from '~/utils/player'
+import { useCachedAndApi, getApiNetworkFirst } from '~/utils/api'
+import { urlCover } from '~/utils/url'
+import { shuffle } from '~/utils/tools'
+import mainStyles from '~/styles/main'
+import presStyles from '~/styles/pres'
+import FavoritedButton from '~/components/button/FavoritedButton'
+import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
+import HorizontalArtists from '~/components/lists/HorizontalArtists'
+import IconButton from '~/components/button/IconButton'
+import SongsList from '~/components/lists/SongsList'
+import size from '~/styles/size'
+import PresHeader from '~/components/PresHeader'
+import OptionsArtist from '../../components/options/OptionsArtist'
 
 const Artist = ({ navigation, route: { params } }) => {
-	const { t } = useTranslation();
-	const insets = useSafeAreaInsets();
+	const { t } = useTranslation()
+	const insets = useSafeAreaInsets()
 	const config = React.useContext(ConfigContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const theme = React.useContext(ThemeContext)
@@ -164,4 +164,4 @@ const Artist = ({ navigation, route: { params } }) => {
 	)
 }
 
-export default Artist;
+export default Artist

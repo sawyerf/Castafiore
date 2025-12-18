@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView, Platform, Share } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
 import { confirmAlert } from '~/utils/alert'
@@ -119,4 +119,4 @@ const SharesSettings = () => {
 	)
 }
 
-export default SharesSettings;
+export default SharesSettings

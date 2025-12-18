@@ -11,7 +11,7 @@ const useKeyboardIsOpen = () => {
 		const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
 			setIsKeyboardOpen(false)
 		})
-	
+
 		return () => {
 			keyboardDidShowListener.remove()
 			keyboardDidHideListener.remove()

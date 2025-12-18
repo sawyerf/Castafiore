@@ -95,33 +95,33 @@ const App = () => {
 										<UpdateApiContext.Provider value={updateApi}>
 											<RemoteProvider>
 												<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-												<NavigationContainer
-													documentTitle={{
-														formatter: () => {
-															return `Castafiore`
-														}
-													}}
-												>
-													<SystemBars style={theme.barStyle} />
-													<Tab.Navigator
-														tabBar={(props) => <TabBar {...props} />}
-														screenOptions={{
-															headerShown: false,
-															navigationBarColor: theme.primaryBack,
-															tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
-															tabBarStyle: {
-																backgroundColor: theme.secondaryBack,
-																borderTopColor: theme.secondaryBack,
-																tabBarActiveTintColor: theme.primaryTouch,
+													<NavigationContainer
+														documentTitle={{
+															formatter: () => {
+																return `Castafiore`
 															}
 														}}
 													>
-														<Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
-														<Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
-														<Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
-														<Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
-													</Tab.Navigator>
-												</NavigationContainer>
+														<SystemBars style={theme.barStyle} />
+														<Tab.Navigator
+															tabBar={(props) => <TabBar {...props} />}
+															screenOptions={{
+																headerShown: false,
+																navigationBarColor: theme.primaryBack,
+																tabBarPosition: settings.isDesktop ? 'left' : 'bottom',
+																tabBarStyle: {
+																	backgroundColor: theme.secondaryBack,
+																	borderTopColor: theme.secondaryBack,
+																	tabBarActiveTintColor: theme.primaryTouch,
+																}
+															}}
+														>
+															<Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
+															<Tab.Screen name="SearchStack" options={{ title: 'Search', icon: "search" }} component={SearchStack} />
+															<Tab.Screen name="PlaylistsStack" options={{ title: 'Playlists', icon: "book" }} component={PlaylistsStack} />
+															<Tab.Screen name="SettingsStack" options={{ title: 'Settings', icon: "gear" }} component={SettingsStack} />
+														</Tab.Navigator>
+													</NavigationContainer>
 												</SafeAreaProvider>
 											</RemoteProvider>
 										</UpdateApiContext.Provider>

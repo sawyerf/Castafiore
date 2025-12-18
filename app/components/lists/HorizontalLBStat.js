@@ -26,7 +26,7 @@ const HorizontalLBStat = ({ stats }) => {
 			marginVertical: 50
 		}}>{stats}</Text>
 	)
-	
+
 	if (!stats || !stats.length) return (null)
 	return (
 		<View style={styles.scrollContainer(stats?.length)}>

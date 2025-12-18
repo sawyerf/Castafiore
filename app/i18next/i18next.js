@@ -14,26 +14,26 @@ import zhHant from './zh-Hant.json'
 import ptBr from './pt-br.json'
 
 i18n.use(initReactI18next).init({
-  lng: 'en',
-  fallbackLng: 'en',
-  resources: {
-    en: en,
-    ca: ca,
-    de: de,
-    es: es,
-    fr: fr,
-    gl: gl,
-    it: it,
-    ptBr: ptBr,
-    pt: ptBr,
-    ru: ru,
-    zh: zhHans,
-    zhHans: zhHans,
-    zhHant: zhHant,
-  },
-  interpolation: {
-    escapeValue: false
-  }
+	lng: 'en',
+	fallbackLng: 'en',
+	resources: {
+		en: en,
+		ca: ca,
+		de: de,
+		es: es,
+		fr: fr,
+		gl: gl,
+		it: it,
+		ptBr: ptBr,
+		pt: ptBr,
+		ru: ru,
+		zh: zhHans,
+		zhHans: zhHans,
+		zhHant: zhHant,
+	},
+	interpolation: {
+		escapeValue: false
+	}
 })
 
 export default i18n

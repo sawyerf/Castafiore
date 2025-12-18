@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { ConfigContext } from '~/contexts/config'
-import { getApi} from '~/utils/api'
+import { getApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import { refreshApi } from '~/utils/api'
 import { SetUpdateApiContext } from '~/contexts/updateApi'

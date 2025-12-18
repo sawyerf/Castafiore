@@ -30,7 +30,7 @@ const HomeOrder = () => {
 		}
 		setSettings({ ...settings, homeOrderV2: newHomeOrder })
 	}
-	
+
 	const onPressHomeOrder = (index) => {
 		const newHomeOrder = [...settings.homeOrderV2]
 		newHomeOrder[index].enable = !newHomeOrder[index].enable

@@ -16,12 +16,12 @@ const LBAlbumItem = ({ item }) => {
 		<Text style={[mainStyles.mediumText(theme.primaryText), {
 			marginHorizontal: 20,
 			marginTop: 20,
-			marginBottom: 10, 
+			marginBottom: 10,
 			borderBottomColor: theme.secondaryBack,
 			borderBottomWidth: 2,
 			paddingBottom: 5,
 			paddingStart: 5,
-		 }]}>
+		}]}>
 			{new Date(item).toLocaleDateString('en-US', {
 				month: 'short',
 				day: 'numeric',

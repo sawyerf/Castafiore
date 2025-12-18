@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
-import { useCachedAndApi} from '~/utils/api'
+import { useCachedAndApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import { ConfigContext } from '~/contexts/config'
 import { ThemeContext } from '~/contexts/theme'

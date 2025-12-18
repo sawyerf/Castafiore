@@ -41,7 +41,7 @@ const OptionInput = ({ title, placeholder, value, onChangeText, isPassword, auto
 				inputMode={inputMode}
 				secureTextEntry={secureTextEntry === undefined ? isPassword : secureTextEntry}
 				onChangeText={value => onChangeText(value)}
-				onFocus={(ev)	=> {
+				onFocus={(ev) => {
 					if (ev.target && ev.target.value) {
 						ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length)
 					}

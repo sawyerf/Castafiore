@@ -35,14 +35,14 @@ const InformationsSettings = () => {
 	const [server, setServer] = React.useState({})
 
 	const [user] = useCachedAndApi([], 'getUser', {}, (json, setData) => {
-			setServer({
-				version: json.serverVersion,
-				name: json.type,
-				apiVersion: json.version,
-				connected: json.status === 'ok',
-			})
-			setData(json.user)
+		setServer({
+			version: json.serverVersion,
+			name: json.type,
+			apiVersion: json.version,
+			connected: json.status === 'ok',
 		})
+		setData(json.user)
+	})
 	const [scan] = useCachedAndApi([], 'getScanStatus', {}, (json, setData) => {
 		setData(json.scanStatus)
 	})

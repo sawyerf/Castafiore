@@ -10,23 +10,23 @@ const RotateIconButton = ({ onPress, ...props }) => {
 		outputRange: ['0deg', '360deg']
 	})
 
-  const rotate = () => {
+	const rotate = () => {
 		rotationValue.setValue(0)
 		Animated.timing(rotationValue, {
 			toValue: 1,
 			duration: 1000,
 			useNativeDriver: Platform.OS !== 'web',
 		}).start()
-  }
+	}
 
-  return (
-    <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-      <IconButton
-        {...props}
-        onPress={() => onPress(rotate)}
-      />
-    </Animated.View>
-  )
+	return (
+		<Animated.View style={{ transform: [{ rotate: rotation }] }}>
+			<IconButton
+				{...props}
+				onPress={() => onPress(rotate)}
+			/>
+		</Animated.View>
+	)
 }
 
 export default RotateIconButton

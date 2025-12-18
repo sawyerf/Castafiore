@@ -154,7 +154,7 @@ export const discoverDevices = async (onDeviceFound = null) => {
 		const ssdp = ssdpDevices?.status === 'fulfilled' ? ssdpDevices.value : []
 		const http = httpDevices?.status === 'fulfilled' ? httpDevices.value : []
 
-		
+
 
 		// Combine and deduplicate devices (by id)
 		const allDevices = [...ssdp, ...http]
@@ -162,7 +162,7 @@ export const discoverDevices = async (onDeviceFound = null) => {
 			new Map(allDevices.map(d => [d.id, d])).values()
 		)
 
-		
+
 		return uniqueDevices
 	} catch (error) {
 		logger.error('UPNP', 'Discovery error:', error)

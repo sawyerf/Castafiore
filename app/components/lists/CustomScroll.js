@@ -28,10 +28,10 @@ const CustomScroll = ({ children, data, renderItem, style = { width: '100%' }, c
 	return (
 		<View>
 			{settings?.scrollHelper &&
-			<View style={styles.scrollContainer}>
-				<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
-				<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
-			</View>}
+				<View style={styles.scrollContainer}>
+					<IconButton icon="chevron-left" size={size.icon.tiny} onPress={goLeft} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
+					<IconButton icon="chevron-right" size={size.icon.tiny} onPress={goRight} color={theme.secondaryText} style={styles.scrollHelper(theme)} />
+				</View>}
 			<ScrollView
 				data={data}
 				keyExtractor={(_, index) => index}

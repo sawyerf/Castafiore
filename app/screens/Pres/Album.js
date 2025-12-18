@@ -25,7 +25,7 @@ const Album = ({ navigation, route: { params } }) => {
 	const [isOptArtists, setIsOptArtists] = React.useState(false)
 	const [isOptAlbum, setIsOptAlbum] = React.useState(false)
 
-	const [songs] = useCachedAndApi([], 'getAlbum', { id: params.id}, (json, setData) => {
+	const [songs] = useCachedAndApi([], 'getAlbum', { id: params.id }, (json, setData) => {
 		setStarred(json?.album?.starred)
 		setAlbum(json?.album)
 		setData(json?.album?.song.sort((a, b) => {

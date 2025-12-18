@@ -302,7 +302,7 @@ export const restoreState = async (state) => {
 }
 
 export const connect = async (_device) => {
-	isConnected = true	
+	isConnected = true
 }
 
 export const disconnect = async (_device) => {

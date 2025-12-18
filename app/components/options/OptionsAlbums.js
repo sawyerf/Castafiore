@@ -11,12 +11,12 @@ import { SongContext, SongDispatchContext } from '~/contexts/song'
 import { getApiNetworkFirst, getApiCacheFirst } from '~/utils/api'
 
 const OptionsAlbums = ({ albums, indexOptions, setIndexOptions }) => {
-  const { t } = useTranslation()
-  const song = React.useContext(SongContext)
-  const navigation = useNavigation()
-  const config = React.useContext(ConfigContext)
-  const refOption = React.useRef()
-  const songDispatch = React.useContext(SongDispatchContext)
+	const { t } = useTranslation()
+	const song = React.useContext(SongContext)
+	const navigation = useNavigation()
+	const config = React.useContext(ConfigContext)
+	const refOption = React.useRef()
+	const songDispatch = React.useContext(SongDispatchContext)
 
 	const playSimilarSongs = () => {
 		getApiNetworkFirst(config, 'getSimilarSongs', `id=${albums[indexOptions].id}&count=50`)
@@ -27,69 +27,69 @@ const OptionsAlbums = ({ albums, indexOptions, setIndexOptions }) => {
 		refOption.current.close()
 	}
 
-  return (
-    <OptionsPopup
-      ref={refOption}
-      visible={indexOptions >= 0}
-      close={() => { setIndexOptions(-1) }}
-      item={indexOptions >= 0 ? albums[indexOptions] : null}
-      options={[
-        {
-          name: t('Play similar songs'),
+	return (
+		<OptionsPopup
+			ref={refOption}
+			visible={indexOptions >= 0}
+			close={() => { setIndexOptions(-1) }}
+			item={indexOptions >= 0 ? albums[indexOptions] : null}
+			options={[
+				{
+					name: t('Play similar songs'),
 					icon: 'play',
 					onPress: playSimilarSongs
-        },
-        {
-          name: t('Add to queue'),
+				},
+				{
+					name: t('Add to queue'),
 					icon: 'list-ul',
-          onPress: () => {
-            refOption.current.close()
-            getApiCacheFirst(config, 'getAlbum', { id: albums[indexOptions].id })
-              .then((json) => {
-                if (json.album?.song?.length) {
-                  for (const song of json.album.song) {
-                    addToQueue(songDispatch, song)
-                  }
-                }
-              })
-              .catch(() => { })
-          },
-          hidden: !song.queue?.length
-        },
-        {
-          name: t('Go to artist'),
-          icon: 'user',
-          onPress: () => {
-            refOption.current.close()
-            navigation.navigate('Artist', { id: albums[indexOptions].artistId, name: albums[indexOptions].artist })
-          }
-        },
-        {
-          name: t('Share'),
-          icon: 'share',
-          onPress: () => {
-            getApi(config, 'createShare', { id: albums[indexOptions].id })
-              .then((json) => {
-                if (json.shares.share.length > 0) {
-                  if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
-                  else Share.share({ message: json.shares.share[0].url })
-                }
-              })
-              .catch(() => { })
-            refOption.current.close()
-          }
-        },
-        {
-          name: t('Info'),
-          icon: 'info',
-          onPress: () => {
-            refOption.current.close()
-            refOption.current.showInfo(albums[indexOptions])
-          }
-        }
-      ]}
-    />
-  )
+					onPress: () => {
+						refOption.current.close()
+						getApiCacheFirst(config, 'getAlbum', { id: albums[indexOptions].id })
+							.then((json) => {
+								if (json.album?.song?.length) {
+									for (const song of json.album.song) {
+										addToQueue(songDispatch, song)
+									}
+								}
+							})
+							.catch(() => { })
+					},
+					hidden: !song.queue?.length
+				},
+				{
+					name: t('Go to artist'),
+					icon: 'user',
+					onPress: () => {
+						refOption.current.close()
+						navigation.navigate('Artist', { id: albums[indexOptions].artistId, name: albums[indexOptions].artist })
+					}
+				},
+				{
+					name: t('Share'),
+					icon: 'share',
+					onPress: () => {
+						getApi(config, 'createShare', { id: albums[indexOptions].id })
+							.then((json) => {
+								if (json.shares.share.length > 0) {
+									if (Platform.OS === 'web') navigator.clipboard.writeText(json.shares.share[0].url)
+									else Share.share({ message: json.shares.share[0].url })
+								}
+							})
+							.catch(() => { })
+						refOption.current.close()
+					}
+				},
+				{
+					name: t('Info'),
+					icon: 'info',
+					onPress: () => {
+						refOption.current.close()
+						refOption.current.showInfo(albums[indexOptions])
+					}
+				}
+			]}
+		/>
+	)
 }
 
 export default OptionsAlbums

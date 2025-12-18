@@ -76,13 +76,17 @@ export const downloadSong = async (_urlStream, _id) => { }
 export const downloadNextSong = async (_queue, _currentIndex) => { }
 
 const loadSong = async (config, queue, index) => {
+	const track = queue[index]
+
+	getApi(global.config, 'scrobble', `id=${track.id}&submission=false`)
+		.catch(() => { })
 	await UPNP.load(device,
-		urlStream(config, queue[index].id, global.streamFormat, global.maxBitRate),
+		urlStream(config, track.id, global.streamFormat, global.maxBitRate),
 		{
-			title: queue[index].title,
-			artist: queue[index].artist,
-			album: queue[index].album,
-			coverUrl: queue[index].coverArt ? urlCover(config, queue[index]) : '',
+			title: track.title,
+			artist: track.artist,
+			album: track.album,
+			coverUrl: track.coverArt ? urlCover(config, track) : '',
 		}
 	)
 	await UPNP.resume(device)

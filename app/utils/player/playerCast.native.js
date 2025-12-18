@@ -113,6 +113,8 @@ const loadSong = async (config, queue, index) => {
 	const track = queue[index]
 	const client = await getClient()
 
+	getApi(global.config, 'scrobble', `id=${track.id}&submission=false`)
+		.catch(() => { })
 	await client.loadMedia({
 		mediaInfo: {
 			contentUrl: urlStream(config, track.id, global.streamFormat, global.maxBitRate),

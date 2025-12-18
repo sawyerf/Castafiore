@@ -92,7 +92,7 @@ const connect = (device) => {
 				prevState = state
 				if (state === 'stopped') {
 					const progress = await getPosition(device)
-					if (progress.position >= progress.duration - 1) { // -1 because some devices report position slightly less than duration
+					if (progress.duration !== 0 && progress.position >= progress.duration - 1) { // -1 because some devices report position slightly less than duration
 						UpnpEvent.emit(Events.TRACK_ENDED, { device })
 						clearInterval(intervalState)
 						intervalState = null

@@ -126,13 +126,15 @@ export const addToQueue = (songDispatch, track, index = null) => {
 }
 
 export const connect = async (device, newType) => {
-	type = null
 	await getPlayer(newType).connect(device)
-	type = newType
 }
 
 export const disconnect = async (device) => {
 	return getPlayer().disconnect(device)
+}
+
+export const switchPlayer = async (newType) => {
+	type = newType
 }
 
 export const saveState = async () => {
@@ -167,5 +169,6 @@ export default {
 	saveState,
 	connect,
 	disconnect,
+	switchPlayer,
 	State: LocalPlayer.State,
 }

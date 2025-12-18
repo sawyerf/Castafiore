@@ -7,30 +7,37 @@ import Player from '~/utils/player'
 
 const RemoteContext = React.createContext()
 
-let isTransferring = false
-
 const transfer = async (fromDevice, toDevice, config, song, songDispatch) => {
-	isTransferring = true
+	// Connect to new player
+	await Player.connect(toDevice, toDevice?.type || 'local')
+
 	// Action on previous player
 	const savedState = await Player.saveState()
 	await Player.stopSong()
 	await Player.disconnect(fromDevice)
 
-	// Action on current player
-	songDispatch({ type: 'setPlaying', state: Player.State.Loading })
-	await Player.connect(toDevice, toDevice?.type || 'local')
+	await Player.switchPlayer(toDevice?.type || 'local')
+
+	// Restore state on new player
 	await Player.playSong(config, songDispatch, song.queue, song.index)
 	await Player.restoreState(savedState)
 }
 
+const STATUS = {
+	Transferring: 'transferring',
+	Connected: 'connected'
+}
+
 export const RemoteProvider = ({ children }) => {
 	const [selectedDevice, setSelectedDevice] = React.useState(null)
+	const [status, setStatus] = React.useState(STATUS.Connected)
 	const config = React.useContext(ConfigContext)
 	const song = React.useContext(SongContext)
 	const songDispatch = React.useContext(SongDispatchContext)
 	const prevSelectedDeviceRef = React.useRef(null)
 
 	React.useEffect(() => {
+		logger.info('RemoteProvider', `Change device from '${prevSelectedDeviceRef.current?.name || 'local'}' to '${selectedDevice?.name || 'local'}'`)
 		const prevDevice = prevSelectedDeviceRef.current
 		const currentDevice = selectedDevice
 
@@ -39,24 +46,24 @@ export const RemoteProvider = ({ children }) => {
 
 		const hasSong = song?.queue && song?.index !== undefined && song?.songInfo
 		if (hasSong || config?.url) {
+			setStatus(STATUS.Transferring)
 			transfer(prevDevice, currentDevice, config, song, songDispatch)
-				.then(() => isTransferring = false)
+				.then(() => setStatus(STATUS.Connected))
 				.catch(async (error) => {
-					logger.error('RemoreContext', 'Error during device transfer', error)
-					isTransferring = false
+					logger.error('RemoteProvider', 'Error transferring playback:', error)
 					prevSelectedDeviceRef.current = null
-					setSelectedDevice(null)
-					await Player.connect(null, 'local')
-					await Player.playSong(config, songDispatch, song.queue, song.index)
+					setStatus(STATUS.Connected)
+					setSelectedDevice(prevDevice)
 				})
 		}
 	}, [selectedDevice])
 
 	const value = React.useMemo(() => ({
+		status,
 		type: selectedDevice?.type || 'local',
 		selectedDevice,
 		selectDevice: (device) => {
-			if (isTransferring) return false
+			if (status === STATUS.Transferring) return false
 			if (selectedDevice?.id === device?.id) return false
 			setSelectedDevice(device)
 			return true
@@ -64,7 +71,7 @@ export const RemoteProvider = ({ children }) => {
 		reset: () => {
 			setSelectedDevice(null)
 		}
-	}), [selectedDevice])
+	}), [selectedDevice, status])
 
 	return (
 		<RemoteContext.Provider value={value}>

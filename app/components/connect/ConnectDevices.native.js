@@ -35,7 +35,7 @@ const ConnectDevices = ({ visible, onClose }) => {
 			discoverDevices((device) => {
 				setDevicesUpnp((prevDevices) => {
 					// Avoid duplicates
-					if (prevDevices.find((d) => d.id === device.id)) {
+					if (remote.selectedDevice?.id === device.id || prevDevices.find((d) => d.id === device.id)) {
 						return prevDevices
 					}
 					return [...prevDevices, device]
@@ -126,7 +126,16 @@ const ConnectDevices = ({ visible, onClose }) => {
 								onPress={() => connect(null)}
 								isSelect={!remote.selectedDevice}
 							/>
-
+							{
+								remote.selectedDevice?.type === 'upnp' && (
+									<SelectItem
+										text={remote.selectedDevice.name || t('Device')}
+										icon={remote.selectedDevice.type === 'chromecast' ? 'tv' : 'volume-up'}
+										isSelect={true}
+										isLast={devices.length === 0 && devicesUpnp.length === 0}
+									/>
+								)
+							}
 							{
 								devices.map((device, index) => (
 									<SelectItem
@@ -135,6 +144,7 @@ const ConnectDevices = ({ visible, onClose }) => {
 										icon="tv"
 										onPress={() => connect({
 											id: device.deviceId,
+											name: device.friendlyName || t('Chromecast Device'),
 											type: 'chromecast',
 										})}
 										isSelect={remote.selectedDevice?.id === device.deviceId}

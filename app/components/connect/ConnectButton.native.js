@@ -1,4 +1,5 @@
 import React from 'react'
+import { ActivityIndicator } from 'react-native'
 
 import { ThemeContext } from '~/contexts/theme'
 import ConnectDevices from '~/components/connect/ConnectDevices'
@@ -12,13 +13,19 @@ const ConnectButton = ({ size = 23, color, style = {} }) => {
 
 	return (
 		<>
-			<IconButton
-				icon="tv"
-				style={style}
-				color={remote.selectedDevice ? theme.primaryTouch : (color || theme.primaryText)}
-				size={size}
-				onPress={() => setModalVisible(true)}
-			/>
+			{
+				remote.status === 'transferring' ? (
+					<ActivityIndicator size={'small'} color={color} style={style} />
+				) : (
+					<IconButton
+						icon="tv"
+						style={style}
+						color={remote.selectedDevice ? theme.primaryTouch : (color || theme.primaryText)}
+						size={size}
+						onPress={() => setModalVisible(true)}
+					/>
+				)
+			}
 			<ConnectDevices
 				visible={modalVisible}
 				onClose={() => setModalVisible(false)}

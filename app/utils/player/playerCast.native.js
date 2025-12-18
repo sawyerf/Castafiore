@@ -220,9 +220,15 @@ export const addToQueue = (songDispatch, track, index = null) => {
 
 export const saveState = async () => {
 	const client = await getClient()
+	if (!client) return {
+		position: 0,
+		isPlaying: false,
+	}
+
+	const mediaStatus = await client.getMediaStatus()
 	return {
 		position: await client.getStreamPosition(),
-		isPlaying: (await client.getMediaStatus()).playerState === 'playing',
+		isPlaying: mediaStatus?.playerState === 'playing',
 	}
 }
 
@@ -246,6 +252,9 @@ const connectAndWait = (deviceId) => {
 			events.forEach((event) => event.remove())
 			reject(new Error('Connection to device timed out'))
 		}, 60 * 1000)
+		events.push(sessionManager.onSessionStarting(() => {
+			logger.info('RemotePlayer', 'Starting session...')
+		}))
 		events.push(sessionManager.onSessionStarted(() => {
 			clearTimeout(timeoutId)
 			events.forEach((event) => event.remove())
@@ -255,6 +264,11 @@ const connectAndWait = (deviceId) => {
 			clearTimeout(timeoutId)
 			events.forEach((event) => event.remove())
 			reject(error)
+		}))
+		events.push(sessionManager.onSessionEnded(() => {
+			clearTimeout(timeoutId)
+			events.forEach((event) => event.remove())
+			reject(new Error('Session ended'))
 		}))
 		sessionManager.startSession(deviceId)
 	})

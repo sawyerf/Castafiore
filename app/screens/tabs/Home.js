@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, ScrollView, Animated, StyleSheet, Pressable, Platform } from 'react-native'
+import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { playSong } from '~/utils/player'
 import { useSettings } from '~/contexts/settings'
 import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
+import RotateIconButton from '~/components/button/RotateIconButton'
 import HorizontalList from '~/components/lists/HorizontalList'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
@@ -25,11 +26,6 @@ const Home = () => {
 	const theme = useTheme()
 	const [statusRefresh, setStatusRefresh] = React.useState()
 	const [refresh, setRefresh] = React.useState(0)
-	const rotationValue = React.useRef(new Animated.Value(0)).current
-	const rotation = rotationValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: ['0deg', '360deg']
-	})
 
 	const clickRandomSong = () => {
 		getApiNetworkFirst(config, 'getRandomSongs', `size=50`)
@@ -39,14 +35,9 @@ const Home = () => {
 			.catch(() => { })
 	}
 
-	const forceRefresh = () => {
+	const forceRefresh = (rotate = () => { }) => {
 		setRefresh(refresh + 1)
-		rotationValue.setValue(0)
-		Animated.timing(rotationValue, {
-			toValue: 1,
-			duration: 1000,
-			useNativeDriver: Platform.OS !== 'web',
-		}).start()
+		rotate()
 	}
 
 	const getStatusRefresh = () => {
@@ -103,17 +94,15 @@ const Home = () => {
 								{statusRefresh.count}°
 							</Text>
 						</Pressable> :
-						<Animated.View style={{ transform: [{ rotate: rotation }] }}>
-							<IconButton
-								icon="refresh"
-								size={size.icon.large}
-								color={theme.primaryText}
-								style={{ paddingHorizontal: 10 }}
-								onPress={forceRefresh}
-								onLongPress={refreshServer}
-								delayLongPress={200}
-							/>
-						</Animated.View>
+						<RotateIconButton
+							icon="refresh"
+							size={size.icon.large}
+							color={theme.primaryText}
+							style={{ paddingHorizontal: 10 }}
+							onPress={forceRefresh}
+							onLongPress={refreshServer}
+							delayLongPress={200}
+						/>
 					}
 				</View>
 			</View>

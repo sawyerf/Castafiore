@@ -1,5 +1,5 @@
 import React from 'react'
-import { Animated, ScrollView, Text, TextInput, View, StyleSheet, Pressable, Platform } from 'react-native'
+import { ScrollView, Text, TextInput, View, StyleSheet, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -8,6 +8,7 @@ import { useConfig } from '~/contexts/config'
 import { useCachedAndApi, getApi } from '~/utils/api'
 import { useSettings } from '~/contexts/settings'
 import { useTheme } from '~/contexts/theme'
+import RotateIconButton from '~/components/button/RotateIconButton'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
 import SongsList from '~/components/lists/SongsList'
@@ -21,11 +22,6 @@ const Playlists = ({ navigation }) => {
 	const settings = useSettings()
 	const theme = useTheme()
 	const [newPlaylist, setNewPlaylist] = React.useState(null)
-	const rotationValue = React.useRef(new Animated.Value(0)).current
-	const rotation = rotationValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: ['0deg', '360deg']
-	})
 
 	const [favorited, refreshFavorited] = useCachedAndApi([], 'getStarred2', null, (json, setData) => {
 		setData(json?.starred2?.song)
@@ -39,13 +35,8 @@ const Playlists = ({ navigation }) => {
 		setPlaylists([...playlists].sort(sortPlaylist))
 	}, [settings.orderPlaylist])
 
-	const onRefresh = () => {
-		rotationValue.setValue(0)
-		Animated.timing(rotationValue, {
-			toValue: 1,
-			duration: 1000,
-			useNativeDriver: Platform.OS !== 'web',
-		}).start()
+	const onRefresh = (rotate) => {
+		rotate()
 		refreshFavorited()
 		refreshPlaylists()
 	}
@@ -87,15 +78,13 @@ const Playlists = ({ navigation }) => {
 		>
 			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginEnd: 20, marginTop: 30, marginBottom: 20 }}>
 				<Text style={[mainStyles.mainTitle(theme), { marginBottom: 0, marginTop: 0 }]}>{t('Your Playlists')}</Text>
-				<Animated.View style={{ transform: [{ rotate: rotation }] }}>
-					<IconButton
+				<RotateIconButton
 						icon="refresh"
 						size={size.icon.large}
 						color={theme.primaryText}
 						style={{ paddingHorizontal: 10 }}
 						onPress={onRefresh}
 					/>
-				</Animated.View>
 			</View>
 			<Pressable
 				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.subTitleParent, { marginTop: 0 }])}

@@ -3,21 +3,21 @@ import GoogleCast, { useStreamPosition, useRemoteMediaClient } from 'react-nativ
 
 import { getApi } from '~/utils/api'
 import { urlCover, urlStream } from '~/utils/url'
-import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import { useSong } from '~/contexts/song'
 import logger from '~/utils/logger'
+import State from '~/utils/playerState'
 
-export const initPlayer = async (_songDispatch) => { }
+const initPlayer = async (_songDispatch) => { }
 
 const convertState = {
-	'buffering': 'loading',
-	'idle': 'stopped',
-	'loading': 'loading',
-	'paused': 'paused',
-	'playing': 'playing',
+	'buffering': State.Loading,
+	'idle': State.None,
+	'loading': State.Loading,
+	'paused': State.Paused,
+	'playing': State.Playing,
 }
 
-export const useEvent = (_song, songDispatch) => {
+const useEvent = (_song, songDispatch, nextSong) => {
 	const client = useRemoteMediaClient()
 
 	React.useEffect(() => {
@@ -28,17 +28,17 @@ export const useEvent = (_song, songDispatch) => {
 		// endCurrentSession
 		events.push(sessionManager.onSessionEnded(() => {
 			logger.info('RemotePlayer', 'Session ended')
-			songDispatch({ type: 'setPlaying', state: 'stopped' })
+			songDispatch({ type: 'setPlaying', state: State.Stopped })
 		}))
 
 		events.push(sessionManager.onSessionSuspended(() => {
 			logger.info('RemotePlayer', 'Session suspended')
-			songDispatch({ type: 'setPlaying', state: 'stopped' })
+			songDispatch({ type: 'setPlaying', state: State.Stopped })
 		}))
 
 		events.push(client.onMediaStatusUpdated((mediaStatus) => {
 			if (!mediaStatus) return
-			songDispatch({ type: 'setPlaying', state: convertState[mediaStatus?.playerState || 'stopped'] })
+			songDispatch({ type: 'setPlaying', state: convertState[mediaStatus?.playerState || State.Stopped] })
 		}))
 
 		events.push(client.onMediaPlaybackEnded((_mediaStatus) => {
@@ -62,51 +62,29 @@ const getClient = async () => {
 	return currentSession?.client
 }
 
-export const previousSong = async (config, song, songDispatch) => {
-	if (song.queue) {
-		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, prevRandomIndex())
-		else {
-			if (!global.repeatQueue && song.index === 0) return
-			await setIndex(config, songDispatch, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
-		}
-		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
-	}
-}
-
-export const nextSong = async (config, song, songDispatch) => {
-	if (song.queue) {
-		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, nextRandomIndex())
-		else {
-			if (!global.repeatQueue && song.index === song.queue.length - 1) return
-			await setIndex(config, songDispatch, song.queue, (song.index + 1) % song.queue.length)
-		}
-		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
-	}
-}
-
-export const reload = async () => {
+const reload = async () => {
 	// await TrackPlayer.retry()
 }
 
-export const pauseSong = async () => {
+const pauseSong = async () => {
 	const client = await getClient()
 	await client.pause()
 }
 
-export const resumeSong = async () => {
+const resumeSong = async () => {
 	const client = await getClient()
 	await client.play()
 }
 
-export const stopSong = async () => {
+const stopSong = async () => {
 	const client = await getClient()
 	await client.stop()
 }
 
-export const downloadSong = async (_urlStream, _id) => {
+const downloadSong = async (_urlStream, _id) => {
 }
 
-export const downloadNextSong = async (_queue, _currentIndex) => {
+const downloadNextSong = async (_queue, _currentIndex) => {
 }
 
 const loadSong = async (config, queue, index) => {
@@ -141,14 +119,7 @@ const loadSong = async (config, queue, index) => {
 	})
 }
 
-export const playSong = async (config, songDispatch, queue, index) => {
-	await loadSong(config, queue, index)
-	songDispatch({ type: 'setQueue', queue, index })
-	setRepeat(songDispatch, 'next')
-	saveQueue(config, queue, index)
-}
-
-export const setPosition = async (position) => {
+const setPosition = async (position) => {
 	if (position < 0 || !position) position = 0
 	if (position === Infinity) return
 
@@ -156,7 +127,7 @@ export const setPosition = async (position) => {
 	await client.seek({ position })
 }
 
-export const setVolume = async (volume) => {
+const setVolume = async (volume) => {
 	if (volume > 1) volume = 1
 	if (volume < 0) volume = 0
 	const client = await getClient()
@@ -164,28 +135,16 @@ export const setVolume = async (volume) => {
 	await client.setVolume(volume)
 }
 
-export const getVolume = () => {
+const getVolume = () => {
 	// return TrackPlayer.getVolume()
 	return 1
 }
 
-export const setRepeat = async (songdispatch, action) => {
-	songdispatch({ type: 'setActionEndOfSong', action })
-	// TrackPlayer.setRepeatMode(RepeatMode.Off)
-}
+const unloadSong = async () => { }
+const tuktuktuk = async (_songDispatch) => { }
 
-export const unloadSong = async () => { }
-export const tuktuktuk = async (_songDispatch) => { }
-
-export const setIndex = async (config, songDispatch, queue, index) => {
-	if (queue && index >= 0 && index < queue.length) {
-		loadSong(config, queue, index)
-		songDispatch({ type: 'setIndex', index })
-	}
-}
-
-export const updateVolume = () => { }
-export const updateTime = () => {
+const updateVolume = () => { }
+const updateTime = () => {
 	const streamPosition = useStreamPosition()
 	const song = useSong()
 
@@ -201,26 +160,17 @@ export const updateTime = () => {
 	}
 }
 
-export const isVolumeSupported = () => {
+const isVolumeSupported = () => {
 	return false
 }
 
-export const resetAudio = async (songDispatch) => {
+const resetAudio = async (songDispatch) => {
 	songDispatch({ type: 'reset' })
 	const client = await getClient()
 	client.stop()
 }
 
-export const removeFromQueue = async (songDispatch, index) => {
-	songDispatch({ type: 'removeFromQueue', index })
-}
-
-// when index is null, add to the end of the queue
-export const addToQueue = (songDispatch, track, index = null) => {
-	songDispatch({ type: 'addToQueue', track, index })
-}
-
-export const saveState = async () => {
+const saveState = async () => {
 	const client = await getClient()
 	if (!client) return {
 		position: 0,
@@ -231,18 +181,6 @@ export const saveState = async () => {
 	return {
 		position: await client.getStreamPosition(),
 		isPlaying: mediaStatus?.playerState === 'playing',
-	}
-}
-
-export const restoreState = async (state) => {
-	if (!state) return
-
-	if (state.position > 0) {
-		await setPosition(state.position)
-	}
-
-	if (state.isPlaying) {
-		await resumeSong()
 	}
 }
 
@@ -273,7 +211,7 @@ const connectAndWait = (deviceId) => {
 	})
 }
 
-export const connect = async (device) => {
+const connect = async (device) => {
 	const sessionManager = GoogleCast.getSessionManager()
 	const currentSession = await sessionManager.getCurrentCastSession()
 	if (currentSession) {
@@ -283,24 +221,21 @@ export const connect = async (device) => {
 	await connectAndWait(device.id)
 }
 
-export const disconnect = async (_device) => {
+const disconnect = async (_device) => {
 	const sessionManager = GoogleCast.getSessionManager()
 	await sessionManager.endCurrentSession(true)
 }
 
 export default {
 	initPlayer,
-	previousSong,
-	nextSong,
 	pauseSong,
 	resumeSong,
 	stopSong,
-	playSong,
 	setPosition,
 	setVolume,
 	getVolume,
-	setRepeat,
 	unloadSong,
+	loadSong,
 	tuktuktuk,
 	updateVolume,
 	updateTime,
@@ -308,11 +243,7 @@ export default {
 	reload,
 	useEvent,
 	resetAudio,
-	removeFromQueue,
-	addToQueue,
-	setIndex,
 	saveState,
-	restoreState,
 	downloadNextSong,
 	downloadSong,
 	connect,

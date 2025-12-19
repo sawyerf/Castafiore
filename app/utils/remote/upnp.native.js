@@ -10,6 +10,7 @@
 import logger from '~/utils/logger'
 import { XMLParser } from 'fast-xml-parser'
 import UpnpEvent, { Events } from '~/utils/remote/upnpEvents'
+import State from '~/utils/playerState'
 
 const parser = new XMLParser({
 	removeNSPrefix: true,
@@ -89,7 +90,7 @@ const connect = (device) => {
 
 				UpnpEvent.emit(Events.STATE_CHANGED, { device, state })
 				prevState = state
-				if (state === 'stopped') {
+				if (state === State.Stopped) {
 					const progress = await getPosition(device)
 					if (progress.duration !== 0 && progress.position >= progress.duration - 1) { // -1 because some devices report position slightly less than duration
 						UpnpEvent.emit(Events.TRACK_ENDED, { device })
@@ -164,7 +165,7 @@ const pause = async (device) => {
 	const result = await sendSoapRequest(device, 'Pause', {
 		InstanceID: '0',
 	})
-	if (result.success) UpnpEvent.emit(Events.STATE_CHANGED, { device, state: 'paused' })
+	if (result.success) UpnpEvent.emit(Events.STATE_CHANGED, { device, state: State.Paused })
 	return result.success
 }
 
@@ -178,7 +179,7 @@ const resume = async (device) => {
 		InstanceID: '0',
 		Speed: '1',
 	})
-	if (result.success) UpnpEvent.emit(Events.STATE_CHANGED, { device, state: 'playing' })
+	if (result.success) UpnpEvent.emit(Events.STATE_CHANGED, { device, state: State.Playing })
 	return result.success
 }
 
@@ -226,13 +227,15 @@ const setVolume = async (device, volume) => {
 }
 
 const STATE_VALUES = {
-	PLAYING: 'playing',
-	PAUSED_PLAYBACK: 'paused',
-	STOPPED: 'stopped',
+	PLAYING: State.Playing,
+	PAUSED_PLAYBACK: State.Paused,
+	STOPPED: State.Stopped,
+	TRANSITIONING: State.Loading,
+	NO_MEDIA_PRESENT: State.Stopped,
 }
 
 const convertState = (upnpState) => {
-	return STATE_VALUES[upnpState] || 'stopped'
+	return STATE_VALUES[upnpState] || State.Stopped
 }
 
 /**

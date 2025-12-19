@@ -1,6 +1,8 @@
-import LocalPlayer from '~/utils/player/playerLocal'
-import UpnpPlayer from '~/utils/player/playerUpnp'
+import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
 import CastPlayer from '~/utils/player/playerCast'
+import LocalPlayer from '~/utils/player/playerLocal'
+import State from '~/utils/playerState'
+import UpnpPlayer from '~/utils/player/playerUpnp'
 
 let type = 'local'
 
@@ -21,17 +23,31 @@ export const initPlayer = async (songDispatch) => {
 }
 
 export const useEvent = (song, songDispatch) => {
-	LocalPlayer.useEvent(song, songDispatch)
-	CastPlayer.useEvent(song, songDispatch)
-	UpnpPlayer.useEvent(song, songDispatch)
+	LocalPlayer.useEvent(song, songDispatch, nextSong)
+	CastPlayer.useEvent(song, songDispatch, nextSong)
+	UpnpPlayer.useEvent(song, songDispatch, nextSong)
 }
 
 export const previousSong = async (config, song, songDispatch) => {
-	return getPlayer().previousSong(config, song, songDispatch)
+	if (song.queue) {
+		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, prevRandomIndex())
+		else {
+			if (!global.repeatQueue && song.index === 0) return
+			await setIndex(config, songDispatch, song.queue, (song.queue.length + song.index - 1) % song.queue.length)
+		}
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
+	}
 }
 
 export const nextSong = async (config, song, songDispatch) => {
-	return getPlayer().nextSong(config, song, songDispatch)
+	if (song.queue) {
+		if (song.actionEndOfSong === 'random') await setIndex(config, songDispatch, song.queue, nextRandomIndex())
+		else {
+			if (!global.repeatQueue && song.index === song.queue.length - 1) return
+			await setIndex(config, songDispatch, song.queue, (song.index + 1) % song.queue.length)
+		}
+		if (song.actionEndOfSong === 'repeat') await setRepeat(songDispatch, 'next')
+	}
 }
 
 export const reload = async () => {
@@ -59,11 +75,22 @@ export const downloadNextSong = async (queue, currentIndex) => {
 }
 
 export const playSong = async (config, songDispatch, queue, index) => {
-	return getPlayer().playSong(config, songDispatch, queue, index)
+	await loadSong(config, queue, index)
+	songDispatch({ type: 'setQueue', queue, index })
+	songDispatch({ type: 'setActionEndOfSong', action: 'next' })
+	saveQueue(config, queue, index)
 }
 
-export const restoreState = async (savedState) => {
-	return getPlayer().restoreState(savedState)
+export const restoreState = async (state) => {
+	if (!state) return
+
+	if (state.position > 0) {
+		await setPosition(state.position)
+	}
+
+	if (state.isPlaying) {
+		await resumeSong()
+	}
 }
 
 export const secondToTime = (second) => {
@@ -85,7 +112,11 @@ export const getVolume = () => {
 }
 
 export const setRepeat = async (songdispatch, action) => {
-	return getPlayer().setRepeat(songdispatch, action)
+	songdispatch({ type: 'setActionEndOfSong', action })
+}
+
+export const loadSong = async (config, queue, index) => {
+	return getPlayer().loadSong(config, queue, index)
 }
 
 export const unloadSong = async () => { }
@@ -94,7 +125,10 @@ export const tuktuktuk = async (songDispatch) => {
 }
 
 export const setIndex = async (config, songDispatch, queue, index) => {
-	return getPlayer().setIndex(config, songDispatch, queue, index)
+	if (queue && index >= 0 && index < queue.length) {
+		loadSong(config, queue, index)
+		songDispatch({ type: 'setIndex', index })
+	}
 }
 
 export const updateVolume = () => { }
@@ -170,5 +204,5 @@ export default {
 	connect,
 	disconnect,
 	switchPlayer,
-	State: LocalPlayer.State,
+	State
 }

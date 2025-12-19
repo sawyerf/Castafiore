@@ -4,6 +4,7 @@ import { Platform } from 'react-native'
 
 import Player from '~/utils/player'
 import logger from '~/utils/logger'
+import State from '~/utils/playerState'
 
 export const SongContext = React.createContext()
 export const SongDispatchContext = React.createContext()
@@ -142,5 +143,5 @@ export const defaultSong = {
 	index: 0,
 	actionEndOfSong: 'next',
 	randomIndex: [],
-	state: 'stopped'
+	state: State.Stopped,
 }

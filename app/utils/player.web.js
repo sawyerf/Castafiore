@@ -4,17 +4,8 @@ import * as serviceWorkerRegistration from '~/services/serviceWorkerRegistration
 import { getApi } from '~/utils/api'
 import { urlStream, urlCover } from './url'
 import { nextRandomIndex, prevRandomIndex, saveQueue } from '~/utils/tools'
+import State from '~/utils/playerState'
 import logger from '~/utils/logger'
-
-const State = {
-	None: 'none',
-	Paused: 'paused',
-	Playing: 'playing',
-	Stopped: 'stopped',
-	Ended: 'ended',
-	Loading: 'loading',
-	Error: 'error',
-}
 
 const audio = () => {
 	return document.getElementById('audio')

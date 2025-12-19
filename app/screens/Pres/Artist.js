@@ -20,7 +20,7 @@ import IconButton from '~/components/button/IconButton'
 import SongsList from '~/components/lists/SongsList'
 import size from '~/styles/size'
 import PresHeader from '~/components/PresHeader'
-import OptionsArtist from '../../components/options/OptionsArtist'
+import OptionsArtist from '~/components/options/OptionsArtist'
 
 const Artist = ({ navigation, route: { params } }) => {
 	const { t } = useTranslation()

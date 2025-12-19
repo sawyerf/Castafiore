@@ -16,7 +16,7 @@ import mainStyles from '~/styles/main'
 import SongsList from '~/components/lists/SongsList'
 import HistoryItem from '~/components/item/HistoryItem'
 import size from '~/styles/size'
-import SectionTitle from '../../components/SectionTitle'
+import SectionTitle from '~/components/SectionTitle'
 
 const STATES = {
 	INIT: 'init',

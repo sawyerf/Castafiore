@@ -14,7 +14,7 @@ import OptionsSongsList from '~/components/options/OptionsSongsList'
 import presStyles from '~/styles/pres'
 import RandomButton from '~/components/button/RandomButton'
 import SongItem from '~/components/item/SongItem'
-import OptionsPlaylist from '../../components/options/OptionsPlaylist'
+import OptionsPlaylist from '~/components/options/OptionsPlaylist'
 
 const Playlist = ({ route: { params } }) => {
 	const { t } = useTranslation()

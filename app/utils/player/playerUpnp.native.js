@@ -56,7 +56,7 @@ const downloadNextSong = async (_queue, _currentIndex) => { }
 const loadSong = async (config, queue, index) => {
 	const track = queue[index]
 
-	getApi(global.config, 'scrobble', `id=${track.id}&submission=false`)
+	getApi(config, 'scrobble', `id=${track.id}&submission=false`)
 		.catch(() => { })
 	await UPNP.load(device,
 		urlStream(config, track.id, global.streamFormat, global.maxBitRate),

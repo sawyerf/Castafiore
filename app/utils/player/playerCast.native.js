@@ -3,7 +3,8 @@ import GoogleCast, { useStreamPosition, useRemoteMediaClient } from 'react-nativ
 
 import { getApi } from '~/utils/api'
 import { urlCover, urlStream } from '~/utils/url'
-import { useSong } from '~/contexts/song'
+import { useRemote } from '~/contexts/remote/use'
+import { useSong } from '~/contexts/song/use'
 import logger from '~/utils/logger'
 import State from '~/utils/playerState'
 
@@ -19,16 +20,16 @@ const convertState = {
 
 const useEvent = (_song, songDispatch, nextSong) => {
 	const client = useRemoteMediaClient()
+	const remote = useRemote()
 
 	React.useEffect(() => {
 		const events = []
 		if (!client) return
 		const sessionManager = GoogleCast.getSessionManager()
 
-		// endCurrentSession
 		events.push(sessionManager.onSessionEnded(() => {
 			logger.info('RemotePlayer', 'Session ended')
-			songDispatch({ type: 'setPlaying', state: State.Stopped })
+			remote.selectDevice(null)
 		}))
 
 		events.push(sessionManager.onSessionSuspended(() => {
@@ -91,7 +92,7 @@ const loadSong = async (config, queue, index) => {
 	const track = queue[index]
 	const client = await getClient()
 
-	getApi(global.config, 'scrobble', `id=${track.id}&submission=false`)
+	getApi(config, 'scrobble', `id=${track.id}&submission=false`)
 		.catch(() => { })
 	await client.loadMedia({
 		mediaInfo: {

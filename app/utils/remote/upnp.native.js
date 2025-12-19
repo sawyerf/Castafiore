@@ -235,6 +235,7 @@ const STATE_VALUES = {
 }
 
 const convertState = (upnpState) => {
+	console.log('UPNP State:', upnpState)
 	return STATE_VALUES[upnpState] || State.Stopped
 }
 

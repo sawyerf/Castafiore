@@ -1,11 +1,10 @@
 import React from 'react'
 
-import { useSong, useSongDispatch } from '~/contexts/song'
+import { RemoteContext } from '~/contexts/remote/context'
 import { useConfig } from '~/contexts/config'
+import { useSong, useSongDispatch } from '~/contexts/song'
 import logger from '~/utils/logger'
 import Player from '~/utils/player'
-
-const RemoteContext = React.createContext()
 
 const transfer = async (fromDevice, toDevice, config, song, songDispatch) => {
 	// Connect to new player
@@ -104,12 +103,4 @@ export const RemoteProvider = ({ children }) => {
 			{children}
 		</RemoteContext.Provider>
 	)
-}
-
-export const useRemote = () => {
-	const context = React.useContext(RemoteContext)
-	if (!context) {
-		throw new Error('useRemote must be used within RemoteProvider')
-	}
-	return context
 }

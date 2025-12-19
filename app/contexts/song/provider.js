@@ -5,16 +5,10 @@ import { Platform } from 'react-native'
 import Player from '~/utils/player'
 import logger from '~/utils/logger'
 import State from '~/utils/playerState'
-
-export const SongContext = React.createContext()
-export const SongDispatchContext = React.createContext()
-
-export const useSong = () => React.useContext(SongContext)
-export const useSongDispatch = () => React.useContext(SongDispatchContext)
+import { SongContext, SongDispatchContext } from '~/contexts/song/context'
 
 export const SongProvider = ({ children }) => {
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
-	Player.useEvent(song, dispatch)
 
 	React.useEffect(() => {
 		if (!song.isInit) Player.initPlayer(dispatch)

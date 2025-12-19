@@ -1,6 +1,9 @@
 import React from 'react'
+import { Platform } from 'react-native'
 
-export const getTheme = (settings = undefined) => {
+import { useSettings } from '~/contexts/settings'
+
+const getTheme = (settings = undefined) => {
 	const listTheme = Object.keys(themes)
 
 	if (!settings?.theme) return themes.castafiore
@@ -11,9 +14,28 @@ export const getTheme = (settings = undefined) => {
 	else return themes.castafiore
 }
 
-export const ThemeContext = React.createContext()
+const ThemeContext = React.createContext()
 
 export const useTheme = () => React.useContext(ThemeContext)
+
+export const ThemeProvider = ({ children }) => {
+	const [theme, setTheme] = React.useState(getTheme())
+	const settings = useSettings()
+
+	React.useEffect(() => {
+		setTheme(getTheme(settings))
+	}, [settings.theme, settings.themePlayer])
+
+	React.useEffect(() => {
+		if (Platform.OS === 'web') window.document.documentElement.style.backgroundColor = theme.primaryBack
+	}, [theme])
+
+	return (
+		<ThemeContext.Provider value={theme}>
+			{children}
+		</ThemeContext.Provider>
+	)
+}
 
 export const themes = {
 	castafiore: {

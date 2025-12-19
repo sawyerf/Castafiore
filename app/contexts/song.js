@@ -2,6 +2,7 @@ import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Platform } from 'react-native'
 
+import Player from '~/utils/player'
 import logger from '~/utils/logger'
 
 export const SongContext = React.createContext()
@@ -9,6 +10,23 @@ export const SongDispatchContext = React.createContext()
 
 export const useSong = () => React.useContext(SongContext)
 export const useSongDispatch = () => React.useContext(SongDispatchContext)
+
+export const SongProvider = ({ children }) => {
+	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
+	Player.useEvent(song, dispatch)
+
+	React.useEffect(() => {
+		if (!song.isInit) Player.initPlayer(dispatch)
+	}, [])
+
+	return (
+		<SongDispatchContext.Provider value={dispatch}>
+			<SongContext.Provider value={song}>
+				{children}
+			</SongContext.Provider>
+		</SongDispatchContext.Provider>
+	)
+}
 
 const newSong = (state, action, isCache = false) => {
 	const song = {

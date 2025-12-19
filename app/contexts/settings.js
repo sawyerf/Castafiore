@@ -1,12 +1,50 @@
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import md5 from 'md5'
+import { useTranslation } from 'react-i18next'
 
-export const SettingsContext = React.createContext()
-export const SetSettingsContext = React.createContext()
+import { localeLang } from '~/i18next/utils'
+import logger from '~/utils/logger'
+
+const SettingsContext = React.createContext()
+const SetSettingsContext = React.createContext()
 
 export const useSettings = () => React.useContext(SettingsContext)
 export const useSetSettings = () => React.useContext(SetSettingsContext)
+
+export const SettingsProvider = ({ children }) => {
+	const [settings, setSettings] = React.useState(defaultSettings)
+	const { i18n } = useTranslation()
+	updateGlobalSettings(settings)
+
+	React.useEffect(() => {
+		getSettings().then((data) => setSettings(data))
+	}, [])
+
+	const saveSettings = React.useCallback((newSettings) => {
+		setSettings(newSettings)
+		AsyncStorage.setItem('settings', JSON.stringify(newSettings))
+			.catch((error) => {
+				logger.error('Save settings', error)
+			})
+	}, [setSettings])
+
+	React.useEffect(() => {
+		const sysLang = localeLang()
+
+		logger.info('i18n', `System language: ${sysLang || 'Not found'}, App language: ${settings.language || 'Not set'}`)
+		i18n.changeLanguage(settings.language || sysLang || 'en')
+			.catch(err => logger.error('i18n', err))
+	}, [settings.language])
+
+	return (
+		<SetSettingsContext.Provider value={saveSettings}>
+			<SettingsContext.Provider value={settings}>
+				{children}
+			</SettingsContext.Provider>
+		</SetSettingsContext.Provider>
+	)
+}
 
 export const demoServers = [
 	{
@@ -197,7 +235,7 @@ export const homeSections = [
 	},
 ]
 
-export const getSettings = async () => {
+const getSettings = async () => {
 	const rawSettings = await AsyncStorage.getItem('settings')
 	if (rawSettings === null) return defaultSettings
 	try {
@@ -219,7 +257,7 @@ export const getSettings = async () => {
 	}
 }
 
-export const updateGlobalSettings = async (settings) => {
+const updateGlobalSettings = async (settings) => {
 	React.useEffect(() => {
 		global.streamFormat = settings.streamFormat
 	}, [settings.streamFormat])

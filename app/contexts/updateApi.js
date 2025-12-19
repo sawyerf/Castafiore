@@ -12,3 +12,15 @@ export const isUpdatable = (updateApi, path, query) => {
 	if (updateApi.query === query) return true
 	return false
 }
+
+export const UpdateApiProvider = ({ children }) => {
+	const [updateApi, setUpdateApi] = React.useState({ path: null, query: null })
+
+	return (
+		<UpdateApiContext.Provider value={updateApi}>
+			<SetUpdateApiContext.Provider value={setUpdateApi}>
+				{children}
+			</SetUpdateApiContext.Provider>
+		</UpdateApiContext.Provider>
+	)
+}

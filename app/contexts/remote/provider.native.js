@@ -68,6 +68,8 @@ export const RemoteProvider = ({ children }) => {
 						logger.error('RemoteProvider', 'Error transferring playback (same type):', error)
 						prevSelectedDeviceRef.current = null
 						setStatus(STATUS.Connected)
+						Player.switchPlayer('local')
+						Player.playSong(config, songDispatch, song.queue, song.index)
 						setSelectedDevice(null)
 					})
 			} else {
@@ -77,7 +79,9 @@ export const RemoteProvider = ({ children }) => {
 						logger.error('RemoteProvider', 'Error transferring playback:', error)
 						prevSelectedDeviceRef.current = null
 						setStatus(STATUS.Connected)
-						setSelectedDevice(prevDevice)
+						Player.switchPlayer('local')
+						Player.playSong(config, songDispatch, song.queue, song.index)
+						setSelectedDevice(null)
 					})
 			}
 		}

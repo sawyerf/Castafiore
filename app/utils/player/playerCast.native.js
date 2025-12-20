@@ -23,18 +23,22 @@ const useEvent = (_song, songDispatch, nextSong) => {
 	const remote = useRemote()
 
 	React.useEffect(() => {
+		if (!client) return
+		const sessionManager = GoogleCast.getSessionManager()
+		const event = sessionManager.onSessionSuspended(() => {
+			logger.info('RemotePlayer', 'Session suspended')
+			remote.selectDevice(null)
+		})
+		return () => event.remove()
+	}, [client, remote])
+
+	React.useEffect(() => {
 		const events = []
 		if (!client) return
 		const sessionManager = GoogleCast.getSessionManager()
 
 		events.push(sessionManager.onSessionEnded(() => {
 			logger.info('RemotePlayer', 'Session ended')
-			remote.selectDevice(null)
-		}))
-
-		events.push(sessionManager.onSessionSuspended(() => {
-			logger.info('RemotePlayer', 'Session suspended')
-			songDispatch({ type: 'setPlaying', state: State.Stopped })
 		}))
 
 		events.push(client.onMediaStatusUpdated((mediaStatus) => {
@@ -192,7 +196,7 @@ const connectAndWait = (deviceId) => {
 		const timeoutId = setTimeout(() => {
 			events.forEach((event) => event.remove())
 			reject(new Error('Connection to device timed out'))
-		}, 60 * 1000)
+		}, 30 * 1000)
 		events.push(sessionManager.onSessionStarted(() => {
 			clearTimeout(timeoutId)
 			events.forEach((event) => event.remove())

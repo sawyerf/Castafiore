@@ -44,3 +44,4 @@ android/**
 node_modules
 dist
 *.swp
+icon-electron.png

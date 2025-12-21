@@ -5,11 +5,20 @@
     "electron.js"
   ],
   "win": {
+    "icon": "icon-electron.png",
     "target": [
       "nsis"
     ]
   },
   "extraMetadata": {
     "main": "electron.js"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true
+  },
+  "directories": {
+    "buildResources": "assets"
   }
 }

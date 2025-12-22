@@ -70,7 +70,7 @@ const OptionsQueue = ({ queue, indexOptions, setIndexOptions, closePlayer }) => 
 	}
 
 	const addToPlaylist = (playlist) => {
-		getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${queue[indexOptions].id}`)
+		getApi(config, 'updatePlaylist', { playlistId: playlist.id, songIdToAdd: queue[indexOptions].id })
 			.then(() => {
 				refOption.current.close()
 			})

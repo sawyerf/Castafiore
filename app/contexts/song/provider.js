@@ -1,6 +1,6 @@
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Platform } from 'react-native'
+import { Platform, AppState } from 'react-native'
 
 import Player from '~/utils/player'
 import logger from '~/utils/logger'
@@ -11,7 +11,21 @@ export const SongProvider = ({ children }) => {
 	const [song, dispatch] = React.useReducer(songReducer, defaultSong)
 
 	React.useEffect(() => {
-		if (!song.isInit) Player.initPlayer(dispatch)
+		if (!song.isInit) {
+			if (Platform.OS === 'android') {
+				const subscription = AppState.addEventListener('change', (appState) => {
+					if (appState === 'active') {
+						Player.initPlayer(dispatch)
+						subscription.remove()
+					}
+				})
+				return () => {
+					subscription.remove()
+				}
+			} else {
+				Player.initPlayer(dispatch)
+			}
+		}
 	}, [])
 
 	return (
@@ -23,13 +37,37 @@ export const SongProvider = ({ children }) => {
 	)
 }
 
+// Convert track Object to save cache space
+const convertTrack = (track) => {
+	return {
+		id: track.id,
+		title: track.title,
+		artist: track.artist,
+		artists: track.artists,
+		artistId: track.artistId,
+		album: track.album,
+		albumId: track.albumId,
+		duration: track.duration,
+		covertArt: track.covertArt,
+		track: track.track,
+		starred: track.starred,
+		size: track.size,
+		index: track.index,
+		mediaType: track.mediaType,
+		// radio
+		homePageUrl: track.homePageUrl,
+		name: track.name,
+		streamUrl: track.streamUrl,
+	}
+}
+
 const newSong = (state, action, isCache = false) => {
 	const song = {
 		...state,
 		...action,
 	}
 	global.song = song
-	if (isCache && Platform.OS === 'android') {
+	if (isCache) {
 		AsyncStorage.setItem('song', JSON.stringify(song))
 			.catch((error) => logger.error('newSong', 'Error saving song to AsyncStorage:', error))
 	}
@@ -39,30 +77,34 @@ const newSong = (state, action, isCache = false) => {
 export const songReducer = (state, action) => {
 	switch (action.type) {
 		case 'init':
-			if (action.song) return newSong(state, {
+			return newSong(state, {
+				isInit: true,
+			})
+		case 'restore':
+			return newSong(state, {
 				queue: action.song.queue || null,
 				songInfo: action.song.songInfo || null,
 				index: action.song.index || 0,
 				actionEndOfSong: action.song.actionEndOfSong || 'next',
 				randomIndex: action.song.randomIndex || [],
-				isInit: true,
+				isSongLoad: action.isSongLoad || false,
 			})
+		case 'setQueue': {
+			const newQueue = action.queue.map((track) => convertTrack(track))
 			return newSong(state, {
-				isInit: true,
-			})
-		case 'setQueue':
-			return newSong(state, {
-				songInfo: action.queue[action.index],
+				songInfo: newQueue[action.index],
 				index: action.index,
-				queue: action.queue,
+				queue: newQueue,
+				isSongLoad: true,
 			}, true)
+		}
 		case 'setIndex':
 			if (!state.queue || state.queue?.length <= action.index) return state
 			return newSong(state, {
 				index: action.index,
 				songInfo: state.queue[action.index],
 			}, true)
-		case 'setPlaying': {
+		case 'setState': {
 			if (action.state === state.state || !action.state) return state
 			return newSong(state, {
 				state: action.state,
@@ -123,6 +165,7 @@ export const songReducer = (state, action) => {
 			return newSong(state, {
 				...defaultSong,
 				isInit: true,
+				isSongLoad: false,
 			}, true)
 		default:
 			logger.error('songReducer', 'Unknown action', action)

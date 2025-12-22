@@ -26,11 +26,12 @@ const convertState = (state) => {
 const initPlayer = async (songDispatch) => {
 	const song = await AsyncStorage.getItem('song')
 		.then((song) => song ? JSON.parse(song) : null)
+	try {
+		await TrackPlayer.setupPlayer()
+	} catch (error) {
+		if (error?.code === 'android_cannot_setup_player_in_background') return
+	}
 	songDispatch({ type: 'init' })
-	await TrackPlayer.setupPlayer()
-		.catch((error) => {
-			logger.error('initPlayer', error)
-		})
 	await TrackPlayer.updateOptions({
 		android: {
 			appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
@@ -55,10 +56,10 @@ const initPlayer = async (songDispatch) => {
 	})
 	// Set the player to the current song
 	const activeTrack = await TrackPlayer.getActiveTrack()
-	if (activeTrack) songDispatch({ type: 'init', song: song })
+	if (song) songDispatch({ type: 'restore', song: song, isSongLoad: activeTrack != null })
 	TrackPlayer.setRepeatMode(RepeatMode.Off)
 	const state = (await TrackPlayer.getPlaybackState()).state
-	songDispatch({ type: 'setPlaying', state: convertState(state) })
+	songDispatch({ type: 'setState', state: convertState(state) })
 }
 
 const useEvent = (song, songDispatch, _nextSong) => {
@@ -71,7 +72,7 @@ const useEvent = (song, songDispatch, _nextSong) => {
 		async (event) => {
 			if (!isConnected) return
 			if (event.type === Event.PlaybackState) {
-				songDispatch({ type: 'setPlaying', state: convertState(event.state) })
+				songDispatch({ type: 'setState', state: convertState(event.state) })
 			} else if (event.type === Event.PlaybackActiveTrackChanged) {
 				if (global.song.index != undefined && song.index != global.song.index) {
 					songDispatch({ type: 'setIndex', index: global.song.index })

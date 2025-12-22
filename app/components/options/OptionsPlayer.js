@@ -69,7 +69,7 @@ const OptionsPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 	}
 
 	const addToPlaylist = (playlist) => {
-		getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${song.id}`)
+		getApi(config, 'updatePlaylist', { playlistId: playlist.id, songIdToAdd: song.id })
 			.then(() => {
 				refOption.current.close()
 			})

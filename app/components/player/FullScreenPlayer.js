@@ -238,6 +238,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							style={{
 								paddingHorizontal: 10,
 								minWidth: 63,
+								minHeight: 60,
 								justifyContent: 'center',
 								alignItems: 'center',
 							}}

@@ -33,7 +33,7 @@ const EditPlaylist = ({ route: { params } }) => {
 	const [isLoaded, setIsLoaded] = React.useState(false)
 
 	React.useEffect(() => {
-		getApi(config, 'getPlaylist', `id=${params.playlist.id}`)
+		getApi(config, 'getPlaylist', { id: params.playlist.id })
 			.then(json => {
 				setIsLoaded(true)
 				setName(json?.playlist?.name || '')

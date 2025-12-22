@@ -1,12 +1,15 @@
 import React from 'react'
 import { ActivityIndicator } from 'react-native'
 
-import { useSong } from '~/contexts/song'
+import { useSong, useSongDispatch } from '~/contexts/song'
+import { useConfig } from '~/contexts/config'
 import Player from '~/utils/player'
 import IconButton from '~/components/button/IconButton'
 
 const PlayButton = ({ style = {}, size, color }) => {
 	const song = useSong()
+	const songDispatch = useSongDispatch()
+	const config = useConfig()
 	const [icon, setIcon] = React.useState('pause')
 	const timeout = React.useRef(null)
 
@@ -37,7 +40,9 @@ const PlayButton = ({ style = {}, size, color }) => {
 	}, [song.state])
 
 	const onPress = () => {
-		if (song.state === Player.State.Error) {
+		if (!song.isSongLoad) {
+			Player.playSong(config, songDispatch, song.queue, song.index)
+		} else if (song.state === Player.State.Error) {
 			Player.reload()
 		} if (song.state === Player.State.Playing) {
 			Player.pauseSong()

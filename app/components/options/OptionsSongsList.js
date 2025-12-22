@@ -112,7 +112,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	}
 
 	const addToPlaylist = (playlist) => {
-		getApi(config, 'updatePlaylist', `playlistId=${playlist.id}&songIdToAdd=${songs[indexOptions].id}`)
+		getApi(config, 'updatePlaylist', { playlistId: playlist.id, songIdToAdd: songs[indexOptions].id })
 			.then(() => {
 				refOption.current.close()
 				onUpdate()
@@ -121,7 +121,7 @@ const OptionsSongsList = ({ songs, indexOptions, setIndexOptions, onUpdate = () 
 	}
 
 	const removeFromPlaylist = () => {
-		getApi(config, 'updatePlaylist', `playlistId=${idPlaylist}&songIndexToRemove=${songs[indexOptions].index}`)
+		getApi(config, 'updatePlaylist', { playlistId: idPlaylist, songIndexToRemove: songs[indexOptions].index })
 			.then(() => {
 				refOption.current.close()
 				onUpdate()

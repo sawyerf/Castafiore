@@ -52,7 +52,7 @@ module.exports = async () => {
 	})
 	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, (_event) => {
 		if (!global.song?.queue?.length) return
-		getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
+		getApi(global.config, 'scrobble', { id: global.song.songInfo.id, submission: true })
 			.catch(() => { })
 		if (global.song.actionEndOfSong === 'repeat') {
 			TrackPlayer.seekTo(0)
@@ -80,7 +80,7 @@ module.exports = async () => {
 			if (event.track) {
 				const now = Date.now()
 				if (lastScrobble.id !== event.track.id || now - lastScrobble.time > 10 * 1000) {
-					getApi(global.config, 'scrobble', `id=${event.track.id}&submission=false`)
+					getApi(global.config, 'scrobble', { id: event.track.id, submission: false })
 						.catch(() => { })
 					lastScrobble = {
 						id: event.track.id,

@@ -15,12 +15,12 @@ const useEvent = (song, songDispatch, nextSong) => {
 		let events = []
 
 		events.push(UpnpEvent.addListener(Events.STATE_CHANGED, ({ state }) => {
-			songDispatch({ type: 'setPlaying', state })
+			songDispatch({ type: 'setState', state })
 		}))
 
 		events.push(UpnpEvent.addListener(Events.TRACK_ENDED, async () => {
 			if (!global.song?.queue?.length) return
-			getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
+			getApi(global.config, 'scrobble', { id: global.song.songInfo.id, submission: true })
 				.catch(() => { })
 			if (global.song.actionEndOfSong === 'repeat') {
 				UPNP.seek(device, 0)
@@ -56,7 +56,7 @@ const downloadNextSong = async (_queue, _currentIndex) => { }
 const loadSong = async (config, queue, index) => {
 	const track = queue[index]
 
-	getApi(config, 'scrobble', `id=${track.id}&submission=false`)
+	getApi(config, 'scrobble', { id: track.id, submission: false })
 		.catch(() => { })
 	await UPNP.load(device,
 		urlStream(config, track.id, global.streamFormat, global.maxBitRate),

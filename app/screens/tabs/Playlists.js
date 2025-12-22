@@ -63,7 +63,7 @@ const Playlists = ({ navigation }) => {
 
 	const addPlaylist = () => {
 		if (!newPlaylist?.length) return
-		getApi(config, 'createPlaylist', `name=${newPlaylist}`)
+		getApi(config, 'createPlaylist', { name: newPlaylist })
 			.then(() => {
 				setNewPlaylist(null)
 				refreshPlaylists()

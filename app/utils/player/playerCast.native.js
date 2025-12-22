@@ -43,12 +43,12 @@ const useEvent = (_song, songDispatch, nextSong) => {
 
 		events.push(client.onMediaStatusUpdated((mediaStatus) => {
 			if (!mediaStatus) return
-			songDispatch({ type: 'setPlaying', state: convertState[mediaStatus?.playerState || State.Stopped] })
+			songDispatch({ type: 'setState', state: convertState[mediaStatus?.playerState || State.Stopped] })
 		}))
 
 		events.push(client.onMediaPlaybackEnded((_mediaStatus) => {
 			if (!global.song?.queue?.length) return
-			getApi(global.config, 'scrobble', `id=${global.song.songInfo.id}&submission=true`)
+			getApi(global.config, 'scrobble', { id: global.song.songInfo.id, submission: true })
 				.catch(() => { })
 			if (global.song.actionEndOfSong === 'repeat') {
 				client.seek(0)
@@ -96,7 +96,7 @@ const loadSong = async (config, queue, index) => {
 	const track = queue[index]
 	const client = await getClient()
 
-	getApi(config, 'scrobble', `id=${track.id}&submission=false`)
+	getApi(config, 'scrobble', { id: track.id, submission: false })
 		.catch(() => { })
 	await client.loadMedia({
 		mediaInfo: {

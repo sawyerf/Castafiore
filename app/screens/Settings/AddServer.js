@@ -6,18 +6,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import md5 from 'md5'
 
-import { useSetConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
+import { useSetConfig } from '~/contexts/config'
 import { useSettings, useSetSettings } from '~/contexts/settings'
+import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
-import ButtonText from '~/components/settings/ButtonText'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
+import ButtonText from '~/components/settings/ButtonText'
 import Header from '~/components/Header'
+import logger from '~/utils/logger'
 import mainStyles from '~/styles/main'
 import OptionInput from '~/components/settings/OptionInput'
+import Player from '~/utils/player'
 import settingStyles from '~/styles/settings'
 import size from '~/styles/size'
-import logger from '~/utils/logger'
 
 const AddServer = ({ navigation }) => {
 	const { t } = useTranslation()
@@ -25,6 +27,7 @@ const AddServer = ({ navigation }) => {
 	const setConfig = useSetConfig()
 	const settings = useSettings()
 	const setSettings = useSetSettings()
+	const songDispatch = useSongDispatch()
 	const theme = useTheme()
 	const [name, setName] = React.useState('')
 	const [url, setUrl] = React.useState('')
@@ -38,6 +41,7 @@ const AddServer = ({ navigation }) => {
 	const upConfig = (conf) => {
 		AsyncStorage.setItem('config', JSON.stringify(conf))
 		setConfig(conf)
+		Player.resetAudio(songDispatch)
 	}
 
 	const connect = () => {

@@ -167,7 +167,7 @@ const RadioList = ({ radios }) => {
 						name: t('Remove radio'),
 						icon: 'trash-o',
 						onPress: () => {
-							getApi(config, 'deleteInternetRadioStation', `id=${optionRadio.id}`)
+							getApi(config, 'deleteInternetRadioStation', { id: optionRadio.id })
 								.then(() => {
 									refOption.current.close()
 									radios.splice(radios.indexOf(optionRadio), 1)

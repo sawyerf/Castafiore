@@ -1,9 +1,14 @@
+const getUrl = (config, path, query = '') => {
+	const encodedQuery = Object.keys(query).map((key) => `${key}=${encodeURIComponent(query[key])}`).join('&')
+	return `${config.url}/rest/${path}?${encodedQuery}&${config.query}`
+}
+
 const realCover = (config, id, size = null) => {
 	if (!id) return null
 	if (!size) {
-		return `${config.url}/rest/getCoverArt?id=${id}&${config.query}`
+		return getUrl(config, 'getCoverArt', { id })
 	}
-	return `${config.url}/rest/getCoverArt?id=${id}&size=${size}&${config.query}`
+	return getUrl(config, 'getCoverArt', { id, size })
 }
 
 export const urlCover = (config, id, size = null) => {
@@ -34,6 +39,6 @@ export const urlCover = (config, id, size = null) => {
 
 export const urlStream = (config, id, format = 'raw', maxBitRate = 0) => {
 	if (!id.match(/^[a-zA-Z0-9-]*$/)) return id
-	if (format === 'raw') return `${config.url}/rest/stream?id=${id}&${config.query}`
-	return `${config.url}/rest/stream?id=${id}&format=${format}&maxBitRate=${maxBitRate}&${config.query}`
+	if (format === 'raw') return getUrl(config, 'stream', { id })
+	return getUrl(config, 'stream', { id, format, maxBitRate })
 }

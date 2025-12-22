@@ -23,110 +23,111 @@ export const initPlayer = async (songDispatch) => {
 	global.isVolumeSupported = false
 	songDispatch({ type: 'init' })
 	if (song) songDispatch({ type: 'restore', song, isSongLoad: false })
+
 	sound.addEventListener('error', () => {
-			songDispatch({ type: 'setState', state: State.Error })
-		})
+		songDispatch({ type: 'setState', state: State.Error })
+	})
 	sound.addEventListener('loadstart', () => {
-			songDispatch({ type: 'setState', state: State.Loading })
-		})
+		songDispatch({ type: 'setState', state: State.Loading })
+	})
 	sound.addEventListener('waiting', () => {
-			songDispatch({ type: 'setState', state: State.Loading })
-		})
+		songDispatch({ type: 'setState', state: State.Loading })
+	})
 	sound.addEventListener('canplay', () => {
-			audio().play()
-		})
+		audio().play()
+	})
 	sound.addEventListener('loadedmetadata', () => {
-			audio().play()
-		})
+		audio().play()
+	})
 	sound.addEventListener('loadeddata', () => {
-			audio().play()
-		})
+		audio().play()
+	})
 	sound.addEventListener('playing', () => {
-			navigator.mediaSession.playbackState = 'playing'
-			songDispatch({ type: 'setState', state: State.Playing })
-		})
+		navigator.mediaSession.playbackState = 'playing'
+		songDispatch({ type: 'setState', state: State.Playing })
+	})
 	sound.addEventListener('play', () => {
-			navigator.mediaSession.playbackState = 'playing'
-			songDispatch({ type: 'setState', state: State.Playing })
-		})
+		navigator.mediaSession.playbackState = 'playing'
+		songDispatch({ type: 'setState', state: State.Playing })
+	})
 	sound.addEventListener('pause', () => {
-			navigator.mediaSession.playbackState = 'paused'
-			songDispatch({ type: 'setState', state: State.Paused })
-		})
+		navigator.mediaSession.playbackState = 'paused'
+		songDispatch({ type: 'setState', state: State.Paused })
+	})
 	sound.addEventListener('volumechange', () => {
-			global.isVolumeSupported = true
-		})
+		global.isVolumeSupported = true
+	})
 	sound.volume = 0.99
 	sound.volume = 1
 	sound.addEventListener('ended', () => {
-			const songId = global.song.songInfo.id
+		const songId = global.song.songInfo.id
 
-			if (global.song.actionEndOfSong === 'repeat') {
-				if (audio().duration < 1) {
-					reload()
-					// This return is necessary to avoid scrobble if a bug occurs
-					return
-				} else {
-					setPosition(0)
-					resumeSong()
-				}
+		if (global.song.actionEndOfSong === 'repeat') {
+			if (audio().duration < 1) {
+				reload()
+				// This return is necessary to avoid scrobble if a bug occurs
+				return
 			} else {
-				nextSong(global.config, global.song, songDispatch)
+				setPosition(0)
+				resumeSong()
 			}
-			getApi(global.config, 'scrobble', { id: songId, submission: true })
-				.catch(() => { })
-		})
+		} else {
+			nextSong(global.config, global.song, songDispatch)
+		}
+		getApi(global.config, 'scrobble', { id: songId, submission: true })
+			.catch(() => { })
+	})
 	sound.addEventListener('canplaythrough', () => {
-			downloadNextSong(global.config, global.song.queue, global.song.index)
-		})
+		downloadNextSong(global.config, global.song.queue, global.song.index)
+	})
 
 	navigator.mediaSession.setActionHandler("pause", () => {
-			pauseSong()
-		})
+		pauseSong()
+	})
 	navigator.mediaSession.setActionHandler("play", () => {
-			resumeSong()
-		})
+		resumeSong()
+	})
 	navigator.mediaSession.setActionHandler("seekto", (details) => {
-			setPosition(details.seekTime)
-		})
+		setPosition(details.seekTime)
+	})
 	navigator.mediaSession.setActionHandler("previoustrack", () => {
-			previousSong(global.config, global.song, songDispatch)
-		})
+		previousSong(global.config, global.song, songDispatch)
+	})
 	navigator.mediaSession.setActionHandler("nexttrack", () => {
-			nextSong(global.config, global.song, songDispatch)
-		})
+		nextSong(global.config, global.song, songDispatch)
+	})
 	navigator.mediaSession.setActionHandler("seekbackward", () => {
-			previousSong(global.config, global.song, songDispatch)
-		})
+		previousSong(global.config, global.song, songDispatch)
+	})
 	navigator.mediaSession.setActionHandler("seekforward", () => {
-			nextSong(global.config, global.song, songDispatch)
-		})
+		nextSong(global.config, global.song, songDispatch)
+	})
 
 	addEventListener('keydown', (e) => {
-			if (e.key === ' ') {
-				if (global.song.state === State.Playing) pauseSong()
-				else resumeSong()
-				e.preventDefault()
-			} else if (e.key === 'ArrowRight') {
-				nextSong(global.config, global.song, songDispatch)
-				e.preventDefault()
-			}
-			else if (e.key === 'ArrowLeft') {
-				previousSong(global.config, global.song, songDispatch)
-				e.preventDefault()
-			}
-			else if (e.key === 'ArrowUp') {
-				setVolume(getVolume() + 0.1)
-				e.preventDefault()
-			}
-			else if (e.key === 'ArrowDown') {
-				setVolume(getVolume() - 0.1)
-				e.preventDefault()
-			} else if (e.key === 'm') {
-				setVolume(getVolume() ? 0 : 1)
-				e.preventDefault()
-			}
-		})
+		if (e.key === ' ') {
+			if (global.song.state === State.Playing) pauseSong()
+			else resumeSong()
+			e.preventDefault()
+		} else if (e.key === 'ArrowRight') {
+			nextSong(global.config, global.song, songDispatch)
+			e.preventDefault()
+		}
+		else if (e.key === 'ArrowLeft') {
+			previousSong(global.config, global.song, songDispatch)
+			e.preventDefault()
+		}
+		else if (e.key === 'ArrowUp') {
+			setVolume(getVolume() + 0.1)
+			e.preventDefault()
+		}
+		else if (e.key === 'ArrowDown') {
+			setVolume(getVolume() - 0.1)
+			e.preventDefault()
+		} else if (e.key === 'm') {
+			setVolume(getVolume() ? 0 : 1)
+			e.preventDefault()
+		}
+	})
 }
 
 export const useEvent = (_song, _songDispatch) => { }

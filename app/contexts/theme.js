@@ -195,15 +195,15 @@ export const themes = {
 		secondaryBack: '#f2f2f2',
 		tertiaryBack: '#dcdcd4',
 
-		primaryText: '#000000',
-		secondaryText: '#808080',
+		primaryText: '#505050',
+		secondaryText: '#999999',
 
 		primaryTouch: '#000000',
-		secondaryTouch: '#333333',
+		secondaryTouch: '#000000',
 		innerTouch: '#ffffff',
 		backgroundTouch: '#dcdcd4',
 
-		playerBackground: '#b2b2b2ff',
+		playerBackground: '#b2b2b2',
 		playerPrimaryText: '#000000',
 		playerSecondaryText: '#404040',
 		playerButton: '#000000',
@@ -218,7 +218,7 @@ export const themes = {
 		primaryText: '#FFFFFF',
 		secondaryText: '#808080',
 
-		primaryTouch: '#b9b9b9ff',
+		primaryTouch: '#B3B3B3',
 		secondaryTouch: '#B3B3B3',
 		innerTouch: '#000000',
 		backgroundTouch: '#2e2e2e',

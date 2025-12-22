@@ -212,8 +212,14 @@ export const themesPlayer = {
 		playerSecondaryText: '#000',
 		playerButton: '#000'
 	},
+	pink: {
+		playerBackground: '#ce8bac',
+		playerPrimaryText: '#000',
+		playerSecondaryText: '#000',
+		playerButton: '#000'
+	},
 	orange: {
-		playerBackground: '#FF2D55',
+		playerBackground: '#FF7700',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#FFFFFF',
 		playerButton: '#FFFFFF'
@@ -225,7 +231,7 @@ export const themesPlayer = {
 		playerButton: '#FFFFFF'
 	},
 	purple: {
-		playerBackground: '#a238ff',
+		playerBackground: '#9244d7',
 		playerPrimaryText: '#FFFFFF',
 		playerSecondaryText: '#FFFFFF',
 		playerButton: '#FFFFFF'

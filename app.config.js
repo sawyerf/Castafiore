@@ -1,7 +1,12 @@
+let packageName = "com.sawyerf.castafiore"
+if (process.env.IS_DEV === "true") {
+	packageName = "com.sawyerf.castafiore.dev"
+}
+
 module.exports = ({ config }) => {
 	return {
 		expo: {
-			name: "Castafiore",
+			name: "Castafiore" + (process.env.IS_DEV === "true" ? " (dev)" : ""),
 			slug: "Castafiore",
 			description: "Castafiore is a music player that support Navidrome and Subsonic API.",
 			version: config.version,
@@ -12,29 +17,20 @@ module.exports = ({ config }) => {
 			assetBundlePatterns: [
 				"**/*"
 			],
-			ios: {
-				supportsTablet: true,
-				infoPlist: {
-					UIBackgroundModes: [
-						"audio"
-					]
-				},
-				bundleIdentifier: "com.sawyerf.castafiore"
-			},
 			android: {
-				package: "com.sawyerf.castafiore",
+				package: packageName,
 				edgeToEdgeEnabled: true,
 				permissions: [
 					"CHANGE_WIFI_MULTICAST_STATE",
 				],
 				adaptiveIcon: {
 					foregroundImage: "./assets/foreground-icon.png",
-					backgroundColor: "#660000"
+					backgroundColor: process.env.IS_DEV === "true" ? "#000000" : "#660000"
 				},
 				splash: {
 					image: "./assets/foreground-icon.png",
 					resizeMode: "contain",
-					backgroundColor: "#660000"
+					backgroundColor: process.env.IS_DEV === "true" ? "#000000" : "#660000"
 				}
 			},
 			web: {

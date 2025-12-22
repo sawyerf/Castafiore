@@ -14,14 +14,14 @@ import RandomButton from '~/components/button/RandomButton'
 import size from '~/styles/size'
 import SongItem from '~/components/item/SongItem'
 
-const Favorited = ({ route: { params } }) => {
+const Favorited = () => {
 	const insets = useSafeAreaInsets()
 	const theme = useTheme()
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const { t } = useTranslation()
 	const [isOption, setIsOption] = React.useState(false)
 
-	const [favorited] = useCachedFirst(params?.favorited || [], 'getStarred2', null, (json, setData) => {
+	const [favorited] = useCachedFirst([], 'getStarred2', null, (json, setData) => {
 		setData(json?.starred2?.song || [])
 	}, [])
 

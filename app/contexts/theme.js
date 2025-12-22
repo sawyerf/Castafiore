@@ -190,6 +190,46 @@ export const themes = {
 
 		barStyle: 'dark',
 	},
+	'light mono': {
+		primaryBack: '#ffffff',
+		secondaryBack: '#f2f2f2',
+		tertiaryBack: '#dcdcd4',
+
+		primaryText: '#000000',
+		secondaryText: '#808080',
+
+		primaryTouch: '#000000',
+		secondaryTouch: '#333333',
+		innerTouch: '#ffffff',
+		backgroundTouch: '#dcdcd4',
+
+		playerBackground: '#b2b2b2ff',
+		playerPrimaryText: '#000000',
+		playerSecondaryText: '#404040',
+		playerButton: '#000000',
+
+		barStyle: 'dark',
+	},
+	'dark mono': {
+		primaryBack: '#000000',
+		secondaryBack: '#1e1e1e',
+		tertiaryBack: '#2e2e2e',
+
+		primaryText: '#FFFFFF',
+		secondaryText: '#808080',
+
+		primaryTouch: '#b9b9b9ff',
+		secondaryTouch: '#B3B3B3',
+		innerTouch: '#000000',
+		backgroundTouch: '#2e2e2e',
+
+		playerBackground: '#1e1e1e',
+		playerPrimaryText: '#f5f5dc',
+		playerSecondaryText: '#808080',
+		playerButton: '#FFFFFF',
+
+		barStyle: 'light',
+	},
 }
 
 export const themesPlayer = {

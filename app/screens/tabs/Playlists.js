@@ -88,7 +88,7 @@ const Playlists = ({ navigation }) => {
 			</View>
 			<Pressable
 				style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.subTitleParent, { marginTop: 0 }])}
-				onPress={() => navigation.navigate('Favorited', { favorited })}
+				onPress={() => navigation.navigate('Favorited')}
 			>
 				<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
 				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>{t('Favorited')}</Text>

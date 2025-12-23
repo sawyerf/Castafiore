@@ -25,7 +25,6 @@ const transfer = async (fromDevice, toDevice, config, song, songDispatch) => {
 const transferSameType = async (fromDevice, toDevice, config, song, songDispatch) => {
 	// Save state from previous player
 	const savedState = await Player.saveState()
-	await Player.stopSong()
 	await Player.disconnect(fromDevice)
 
 	// Connect to new player

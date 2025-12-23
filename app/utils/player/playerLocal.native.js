@@ -24,6 +24,7 @@ const convertState = (state) => {
 }
 
 const initPlayer = async (songDispatch) => {
+	global.songDispatch = songDispatch
 	const song = await AsyncStorage.getItem('song')
 		.then((song) => song ? JSON.parse(song) : null)
 	try {
@@ -202,7 +203,7 @@ const tuktuktuk = async (songDispatch) => {
 	const urlTuk = 'https://sawyerf.github.io/tuktuktuk.mp3'
 	const playingState = await TrackPlayer.getPlaybackState()
 
-	if ([State.Paused, State.Ended, State.Stopped, State.None].indexOf(playingState.state) > -1) {
+	if ([State.Paused, State.Ended, State.Stopped, State.None, State.Error].indexOf(playingState.state) > -1) {
 		const queue = [{
 			id: 'tuktuktuk',
 			albumId: 'tuktuktuk',
@@ -211,19 +212,10 @@ const tuktuktuk = async (songDispatch) => {
 			album: 'Tuk Tuk Tuk',
 			artist: 'Sawyerf',
 			artwork: require('~/../assets/icon.png')
-		},
-		{
-			id: 'tuktuktukend',
-			albumId: 'tuktuktuk',
-			url: urlTuk,
-			title: 'Tuk Tuk Tuk',
-			artist: 'Sawyerf',
-			artwork: require('~/../assets/foreground-icon.png')
 		}]
-		await TrackPlayer.setQueue(queue)
-		await TrackPlayer.play()
 		songDispatch({ type: 'setQueue', queue, index: 0 })
 		songDispatch({ type: 'setActionEndOfSong', action: 'next' })
+		await loadSong(global.config, queue, 0)
 	}
 }
 
@@ -255,6 +247,7 @@ const connect = async (_device) => {
 }
 
 const disconnect = async (_device) => {
+	await stopSong()
 	isConnected = false
 }
 

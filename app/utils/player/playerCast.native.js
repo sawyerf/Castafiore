@@ -227,6 +227,7 @@ const connect = async (device) => {
 }
 
 const disconnect = async (_device) => {
+	await stopSong()
 	const sessionManager = GoogleCast.getSessionManager()
 	await sessionManager.endCurrentSession(true)
 }

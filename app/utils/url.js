@@ -13,11 +13,11 @@ const realCover = (config, id, size = null) => {
 
 export const urlCover = (config, id, size = null) => {
 	if (!id) return null
-	if (id === 'tuktuktuk') return 'https://github.com/sawyerf/Castafiore/blob/main/assets/icon.png?raw=true'
 	if (!config?.url || !config?.query) return null
 	if (typeof id === 'object') {
 		const item = id
 
+		if (item.id === 'tuktuktuk') return 'https://github.com/sawyerf/Castafiore/blob/main/assets/icon.png?raw=true'
 		if (item.homePageUrl && item.homePageUrl.startsWith('http')) {
 			return item.homePageUrl + '/favicon.ico'
 		}
@@ -38,6 +38,7 @@ export const urlCover = (config, id, size = null) => {
 }
 
 export const urlStream = (config, id, format = 'raw', maxBitRate = 0) => {
+	if (id === 'tuktuktuk') return 'https://sawyerf.github.io/tuktuktuk.mp3' 
 	if (!id.match(/^[a-zA-Z0-9-]*$/)) return id
 	if (format === 'raw') return getUrl(config, 'stream', { id })
 	return getUrl(config, 'stream', { id, format, maxBitRate })

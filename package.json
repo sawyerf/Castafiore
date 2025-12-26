@@ -49,6 +49,7 @@
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
     "patch-package": "^8.0.0",
+    "sharp": "^0.34.5",
     "workbox-cli": "^7.3.0"
   },
   "private": true

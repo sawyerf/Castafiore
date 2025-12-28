@@ -3,6 +3,7 @@ import CastPlayer from '~/utils/player/playerCast'
 import LocalPlayer from '~/utils/player/playerLocal'
 import State from '~/utils/playerState'
 import UpnpPlayer from '~/utils/player/playerUpnp'
+import logger from '~/utils/logger'
 
 let type = 'local'
 
@@ -173,6 +174,13 @@ export const switchPlayer = async (newType) => {
 
 export const saveState = async () => {
 	return getPlayer().saveState()
+		.catch((error) => {
+			logger.error('Player', 'Error saving state:', error)
+			return {
+				position: 0,
+				isPlaying: false
+			}
+		})
 }
 
 export default {

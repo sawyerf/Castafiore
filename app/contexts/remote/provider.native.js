@@ -9,23 +9,38 @@ import Player from '~/utils/player'
 const transfer = async (fromDevice, toDevice, config, song, songDispatch) => {
 	// Connect to new player
 	await Player.connect(toDevice, toDevice?.type || 'local')
+		.catch((error) => {
+			logger.error('RemoteProvider', 'Error connecting to new player:', error)
+			throw error
+		})
 
 	// Action on previous player
 	const savedState = await Player.saveState()
 	await Player.stopSong()
+		.catch((error) => logger.error('RemoteProvider', 'Error stopping previous player:', error))
 	await Player.disconnect(fromDevice)
+		.catch((error) => logger.error('RemoteProvider', 'Error disconnecting from previous player:', error))
 
 	await Player.switchPlayer(toDevice?.type || 'local')
 
 	// Restore state on new player
-	await Player.playSong(config, songDispatch, song.queue, song.index)
-	await Player.restoreState(savedState)
+	try {
+		await Player.playSong(config, songDispatch, song.queue, song.index)
+		await Player.restoreState(savedState)
+	} catch (error) {
+		logger.error('RemoteProvider', 'Error restoring state on new player:', error)
+		await Player.switchPlayer('local')
+		await Player.playSong(config, songDispatch, song.queue, song.index)
+		await Player.restoreState(savedState)
+		throw error
+	}
 }
 
 const transferSameType = async (fromDevice, toDevice, config, song, songDispatch) => {
 	// Save state from previous player
 	const savedState = await Player.saveState()
 	await Player.disconnect(fromDevice)
+		.catch((error) => logger.error('RemoteProvider', 'Error disconnecting from previous player:', error))
 
 	// Connect to new player
 	await Player.connect(toDevice, toDevice?.type || 'local')
@@ -63,7 +78,7 @@ export const RemoteProvider = ({ children }) => {
 			if (prevDevice?.type === currentDevice?.type) {
 				transferSameType(prevDevice, currentDevice, config, song, songDispatch)
 					.then(() => setStatus(STATUS.Connected))
-					.catch(async (error) => {
+					.catch((error) => {
 						logger.error('RemoteProvider', 'Error transferring playback (same type):', error)
 						prevSelectedDeviceRef.current = null
 						setStatus(STATUS.Connected)
@@ -74,12 +89,9 @@ export const RemoteProvider = ({ children }) => {
 			} else {
 				transfer(prevDevice, currentDevice, config, song, songDispatch)
 					.then(() => setStatus(STATUS.Connected))
-					.catch(async (error) => {
-						logger.error('RemoteProvider', 'Error transferring playback:', error)
+					.catch(() => {
 						prevSelectedDeviceRef.current = null
 						setStatus(STATUS.Connected)
-						Player.switchPlayer('local')
-						Player.playSong(config, songDispatch, song.queue, song.index)
 						setSelectedDevice(null)
 					})
 			}

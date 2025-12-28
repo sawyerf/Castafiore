@@ -11,7 +11,8 @@
     "web": "cross-env PLATFORM=web IS_DEV=true expo start --web",
     "export:web": "cross-env PLATFORM=web expo export -p web && workbox generateSW workbox-config.js",
     "eslint": "eslint app index.js App.js -c eslint.config.mjs",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+		"icon": "node ./scripts/generateIcons.js"
   },
   "dependencies": {
     "@legendapp/list": "^1.1.4",

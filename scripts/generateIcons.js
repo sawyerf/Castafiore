@@ -12,7 +12,7 @@ if (!fs.existsSync(assetsDir)) {
 	console.log('Assets directory already exists');
 }
 
-const svgOrigin = path.join(__dirname, '..', 'public', 'PWA', 'icon.svg');
+const svgOrigin = path.join(__dirname, '..', 'public', 'pwa', 'icon.svg');
 
 const getDecalage = (newSize, scale) => {
 	const H = 289.455
@@ -65,7 +65,7 @@ const convertSvgToPng = async ({ name, size = 1024, scale = 1, backgroundColor =
 convertSvgToPng({ name: 'icon', size: 1024, scale: 0.67, backgroundColor: "#660000" })
 
 // Android
-convertSvgToPng({ name: 'icon_foreground', size: 1024, scale: 0.40 })
+convertSvgToPng({ name: 'foreground-icon', size: 1024, scale: 0.40 })
 
 // PWA
 convertSvgToPng({ name: 'apple-touch-icon-180', size: 180, scale: 0.67, backgroundColor: "#660000" })

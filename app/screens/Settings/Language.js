@@ -23,6 +23,7 @@ const languages = [
 	{ lang: 'ru', name: 'Русский', color: '#ffc107', flag: '🇷🇺' },
 	{ lang: 'zhHans', name: '简体中文', color: '#FF0000', flag: '🇨🇳' },
 	{ lang: 'zhHant', name: '正體中文', color: '#0000AA', flag: '🇹🇼' },
+	{ lang: 'ko', name: '한국어', color: '#0047A0', flag: '🇰🇷' },
 ]
 
 const sysLang = localeLang()

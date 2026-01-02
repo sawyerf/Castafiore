@@ -12,6 +12,7 @@ import gl from './gl.json'
 import zhHans from './zh-Hans.json'
 import zhHant from './zh-Hant.json'
 import ptBr from './pt-br.json'
+import ko from './ko.json'
 
 i18n.use(initReactI18next).init({
 	lng: 'en',
@@ -24,6 +25,7 @@ i18n.use(initReactI18next).init({
 		fr: fr,
 		gl: gl,
 		it: it,
+		ko: ko,
 		ptBr: ptBr,
 		pt: ptBr,
 		ru: ru,

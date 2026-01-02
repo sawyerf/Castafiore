@@ -44,7 +44,7 @@
         "Scroll": "스크롤",
         "Scroll Description": "데스크톱에서 활성화하는 것을 추천합니다",
         "Show scroll helper": "스크롤 헬퍼 보여주기",
-        "ListenBrainz Stats": "ListenBrainz 상태",
+        "ListenBrainz Stats": "ListenBrainz 통계",
         "ListenBrainz User": "ListenBrainz 사용자",
         "user": "사용자"
       },
@@ -82,7 +82,7 @@
         "Clear API cache": "API 캐시 삭제",
         "Clear song cache": "노래 캐시 삭제",
         "Clear cache alert message": "정말로 캐시를 삭제하시겠습니까?",
-        "Cache stats": "캐시 상태",
+        "Cache stats": "캐시 통계",
         "No cache": "캐시 없음"
       },
       "shares": {
@@ -196,15 +196,15 @@
     "song": "노래",
     "songs": "곡",
     "Scanning for devices...": "장치 검색 중...",
-    "Remote Devices": "리모트 장치들",
-    "Connected Device": "장치 연결됨",
+    "Remote Devices": "원격 장치",
+    "Connected Device": "연결된 장치",
     "Connect to Chromecast device": "크롬캐스트 장치에 연결",
     "Connect to UPNP/DLNA device": "UPNP/DLNA 장치에 연결",
     "No Chromecast devices found or connection cancelled": "크롬캐스트 장치를 찾을 수 없거나 연결이 취소됨",
     "Error connecting to Chromecast": "크롬캐스트 연결 중 오류 발생",
     "No UPNP/DLNA devices found": "UPNP/DLNA 장치가 검색되지 않음",
     "Error scanning for devices": "장치 검색 중 오류 발생",
-    "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TV, and media receivers.": "스트리밍 호환 장치: 크롬캐스트, UPNP/DLNA 스피커, TV, 미디어 리시버.",
+    "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.": "스트리밍 호환 장치: 크롬캐스트, UPNP/DLNA 스피커, TV, 미디어 리시버.",
     "Chromecast": "크롬캐스트"
   }
 }

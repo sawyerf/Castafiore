@@ -221,7 +221,12 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 								setFullScreen={setFullScreen}
 							/>
 						</View>
-						<FavoritedButton id={song.songInfo.id} isFavorited={stars.some(s => s.id === song.songInfo.id)} style={{ padding: 20, paddingEnd: 0 }} />
+						<FavoritedButton
+							id={song.songInfo.id}
+							isFavorited={stars.some(s => s.id === song.songInfo.id)}
+							rating={song.songInfo?.userRating ?? song.songInfo?.rating ?? 0}
+							style={{ padding: 20, paddingEnd: 0 }}
+						/>
 					</View>
 					<TimeBar />
 					<View style={{ flexDirection: 'row', width: '100%', marginVertical: 30, alignItems: 'center', justifyContent: 'center', gap: 30 }}>

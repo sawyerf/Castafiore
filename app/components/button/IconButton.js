@@ -14,6 +14,7 @@ const IconButton = ({ icon, size = 23, color = undefined, style = {}, styleIcon 
 			delayLongPress={delayLongPress}
 			onPress={onPress}
 			onContextMenu={(ev) => {
+				ev.stopPropagation()
 				ev.preventDefault()
 				if (onLongPress) onLongPress()
 			}}

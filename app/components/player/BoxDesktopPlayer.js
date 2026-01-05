@@ -50,6 +50,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 				<FavoritedButton
 					id={song?.songInfo?.id}
 					isFavorited={stars.some(s => s.id === song.songInfo.id)}
+					rating={song.songInfo?.userRating ?? song.songInfo?.rating ?? 0}
 					size={19}
 					style={{ marginHorizontal: 15, padding: 5 }}
 				/>

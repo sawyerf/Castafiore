@@ -51,6 +51,7 @@ const convertTrack = (track) => {
 		covertArt: track.covertArt,
 		track: track.track,
 		starred: track.starred,
+		userRating: track.userRating ?? track.rating ?? 0,
 		size: track.size,
 		index: track.index,
 		mediaType: track.mediaType,
@@ -110,7 +111,7 @@ export const songReducer = (state, action) => {
 				state: action.state,
 			})
 		}
-		case 'addToQueue': {
+	case 'addToQueue': {
 			if (!state.songInfo || !state.queue) return state
 			const newQueue = [...state.queue]
 			if (action.index === null || action.index >= newQueue.length) {
@@ -123,6 +124,26 @@ export const songReducer = (state, action) => {
 				queue: newQueue,
 				index: (typeof action.index === 'number' && state.index >= action.index) ? state.index + 1 : state.index,
 				randomIndex: state.randomIndex?.length ? [...state.randomIndex, newQueue.length - 1] : [],
+			}, true)
+		}
+		case 'setRating': {
+			if (!state.queue?.length) return state
+			const newQueue = state.queue.map((track) => {
+				if (track.id !== action.id) return track
+				return {
+					...track,
+					userRating: action.rating,
+					rating: action.rating,
+				}
+			})
+			const songInfo = state.songInfo?.id === action.id ? {
+				...state.songInfo,
+				userRating: action.rating,
+				rating: action.rating,
+			} : state.songInfo
+			return newSong(state, {
+				queue: newQueue,
+				songInfo,
 			}, true)
 		}
 		case 'removeFromQueue': {

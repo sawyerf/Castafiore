@@ -9,9 +9,9 @@ import IconButton from '~/components/button/IconButton'
 import RatingPopup from '~/components/popup/RatingPopup'
 import logger from '~/utils/logger'
 
-const FavoritedButton = ({ id, isFavorited = false, rating: initialRating = 0, style = {}, size = 23 }) => {
+const FavoritedButton = ({ id, isFavorited = false, rating: initialRating = undefined, style = {}, size = 23 }) => {
 	const [favorited, setFavorited] = React.useState(isFavorited)
-	const [rating, setRating] = React.useState(initialRating)
+	const [rating, setRating] = React.useState(initialRating ?? 0)
 	const [isRatingOpen, setIsRatingOpen] = React.useState(false)
 	const theme = useTheme()
 	const config = useConfig()
@@ -20,7 +20,7 @@ const FavoritedButton = ({ id, isFavorited = false, rating: initialRating = 0, s
 
 	React.useEffect(() => {
 		setFavorited(isFavorited)
-		setRating(initialRating)
+		setRating(initialRating ?? 0)
 	}, [id, isFavorited, initialRating])
 
 	const onPressFavorited = () => {
@@ -49,7 +49,7 @@ const FavoritedButton = ({ id, isFavorited = false, rating: initialRating = 0, s
 			<IconButton
 				style={[{ padding: 20 }, style]}
 				onPress={onPressFavorited}
-				onLongPress={() => setIsRatingOpen(true)}
+				onLongPress={() => initialRating !== undefined ? setIsRatingOpen(true) : null}
 				size={size}
 				icon={favorited ? "heart" : "heart-o"}
 				color={theme.primaryTouch}

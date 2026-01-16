@@ -98,7 +98,12 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 					</Text>
 				) : null}
 			<Cached song={song} />
-			<FavoritedButton id={song.id} isFavorited={song?.starred} style={{ padding: 5, paddingStart: 10 }} />
+			<FavoritedButton
+				id={song.id}
+				isFavorited={song?.starred}
+				rating={song?.userRating ?? song?.rating ?? 0}
+				style={{ padding: 5, paddingStart: 10 }}
+			/>
 		</Pressable>
 	)
 }

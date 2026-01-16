@@ -111,7 +111,7 @@ export const songReducer = (state, action) => {
 				state: action.state,
 			})
 		}
-	case 'addToQueue': {
+		case 'addToQueue': {
 			if (!state.songInfo || !state.queue) return state
 			const newQueue = [...state.queue]
 			if (action.index === null || action.index >= newQueue.length) {

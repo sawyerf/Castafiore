@@ -231,7 +231,7 @@ const Search = () => {
 				paddingBottom: 0,
 			}]}>
 			<Text style={mainStyles.mainTitle(theme)}>{t('Search')}</Text>
-			<View style={[mainStyles.stdVerticalMargin, { marginBottom: 20, flexDirection: 'row', gap: 10 }]}>
+			<View style={[mainStyles.stdVerticalMargin, { marginBottom: 20, flexDirection: 'row', alignItems: 'center', gap: 10 }]}>
 				<TextInput
 					style={{
 						flex: 1,

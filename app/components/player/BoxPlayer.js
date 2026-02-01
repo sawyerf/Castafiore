@@ -32,6 +32,7 @@ const BoxPlayer = ({ setFullScreen }) => {
 				right: insets.right,
 
 				flexDirection: 'row',
+				alignItems: 'center',
 				backgroundColor: theme.playerBackground,
 				padding: 10,
 				margin: 10,

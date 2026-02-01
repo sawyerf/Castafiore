@@ -46,6 +46,12 @@
 - Multi-languages
 - Theme
 
+## Install PWA on desktop
+1. Open Google Chrome
+2. Go to the [website](https://sawyerf.github.io/Castafiore/)
+3. In the address bar, click the Install icon
+4. Confirm by clicking Install
+
 ## Build locally
 ### Web
 If you want to build the web version, run the following command:

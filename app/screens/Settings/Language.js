@@ -19,6 +19,7 @@ const languages = [
 	{ lang: 'fr', name: 'Français', color: '#007bff', flag: '🇫🇷' },
 	{ lang: 'gl', name: 'Galego', color: '#2195ddff', flag: '🇪🇸' },
 	{ lang: 'it', name: 'Italiano', color: '#28a745', flag: '🇮🇹' },
+	{ lang: 'ja', name: '日本語', color: '#BC002D', flag: '🇯🇵' },
 	{ lang: 'ko', name: '한국어', color: '#0047A0', flag: '🇰🇷' },
 	{ lang: 'ptBr', name: "Português do Brasil", color: '#302681', flag: '🇧🇷' },
 	{ lang: 'ru', name: 'Русский', color: '#ffc107', flag: '🇷🇺' },

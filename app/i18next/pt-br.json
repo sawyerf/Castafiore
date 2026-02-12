@@ -16,7 +16,7 @@
       "Favorited": "Favoritas",
       "Recently Added": "Adicionadas Recentemente",
       "Most Played": "Mais Ouvidas",
-      "Recently Played": "Recentes",
+      "Recently Played": "Ouvidas Recentemente",
       "Random": "Aleatórias",
       "Highest": "Mais Populares"
     },
@@ -211,3 +211,4 @@
     "Chromecast": "Chromecast"
   }
 }
+

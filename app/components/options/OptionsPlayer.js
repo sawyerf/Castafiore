@@ -3,12 +3,14 @@ import { Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
-import { useConfig } from '~/contexts/config'
-import { useSettings, useSetSettings } from '~/contexts/settings'
 import { getApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
-import size from '~/styles/size'
+import { useConfig } from '~/contexts/config'
+import { useSettings, useSetSettings } from '~/contexts/settings'
+import { useSongDispatch } from '~/contexts/song'
 import OptionsPopup from '~/components/popup/OptionsPopup'
+import Player from '~/utils/player'
+import size from '~/styles/size'
 
 const OptionsPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 	const { t } = useTranslation()
@@ -16,6 +18,7 @@ const OptionsPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 	const setSettings = useSetSettings()
 	const navigation = useNavigation()
 	const config = useConfig()
+	const songDispatch = useSongDispatch()
 	const refOption = React.useRef()
 
 	const goToArtist = () => {
@@ -120,6 +123,15 @@ const OptionsPlayer = ({ song, isOpen, setIsOpen, closePlayer }) => {
 					onPress: () => {
 						setSettings({ ...settings, repeatQueue: !settings.repeatQueue })
 						refOption.current.close()
+					}
+				},
+				{
+					name: t('Clear queue'),
+					icon: 'trash',
+					onPress: () => {
+						Player.resetAudio(songDispatch)
+						refOption.current.close()
+						closePlayer()
 					}
 				},
 				{

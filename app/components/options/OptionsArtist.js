@@ -36,6 +36,24 @@ const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
 		refOption.current.close()
 	}
 
+	const playSongInPlaylist = async () => {
+		const inPlaylist = []
+
+		const jsonPlaylists = await getApiCacheFirst(config, 'getPlaylists')
+		if (!jsonPlaylists?.playlists?.playlist) return
+		for (const playlist of jsonPlaylists.playlists.playlist) {
+			const jsonPlaylist = await getApiCacheFirst(config, 'getPlaylist', { id: playlist.id })
+			if (!jsonPlaylist?.playlist?.entry) return
+			jsonPlaylist.playlist.entry.forEach(song => {
+				if (song.artistId === artist.id && !inPlaylist.find(s => s.id === song.id)) {
+					inPlaylist.push(song)
+				}
+			})
+		}
+		if (inPlaylist.length > 0) playSong(config, songDispatch, inPlaylist, 0)
+		refOption.current.close()
+	}
+
 	if (!artist) return null
 	return (
 		<OptionsPopup
@@ -53,6 +71,11 @@ const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
 					name: t('Play top songs'),
 					icon: 'arrow-up',
 					onPress: playTopSongs
+				},
+				{
+					name: t('Play songs in playlists'),
+					icon: 'book',
+					onPress: playSongInPlaylist
 				},
 				{
 					name: t('Open in MusicBrainz'),

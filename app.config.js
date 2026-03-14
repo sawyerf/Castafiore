@@ -70,8 +70,11 @@ module.exports = ({ config }) => {
 					'./plugins/asyncStorage.js'
 				],
 				[
-					'react-native-google-cast'
-				]
+					"react-native-google-cast",
+					{
+					  androidPlayServicesCastFrameworkVersion: "22.2.0",
+					},
+				],
 			]
 		}
 	}

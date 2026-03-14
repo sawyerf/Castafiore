@@ -1,6 +1,6 @@
 services:
   android-builder:
-    image: openjdk:11-jdk
+    image: eclipse-temurin:11-jdk
     container_name: android-builder
     working_dir: /app
     volumes:

@@ -3,7 +3,7 @@
 # docker-compose up --build
 # docker exec -it <container_id> bash
 
-FROM openjdk:11-jdk
+FROM eclipse-temurin:11-jdk
 
 # Install necessary packages and dependencies
 RUN apt-get update && apt-get install -y \

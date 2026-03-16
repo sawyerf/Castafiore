@@ -40,10 +40,15 @@ const OptionsArtist = ({ artist, artistInfo = {}, isOption, setIsOption }) => {
 		const inPlaylist = []
 
 		const jsonPlaylists = await getApiCacheFirst(config, 'getPlaylists')
-		if (!jsonPlaylists?.playlists?.playlist) return
+			.catch(() => null)
+		if (!jsonPlaylists?.playlists?.playlist) {
+			refOption.current.close()
+			return
+		}
 		for (const playlist of jsonPlaylists.playlists.playlist) {
 			const jsonPlaylist = await getApiCacheFirst(config, 'getPlaylist', { id: playlist.id })
-			if (!jsonPlaylist?.playlist?.entry) return
+				.catch(() => null)
+			if (!jsonPlaylist?.playlist?.entry) continue
 			jsonPlaylist.playlist.entry.forEach(song => {
 				if (song.artistId === artist.id && !inPlaylist.find(s => s.id === song.id)) {
 					inPlaylist.push(song)

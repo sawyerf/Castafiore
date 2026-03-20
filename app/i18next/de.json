@@ -71,16 +71,16 @@
         "Player Theme": "Darstellung des Players"
       },
       "cache": {
-        "Song caching": "Lieder puffern",
-        "Enable song caching": "Pufferung der Lieder aktivieren",
-        "Show cached songs": "Gepufferte Lieder anzeigen",
-        "Cache next song": "Nächstes Lied puffern",
-        "Cache next song description": "Die Nächsten Lieder automatisch puffern (Standard: 5)",
-        "Clear API cache": "API-Puffer leeren",
-        "Clear song cache": "Lied-Puffer leeren",
-        "Clear cache alert message": "Möchtest du den Puffer wirklich leeren?",
-        "Cache stats": "Puffer-Statistiken",
-        "No cache": "Kein Puffer"
+        "Song caching": "Lieder zwischenspeichern",
+        "Enable song caching": "Zwischenspeicherung der Lieder aktivieren",
+        "Show cached songs": "Zwischengespeicherte Lieder anzeigen",
+        "Cache next song": "Nächstes Lied zwischenspeichern",
+        "Cache next song description": "Die Nächsten Lieder automatisch zwischenspeichern (Standard: 5)",
+        "Clear API cache": "API-Zwischenspeicher leeren",
+        "Clear song cache": "Lied-Zwischenspeicher leeren",
+        "Clear cache alert message": "Möchtest du den Zwischenspeicher wirklich leeren?",
+        "Cache stats": "Zwischenspeicher-Statistiken",
+        "No cache": "Kein Zwischenspeicher"
       },
       "shares": {
         "No shares found": "Nichts Geteiltes gefunden",
@@ -110,8 +110,8 @@
     "Albums": "Alben",
     "Artist": "Künstler",
     "Artists": "Künstler",
-    "Cache all songs": "Alle Lieder puffern",
-    "Cache": "Puffer",
+    "Cache all songs": "Alle Lieder zwischenspeichern",
+    "Cache": "Zwischenspeicher",
     "Cancel": "Abbrechen",
     "Clear": "Leeren",
     "Connect": "Verbinden",

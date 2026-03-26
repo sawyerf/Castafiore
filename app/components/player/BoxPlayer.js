@@ -11,6 +11,7 @@ import PlayButton from '~/components/button/PlayButton'
 import Player from '~/utils/player'
 import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
+import ExplicitBadge from '~/components/ExplicitBadge'
 import size from '~/styles/size'
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
@@ -48,8 +49,15 @@ const BoxPlayer = ({ setFullScreen }) => {
 				</View>
 			</ImageError>
 			<View style={{ flex: 1 }}>
-				<Text style={{ color: theme.playerPrimaryText, textAlign: 'left', flex: 1, fontWeight: 'bold' }} numberOfLines={1}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
-				<Text style={{ color: theme.playerSecondaryText, textAlign: 'left', flex: 1 }} numberOfLines={1}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
+				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+					<ExplicitBadge status={song?.songInfo?.explicitStatus} color={theme.playerPrimaryText} />
+					<Text style={{ color: theme.playerPrimaryText, textAlign: 'left', flexShrink: 1, fontWeight: 'bold' }} numberOfLines={1}>
+						{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}
+					</Text>
+				</View>
+				<Text style={{ color: theme.playerSecondaryText, textAlign: 'left' }} numberOfLines={1}>
+					{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}
+				</Text>
 			</View>
 			<IconButton
 				icon="step-forward"

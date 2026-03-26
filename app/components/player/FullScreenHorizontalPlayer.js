@@ -20,6 +20,7 @@ import size from '~/styles/size'
 import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import ConnectButton from '~/components/button/ConnectButton'
+import ExplicitBadge from '~/components/ExplicitBadge'
 
 const preview = {
 	COVER: 0,
@@ -150,7 +151,12 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 								size={size.icon.medium}
 								style={{ padding: 0, paddingBottom: 10, marginStart: 20, width: 'min-content' }}
 							/>
-							<Text numberOfLines={1} style={styles.title}>{song?.songInfo?.title}</Text>
+							<View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20 }}>
+								<ExplicitBadge status={song?.songInfo?.explicitStatus} color={color.primary} />
+								<Text numberOfLines={1} style={[styles.title, { marginHorizontal: 0, flexShrink: 1 }]}>
+									{song?.songInfo?.title}
+								</Text>
+							</View>
 							<Text numberOfLines={1} style={styles.artist}>{song?.songInfo?.artist}</Text>
 						</View>
 					</SlideControl>
@@ -189,9 +195,12 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 										}}
 									>
 										<View style={{ flex: 1, flexDirection: 'column' }}>
-											<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: size.text.medium, marginBottom: 2, textAlign: 'right' }}>
-												{item.title}
-											</Text>
+											<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 2 }}>
+												<ExplicitBadge status={item.explicitStatus} color={song.index === index ? theme.primaryTouch : color.primary} />
+												<Text numberOfLines={1} style={{ color: song.index === index ? theme.primaryTouch : color.primary, fontSize: size.text.medium, textAlign: 'right', flexShrink: 1 }}>
+													{item.title}
+												</Text>
+											</View>
 											<Text numberOfLines={1} style={{ color: color.secondary, fontSize: size.text.small, textAlign: 'right' }}>
 												{item.artist}
 											</Text>

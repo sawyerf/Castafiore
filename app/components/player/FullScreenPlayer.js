@@ -23,6 +23,8 @@ import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import SongItem from '~/components/item/SongItem'
 import ConnectButton from '~/components/button/ConnectButton'
+import ExplicitBadge from '~/components/ExplicitBadge'
+
 
 const preview = {
 	COVER: 0,
@@ -198,7 +200,10 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 									setFullScreen(false)
 								}}
 							>
-								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold' }}>{song.songInfo.title}</Text>
+								<ExplicitBadge status={song?.songInfo?.explicitStatus} color={theme.primaryText} />
+								<Text numberOfLines={1} style={{ color: theme.primaryText, fontSize: size.title.small, textAlign: 'left', fontWeight: 'bold', flexShrink: 1 }}>
+									{song.songInfo.title}
+								</Text>
 							</Pressable>
 							<Pressable
 								style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}

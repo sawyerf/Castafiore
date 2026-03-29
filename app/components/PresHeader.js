@@ -21,13 +21,19 @@ const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, onPressOptio
 					<IconButton
 						icon="ellipsis-h"
 						onPress={onPressOption}
-						color={'white'}
+						color={theme.primaryTouch}
 						style={{
 							position: 'absolute',
-							padding: 20,
+							width: 50,
+							height: 50,
+							padding: 10,
+							margin: 10,
 							top: insets.top,
 							right: insets.left,
-							zIndex: 1
+							borderRadius: '50%',
+							zIndex: 1,
+							alignItems: 'center',
+							backgroundColor: `${theme.backgroundTouch}c0`, // add 75% opacity
 						}}
 					/> : null
 			}

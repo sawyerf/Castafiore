@@ -34,7 +34,7 @@ const InformationsSettings = () => {
 	const config = useConfig()
 	const [server, setServer] = React.useState({})
 
-	const [user] = useCachedAndApi([], 'getUser', {}, (json, setData) => {
+	const [user] = useCachedAndApi([], 'getUser', { username: config.username }, (json, setData) => {
 		setServer({
 			version: json.serverVersion,
 			name: json.type,

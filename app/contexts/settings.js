@@ -18,7 +18,10 @@ export const SettingsProvider = ({ children }) => {
 	updateGlobalSettings(settings)
 
 	React.useEffect(() => {
-		getSettings().then((data) => setSettings(data))
+		getSettings().then((data) => {
+			global.headlessUrl = data.headlessUrl
+			setSettings(data)
+		})
 	}, [])
 
 	const saveSettings = React.useCallback((newSettings) => {
@@ -110,6 +113,8 @@ export const defaultSettings = {
 	orderPlaylist: 'title',
 	previewFavorited: 3,
 	language: null,
+	// Headless player
+	headlessUrl: '',
 }
 
 export const homeSections = [
@@ -281,4 +286,8 @@ const updateGlobalSettings = async (settings) => {
 	React.useEffect(() => {
 		global.repeatQueue = settings.repeatQueue
 	}, [settings.repeatQueue])
+
+	React.useEffect(() => {
+		global.headlessUrl = settings.headlessUrl
+	}, [settings.headlessUrl])
 }

@@ -163,7 +163,9 @@ export const updateVolume = () => {
 	return volume
 }
 
-const fetchStatus = () => api('GET', '/status')
+export const HEADLESS_DEVICE = { id: 'castafiore-connect', name: 'Castafiore Connect', type: 'headless' }
+
+export const fetchStatus = () => api('GET', '/status')
 
 export const saveState = async () => {
 	try {

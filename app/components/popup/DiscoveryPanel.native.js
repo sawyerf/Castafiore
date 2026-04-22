@@ -12,6 +12,9 @@ import mainStyles from '~/styles/main'
 import RotateIconButton from '~/components/button/RotateIconButton'
 import SelectItem from '~/components/settings/SelectItem'
 import settingStyles from '~/styles/settings'
+import Player from '~/utils/player'
+import IconButton from '~/components/button/IconButton'
+import SlideBar from '~/components/button/SlideBar'
 
 const DiscoveryPanel = ({ visible, onClose }) => {
 	const { t } = useTranslation()
@@ -21,6 +24,7 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 	const theme = useTheme()
 	const [devicesUpnp, setDevicesUpnp] = React.useState([])
 	const scanningUpnp = React.useRef(false)
+	const volume = Player.updateVolume()
 
 	React.useEffect(() => {
 		if (visible) scanUpnpDevices()
@@ -134,6 +138,16 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 								isSelect={!remote.selectedDevice}
 							/>
 							{
+								global.headlessUrl ? (
+									<SelectItem
+										text={t('Castafiore Connect')}
+										icon="headphones"
+										onPress={() => connect({ id: 'castafiore-connect', name: 'Castafiore Connect', type: 'headless' })}
+										isSelect={remote.selectedDevice?.type === 'headless'}
+									/>
+								) : null
+							}
+							{
 								remote.selectedDevice?.type === 'upnp' && (
 									<SelectItem
 										text={remote.selectedDevice.name || t('Device')}
@@ -177,6 +191,27 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 							{t('Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.')}
 						</Text>
 					</View>
+					{
+						Player.isVolumeSupported() &&
+						<View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 4, gap: 12 }}>
+							<IconButton
+								icon={volume ? "volume-up" : "volume-off"}
+								size={18}
+								color={theme.primaryText}
+								style={{ width: 24, alignItems: 'center' }}
+								onPress={() => Player.setVolume(volume ? 0 : 1)}
+							/>
+							<SlideBar
+								progress={volume}
+								onStart={(progress) => Player.setVolume(progress)}
+								onChange={(progress) => Player.setVolume(progress)}
+								stylePress={{ flex: 1, height: 36, paddingVertical: 12 }}
+								styleBar={{ width: '100%', height: '100%', borderRadius: 4, backgroundColor: theme.secondaryBack, overflow: 'hidden' }}
+								styleProgress={{ backgroundColor: theme.primaryTouch }}
+								isBitogno={true}
+							/>
+						</View>
+					}
 				</View>
 			</ScrollView>
 		</Modal >

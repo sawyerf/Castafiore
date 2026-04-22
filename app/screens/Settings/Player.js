@@ -9,6 +9,7 @@ import { useTheme } from '~/contexts/theme'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
+import OptionInput from '~/components/settings/OptionInput'
 import SelectItem from '~/components/settings/SelectItem'
 import settingStyles from '~/styles/settings'
 
@@ -108,6 +109,20 @@ const PlayerSettings = () => {
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>{t('settings.player.Save last queue Description')}</Text>
+
+				<Text style={settingStyles.titleContainer(theme)}>{t('Castafiore Connect')}</Text>
+				<View style={[settingStyles.optionsContainer(theme), { marginBottom: 5 }]}>
+					<OptionInput
+						title={t('URL')}
+						placeholder={'http://192.168.1.x:8899'}
+						value={settings.headlessUrl}
+						inputMode="url"
+						placeholderTextColor={theme.secondaryText}
+						onChangeText={(url) => setSettings({ ...settings, headlessUrl: url })}
+						isLast
+					/>
+				</View>
+				<Text style={settingStyles.description(theme)}>{t('settings.player.Castafiore Connect Description')}</Text>
 			</View>
 		</ScrollView>
 	)

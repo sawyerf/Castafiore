@@ -70,7 +70,8 @@
         "Save last queue Description": "Sauvegarder automatiquement la dernière file que vous avez jouée. Vous pouvez activer la section 'Dernière file' sur la page d'accueil pour y accéder.",
         "Output": "Sortie audio",
         "Local": "Local",
-        "Remote": "Distant"
+        "Remote": "Distant",
+        "Castafiore Connect Description": "URL du serveur Castafiore Connect (ex. http://192.168.1.x:8899). Laisser vide pour désactiver."
       },
       "theme": {
         "Player Theme": "Thème du lecteur"
@@ -207,6 +208,16 @@
     "No UPNP/DLNA devices found": "Aucun appareil UPNP/DLNA trouvé",
     "Error scanning for devices": "Erreur lors de la recherche d'appareils",
     "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.": "Diffusez de la musique vers des appareils compatibles : Chromecast, enceintes UPNP/DLNA, téléviseurs et lecteurs multimédia.",
-    "Chromecast": "Chromecast"
+    "Chromecast": "Chromecast",
+    "Castafiore Connect": "Castafiore Connect",
+    "URL": "URL",
+    "headless": {
+      "resume": {
+        "message": "Une lecture est en cours sur Castafiore Connect. Que voulez-vous faire ?",
+        "yes": "Reprendre la lecture à distance",
+        "send": "Envoyer la lecture en cours sur Castafiore Connect",
+        "cancel": "Annuler"
+      }
+    }
   }
 }

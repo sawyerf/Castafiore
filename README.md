@@ -37,6 +37,7 @@
 ## Support Feature
 - Customize Home page
 - Offline music
+- Offline playlists (keep selected playlists on device)
 - Favorited
 - Playlist
 - Radio
@@ -46,6 +47,17 @@
 - Multi-languages
 - Theme
 
+## Offline playlists
+On Android you can keep entire Navidrome/Subsonic playlists available offline:
+
+- Open a playlist, long-press it (or use the options button) and choose **Keep offline**. Every song of the playlist is downloaded to the device.
+- Kept playlists are marked with a cloud icon in the Playlists tab, and **re-synced automatically on launch** when a connection is available (new songs are downloaded, removed ones are pruned). When offline, the cached copy is left untouched.
+- While songs download, each row shows the **download percentage**; once cached it shows a cloud icon. The download status is reactive and updates live.
+- Opening a kept playlist shows the **disk space it occupies** next to the minutes/songs stats.
+- Choose **Remove from offline** to unmark a playlist and free its songs (songs shared with another kept playlist are preserved).
+
+> Note: offline playlist caching relies on the device file system and is available on **Android** only. The web build uses a service worker for caching instead.
+
 ## Install PWA on desktop
 1. Open Google Chrome
 2. Go to the [website](https://sawyerf.github.io/Castafiore/)
@@ -53,6 +65,8 @@
 4. Confirm by clicking Install
 
 ## Build locally
+> A [`justfile`](https://github.com/casey/just) is provided as a shortcut for the commands below. Run `just` to list the available recipes (e.g. `just web`, `just lint`, `just build-android` for a local Gradle build).
+
 ### Web
 If you want to build the web version, run the following command:
 ```bash

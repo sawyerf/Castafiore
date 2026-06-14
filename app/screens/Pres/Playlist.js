@@ -8,6 +8,9 @@ import { useCachedAndApi } from '~/utils/api'
 import { urlCover } from '~/utils/url'
 import { useSettings } from '~/contexts/settings'
 import { useTheme } from '~/contexts/theme'
+import { isPlaylistCached } from '~/utils/offlineSync'
+import { getSongsCacheSize } from '~/utils/cache'
+import { useDownloading } from '~/utils/downloadStatus'
 import PresHeader from '~/components/PresHeader'
 import mainStyles from '~/styles/main'
 import OptionsSongsList from '~/components/options/OptionsSongsList'
@@ -25,12 +28,29 @@ const Playlist = ({ route: { params } }) => {
 	const [info, setInfo] = React.useState(null)
 	const [indexOptions, setIndexOptions] = React.useState(-1)
 	const [isOption, setIsOption] = React.useState(false)
+	const [cacheSize, setCacheSize] = React.useState(null)
+	const downloading = useDownloading()
 
 	const [songs, refresh] = useCachedAndApi([], 'getPlaylist', `id=${params.playlist.id}`, (json, setData) => {
 		setInfo(json?.playlist)
 		if (settings.reversePlaylist) setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })).reverse() || [])
 		else setData(json?.playlist?.entry?.map((item, index) => ({ ...item, index })) || [])
 	}, [params.playlist.id, settings.reversePlaylist])
+
+	const isCached = isPlaylistCached(settings, params.playlist.id)
+
+	React.useEffect(() => {
+		let active = true
+		if (!isCached || !songs.length) { setCacheSize(null); return }
+		// Recomputed when a download finishes (downloading set changes) so the
+		// size grows live while the playlist is being cached.
+		getSongsCacheSize(songs.map((song) => song.id), settings.streamFormat)
+			.then((bytes) => { if (active) setCacheSize(bytes) })
+		return () => { active = false }
+	}, [isCached, songs, settings.streamFormat, downloading])
+
+	const subTitle = `${((info?.duration || params?.playlist?.duration) / 60) | 1} ${t('minutes')} · ${info?.songCount || params?.playlist?.songCount} ${t('songs')}`
+		+ (cacheSize !== null ? ` · ${(cacheSize / (1024 * 1024)).toFixed(1)} MB` : '')
 
 	const renderItem = React.useCallback(({ item, index }) => (
 		<SongItem
@@ -58,7 +78,7 @@ const Playlist = ({ route: { params } }) => {
 					<>
 						<PresHeader
 							title={info?.name || params.playlist.name}
-							subTitle={`${((info?.duration || params?.playlist?.duration) / 60) | 1} ${t('minutes')} · ${info?.songCount || params?.playlist?.songCount} ${t('songs')}`}
+							subTitle={subTitle}
 							imgSrc={urlCover(config, params.playlist)}
 							onPressOption={() => {
 								setIsOption(true)

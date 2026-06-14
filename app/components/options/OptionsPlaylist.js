@@ -7,7 +7,8 @@ import { useConfig } from '~/contexts/config'
 import { getApi } from '~/utils/api'
 import { urlStream } from '~/utils/url'
 import { downloadSong } from '~/utils/player'
-import { useSettings } from '~/contexts/settings'
+import { useSettings, useSetSettings } from '~/contexts/settings'
+import { isPlaylistCached, addCachedPlaylist, removeCachedPlaylist } from '~/utils/offlineSync'
 import OptionsPopup from '~/components/popup/OptionsPopup'
 
 const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
@@ -16,8 +17,10 @@ const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
 	const config = useConfig()
 	const refOption = React.useRef()
 	const settings = useSettings()
+	const setSettings = useSetSettings()
 
 	if (!playlist) return null
+	const isCached = isPlaylistCached(settings, playlist.id)
 	return (
 		<OptionsPopup
 			ref={refOption}
@@ -25,6 +28,15 @@ const OptionsPlaylist = ({ playlist, open, onClose, onRefresh }) => {
 			close={onClose}
 			item={playlist}
 			options={[
+				...(Platform.OS !== 'web' ? [{
+					name: isCached ? t('Remove from offline') : t('Keep offline'),
+					icon: isCached ? 'check-circle' : 'cloud-download',
+					onPress: () => {
+						refOption.current.close()
+						if (isCached) removeCachedPlaylist(config, settings, setSettings, playlist.id)
+						else addCachedPlaylist(config, settings, setSettings, playlist)
+					}
+				}] : []),
 				{
 					name: t('Cache all songs'),
 					icon: 'cloud-download',

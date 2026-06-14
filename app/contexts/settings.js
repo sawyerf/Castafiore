@@ -99,6 +99,8 @@ export const defaultSettings = {
 	isSongCaching: false,
 	cacheNextSong: 5,
 	showCache: true,
+	// Offline playlists kept on device: [{ id, name, songIds: [] }]
+	cachedPlaylists: [],
 	// Player settings
 	saveQueue: false,
 	streamFormat: 'raw',

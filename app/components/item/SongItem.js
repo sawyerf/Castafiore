@@ -1,9 +1,10 @@
 import React from 'react'
-import { Text, View, StyleSheet, Pressable } from 'react-native'
+import { Text, View, StyleSheet, Pressable, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { useConfig } from '~/contexts/config'
 import { isSongCached } from '~/utils/cache'
+import { useDownloadProgress } from '~/utils/downloadStatus'
 import { playSong } from '~/utils/player'
 import { useSettings } from '~/contexts/settings'
 import { useSongDispatch } from '~/contexts/song'
@@ -19,22 +20,25 @@ const Cached = ({ song }) => {
 	const theme = useTheme()
 	const settings = useSettings()
 	const config = useConfig()
+	const progress = useDownloadProgress(song.id)
+	const isDownloading = progress !== null
 
 	React.useEffect(() => {
-		cached(song)
-			.then((res) => {
-				setIsCached(res)
-			})
-	}, [song.id, settings.showCache])
+		let active = true
+		// Re-check whenever the download state flips so the icon updates live
+		// (e.g. progress -> cloud icon as soon as a download finishes).
+		isSongCached(config, song.id, settings.streamFormat, settings.maxBitrate)
+			.then((res) => { if (active) setIsCached(res) })
+		return () => { active = false }
+	}, [song.id, settings.streamFormat, settings.maxBitrate, isDownloading])
 
-	const cached = async (song) => {
-		if (!settings.showCache) return false
-		const cache = await isSongCached(config, song.id, settings.streamFormat, settings.maxBitrate)
-		if (cache) return true
-		return false
-	}
-
-	if (isCached) return (
+	if (isDownloading) return (
+		<View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 5, gap: 5 }}>
+			<Text style={mainStyles.smallText(theme.secondaryText)}>{progress}%</Text>
+			<ActivityIndicator size="small" color={theme.secondaryText} />
+		</View>
+	)
+	if (isCached && settings.showCache) return (
 		<Icon
 			name="cloud-download"
 			size={14}

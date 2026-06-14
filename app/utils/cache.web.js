@@ -74,6 +74,10 @@ export const getPathSong = (_songId, _streamFormat) => {
 	return null
 }
 
+export const getSongsCacheSize = async (_songIds, _streamFormat) => {
+	return 0
+}
+
 export const initCacheSong = async () => {
 	if (global) global.listCacheSong = []
 }

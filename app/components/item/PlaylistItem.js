@@ -8,6 +8,7 @@ import { useConfig } from '~/contexts/config'
 import { urlCover } from '~/utils/url'
 import { useTheme } from '~/contexts/theme'
 import { useSettings } from '~/contexts/settings'
+import { isPlaylistCached } from '~/utils/offlineSync'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
@@ -49,6 +50,7 @@ const PlaylistItem = ({ playlist, index, setIndexOption }) => {
 					{(playlist.duration / 60) | 1} {t('min')} · {playlist.songCount} {t('songs')}
 				</Text>
 			</View>
+			{isPlaylistCached(settings, playlist.id) && <Icon name="cloud-download" size={size.icon.small} color={theme.secondaryText} style={{ paddingEnd: 5 }} />}
 			{playlist.comment?.includes(`#${config.username}-pin`) && <Icon name="bookmark" size={size.icon.small} color={theme.secondaryText} style={{ paddingEnd: 5 }} />}
 		</Pressable>
 	)

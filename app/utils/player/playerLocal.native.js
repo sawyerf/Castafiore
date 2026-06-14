@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { urlCover, urlStream } from '~/utils/url'
 import { isSongCached, getPathSong } from '~/utils/cache'
+import { markDownloading, markDownloaded, setProgress } from '~/utils/downloadStatus'
 import MyState from '~/utils/playerState'
 import logger from '~/utils/logger'
 
@@ -117,8 +118,14 @@ const downloadSong = async (urlStream, id) => {
 	global.songsDownloading.push(id)
 
 	if (await isSongCached(null, id, global.streamFormat, global.maxBitRate)) return fileUri
+	markDownloading(id)
 	try {
-		const res = await FileSystem.downloadAsync(urlStream, partUri)
+		const onProgress = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
+			if (totalBytesExpectedToWrite > 0) {
+				setProgress(id, Math.round((totalBytesWritten / totalBytesExpectedToWrite) * 100))
+			}
+		}
+		const res = await FileSystem.createDownloadResumable(urlStream, partUri, {}, onProgress).downloadAsync()
 		const contentType = getHeader(res?.headers, 'content-type')
 		const contentLength = parseInt(getHeader(res?.headers, 'content-length'), 10)
 		const realSize = await FileSystem.getInfoAsync(partUri).then(info => info.size)
@@ -140,6 +147,8 @@ const downloadSong = async (urlStream, id) => {
 	} catch (error) {
 		logger.error('downloadSong', error)
 		return await returnFail(partUri, urlStream, id)
+	} finally {
+		markDownloaded(id)
 	}
 }
 

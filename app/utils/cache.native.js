@@ -55,6 +55,16 @@ export const getPathSong = (songId, streamFormat) => {
 	return `${getPathDir()}${songId}.${streamFormat}`
 }
 
+// Total size in bytes on disk of the given song ids that are cached.
+export const getSongsCacheSize = async (songIds, streamFormat) => {
+	let total = 0
+	for (const id of songIds) {
+		const info = await FileSystem.getInfoAsync(getPathSong(id, streamFormat)).catch(() => null)
+		if (info?.exists) total += info.size || 0
+	}
+	return total
+}
+
 
 const getPathDir = () => {
 	return `${FileSystem.documentDirectory}/cache/${global.config.folderCache}/songs/`

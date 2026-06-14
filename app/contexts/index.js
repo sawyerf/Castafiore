@@ -8,6 +8,7 @@ import { SongProvider } from '~/contexts/song'
 import { UpdateApiProvider } from '~/contexts/updateApi'
 import { useSong, useSongDispatch } from '~/contexts/song'
 import Player from '~/utils/player'
+import OfflineSync from '~/components/OfflineSync'
 
 const PlayerEvent = () => {
 	const song = useSong()
@@ -25,6 +26,7 @@ const AppProvider = ({ children }) => {
 						<UpdateApiProvider>
 							<RemoteProvider>
 								<PlayerEvent />
+								<OfflineSync />
 								{children}
 							</RemoteProvider>
 						</UpdateApiProvider>

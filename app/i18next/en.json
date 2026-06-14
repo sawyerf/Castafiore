@@ -114,6 +114,8 @@
     "Artist": "Artist",
     "Artists": "Artists",
     "Cache all songs": "Cache all songs",
+    "Keep offline": "Keep offline",
+    "Remove from offline": "Remove from offline",
     "Cache": "Cache",
     "Cancel": "Cancel",
     "Clear": "Clear",

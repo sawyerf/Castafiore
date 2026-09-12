@@ -55,6 +55,7 @@ const convertTrack = (track) => {
 		size: track.size,
 		index: track.index,
 		mediaType: track.mediaType,
+		explicitStatus: track.explicitStatus,
 		// radio
 		homePageUrl: track.homePageUrl,
 		name: track.name,

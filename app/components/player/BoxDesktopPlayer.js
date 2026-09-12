@@ -12,6 +12,7 @@ import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
 import SlideBar from '~/components/button/SlideBar'
 import FavoritedButton from '~/components/button/FavoritedButton'
+import ExplicitBadge from '~/components/ExplicitBadge'
 import size from '~/styles/size'
 import PlayButton from '~/components/button/PlayButton'
 
@@ -44,7 +45,12 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 					</View>
 				</ImageError>
 				<View style={{ justifyContent: 'center', gap: 2, flex: Platform.select({ web: 1, default: 0 }), maxWidth: 'min-content' }}>
-					<Text numberOfLines={1} style={{ color: theme.primaryText, textAlign: 'left', fontWeight: 'bold', maxWidth: 400 }}>{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}</Text>
+					<View style={{ flexDirection: 'row', alignItems: 'center', maxWidth: 400 }}>
+						<ExplicitBadge status={song?.songInfo?.explicitStatus} color={theme.primaryText} />
+						<Text numberOfLines={1} style={{ color: theme.primaryText, textAlign: 'left', fontWeight: 'bold', flexShrink: 1 }}>
+							{song?.songInfo?.track ? `${song?.songInfo?.track}. ` : null}{song?.songInfo?.title ? song.songInfo.title : 'Song title'}
+						</Text>
+					</View>
 					<Text numberOfLines={1} style={{ color: theme.secondaryText, textAlign: 'left', maxWidth: 400 }}>{song?.songInfo?.artist ? song.songInfo.artist : 'Artist'}</Text>
 				</View>
 				<FavoritedButton

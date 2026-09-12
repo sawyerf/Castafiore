@@ -10,6 +10,7 @@ import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
+import ExplicitBadge from '~/components/ExplicitBadge'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
@@ -51,6 +52,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 	const config = useConfig()
 	const settings = useSettings()
 	const [isHover, setIsHover] = React.useState(false)
+	const titleColor = isPlaying ? theme.primaryTouch : theme.primaryText;
 
 	return (
 		<Pressable
@@ -84,9 +86,12 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 				/>
 			</View>
 			<View style={{ flex: 1, flexDirection: 'column' }}>
-				<Text numberOfLines={1} style={[mainStyles.mediumText(isPlaying ? theme.primaryTouch : theme.primaryText), { marginBottom: 2 }]}>
-					{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
-				</Text>
+        <		View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+					<ExplicitBadge status={song.explicitStatus} color={titleColor} />
+					<Text numberOfLines={1} style={[mainStyles.mediumText(titleColor), { flexShrink: 1 }]}>
+						{(isIndex && song.track !== undefined) ? `${song.track}. ` : null}{song.title}
+					</Text>
+				</View>
 				<Text numberOfLines={1} style={mainStyles.smallText(theme.secondaryText)}>
 					{song.artist}
 				</Text>

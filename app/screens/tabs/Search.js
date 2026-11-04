@@ -17,6 +17,8 @@ import SongsList from '~/components/lists/SongsList'
 import HistoryItem from '~/components/item/HistoryItem'
 import size from '~/styles/size'
 import SectionTitle from '~/components/SectionTitle'
+import RequestSongsList from '~/components/lists/RequestSongsList'
+import { isServiceConfigured, searchCatalog } from '~/utils/songService'
 
 const STATES = {
 	INIT: 'init',
@@ -167,6 +169,26 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 	return null
 }
 
+const CatalogResults = ({ catalog }) => {
+	const { t } = useTranslation()
+	const theme = useTheme()
+	const message = (text) => (
+		<Text style={{ marginHorizontal: 20, color: theme.secondaryText, fontSize: size.text.medium }}>{text}</Text>
+	)
+
+	if (catalog.state === 'idle') return null
+	return (
+		<>
+			<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>{t('songService.Get more songs')}</Text>
+			{catalog.state === 'loading' && <ActivityIndicator color={theme.primaryTouch} />}
+			{catalog.state === 'error' && message(catalog.error)}
+			{catalog.state === 'loaded' && catalog.notice && message(t('songService.Catalogue unavailable'))}
+			{catalog.state === 'loaded' && catalog.items.length === 0 && message(t('songService.No catalogue results'))}
+			{catalog.state === 'loaded' && catalog.items.length > 0 && <RequestSongsList items={catalog.items} />}
+		</>
+	)
+}
+
 const Search = () => {
 	const { t } = useTranslation()
 	const insets = useSafeAreaInsets()
@@ -178,6 +200,8 @@ const Search = () => {
 	const [results, setResults] = React.useState()
 	const [state, setState] = React.useState(STATES.INIT)
 	const timeout = React.useRef(null)
+	const [catalog, setCatalog] = React.useState({ state: 'idle', items: [] })
+	const catalogRequest = React.useRef(0)
 
 	React.useEffect(() => {
 		if (history.length) return
@@ -190,6 +214,8 @@ const Search = () => {
 	React.useEffect(() => {
 		if (query.length === 0) {
 			setState(STATES.INIT)
+			catalogRequest.current++
+			setCatalog({ state: 'idle', items: [] })
 		} else if (query.length > 1) {
 			clearTimeout(timeout.current)
 			timeout.current = setTimeout(() => {
@@ -210,7 +236,26 @@ const Search = () => {
 		await AsyncStorage.setItem('search.history', JSON.stringify(hist))
 	}
 
+	const getCatalog = () => {
+		if (!isServiceConfigured(settings)) {
+			setCatalog({ state: 'idle', items: [] })
+			return
+		}
+		const id = ++catalogRequest.current
+		setCatalog({ state: 'loading', items: [] })
+		searchCatalog(settings, query)
+			.then((json) => {
+				if (id !== catalogRequest.current) return
+				setCatalog({ state: 'loaded', items: json.items ?? [], notice: !!json.catalogError })
+			})
+			.catch((error) => {
+				if (id !== catalogRequest.current) return
+				setCatalog({ state: 'error', items: [], error: error.message })
+			})
+	}
+
 	const getSearch = () => {
+		getCatalog()
 		setState(STATES.LOADING)
 		getApiNetworkFirst(config, 'search3', { query })
 			.then((json) => {
@@ -254,7 +299,7 @@ const Search = () => {
 				{
 					query.length ?
 						<Pressable
-							onPress={() => { addHistory(query); setQuery(''); setResults(undefined) }}
+							onPress={() => { addHistory(query); setQuery(''); setResults(undefined); catalogRequest.current++; setCatalog({ state: 'idle', items: [] }) }}
 							style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }])}>
 							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>{t('Clear')}</Text>
 						</Pressable> : null
@@ -271,6 +316,7 @@ const Search = () => {
 					setQuery={setQuery}
 					addHistory={addHistory}
 				/>
+				{query.length > 0 && state !== STATES.INIT && <CatalogResults catalog={catalog} />}
 			</ScrollView>
 		</View>
 	)
@@ -290,4 +336,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default Search
+export default Search

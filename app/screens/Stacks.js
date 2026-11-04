@@ -39,6 +39,7 @@ import PlayerSettings from '~/screens/Settings/Player'
 import PlaylistsSettings from '~/screens/Settings/Playlists'
 import SharesSettings from '~/screens/Settings/Shares'
 import ThemeSettings from '~/screens/Settings/Theme'
+import SongServiceSettings from '~/screens/Settings/SongService'
 
 import { useTheme } from '~/contexts/theme'
 
@@ -166,6 +167,7 @@ export const SettingsStack = () => {
 			<Stack.Screen name="Settings/Shares" component={SharesSettings} />
 			<Stack.Screen name="Settings/Language" component={LanguageSettings} />
 			<Stack.Screen name="Settings/Logs" component={LogsSettings} />
+			<Stack.Screen name="Settings/SongService" component={SongServiceSettings} />
 		</Stack.Navigator>
 	)
 }

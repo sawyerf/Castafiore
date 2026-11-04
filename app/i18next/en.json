@@ -1,5 +1,30 @@
 {
   "translation": {
+    "songService": {
+      "Song service": "Song service",
+      "Access token": "Access token",
+      "Description": "Search shows songs from the full catalogue. Choosing one adds it to your server and plays it. Leave the address empty to turn this off.",
+      "Save and test": "Save and test",
+      "Testing": "Testing connection…",
+      "Connected": "Connected to the song service.",
+      "Turned off": "Song service turned off.",
+      "Get more songs": "Get more songs",
+      "Catalogue unavailable": "The song catalogue is not responding, so only songs already known to the song service are shown.",
+      "No catalogue results": "No songs found in the catalogue. Try the artist and the song title.",
+      "Play title": "Play {{title}}",
+      "Get and play title": "Get and play {{title}}",
+      "On": "On",
+      "Off": "Off",
+      "job": {
+        "queued": "Waiting in line",
+        "resolving": "Finding the best match",
+        "downloading": "Downloading audio",
+        "tagging": "Adding song details",
+        "scanning": "Adding to your library",
+        "done": "Ready",
+        "failed": "Could not add this song"
+      }
+    },
     "tabs": {
       "Home": "Home",
       "Search": "Search",

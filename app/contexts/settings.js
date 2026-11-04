@@ -90,6 +90,9 @@ export const defaultSettings = {
 		{ id: 'highest-album', enable: false },
 	],
 	listenBrainzUser: '',
+	// moderato-service: full-catalogue search and adding missing songs
+	songServiceUrl: '',
+	songServiceToken: '',
 	sizeOfList: 15,
 	scrollHelper: false,
 	// Theme settings

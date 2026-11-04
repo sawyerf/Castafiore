@@ -58,6 +58,12 @@ const Settings = ({ navigation }) => {
 					endText={config.query ? (config.name?.length ? config.name : t('Connected')) : t('Not connected')}
 					icon="server"
 					onPress={() => navigation.navigate('Connect')}
+				/>
+				<ButtonMenu
+					title={t('songService.Song service')}
+					endText={setting.songServiceUrl ? t('songService.On') : t('songService.Off')}
+					icon="cloud-download"
+					onPress={() => navigation.navigate('Settings/SongService')}
 					isLast
 				/>
 			</View>
@@ -148,7 +154,9 @@ const Settings = ({ navigation }) => {
 							'Are you sure you want to reset all settings?',
 							() => setSettings({
 								...defaultSettings,
-								servers: setting.servers
+								servers: setting.servers,
+								songServiceUrl: setting.songServiceUrl,
+								songServiceToken: setting.songServiceToken,
 							})
 						)
 					}}

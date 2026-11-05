@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, ScrollView, ActivityIndicator, Pressable } from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator, Pressable, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -57,25 +57,26 @@ const CatalogAlbum = ({ route: { params } }) => {
 					<Text numberOfLines={2} style={{ color: theme.primaryText, fontSize: size.title.small, fontWeight: 'bold' }}>{album.title}</Text>
 					<Text numberOfLines={2} style={{ color: theme.secondaryText, fontSize: size.text.medium }}>{details}</Text>
 					{items?.length > 0 && (
-						<Pressable
-							onPress={() => getAll.current?.()}
-							style={({ pressed }) => ([mainStyles.opacity({ pressed }), {
-								flexDirection: 'row',
-								alignItems: 'center',
-								alignSelf: 'flex-start',
-								gap: 8,
-								marginTop: 6,
-								paddingVertical: 8,
-								paddingHorizontal: 14,
-								borderRadius: 20,
-								backgroundColor: theme.primaryTouch,
-							}])}
-						>
-							<Icon name={inLibrary === items.length ? 'play' : 'cloud-download'} size={size.icon.tiny} color={theme.innerTouch} />
-							<Text style={{ color: theme.innerTouch, fontSize: size.text.medium, fontWeight: 'bold' }}>
-								{inLibrary === items.length ? t('songService.Play album') : t('songService.Get album')}
-							</Text>
-						</Pressable>
+						<View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 6 }}>
+							<Pressable
+								onPress={() => getAll.current?.({ play: true })}
+								style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.button, { backgroundColor: theme.primaryTouch }])}
+							>
+								<Icon name="play" size={size.icon.tiny} color={theme.innerTouch} />
+								<Text style={[styles.buttonText, { color: theme.innerTouch }]}>
+									{inLibrary === items.length ? t('songService.Play album') : t('songService.Get album')}
+								</Text>
+							</Pressable>
+							{inLibrary < items.length && (
+								<Pressable
+									onPress={() => getAll.current?.({ play: false })}
+									style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.button, { backgroundColor: theme.secondaryBack }])}
+								>
+									<Icon name="cloud-download" size={size.icon.tiny} color={theme.primaryText} />
+									<Text style={[styles.buttonText, { color: theme.primaryText }]}>{t('songService.Add album')}</Text>
+								</Pressable>
+							)}
+						</View>
 					)}
 				</View>
 			</View>
@@ -85,5 +86,20 @@ const CatalogAlbum = ({ route: { params } }) => {
 		</ScrollView>
 	)
 }
+
+const styles = StyleSheet.create({
+	button: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 8,
+		paddingVertical: 8,
+		paddingHorizontal: 14,
+		borderRadius: 20,
+	},
+	buttonText: {
+		fontSize: size.text.medium,
+		fontWeight: 'bold',
+	},
+})
 
 export default CatalogAlbum

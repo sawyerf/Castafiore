@@ -39,8 +39,9 @@ const Progress = ({ state }) => {
 }
 
 /**
- * Songs from the full catalogue, via moderato-service. Tapping one adds it to the
- * library if needed and plays it as soon as Navidrome has it.
+ * Songs from the full catalogue, via moderato-service. Tapping a row adds the song to
+ * the library if needed and plays it as soon as Navidrome has it; the download button
+ * only adds it.
  */
 const RequestSongsList = ({ items, isIndex = false, getAllRef = null }) => {
 	const { t } = useTranslation()
@@ -79,13 +80,15 @@ const RequestSongsList = ({ items, isIndex = false, getAllRef = null }) => {
 	}
 
 	/**
-	 * Add every song and play them in list order: the first one starts as soon as it is
-	 * ready, the rest join the queue as they arrive. The service downloads one at a time.
+	 * Add every song. With `play`, also play them in list order: the first one starts as
+	 * soon as it is ready, the rest join the queue as they arrive. The service downloads
+	 * one at a time.
 	 */
-	const getAll = async () => {
+	const getAll = async ({ play = true } = {}) => {
+		const pending = items.map(ensure)
+		if (!play) return
 		const token = {}
 		latest.current = token
-		const pending = items.map(ensure)
 		let started = false
 		for (const p of pending) {
 			const subsonicId = await p
@@ -105,6 +108,12 @@ const RequestSongsList = ({ items, isIndex = false, getAllRef = null }) => {
 		latest.current = item.id
 		const subsonicId = await ensure(item)
 		if (subsonicId && latest.current === item.id) await play(subsonicId)
+	}
+
+	const add = (item) => {
+		const current = jobs[item.id]
+		if (current && !current.error) return
+		ensure(item)
 	}
 
 	return (
@@ -138,12 +147,25 @@ const RequestSongsList = ({ items, isIndex = false, getAllRef = null }) => {
 							</Text>
 							{busy && <Progress state={job.state} />}
 						</View>
-						<Icon
-							name={inLibrary ? 'play' : busy ? 'hourglass-half' : 'cloud-download'}
-							size={size.icon.tiny}
-							color={inLibrary ? theme.primaryTouch : theme.secondaryText}
-							style={{ padding: 5, paddingStart: 10 }}
-						/>
+						{inLibrary || busy ? (
+							<Icon
+								name={inLibrary ? 'check' : 'hourglass-half'}
+								size={size.icon.tiny}
+								color={inLibrary ? theme.primaryTouch : theme.secondaryText}
+								style={styles.action}
+								accessibilityLabel={inLibrary ? t('songService.In your library') : undefined}
+							/>
+						) : (
+							<Pressable
+								onPress={() => add(item)}
+								hitSlop={10}
+								style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.action])}
+								accessibilityRole="button"
+								accessibilityLabel={t('songService.Add title', { title: item.title })}
+							>
+								<Icon name="cloud-download" size={size.icon.tiny} color={theme.secondaryText} />
+							</Pressable>
+						)}
 					</Pressable>
 				)
 			})}
@@ -158,6 +180,10 @@ const styles = StyleSheet.create({
 		minHeight: size.image.small,
 		marginBottom: 10,
 		borderRadius: 4,
+	},
+	action: {
+		padding: 5,
+		paddingStart: 10,
 	},
 })
 

@@ -11,6 +11,7 @@ import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
 import ButtonMenu from '~/components/settings/ButtonMenu'
 import ButtonSwitch from '~/components/settings/ButtonSwitch'
+import { isServiceConfigured } from '~/utils/songService'
 import mainStyles from '~/styles/main'
 import Player from '~/utils/player'
 import settingStyles from '~/styles/settings'
@@ -61,7 +62,7 @@ const Settings = ({ navigation }) => {
 				/>
 				<ButtonMenu
 					title={t('songService.Song service')}
-					endText={setting.songServiceUrl?.trim() ? t('songService.On') : t('songService.Off')}
+					endText={isServiceConfigured(setting) ? t('songService.Configured') : t('songService.Not configured short')}
 					icon="cloud-download"
 					onPress={() => navigation.navigate('Settings/SongService')}
 					isLast

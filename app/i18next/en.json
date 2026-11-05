@@ -14,8 +14,8 @@
       "No catalogue results": "No songs found in the catalogue. Try the artist and the song title.",
       "Play title": "Play {{title}}",
       "Get and play title": "Get and play {{title}}",
-      "On": "On",
-      "Off": "Off",
+      "Configured": "Configured",
+      "Not configured short": "Not configured",
       "job": {
         "queued": "Waiting in line",
         "resolving": "Finding the best match",

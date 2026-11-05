@@ -61,7 +61,7 @@ const Settings = ({ navigation }) => {
 				/>
 				<ButtonMenu
 					title={t('songService.Song service')}
-					endText={setting.songServiceUrl ? t('songService.On') : t('songService.Off')}
+					endText={setting.songServiceUrl?.trim() ? t('songService.On') : t('songService.Off')}
 					icon="cloud-download"
 					onPress={() => navigation.navigate('Settings/SongService')}
 					isLast

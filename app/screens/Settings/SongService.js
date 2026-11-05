@@ -27,10 +27,22 @@ const SongServiceSettings = () => {
 		setToken(settings.songServiceToken)
 	}, [settings.songServiceUrl, settings.songServiceToken])
 
-	const save = () => {
-		const next = { ...settings, songServiceUrl: url.trim().replace(/\/$/, ''), songServiceToken: token.trim() }
-		setSettings(next)
-		if (!next.songServiceUrl) {
+	// Stored as typed; songService trims it when making requests.
+	const values = (u, tk) => ({ ...settings, songServiceUrl: u, songServiceToken: tk })
+
+	// Save as the user types, so leaving the page never drops what was entered.
+	const changeUrl = (value) => {
+		setUrl(value)
+		setSettings(values(value, token))
+	}
+	const changeToken = (value) => {
+		setToken(value)
+		setSettings(values(url, value))
+	}
+
+	const test = () => {
+		const next = values(url, token)
+		if (!next.songServiceUrl.trim()) {
 			setStatus(t('songService.Turned off'))
 			return
 		}
@@ -55,21 +67,21 @@ const SongServiceSettings = () => {
 						placeholder="http://192.168.1.10:43019"
 						value={url}
 						inputMode="url"
-						onChangeText={setUrl}
+						onChangeText={changeUrl}
 					/>
 					<OptionInput
 						title={t('songService.Access token')}
 						placeholder={t('songService.Access token')}
 						value={token}
 						isPassword
-						onChangeText={setToken}
+						onChangeText={changeToken}
 						isLast
 					/>
 				</View>
 				<Text style={settingStyles.description(theme)}>
 					{t('songService.Description')}
 				</Text>
-				<ButtonText text={t('songService.Save and test')} onPress={save} />
+				<ButtonText text={t('songService.Test connection')} onPress={test} />
 				{status && <Text style={[settingStyles.description(theme), { textAlign: 'center' }]}>{status}</Text>}
 			</View>
 		</ScrollView>

@@ -177,6 +177,12 @@ const CatalogResults = ({ catalog }) => {
 	)
 
 	if (catalog.state === 'idle') return null
+	if (catalog.state === 'unconfigured') return (
+		<>
+			<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>{t('songService.Get more songs')}</Text>
+			{message(t('songService.Not configured'))}
+		</>
+	)
 	return (
 		<>
 			<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>{t('songService.Get more songs')}</Text>
@@ -238,7 +244,7 @@ const Search = () => {
 
 	const getCatalog = () => {
 		if (!isServiceConfigured(settings)) {
-			setCatalog({ state: 'idle', items: [] })
+			setCatalog({ state: 'unconfigured', items: [] })
 			return
 		}
 		const id = ++catalogRequest.current

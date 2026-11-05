@@ -18,16 +18,16 @@ export const JOB_LABELS = {
 	failed: 'Could not add this song',
 }
 
-export const isServiceConfigured = (settings) => !!(settings?.songServiceUrl && settings?.songServiceToken)
+export const isServiceConfigured = (settings) => !!(settings?.songServiceUrl?.trim() && settings?.songServiceToken?.trim())
 
 const request = async (settings, path, init = {}) => {
-	const url = `${settings.songServiceUrl.replace(/\/$/, '')}${path}`
+	const url = `${settings.songServiceUrl.trim().replace(/\/+$/, '')}${path}`
 	let res
 	try {
 		res = await fetch(url, {
 			...init,
 			headers: {
-				Authorization: `Bearer ${settings.songServiceToken}`,
+				Authorization: `Bearer ${settings.songServiceToken.trim()}`,
 				'Content-Type': 'application/json',
 				...init.headers,
 			},

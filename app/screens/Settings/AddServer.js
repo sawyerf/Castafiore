@@ -56,8 +56,12 @@ const AddServer = ({ navigation }) => {
 			query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
 		}
 
-		if (Platform.OS !== 'android' && uri.startsWith('http://')) {
-			setError('Only https is allowed')
+		// Browsers block http requests from an https page (mixed content). An app served
+		// over http, like a local or LAN build, can reach an http server. Android allows
+		// cleartext through usesCleartextTraffic.
+		const isHttpsPage = Platform.OS === 'web' && window.location.protocol === 'https:'
+		if (isHttpsPage && uri.startsWith('http://')) {
+			setError('This page is loaded over https, so the browser blocks http servers. Use an https address for the server, or open Castafiore over http.')
 			return
 		}
 		getApi({ url: uri, query }, 'ping.view')

@@ -8,7 +8,7 @@ import { useSettings } from '~/contexts/settings'
 import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
 import { getApi } from '~/utils/api'
-import { playSong } from '~/utils/player'
+import { addToQueue, playSong } from '~/utils/player'
 import { fetchSong, JOB_STEPS } from '~/utils/songService'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
@@ -42,7 +42,7 @@ const Progress = ({ state }) => {
  * Songs from the full catalogue, via moderato-service. Tapping one adds it to the
  * library if needed and plays it as soon as Navidrome has it.
  */
-const RequestSongsList = ({ items }) => {
+const RequestSongsList = ({ items, isIndex = false, getAllRef = null }) => {
 	const { t } = useTranslation()
 	const theme = useTheme()
 	const config = useConfig()
@@ -54,27 +54,57 @@ const RequestSongsList = ({ items }) => {
 
 	const setJob = (id, value) => setJobs((prev) => ({ ...prev, [id]: value }))
 
+	const getSong = (subsonicId) =>
+		getApi(config, 'getSong', { id: subsonicId }).then((json) => json?.song).catch(() => null)
+
 	const play = async (subsonicId) => {
-		const json = await getApi(config, 'getSong', { id: subsonicId })
-		if (json?.song) playSong(config, songDispatch, [json.song], 0)
+		const song = await getSong(subsonicId)
+		if (song) playSong(config, songDispatch, [song], 0)
 	}
+
+	/** Resolves with the song's Subsonic id once it is in the library, or null if it could not be added. */
+	const ensure = async (item) => {
+		const current = jobs[item.id]
+		if (item.cached && item.subsonicId) return item.subsonicId
+		if (current?.subsonicId) return current.subsonicId
+		try {
+			setJob(item.id, { state: 'queued' })
+			const subsonicId = await fetchSong(settings, item.id, (job) => setJob(item.id, { state: job.state }))
+			setJob(item.id, { state: 'done', subsonicId })
+			return subsonicId
+		} catch (error) {
+			setJob(item.id, { error: error?.message ?? t('songService.job.failed') })
+			return null
+		}
+	}
+
+	/**
+	 * Add every song and play them in list order: the first one starts as soon as it is
+	 * ready, the rest join the queue as they arrive. The service downloads one at a time.
+	 */
+	const getAll = async () => {
+		const token = {}
+		latest.current = token
+		const pending = items.map(ensure)
+		let started = false
+		for (const p of pending) {
+			const subsonicId = await p
+			if (!subsonicId || latest.current !== token) continue
+			const song = await getSong(subsonicId)
+			if (!song) continue
+			if (started) addToQueue(songDispatch, song)
+			else playSong(config, songDispatch, [song], 0)
+			started = true
+		}
+	}
+	if (getAllRef) getAllRef.current = getAll
 
 	const onPress = async (item) => {
 		const current = jobs[item.id]
 		if (current && !current.error && current.state !== 'done') return
 		latest.current = item.id
-		try {
-			if (item.cached && item.subsonicId) {
-				await play(item.subsonicId)
-				return
-			}
-			setJob(item.id, { state: 'queued' })
-			const subsonicId = await fetchSong(settings, item.id, (job) => setJob(item.id, { state: job.state }))
-			setJob(item.id, { state: 'done', subsonicId })
-			if (latest.current === item.id) await play(subsonicId)
-		} catch (error) {
-			setJob(item.id, { error: error?.message ?? t('songService.job.failed') })
-		}
+		const subsonicId = await ensure(item)
+		if (subsonicId && latest.current === item.id) await play(subsonicId)
 	}
 
 	return (
@@ -97,7 +127,7 @@ const RequestSongsList = ({ items }) => {
 						</View>
 						<View style={{ flex: 1, flexDirection: 'column' }}>
 							<Text numberOfLines={1} style={[mainStyles.mediumText(theme.primaryText), { marginBottom: 2 }]}>
-								{item.title}
+								{isIndex && item.trackNumber ? `${item.trackNumber}. ` : ''}{item.title}
 							</Text>
 							<Text numberOfLines={1} style={mainStyles.smallText(job?.error ? theme.primaryTouch : theme.secondaryText)}>
 								{job?.error

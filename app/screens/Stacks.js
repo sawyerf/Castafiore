@@ -27,6 +27,7 @@ import Info from '~/screens/Info'
 import ShowAll from '~/screens/ShowAll'
 
 import SearchMore from '~/screens/SearchMore'
+import CatalogAlbum from '~/screens/CatalogAlbum'
 
 import AddServer from '~/screens/Settings/AddServer'
 import CacheSettings from '~/screens/Settings/Cache'
@@ -94,6 +95,7 @@ export const SearchStack = () => {
 		>
 			<Stack.Screen name="Search" component={Search} />
 			<Stack.Screen name="SearchMore" component={SearchMore} />
+			<Stack.Screen name="CatalogAlbum" component={CatalogAlbum} />
 			<Stack.Screen name="AlbumExplorer" component={AlbumExplorer} />
 			<Stack.Screen name="ArtistExplorer" component={ArtistExplorer} />
 			<Stack.Screen name="SongExplorer" component={SongExplorer} />

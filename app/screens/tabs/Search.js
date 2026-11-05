@@ -18,6 +18,7 @@ import HistoryItem from '~/components/item/HistoryItem'
 import size from '~/styles/size'
 import SectionTitle from '~/components/SectionTitle'
 import RequestSongsList from '~/components/lists/RequestSongsList'
+import RequestAlbumsList from '~/components/lists/RequestAlbumsList'
 import { isServiceConfigured, searchCatalog } from '~/utils/songService'
 
 const STATES = {
@@ -189,8 +190,19 @@ const CatalogResults = ({ catalog }) => {
 			{catalog.state === 'loading' && <ActivityIndicator color={theme.primaryTouch} />}
 			{catalog.state === 'error' && message(catalog.error)}
 			{catalog.state === 'loaded' && catalog.notice && message(t('songService.Catalogue unavailable'))}
-			{catalog.state === 'loaded' && catalog.items.length === 0 && message(t('songService.No catalogue results'))}
-			{catalog.state === 'loaded' && catalog.items.length > 0 && <RequestSongsList items={catalog.items} />}
+			{catalog.state === 'loaded' && catalog.items.length === 0 && catalog.albums.length === 0 && message(t('songService.No catalogue results'))}
+			{catalog.state === 'loaded' && catalog.albums.length > 0 && (
+				<>
+					<Text style={[mainStyles.smallText(theme.secondaryText), { marginHorizontal: 20 }]}>{t('Albums')}</Text>
+					<RequestAlbumsList albums={catalog.albums} />
+				</>
+			)}
+			{catalog.state === 'loaded' && catalog.items.length > 0 && (
+				<>
+					<Text style={[mainStyles.smallText(theme.secondaryText), { marginHorizontal: 20 }]}>{t('Songs')}</Text>
+					<RequestSongsList items={catalog.items} />
+				</>
+			)}
 		</>
 	)
 }
@@ -252,7 +264,7 @@ const Search = () => {
 		searchCatalog(settings, query)
 			.then((json) => {
 				if (id !== catalogRequest.current) return
-				setCatalog({ state: 'loaded', items: json.items ?? [], notice: !!json.catalogError })
+				setCatalog({ state: 'loaded', items: json.items ?? [], albums: json.albums ?? [], notice: !!json.catalogError })
 			})
 			.catch((error) => {
 				if (id !== catalogRequest.current) return

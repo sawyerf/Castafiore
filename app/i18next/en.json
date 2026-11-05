@@ -14,6 +14,9 @@
       "No catalogue results": "No songs found in the catalogue. Try the artist and the song title.",
       "Play title": "Play {{title}}",
       "Get and play title": "Get and play {{title}}",
+      "Get album": "Get album",
+      "Play album": "Play album",
+      "Album songs": "{{cached}} of {{count}} songs in your library",
       "Configured": "Configured",
       "Not configured short": "Not configured",
       "job": {

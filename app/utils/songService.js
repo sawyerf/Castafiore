@@ -44,9 +44,13 @@ const request = async (settings, path, init = {}) => {
 	return res.json()
 }
 
-/** @returns {Promise<{ items: Array, catalogError?: string }>} */
+/** @returns {Promise<{ items: Array, albums: Array, catalogError?: string }>} */
 export const searchCatalog = (settings, query, limit = 20) =>
 	request(settings, `/v1/search?q=${encodeURIComponent(query)}&limit=${limit}`)
+
+/** An album from the catalogue and its tracks, each with a track id that can be requested. */
+export const getCatalogAlbum = (settings, albumId) =>
+	request(settings, `/v1/albums/${encodeURIComponent(albumId)}`)
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 

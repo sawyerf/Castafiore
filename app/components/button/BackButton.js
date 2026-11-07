@@ -2,12 +2,14 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { useTheme } from '~/contexts/theme'
 import IconButton from '~/components/button/IconButton'
 import size from '~/styles/size'
 
 const BackButton = () => {
 	const navigation = useNavigation()
 	const insets = useSafeAreaInsets()
+	const theme = useTheme()
 
 	return (
 		<IconButton
@@ -20,7 +22,7 @@ const BackButton = () => {
 			}} onPress={() => navigation.goBack()}
 			icon="chevron-left"
 			size={size.icon.small}
-			color="#fff"
+			color={theme.primaryText}
 		/>
 	)
 }

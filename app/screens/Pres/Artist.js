@@ -80,6 +80,7 @@ const Artist = ({ navigation, route: { params } }) => {
 					title={artist.name || params.name}
 					subTitle={t('Artist')}
 					imgSrc={urlCover(config, params)}
+					songs={topSongs || []}
 					onPressOption={() => {
 						setIsOption(true)
 					}}

@@ -7,6 +7,8 @@ import BackButton from '~/components/button/BackButton'
 import Icon from '~/components/Icon'
 import IconButton from '~/components/button/IconButton'
 import presStyles from '~/styles/pres'
+import size from '~/styles/size'
+import { HeaderGradient } from '~/components/PresHeader'
 
 const PresHeaderIcon = ({ title, subTitle, icon, onPressOption = null, children = null }) => {
 	const theme = useTheme()
@@ -30,15 +32,16 @@ const PresHeaderIcon = ({ title, subTitle, icon, onPressOption = null, children 
 						}}
 					/> : null
 			}
-			<View style={styles.cover}>
-				<Icon name={icon} size={100} color={'#cd1921'} />
-			</View>
-			<View style={presStyles.headerContainer}>
-				<View style={{ flex: 1 }}>
-					<Text style={presStyles.title(theme)}>{title}</Text>
-					<Text style={presStyles.subTitle(theme)}>{subTitle}</Text>
+			<View style={[styles.cover, { paddingTop: insets.top + 60 }]}>
+				<HeaderGradient theme={theme} height={260 + insets.top + 80} />
+				<View style={[styles.tile, { backgroundColor: theme.primaryTouch }]}>
+					<Icon name={icon} size={100} color={theme.innerTouch} />
 				</View>
-				{children}
+			</View>
+			<Text style={presStyles.title(theme)}>{title}</Text>
+			<Text style={presStyles.subTitle(theme)}>{subTitle}</Text>
+			<View style={presStyles.headerContainer}>
+				<View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>{children}</View>
 			</View>
 		</>
 	)
@@ -46,12 +49,16 @@ const PresHeaderIcon = ({ title, subTitle, icon, onPressOption = null, children 
 
 const styles = StyleSheet.create({
 	cover: {
-		width: "100%",
-		height: 300,
-		flexDirection: 'column',
-		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#c68588',
+		paddingBottom: 20,
+	},
+	tile: {
+		width: 260,
+		height: 260,
+		maxWidth: '60%',
+		borderRadius: size.radius.sm,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 })
 

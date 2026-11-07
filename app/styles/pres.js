@@ -29,6 +29,8 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		width: '100%',
 		maxWidth: '100%',
-		marginBottom: 30
+		alignItems: 'center',
+		marginTop: 10,
+		marginBottom: 20
 	},
 })

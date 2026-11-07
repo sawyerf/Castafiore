@@ -47,6 +47,7 @@ const Album = ({ navigation, route: { params } }) => {
 				title={album?.name || album?.album || album?.title || params.name || params.album || params.title}
 				subTitle={album?.artist || params.artist || '-'}
 				imgSrc={urlCover(config, params)}
+				songs={songs}
 				onPressOption={() => setIsOptAlbum(true)}
 				onPressTitle={() => {
 					if (album?.artists?.length > 1) setIsOptArtists(true)

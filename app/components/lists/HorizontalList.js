@@ -10,6 +10,7 @@ import { useTheme } from '~/contexts/theme'
 import { useSettings, homeSections } from '~/contexts/settings'
 import { useConfig } from '~/contexts/config'
 import { useUpdateApi, isUpdatable } from '~/contexts/updateApi'
+import { SkeletonRow } from '~/components/Skeleton'
 import HorizontalQueue from '~/components/lists/HorizontalQueue'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
 import HorizontalArtists from '~/components/lists/HorizontalArtists'
@@ -24,6 +25,7 @@ import logger from '~/utils/logger'
 const HorizontalList = ({ refresh, id, enable }) => {
 	const { t } = useTranslation()
 	const [list, setList] = React.useState()
+	const [gaveUp, setGaveUp] = React.useState(false)
 	const theme = useTheme()
 	const settings = useSettings()
 	const navigation = useNavigation()
@@ -93,8 +95,15 @@ const HorizontalList = ({ refresh, id, enable }) => {
 		}
 	}
 
+	// Show a placeholder while loading; stop after a while so a failing request does not shimmer forever.
+	React.useEffect(() => {
+		setGaveUp(false)
+		const timer = setTimeout(() => setGaveUp(true), 8000)
+		return () => clearTimeout(timer)
+	}, [id, refresh])
+
 	if (!enable) return null
-	if (!list) return null
+	if (!list) return section?.type === 'listenbrainz' || gaveUp || !config.query ? null : <SkeletonRow />
 	if (list?.length === 0) return null
 	return (
 		<>

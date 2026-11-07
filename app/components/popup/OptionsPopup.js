@@ -117,7 +117,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 				style={{
 					width: '100%',
 					height: '100%',
-					backgroundColor: 'rgba(0,0,0,0.5)',
+					backgroundColor: theme.overlay,
 				}}
 				contentContainerStyle={{
 					justifyContent: 'flex-end',
@@ -164,7 +164,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 									width: 50,
 									height: 50,
 									marginRight: 10,
-									borderRadius: 5,
+									borderRadius: size.radius.sm,
 								}}
 								source={{ uri: urlCover(config, item, 100) }}
 							/>
@@ -194,4 +194,4 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 	)
 }
 
-export default OptionsPopup
+export default OptionsPopup

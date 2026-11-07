@@ -59,7 +59,7 @@ const TimeBar = () => {
 				onChange={(progress) => setFakeTime(progress)}
 				onComplete={(progress) => Player.setPosition(progress * duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
 				stylePress={{ flex: 1, height: 26, paddingVertical: 10 }}
-				styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
+				styleBar={{ width: '100%', height: '100%', borderRadius: size.radius.sm, backgroundColor: color.primary, overflow: 'hidden' }}
 				styleProgress={{ backgroundColor: theme.primaryTouch }}
 			/>
 			<Text style={{ color: color.primary, fontSize: size.text.small }}>{Player.secondToTime(duration)}</Text>
@@ -205,7 +205,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 													justifyContent: 'center', alignItems: 'center'
 												}}
 												>
-													<Icon name="align-center" size={19} color={'white'} style={{ height: 19, transform: [{ rotate: '90deg' }] }} />
+													<Icon name="align-center" size={19} color={theme.onImage} style={{ height: 19, transform: [{ rotate: '90deg' }] }} />
 												</View>
 											)}
 											<ImageError
@@ -296,7 +296,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 									onStart={(progress) => Player.setVolume(progress)}
 									onChange={(progress) => Player.setVolume(progress)}
 									stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, flex: 1 }}
-									styleBar={{ width: '100%', height: '100%', borderRadius: 3, backgroundColor: color.primary, overflow: 'hidden' }}
+									styleBar={{ width: '100%', height: '100%', borderRadius: size.radius.sm, backgroundColor: color.primary, overflow: 'hidden' }}
 									styleProgress={{ backgroundColor: theme.primaryTouch }}
 									isBitogno={true}
 								/>
@@ -305,7 +305,7 @@ const FullScreenHorizontalPlayer = ({ setFullScreen }) => {
 						<IconButton
 							icon="expand"
 							size={17}
-							style={{ height: 30, justifyContent: 'center', paddingHorizontal: 8, marginStart: Player.isVolumeSupported() ? 15 : 0, borderRadius: 4 }}
+							style={{ height: 30, justifyContent: 'center', paddingHorizontal: 8, marginStart: Player.isVolumeSupported() ? 15 : 0, borderRadius: size.radius.sm }}
 							color={color.primary}
 							onPress={() => setFullScreen(false)}
 						/>
@@ -348,9 +348,9 @@ const styles = StyleSheet.create({
 		maxHeight: '100%',
 		width: 'auto',
 		aspectRatio: 1,
-		borderRadius: 5,
+		borderRadius: size.radius.sm,
 		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 	},
 })
 
-export default FullScreenHorizontalPlayer
+export default FullScreenHorizontalPlayer

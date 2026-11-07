@@ -21,7 +21,7 @@ const PresHeader = ({ title, subTitle, imgSrc, onPressTitle = null, onPressOptio
 					<IconButton
 						icon="ellipsis-h"
 						onPress={onPressOption}
-						color={'white'}
+						color={theme.onImage}
 						style={{
 							position: 'absolute',
 							padding: 20,

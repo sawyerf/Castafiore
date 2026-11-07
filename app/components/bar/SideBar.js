@@ -28,14 +28,14 @@ const FavoritedItem = ({ navigation, t }) => {
 				marginHorizontal: 10,
 				paddingVertical: 5,
 				paddingHorizontal: 10,
-				borderRadius: 8,
+				borderRadius: size.radius.md,
 			}}
 			onPress={async () => {
 				await navigation.navigate('PlaylistsStack', { screen: 'Playlists' })
 				await navigation.navigate('PlaylistsStack', { screen: 'Favorited' })
 			}}
 		>
-			<View style={{ backgroundColor: '#c68588', width: 40, height: 40, borderRadius: 5, alignItems: 'center', justifyContent: 'center' }}>
+			<View style={{ backgroundColor: '#c68588', width: 40, height: 40, borderRadius: size.radius.sm, alignItems: 'center', justifyContent: 'center' }}>
 				<Icon name="heart" size={size.icon.tiny} color={'#cd1921'} />
 			</View>
 			<View style={{ flexDirection: 'column', flex: 1 }}>
@@ -67,7 +67,7 @@ const PlaylistItem = ({ item, navigation, t }) => {
 				marginHorizontal: 10,
 				paddingVertical: 4,
 				paddingHorizontal: 10,
-				borderRadius: 8,
+				borderRadius: size.radius.md,
 				marginBottom: 3,
 			}}
 			onPress={async () => {
@@ -77,7 +77,7 @@ const PlaylistItem = ({ item, navigation, t }) => {
 		>
 			<ImageError
 				source={{ uri: urlCover(config, item, 100) }}
-				style={{ backgroundColor: theme.secondaryBack, width: 40, height: 40, borderRadius: 5 }}
+				style={{ backgroundColor: theme.secondaryBack, width: 40, height: 40, borderRadius: size.radius.sm }}
 			/>
 			<View style={{ flexDirection: 'column', flex: 1 }}>
 				<Text
@@ -171,7 +171,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 							marginHorizontal: 10,
 							paddingVertical: 4,
 							paddingLeft: 10,
-							borderRadius: 8,
+							borderRadius: size.radius.md,
 							marginBottom: 3,
 						}])}
 						disabled={(!config.query && route.name !== 'Settings')}
@@ -191,7 +191,7 @@ const SideBar = ({ state, descriptors, navigation }) => {
 							style={{ marginTop: 16 }}
 							onPress={() => setRefresh(refresh + 1)}
 						>
-							<Text style={[mainStyles.subTitle(theme), { fontSize: 23, marginBottom: 10, marginLeft: 20 }]}>{t('Playlists')}</Text>
+							<Text style={[mainStyles.subTitle(theme), { fontSize: size.title.small, marginBottom: 10, marginLeft: 20 }]}>{t('Playlists')}</Text>
 						</Pressable>
 						<ScrollView
 							showsVerticalScrollIndicator={false}
@@ -228,4 +228,4 @@ const styles = StyleSheet.create({
 	}),
 })
 
-export default SideBar
+export default SideBar

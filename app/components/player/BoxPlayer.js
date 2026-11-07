@@ -36,7 +36,7 @@ const BoxPlayer = ({ setFullScreen }) => {
 				backgroundColor: theme.playerBackground,
 				padding: 10,
 				margin: 10,
-				borderRadius: 10,
+				borderRadius: size.radius.lg,
 				display: isKeyboardOpen ? 'none' : undefined,
 			}}>
 			<ImageError
@@ -72,10 +72,10 @@ const styles = StyleSheet.create({
 		height: size.image.player,
 		width: size.image.player,
 		marginRight: 10,
-		borderRadius: 4,
+		borderRadius: size.radius.sm,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 })
 
-export default BoxPlayer
+export default BoxPlayer

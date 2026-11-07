@@ -1,6 +1,7 @@
 import React from 'react'
 import { ScrollView, Pressable, Text } from 'react-native'
 import { useTheme } from '~/contexts/theme'
+import size from '~/styles/size'
 
 const Selector = ({ current, items, setData }) => {
 	const theme = useTheme()
@@ -18,7 +19,7 @@ const Selector = ({ current, items, setData }) => {
 					style={{
 						paddingVertical: 7,
 						paddingHorizontal: 15,
-						borderRadius: 20,
+						borderRadius: size.radius.xl,
 						backgroundColor: current === item ? theme.primaryTouch : theme.secondaryBack,
 					}}
 					onPress={() => setData(item)}>
@@ -31,4 +32,4 @@ const Selector = ({ current, items, setData }) => {
 	)
 }
 
-export default Selector
+export default Selector

@@ -69,7 +69,7 @@ const SideBarLetter = ({ alpha, onPress }) => {
 						<Text
 							key={index}
 							style={{
-								fontSize: 10,
+								fontSize: size.text.caption,
 								color: 'white',
 								textAlign: 'center',
 							}}
@@ -83,4 +83,4 @@ const SideBarLetter = ({ alpha, onPress }) => {
 	)
 }
 
-export default SideBarLetter
+export default SideBarLetter

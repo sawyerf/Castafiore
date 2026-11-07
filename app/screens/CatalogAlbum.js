@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 		gap: 8,
 		paddingVertical: 8,
 		paddingHorizontal: 14,
-		borderRadius: 20,
+		borderRadius: size.radius.xl,
 	},
 	buttonText: {
 		fontSize: size.text.medium,

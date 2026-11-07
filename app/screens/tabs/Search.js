@@ -303,7 +303,7 @@ const Search = () => {
 						textAlign: 'left',
 						padding: 8,
 						paddingStart: 42,
-						borderRadius: 10,
+						borderRadius: size.radius.lg,
 						backgroundColor: theme.secondaryBack,
 						outline: 'none',
 					}}
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 10,
+		borderRadius: size.radius.lg,
 		backgroundColor: theme.secondaryBack,
 		maxWidth: 400,
 	}),

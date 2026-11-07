@@ -20,7 +20,7 @@ const PresHeaderIcon = ({ title, subTitle, icon, onPressOption = null, children 
 					<IconButton
 						icon="ellipsis-h"
 						onPress={onPressOption}
-						color={'white'}
+						color={theme.onImage}
 						style={{
 							position: 'absolute',
 							padding: 20,

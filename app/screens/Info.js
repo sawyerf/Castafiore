@@ -51,7 +51,7 @@ const Info = ({ route: { params: { info } } }) => {
 					width: size.image.large,
 					height: size.image.large,
 					alignSelf: 'center',
-					borderRadius: 5,
+					borderRadius: size.radius.sm,
 				}}
 				source={{ uri: urlCover(config, info) }}
 			/>
@@ -104,4 +104,4 @@ const Info = ({ route: { params: { info } } }) => {
 	)
 }
 
-export default Info
+export default Info

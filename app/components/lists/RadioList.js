@@ -198,14 +198,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'flex-start',
-		borderRadius: 7,
+		borderRadius: size.radius.md,
 	}),
 	image: {
 		height: '100%',
 		aspectRatio: 1,
 		marginRight: 10,
-		borderRadius: 3,
+		borderRadius: size.radius.sm,
 	},
 })
 
-export default RadioList
+export default RadioList

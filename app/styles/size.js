@@ -12,11 +12,16 @@ export default {
 		large: 40,
 	},
 	text: {
+		caption: 12,
 		small: 14,
 		medium: 16,
 		large: 20,
 	},
 	radius: {
+		sm: 4,
+		md: 8,
+		lg: 12,
+		xl: 20,
 		circle: 999,
 	},
 	icon: {
@@ -25,4 +30,4 @@ export default {
 		medium: 25,
 		large: 30,
 	}
-}
+}

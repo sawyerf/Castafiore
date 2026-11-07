@@ -24,7 +24,7 @@ const RatingPopup = ({ visible, rating, onSelectRating, onSave, onClose }) => {
 				onPress={onClose}
 				style={{
 					flex: 1,
-					backgroundColor: 'rgba(0,0,0,0.5)',
+					backgroundColor: theme.overlay,
 					justifyContent: 'center',
 					alignItems: 'center',
 					padding: 20,
@@ -35,7 +35,7 @@ const RatingPopup = ({ visible, rating, onSelectRating, onSave, onClose }) => {
 						width: '100%',
 						maxWidth: 320,
 						backgroundColor: theme.secondaryBack,
-						borderRadius: 15,
+						borderRadius: size.radius.xl,
 						padding: 20,
 						paddingTop: 26,
 						gap: 15,

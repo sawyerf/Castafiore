@@ -75,7 +75,7 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 						justifyContent: 'center', alignItems: 'center'
 					}}
 					>
-						<Icon name="align-center" size={19} color={'white'} style={{ height: 19, transform: [{ rotate: '90deg' }] }} />
+						<Icon name="align-center" size={19} color={theme.onImage} style={{ height: 19, transform: [{ rotate: '90deg' }] }} />
 					</View>
 				)}
 				<ImageError
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: size.image.small,
 		marginBottom: 10,
-		borderRadius: 4,
+		borderRadius: size.radius.sm,
 	},
 })
 

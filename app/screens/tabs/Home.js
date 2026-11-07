@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
 		borderRadius: size.radius.circle,
 	}),
 	textRandom: theme => ({
-		fontSize: 18,
+		fontSize: size.text.large,
 		color: theme.innerTouch,
 		fontWeight: 'bold',
 	}),
 })
 
-export default Home
+export default Home

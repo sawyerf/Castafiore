@@ -30,7 +30,7 @@ const Progress = ({ state }) => {
 				<View key={s} style={{
 					flex: 1,
 					height: 3,
-					borderRadius: 2,
+					borderRadius: size.radius.sm,
 					backgroundColor: i <= step ? theme.primaryTouch : theme.secondaryBack,
 				}} />
 			))}
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		minHeight: size.image.small,
 		marginBottom: 10,
-		borderRadius: 4,
+		borderRadius: size.radius.sm,
 	},
 	action: {
 		padding: 5,

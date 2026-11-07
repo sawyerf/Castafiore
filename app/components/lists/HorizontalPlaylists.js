@@ -32,14 +32,14 @@ const ItemPlaylist = ({ item }) => {
 	}, [item.id, settings.reversePlaylist])
 
 	return (
-		<View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: 5, backgroundColor: theme.secondaryBack }}>
+		<View style={{ width: 350, flexDirection: 'column', alignItems: 'start', padding: 10, borderRadius: size.radius.sm, backgroundColor: theme.secondaryBack }}>
 			<Pressable
 				style={(pressed) => ([mainStyles.opacity(pressed), { flexDirection: 'row', alignItems: 'center', width: '100%' }])}
 				onPress={() => navigation.navigate('Playlist', { playlist: item })}
 			>
 				<ImageError
 					source={{ uri: urlCover(config, item) }}
-					style={{ width: size.image.small, height: size.image.small, marginEnd: 10, borderRadius: 4 }}
+					style={{ width: size.image.small, height: size.image.small, marginEnd: 10, borderRadius: size.radius.sm }}
 				/>
 				<View style={{ flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
 					<Text numberOfLines={1} style={mainStyles.mediumText(theme.primaryText)}>
@@ -65,7 +65,7 @@ const ItemPlaylist = ({ item }) => {
 						>
 							<ImageError
 								source={{ uri: urlCover(config, item) }}
-								style={{ width: size.image.tiny, height: size.image.tiny, marginEnd: 10, borderRadius: 4 }}
+								style={{ width: size.image.tiny, height: size.image.tiny, marginEnd: 10, borderRadius: size.radius.sm }}
 							/>
 							<View style={{ flexDirection: 'column', flex: 1, marginEnd: 10 }}>
 								<Text numberOfLines={1} style={mainStyles.smallText(theme.primaryText)}>
@@ -96,4 +96,4 @@ const HorizontalPlaylists = ({ playlists }) => {
 	)
 }
 
-export default HorizontalPlaylists
+export default HorizontalPlaylists

@@ -92,7 +92,7 @@ const Playlists = ({ navigation }) => {
 			>
 				<Icon name="heart" size={size.icon.small} color={theme.primaryTouch} style={{ marginEnd: 10 }} />
 				<Text style={[mainStyles.subTitle(theme), { flex: 1 }]}>{t('Favorited')}</Text>
-				<Text style={{ color: theme.secondaryText, fontWeight: 'bold', fontSize: 15 }}>
+				<Text style={{ color: theme.secondaryText, fontWeight: 'bold', fontSize: size.text.small }}>
 					{favorited?.length} <Icon name="chevron-right" size={15} color={theme.secondaryText} />
 				</Text>
 			</Pressable>
@@ -107,7 +107,7 @@ const Playlists = ({ navigation }) => {
 									height: 40,
 									borderColor: 'gray',
 									borderWidth: 1,
-									borderRadius: 6,
+									borderRadius: size.radius.md,
 									color: theme.primaryText,
 									flex: 1,
 									paddingHorizontal: 10,
@@ -152,4 +152,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default Playlists
+export default Playlists

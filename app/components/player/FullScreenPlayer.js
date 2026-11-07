@@ -52,7 +52,7 @@ const CoverItem = ({ isPreview, song, setFullScreen, stars }) => {
 			minwidth: size,
 			minHeight: size,
 			aspectRatio: 1,
-			borderRadius: 10,
+			borderRadius: size.radius.lg,
 		}
 	}, [width])
 
@@ -319,4 +319,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default FullScreenPlayer
+export default FullScreenPlayer

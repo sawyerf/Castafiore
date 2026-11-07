@@ -101,7 +101,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 						onChange={(progress) => setFakeTime(progress)}
 						onComplete={(progress) => Player.setPosition(progress * time.duration) && Player.resumeSong() && setTimeout(() => setFakeTime(-1), 500)}
 						stylePress={{ flex: 1, height: 6 }}
-						styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
+						styleBar={{ width: '100%', height: '100%', borderRadius: size.radius.sm, overflow: 'hidden' }}
 						styleProgress={{ backgroundColor: theme.primaryTouch }}
 					/>
 					<Text style={{ color: theme.primaryText, fontSize: size.text.small }}>{Player.secondToTime(time.duration)}</Text>
@@ -124,7 +124,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 								onStart={(progress) => Player.setVolume(progress)}
 								onChange={(progress) => Player.setVolume(progress)}
 								stylePress={{ maxWidth: 100, height: 25, paddingVertical: 10, width: '100%' }}
-								styleBar={{ width: '100%', height: '100%', borderRadius: 3, overflow: 'hidden' }}
+								styleBar={{ width: '100%', height: '100%', borderRadius: size.radius.sm, overflow: 'hidden' }}
 								styleProgress={{ backgroundColor: theme.primaryTouch }}
 								isBitogno={true}
 							/>
@@ -134,7 +134,7 @@ const BoxDesktopPlayer = ({ setFullScreen }) => {
 				<IconButton
 					icon="expand"
 					size={17}
-					style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: 4 }}
+					style={{ padding: 5, paddingHorizontal: 8, marginStart: 15, borderRadius: size.radius.sm }}
 					color={theme.primaryText}
 					onPress={() => setFullScreen(true)}
 				/>
@@ -161,10 +161,10 @@ const styles = StyleSheet.create({
 		height: 56,
 		width: 56,
 		marginRight: 10,
-		borderRadius: 4,
+		borderRadius: size.radius.sm,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 })
 
-export default BoxDesktopPlayer
+export default BoxDesktopPlayer

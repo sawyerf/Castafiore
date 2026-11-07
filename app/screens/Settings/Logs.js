@@ -42,11 +42,11 @@ const LogItem = ({ level, message, timestamp, source, isLast = false }) => {
 					borderRadius: size.radius.circle,
 					alignItems: 'center',
 				}}>
-					{/* <Text style={{ color: '#fff', fontSize: 12, textTransform: 'uppercase' }}>{level}</Text> */}
+					{/* <Text style={{ color: '#fff', fontSize: size.text.caption, textTransform: 'uppercase' }}>{level}</Text> */}
 				</View>
 				<Text style={[settingStyles.primaryText(theme), {
 					marginStart: 10,
-					fontSize: 12,
+					fontSize: size.text.caption,
 					color: theme.secondaryText,
 				}]}>{new Date(timestamp).toLocaleString()} · {source}</Text>
 			</View>
@@ -108,4 +108,4 @@ const Logs = () => {
 	)
 }
 
-export default Logs
+export default Logs

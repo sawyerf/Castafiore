@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 10,
-		borderRadius: 4,
+		borderRadius: size.radius.sm,
 	},
 })
 
-export default PlaylistItem
+export default PlaylistItem

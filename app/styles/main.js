@@ -45,13 +45,13 @@ export default StyleSheet.create({
 		height: size.image.small,
 		width: size.image.small,
 		// marginStart: 10,
-		borderRadius: 4,
+		borderRadius: size.radius.sm,
 		backgroundColor: theme.secondaryBack,
 	}),
 	icon: {
 		width: size.image.small,
 		height: size.image.small,
-		borderRadius: 10,
+		borderRadius: size.radius.lg,
 		marginEnd: 10
 	},
 	opacity: ({ pressed, enable = true }) => ({
@@ -72,4 +72,4 @@ export default StyleSheet.create({
 		fontSize: size.text.large,
 		textAlign: 'left',
 	}),
-})
+})

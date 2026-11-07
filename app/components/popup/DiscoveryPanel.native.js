@@ -12,6 +12,7 @@ import mainStyles from '~/styles/main'
 import RotateIconButton from '~/components/button/RotateIconButton'
 import SelectItem from '~/components/settings/SelectItem'
 import settingStyles from '~/styles/settings'
+import size from '~/styles/size'
 
 const DiscoveryPanel = ({ visible, onClose }) => {
 	const { t } = useTranslation()
@@ -73,7 +74,7 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 				style={{
 					width: '100%',
 					height: '100%',
-					backgroundColor: 'rgba(0,0,0,0.5)',
+					backgroundColor: theme.overlay,
 				}}
 				contentContainerStyle={{
 					justifyContent: 'flex-end',
@@ -117,7 +118,7 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 								color={theme.primaryText}
 								style={{
 									padding: 8,
-									borderRadius: 20,
+									borderRadius: size.radius.xl,
 								}}
 							/>
 						</View>
@@ -183,4 +184,4 @@ const DiscoveryPanel = ({ visible, onClose }) => {
 	)
 }
 
-export default DiscoveryPanel
+export default DiscoveryPanel

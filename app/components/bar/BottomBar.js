@@ -55,7 +55,7 @@ const TabItem = ({ route, index, state, descriptors, navigation }) => {
 			disabled={(!config.query && route.name !== 'Settings')}
 		>
 			<Icon name={options.icon} size={size.icon.tiny} color={color} style={{ alignSelf: 'center', marginBottom: 2, height: 24 }} />
-			<Text numberOfLines={1} style={{ color: color, textAlign: 'center', height: 19, fontSize: 14 }}>
+			<Text numberOfLines={1} style={{ color: color, textAlign: 'center', height: 19, fontSize: size.text.small }}>
 				{t(`tabs.${options.title}`)}
 			</Text>
 		</Pressable>
@@ -93,4 +93,4 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 	)
 }
 
-export default BottomBar
+export default BottomBar

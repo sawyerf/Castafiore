@@ -4,7 +4,7 @@ import size from '~/styles/size'
 export default StyleSheet.create({
 	titleContainer: theme => ({
 		width: '100%',
-		fontSize: 12,
+		fontSize: size.text.caption,
 		textTransform: 'uppercase',
 		fontWeight: 'bold',
 		color: theme.secondaryText,
@@ -17,7 +17,7 @@ export default StyleSheet.create({
 		paddingVertical: 1,
 		paddingHorizontal: 17,
 		backgroundColor: theme.secondaryBack,
-		borderRadius: 10,
+		borderRadius: size.radius.lg,
 		marginBottom: isDescription ? 5 : 20,
 	}),
 	description: theme => ({
@@ -52,4 +52,4 @@ export default StyleSheet.create({
 		fontSize: size.text.medium,
 		marginEnd: 10,
 	}),
-})
+})

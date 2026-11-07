@@ -16,6 +16,7 @@ import mainStyles from '~/styles/main'
 import SongsList from '~/components/lists/SongsList'
 import HistoryItem from '~/components/item/HistoryItem'
 import size from '~/styles/size'
+import EmptyState from '~/components/EmptyState'
 import SectionTitle from '~/components/SectionTitle'
 import RequestSongsList from '~/components/lists/RequestSongsList'
 import RequestAlbumsList from '~/components/lists/RequestAlbumsList'
@@ -105,12 +106,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 	}
 	else if (state === STATES.LOADED) {
 		if (results && !results.artist && !results.album && !results.song) return (
-			<Text style={{
-				margin: 20,
-				color: theme.secondaryText,
-				fontSize: size.text.large,
-				textAlign: 'center',
-			}}>{t('No results')}</Text>
+			<EmptyState icon="search" text={t('No results')} />
 		)
 		else if (results) return (
 			<>
@@ -152,12 +148,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 				}
 			</>)
 	} else if (state === STATES.API_ERROR) return (
-		<Text style={{
-			margin: 20,
-			color: theme.secondaryText,
-			fontSize: size.text.large,
-			textAlign: 'center',
-		}}>{t('API Error')}</Text>
+		<EmptyState icon="warning" text={t('API Error')} />
 	)
 	else if (state === STATES.NETWORK_ERROR) return (
 		<Text style={{

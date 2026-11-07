@@ -8,6 +8,7 @@ import { useConfig } from '~/contexts/config'
 import { useCachedAndApi, getApi } from '~/utils/api'
 import { useSettings } from '~/contexts/settings'
 import { useTheme } from '~/contexts/theme'
+import EmptyState from '~/components/EmptyState'
 import RotateIconButton from '~/components/button/RotateIconButton'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
@@ -27,8 +28,10 @@ const Playlists = ({ navigation }) => {
 		setData(json?.starred2?.song)
 	}, [])
 
+	const [playlistsLoaded, setPlaylistsLoaded] = React.useState(false)
 	const [playlists, refreshPlaylists, setPlaylists] = useCachedAndApi([], 'getPlaylists', null, (json, setData) => {
 		setData([...(json?.playlists?.playlist || [])].sort(sortPlaylist))
+		setPlaylistsLoaded(true)
 	}, [])
 
 	React.useEffect(() => {
@@ -138,6 +141,9 @@ const Playlists = ({ navigation }) => {
 				}
 			</View>
 			<VerticalPlaylist playlists={playlists} onRefresh={refreshPlaylists} />
+			{playlistsLoaded && playlists?.length === 0 ? (
+				<EmptyState icon="list" text={t('No playlists yet')} actionText={t('New playlist')} onAction={() => setNewPlaylist('')} />
+			) : null}
 		</ScrollView>
 	)
 }

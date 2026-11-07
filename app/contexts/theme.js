@@ -3,15 +3,23 @@ import { Platform } from 'react-native'
 
 import { useSettings } from '~/contexts/settings'
 
+// Shared by every theme: colours that must not follow the palette
+const common = {
+	overlay: 'rgba(0,0,0,0.5)',
+	danger: '#dc3545',
+	onImage: '#ffffff',
+}
+
 const getTheme = (settings = undefined) => {
 	const listTheme = Object.keys(themes)
 
-	if (!settings?.theme) return themes.castafiore
+	if (!settings?.theme) return { ...common, ...themes.castafiore }
 	else if (listTheme.includes(settings.theme)) return {
+		...common,
 		...themes[settings.theme],
 		...themesPlayer[settings.themePlayer]
 	}
-	else return themes.castafiore
+	else return { ...common, ...themes.castafiore }
 }
 
 const ThemeContext = React.createContext()

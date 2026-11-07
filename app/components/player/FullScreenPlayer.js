@@ -46,14 +46,14 @@ const CoverItem = ({ isPreview, song, setFullScreen, stars }) => {
 	}, [song.index])
 
 	const albumImage = React.useMemo(() => {
-		const size = Math.min(width, 500) - 50
+		const side = Math.min(width, 500) - 50
 		return {
-			maxWidth: size,
-			width: size,
-			maxHeight: size,
-			height: size,
-			minwidth: size,
-			minHeight: size,
+			maxWidth: side,
+			width: side,
+			maxHeight: side,
+			height: side,
+			minwidth: side,
+			minHeight: side,
 			aspectRatio: 1,
 			borderRadius: size.radius.lg,
 		}

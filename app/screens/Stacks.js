@@ -42,24 +42,11 @@ import SharesSettings from '~/screens/Settings/Shares'
 import ThemeSettings from '~/screens/Settings/Theme'
 import SongServiceSettings from '~/screens/Settings/SongService'
 
-import { useTheme } from '~/contexts/theme'
-
 const Stack = createNativeStackNavigator()
 
 export const HomeStack = () => {
-	const theme = useTheme()
-
 	return (
-		<Stack.Navigator
-			screenOptions={{
-				headerShown: false,
-				tabBarStyle: {
-					backgroundColor: theme.secondaryBack,
-					borderTopColor: theme.secondaryBack,
-					tabBarActiveTintColor: theme.primaryTouch,
-				}
-			}}
-		>
+		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="Home" component={Home} />
 			<Stack.Screen name="ShowAll" component={ShowAll} />
 			<Stack.Screen name="FreshReleases" component={FreshReleases} />
@@ -80,19 +67,8 @@ export const HomeStack = () => {
 }
 
 export const SearchStack = () => {
-	const theme = useTheme()
-
 	return (
-		<Stack.Navigator
-			screenOptions={{
-				headerShown: false,
-				tabBarStyle: {
-					backgroundColor: theme.secondaryBack,
-					borderTopColor: theme.secondaryBack,
-					tabBarActiveTintColor: theme.primaryTouch,
-				}
-			}}
-		>
+		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="Search" component={Search} />
 			<Stack.Screen name="SearchMore" component={SearchMore} />
 			<Stack.Screen name="CatalogAlbum" component={CatalogAlbum} />
@@ -113,19 +89,8 @@ export const SearchStack = () => {
 }
 
 export const PlaylistsStack = () => {
-	const theme = useTheme()
-
 	return (
-		<Stack.Navigator
-			screenOptions={{
-				headerShown: false,
-				tabBarStyle: {
-					backgroundColor: theme.secondaryBack,
-					borderTopColor: theme.secondaryBack,
-					tabBarActiveTintColor: theme.primaryTouch,
-				}
-			}}
-		>
+		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="Playlists" component={Playlists} />
 			<Stack.Screen name="Favorited" component={Favorited} />
 			{/* Pres */}
@@ -144,19 +109,8 @@ export const PlaylistsStack = () => {
 }
 
 export const SettingsStack = () => {
-	const theme = useTheme()
-
 	return (
-		<Stack.Navigator
-			screenOptions={{
-				headerShown: false,
-				tabBarStyle: {
-					backgroundColor: theme.secondaryBack,
-					borderTopColor: theme.secondaryBack,
-					tabBarActiveTintColor: theme.primaryTouch,
-				}
-			}}
-		>
+		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="Settings" component={Settings} />
 			<Stack.Screen name="Connect" component={Connect} />
 			<Stack.Screen name="Settings/AddServer" component={AddServer} />

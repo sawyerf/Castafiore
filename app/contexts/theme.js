@@ -53,7 +53,7 @@ export const themes = {
 		tertiaryBack: '#2e2e2e',
 		// Use for text
 		primaryText: '#f5f5dc',
-		secondaryText: '#808080',
+		secondaryText: '#8c8c8c',
 		// Use for button
 		primaryTouch: '#cd1921',
 		secondaryTouch: '#891116',
@@ -145,7 +145,7 @@ export const themes = {
 		secondaryBack: '#f2f2f2',
 		tertiaryBack: '#f3f3f3',
 		primaryText: '#000000',
-		secondaryText: '#999999',
+		secondaryText: '#6b6b6b',
 		primaryTouch: '#FF7700',
 		secondaryTouch: '#FF8800',
 		innerTouch: '#FFFFFF',
@@ -164,7 +164,7 @@ export const themes = {
 		tertiaryBack: '#dcdcd4',
 
 		primaryText: '#040208',
-		secondaryText: '#8f8f93',
+		secondaryText: '#6c6c70',
 
 		primaryTouch: '#fe3c30',
 		secondaryTouch: '#ee392e',

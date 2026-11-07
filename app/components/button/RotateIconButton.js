@@ -1,6 +1,7 @@
 import React from 'react'
 import { Animated, Platform } from 'react-native'
 
+import { isReducedMotion } from '~/utils/reducedMotion'
 import IconButton from '~/components/button/IconButton'
 
 const RotateIconButton = ({ onPress, ...props }) => {
@@ -11,6 +12,7 @@ const RotateIconButton = ({ onPress, ...props }) => {
 	})
 
 	const rotate = () => {
+		if (isReducedMotion()) return
 		rotationValue.setValue(0)
 		Animated.timing(rotationValue, {
 			toValue: 1,

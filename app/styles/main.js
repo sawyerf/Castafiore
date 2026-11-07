@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native"
 import size from "~/styles/size"
+import { isReducedMotion } from "~/utils/reducedMotion"
 
 export default StyleSheet.create({
 	mainContainer: (theme) => ({
@@ -54,8 +55,10 @@ export default StyleSheet.create({
 		borderRadius: size.radius.lg,
 		marginEnd: 10
 	},
+	// Press feedback: slight shrink plus dim. Dim only when reduced motion is on.
 	opacity: ({ pressed, enable = true }) => ({
-		opacity: (pressed && enable) ? 0.5 : 1,
+		opacity: (pressed && enable) ? 0.6 : 1,
+		transform: (pressed && enable && !isReducedMotion()) ? [{ scale: 0.97 }] : [],
 	}),
 	smallText: color => ({
 		color: color,

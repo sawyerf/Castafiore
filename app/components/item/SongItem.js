@@ -10,6 +10,7 @@ import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import FavoritedButton from '~/components/button/FavoritedButton'
+import IconButton from '~/components/button/IconButton'
 import ImageError from '~/components/ImageError'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
@@ -45,7 +46,7 @@ const Cached = ({ song }) => {
 	return null
 }
 
-const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = () => { }, onPress = () => true, style = {} }) => {
+const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setIndexOptions = null, onPress = () => true, style = {} }) => {
 	const songDispatch = useSongDispatch()
 	const theme = useTheme()
 	const config = useConfig()
@@ -61,10 +62,10 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 				if (onPress(song, queue, index)) playSong(config, songDispatch, queue, index)
 			}}
 			delayLongPress={200}
-			onLongPress={() => setIndexOptions(index)}
+			onLongPress={() => setIndexOptions?.(index)}
 			onContextMenu={(ev) => {
 				ev.preventDefault()
-				return setIndexOptions(index)
+				return setIndexOptions?.(index)
 			}}
 		>
 			<View style={[mainStyles.coverSmall(theme), { overflow: 'hidden', marginRight: 10 }]}>
@@ -104,6 +105,15 @@ const SongItem = ({ song, queue, index, isIndex = false, isPlaying = false, setI
 				rating={song?.userRating ?? song?.rating ?? 0}
 				style={{ padding: 5, paddingStart: 10 }}
 			/>
+			{setIndexOptions ? (
+				<IconButton
+					icon="ellipsis-h"
+					size={size.icon.tiny}
+					color={theme.secondaryText}
+					style={{ padding: 5, paddingStart: 10 }}
+					onPress={() => setIndexOptions(index)}
+				/>
+			) : null}
 		</Pressable>
 	)
 }

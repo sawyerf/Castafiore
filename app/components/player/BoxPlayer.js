@@ -14,6 +14,21 @@ import ImageError from '~/components/ImageError'
 import size from '~/styles/size'
 import useKeyboardIsOpen from '~/utils/useKeyboardIsOpen'
 
+// Thin line along the bottom edge of the mini player. Own component so only it re-renders on each tick.
+const Progress = () => {
+	const song = useSong()
+	const theme = useTheme()
+	const time = Player.updateTime()
+	const duration = time.duration > 0 && time.duration !== Infinity ? time.duration : song?.songInfo?.duration
+	const ratio = duration ? Math.min(1, time.position / duration) : 0
+
+	return (
+		<View style={{ position: 'absolute', left: 10, right: 10, bottom: 0, height: 2, borderRadius: size.radius.sm, overflow: 'hidden' }}>
+			<View style={{ width: `${ratio * 100}%`, height: '100%', backgroundColor: theme.playerButton }} />
+		</View>
+	)
+}
+
 const BoxPlayer = ({ setFullScreen }) => {
 	const song = useSong()
 	const songDispatch = useSongDispatch()
@@ -55,14 +70,15 @@ const BoxPlayer = ({ setFullScreen }) => {
 				icon="step-forward"
 				size={size.icon.small}
 				color={theme.playerButton}
-				style={{ width: 35, alignItems: 'center' }}
+				style={{ width: 44, height: 44, alignItems: 'center' }}
 				onPress={() => Player.nextSong(config, song, songDispatch)}
 			/>
 			<PlayButton
 				size={size.icon.small}
 				color={theme.playerButton}
-				style={{ width: 35, alignItems: 'center' }}
+				style={{ width: 44, height: 44, alignItems: 'center' }}
 			/>
+			<Progress />
 		</Pressable>
 	)
 }

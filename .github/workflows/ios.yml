@@ -1,0 +1,36 @@
+name: Build iOS (unsigned ipa)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["ios-build"]
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Prebuild native iOS project
+        run: npx expo prebuild -p ios --no-install
+      - name: Install pods
+        run: cd ios && pod install
+      - name: Build (Release, unsigned)
+        run: |
+          xcodebuild -workspace ios/Castafiore.xcworkspace -scheme Castafiore \
+            -configuration Release -sdk iphoneos -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -quiet build
+          test -d build/Build/Products/Release-iphoneos/Castafiore.app
+      - name: Package ipa
+        run: |
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/Castafiore.app Payload/
+          zip -qry Castafiore.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Castafiore-ipa
+          path: Castafiore.ipa

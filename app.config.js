@@ -17,6 +17,15 @@ module.exports = ({ config }) => {
 			assetBundlePatterns: [
 				"**/*"
 			],
+			ios: {
+				bundleIdentifier: packageName.replace("com.sawyerf", "com.totolab"),
+				supportsTablet: true,
+				infoPlist: {
+					UIBackgroundModes: ["audio"],
+					// Subsonic servers are often plain http on the LAN
+					NSAppTransportSecurity: { NSAllowsArbitraryLoads: true },
+				},
+			},
 			android: {
 				package: packageName,
 				edgeToEdgeEnabled: true,

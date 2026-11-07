@@ -23,6 +23,8 @@ import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import SongItem from '~/components/item/SongItem'
 import ConnectButton from '~/components/button/ConnectButton'
+import { HeaderGradient } from '~/components/PresHeader'
+import { useTranslation } from 'react-i18next'
 
 const preview = {
 	COVER: 0,
@@ -145,6 +147,8 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 	const song = useSong()
 	const insets = useSafeAreaInsets()
 	const navigation = useNavigation()
+	const { t } = useTranslation()
+	const { height } = useWindowDimensions()
 	const [isPreview, setIsPreview] = React.useState(preview.COVER)
 	const [isOptArtists, setIsOptArtists] = React.useState(false)
 	const [isOpt, setIsOpt] = React.useState(false)
@@ -160,6 +164,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 			onRequestClose={() => setFullScreen(false)}
 		>
 			<View style={[mainStyles.contentMainContainer(insets), styles.mainContainer(insets, theme)]}>
+				<HeaderGradient theme={theme} height={height} />
 				<View style={{ width: '100%', flexDirection: 'row' }}>
 					<OptionsPlayer
 						song={song.songInfo}
@@ -238,12 +243,13 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 							onPress={() => Player.previousSong(config, song, songDispatch)}
 						/>
 						<PlayButton
-							size={50}
-							color={theme.primaryText}
+							size={size.icon.large}
+							color={theme.primaryBack}
 							style={{
-								paddingHorizontal: 10,
-								minWidth: 63,
-								minHeight: 60,
+								width: 64,
+								height: 64,
+								borderRadius: size.radius.circle,
+								backgroundColor: theme.primaryText,
 								justifyContent: 'center',
 								alignItems: 'center',
 							}}
@@ -259,6 +265,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 					<View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
 						<IconButton
 							icon="comment-o"
+							label={t('Lyrics')}
 							size={17}
 							color={isPreview == preview.LYRICS ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingEnd: 10 }}
@@ -266,6 +273,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						/>
 						<IconButton
 							icon="repeat"
+							label={t('Repeat')}
 							size={17}
 							color={song.actionEndOfSong == 'repeat' ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingHorizontal: 10 }}
@@ -280,6 +288,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						/>
 						<IconButton
 							icon="random"
+							label={t('Shuffle')}
 							size={17}
 							color={song.actionEndOfSong == 'random' ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingHorizontal: 10 }}
@@ -287,6 +296,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 						/>
 						<IconButton
 							icon="bars"
+							label={t('Queue')}
 							size={17}
 							color={isPreview == preview.QUEUE ? theme.primaryTouch : theme.secondaryText}
 							style={{ paddingVertical: 10, paddingStart: 10 }}

@@ -5,17 +5,48 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
 import { useConfig } from '~/contexts/config'
-import { getApiNetworkFirst } from '~/utils/api'
+import { getApiNetworkFirst, getCachedAndApi } from '~/utils/api'
+import { urlCover } from '~/utils/url'
+import ImageError from '~/components/ImageError'
 import { playSong } from '~/utils/player'
 import { useSettings } from '~/contexts/settings'
 import { useSongDispatch } from '~/contexts/song'
 import { useTheme } from '~/contexts/theme'
 import Icon from '~/components/Icon'
-import RotateIconButton from '~/components/button/RotateIconButton'
 import HorizontalList from '~/components/lists/HorizontalList'
 import IconButton from '~/components/button/IconButton'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
+
+// Spotify-style 2-column grid of recently played albums at the top of Home
+const Shortcuts = ({ refresh }) => {
+	const config = useConfig()
+	const theme = useTheme()
+	const navigation = useNavigation()
+	const [albums, setAlbums] = React.useState([])
+
+	React.useEffect(() => {
+		if (!config.query) return
+		getCachedAndApi(config, 'getAlbumList2', 'type=recent&size=8', (json) => setAlbums(json?.albumList2?.album || []))
+	}, [config, refresh])
+
+	if (!albums.length) return null
+	return (
+		<View style={styles.grid}>
+			{albums.map(album => (
+				<Pressable
+					key={album.id}
+					accessibilityRole="button"
+					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.tile(theme)])}
+					onPress={() => navigation.navigate('Album', album)}
+				>
+					<ImageError source={{ uri: urlCover(config, album, 100) }} style={styles.tileCover(theme)} />
+					<Text numberOfLines={2} style={styles.tileText(theme)}>{album.name}</Text>
+				</Pressable>
+			))}
+		</View>
+	)
+}
 
 const Home = () => {
 	const { t } = useTranslation()
@@ -45,9 +76,7 @@ const Home = () => {
 			style={mainStyles.mainContainer(theme)}
 			contentContainerStyle={mainStyles.contentMainContainer(insets)}
 		>
-			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 20, marginTop: 20 }}>
-				<Text style={[mainStyles.mainTitle(theme), { margin: 0 }]}>{t('tabs.Home')}</Text>
-				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+				<View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginHorizontal: 20, marginTop: 12 }}>
 					{
 						settings.listenBrainzUser ?
 							<IconButton
@@ -58,24 +87,22 @@ const Home = () => {
 								onPress={() => navigation.navigate('FreshReleases')}
 							/> : null
 					}
-					<RotateIconButton
-						icon="refresh"
-						size={size.icon.small}
-						color={theme.primaryText}
-						style={{ paddingHorizontal: 10 }}
-						onPress={forceRefresh}
-					/>
+					<Pressable
+						accessibilityRole="button"
+						style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.boxRandom(theme)])}
+						onPress={() => forceRefresh()}>
+						<Icon name="refresh" size={size.icon.tiny} color={theme.primaryText} />
+						<Text style={styles.textRandom(theme)}>{t('Refresh')}</Text>
+					</Pressable>
 				</View>
-			</View>
-			<View style={{ flexDirection: 'row', margin: 20, marginBottom: 0 }}>
+				{config?.url && <Shortcuts refresh={refresh} />}
 				<Pressable
 					accessibilityRole="button"
-					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.boxRandom(theme)])}
+					style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.boxRandom(theme), { marginHorizontal: 20, marginTop: 16 }])}
 					onPress={clickRandomSong}>
-					<Icon name="random" size={size.icon.tiny} color={theme.innerTouch} />
+					<Icon name="random" size={size.icon.tiny} color={theme.primaryText} />
 					<Text style={styles.textRandom(theme)}>{t('Random Song')}</Text>
 				</Pressable>
-			</View>
 			{config?.url && settings?.homeOrderV2?.map((value, index) =>
 				<HorizontalList key={index} refresh={refresh}{...value} />
 			)}
@@ -85,7 +112,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
 	boxRandom: theme => ({
-		backgroundColor: theme.secondaryTouch,
+		backgroundColor: theme.tertiaryBack,
 		alignItems: 'center',
 		flexDirection: 'row',
 		gap: 8,
@@ -95,9 +122,37 @@ const styles = StyleSheet.create({
 		borderRadius: size.radius.circle,
 	}),
 	textRandom: theme => ({
-		fontSize: size.text.large,
-		color: theme.innerTouch,
+		fontSize: size.text.small,
+		color: theme.primaryText,
+	}),
+	grid: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		gap: 8,
+		marginHorizontal: 20,
+		marginTop: 16,
+	},
+	tile: theme => ({
+		flexBasis: '45%',
+		flexGrow: 1,
+		height: 56,
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: theme.tertiaryBack,
+		borderRadius: size.radius.sm,
+		overflow: 'hidden',
+	}),
+	tileCover: theme => ({
+		width: 56,
+		height: 56,
+		backgroundColor: theme.secondaryBack,
+	}),
+	tileText: theme => ({
+		flex: 1,
+		color: theme.primaryText,
+		fontSize: size.text.caption + 1,
 		fontWeight: 'bold',
+		paddingHorizontal: 8,
 	}),
 })
 

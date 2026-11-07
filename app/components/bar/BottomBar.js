@@ -18,9 +18,8 @@ const TabItem = ({ route, index, state, descriptors, navigation }) => {
 	const options = React.useMemo(() => descriptors[route.key].options, [])
 	const isFocused = React.useMemo(() => state.index === index, [state.index, index])
 	const color = React.useMemo(() => {
-		if (isFocused) return theme.primaryTouch
-		if (!config.query && route.name !== 'Settings') return theme.secondaryText
-		return theme.primaryText
+		if (isFocused) return theme.primaryText
+		return theme.secondaryText
 	}, [isFocused, config.query, route.name, theme])
 
 	const onPress = () => {
@@ -55,7 +54,7 @@ const TabItem = ({ route, index, state, descriptors, navigation }) => {
 			disabled={(!config.query && route.name !== 'Settings')}
 		>
 			<Icon name={options.icon} size={size.icon.tiny} color={color} style={{ alignSelf: 'center', marginBottom: 2, height: 24 }} />
-			<Text numberOfLines={1} style={{ color: color, textAlign: 'center', height: 19, fontSize: size.text.small }}>
+			<Text numberOfLines={1} style={{ color: color, textAlign: 'center', height: 16, fontSize: size.text.caption}}>
 				{t(`tabs.${options.title}`)}
 			</Text>
 		</Pressable>
@@ -72,7 +71,7 @@ const BottomBar = ({ state, descriptors, navigation }) => {
 	return (
 		<View style={{
 			flexDirection: 'row',
-			backgroundColor: theme.secondaryBack,
+			backgroundColor: theme.primaryBack,
 			paddingLeft: insets.left,
 			paddingRight: insets.right,
 			paddingBottom: insets.bottom ? insets.bottom : 10,

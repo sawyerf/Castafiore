@@ -31,7 +31,7 @@ const STATES = {
 	NETWORK_ERROR: 'network_error',
 }
 
-const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory }) => {
+const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory, onRetry }) => {
 	const { t } = useTranslation()
 	const theme = useTheme()
 	const navigation = useNavigation()
@@ -151,12 +151,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 		<EmptyState icon="warning" text={t('API Error')} />
 	)
 	else if (state === STATES.NETWORK_ERROR) return (
-		<Text style={{
-			margin: 20,
-			color: theme.secondaryText,
-			fontSize: size.text.large,
-			textAlign: 'center',
-		}}>{t('Network Error')}</Text>
+		<EmptyState icon="server" text={t('Network Error')} actionText={t('Try again')} onAction={onRetry} />
 	)
 	return null
 }
@@ -324,6 +319,7 @@ const Search = () => {
 					setHistory={setHistory}
 					setQuery={setQuery}
 					addHistory={addHistory}
+					onRetry={getSearch}
 				/>
 				{query.length > 0 && state !== STATES.INIT && <CatalogResults catalog={catalog} />}
 			</ScrollView>

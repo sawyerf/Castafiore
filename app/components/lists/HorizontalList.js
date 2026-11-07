@@ -2,7 +2,7 @@ import React from 'react'
 import { Pressable, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { getCachedAndApi, getUrl } from '~/utils/api'
 import { getJsonCache } from '~/utils/cache'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import size from '~/styles/size'
 import { useTheme } from '~/contexts/theme'

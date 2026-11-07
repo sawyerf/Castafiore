@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, View, Text, Image, FlatList, Pressable, StyleSheet, useWindowDimensions, Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useConfig } from '~/contexts/config'
 import { useSong, useSongDispatch } from '~/contexts/song'

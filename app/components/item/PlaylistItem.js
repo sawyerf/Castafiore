@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, StyleSheet, Pressable, Platform } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { useNavigation } from '@react-navigation/native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useConfig } from '~/contexts/config'
 import { urlCover } from '~/utils/url'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, Text, View, StyleSheet, Platform } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useConfig } from '~/contexts/config'
 import { useSong, useSongDispatch } from '~/contexts/song'

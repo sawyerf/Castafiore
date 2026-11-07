@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, Pressable, StyleSheet } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useConfig } from '~/contexts/config'
 import { useSettings } from '~/contexts/settings'

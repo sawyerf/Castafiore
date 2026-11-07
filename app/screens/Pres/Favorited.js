@@ -2,7 +2,7 @@ import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { LegendList } from "@legendapp/list"
 import { useTranslation } from 'react-i18next'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useTheme } from '~/contexts/theme'
 import { useCachedFirst } from '~/utils/api'

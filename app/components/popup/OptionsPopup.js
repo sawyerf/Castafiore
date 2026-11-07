@@ -3,7 +3,7 @@ import { View, Text, Modal, ScrollView, Animated, Pressable, Platform } from 're
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useConfig } from '~/contexts/config'
 import { useSettings } from '~/contexts/settings'

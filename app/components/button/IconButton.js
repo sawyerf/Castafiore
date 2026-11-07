@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useTheme } from '~/contexts/theme'
 import mainStyles from '~/styles/main'

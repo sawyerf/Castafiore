@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View, Pressable, Image, StyleSheet, ScrollView } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 

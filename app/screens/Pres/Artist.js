@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, ScrollView, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 
 import { useSongDispatch } from '~/contexts/song'
 import { useConfig } from '~/contexts/config'

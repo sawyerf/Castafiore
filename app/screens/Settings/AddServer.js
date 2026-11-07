@@ -3,7 +3,7 @@ import { Text, View, ScrollView, Platform } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 import md5 from 'md5'
 
 import { getApi } from '~/utils/api'

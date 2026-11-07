@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from '~/components/Icon'
 import { useTranslation } from 'react-i18next'
 
 import { useConfig } from '~/contexts/config'

@@ -4,12 +4,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 
 import { useConfig } from '~/contexts/config'
-import { useCachedAndApi } from '~/utils/api'
+import { getApi, useCachedAndApi } from '~/utils/api'
 import { useTheme } from '~/contexts/theme'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
 import settingStyles from '~/styles/settings'
 import TableItem from '~/components/settings/TableItem'
+import ButtonMenu from '~/components/settings/ButtonMenu'
 
 const ROLES = [
 	"adminRole",
@@ -33,6 +34,7 @@ const InformationsSettings = () => {
 	const theme = useTheme()
 	const config = useConfig()
 	const [server, setServer] = React.useState({})
+	const [scanStarted, setScanStarted] = React.useState(false)
 
 	const [user] = useCachedAndApi([], 'getUser', { username: config.username }, (json, setData) => {
 		setServer({
@@ -100,6 +102,12 @@ const InformationsSettings = () => {
 					<TableItem
 						title={t('settings.informations.Files scanned')}
 						value={scan.count}
+					/>
+					<ButtonMenu
+						title={t('Rescan library')}
+						icon="refresh"
+						endText={scanStarted ? t('Started') : ''}
+						onPress={() => getApi(config, 'startScan', 'fullScan=true').then(() => setScanStarted(true)).catch(() => { })}
 						isLast
 					/>
 				</View>

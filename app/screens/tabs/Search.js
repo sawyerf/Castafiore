@@ -7,7 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from '~/components/Icon'
 
 import { useConfig } from '~/contexts/config'
-import { getApiNetworkFirst } from '~/utils/api'
+import { getApiNetworkFirst, getCachedAndApi, useCachedFirst } from '~/utils/api'
+import { urlCover } from '~/utils/url'
+import ImageError from '~/components/ImageError'
 import { useSettings } from '~/contexts/settings'
 import { useTheme } from '~/contexts/theme'
 import HorizontalAlbums from '~/components/lists/HorizontalAlbums'
@@ -31,6 +33,73 @@ const STATES = {
 	NETWORK_ERROR: 'network_error',
 }
 
+// Spotify-style "Browse all" tile colours
+const TILE_COLORS = ['#9854B2', '#678026', '#3371E4', '#CF4321', '#ABBB6D', '#223160', '#75A768', '#8768A7']
+
+const BrowseTile = ({ title, color, cover, onPress }) => (
+	<Pressable
+		accessibilityRole="button"
+		style={({ pressed }) => ([mainStyles.opacity({ pressed }), styles.tile, { backgroundColor: color }])}
+		onPress={onPress}
+	>
+		<Text numberOfLines={2} style={styles.tileText}>{title}</Text>
+		{cover ? <ImageError source={cover} style={styles.tileCover} /> : null}
+	</Pressable>
+)
+
+const GenreTile = ({ genre, color }) => {
+	const config = useConfig()
+	const navigation = useNavigation()
+	const [album] = useCachedFirst(null, 'getAlbumList2', { type: 'byGenre', genre: genre.value, size: 1 }, (json, setData) => {
+		setData(json?.albumList2?.album?.[0] || null)
+	})
+
+	return (
+		<BrowseTile
+			title={genre.value}
+			color={color}
+			cover={album ? { uri: urlCover(config, album, 100) } : null}
+			onPress={() => navigation.navigate('Genre', { name: genre.value, songCount: genre.songCount, albumCount: genre.albumCount })}
+		/>
+	)
+}
+
+const BrowseAll = () => {
+	const { t } = useTranslation()
+	const theme = useTheme()
+	const config = useConfig()
+	const navigation = useNavigation()
+	const [genres, setGenres] = React.useState([])
+
+	React.useEffect(() => {
+		if (!config.query) return
+		// ponytail: top 20 genres only, each tile fetches one cover
+		getCachedAndApi(config, 'getGenres', '', (json) => setGenres(
+			[...(json?.genres?.genre || [])].sort((a, b) => b.songCount - a.songCount).slice(0, 20)
+		))
+	}, [config])
+
+	const explorers = [
+		{ title: t('Artists'), route: 'ArtistExplorer' },
+		{ title: t('Albums'), route: 'AlbumExplorer' },
+		{ title: t('Songs'), route: 'SongExplorer' },
+	]
+
+	return (
+		<>
+			<Text style={mainStyles.titleSection(theme)}>{t('Browse all')}</Text>
+			<View style={styles.grid}>
+				{explorers.map((item, index) => (
+					<BrowseTile key={item.route} title={item.title} color={TILE_COLORS[index]} onPress={() => navigation.navigate(item.route)} />
+				))}
+				{genres.map((genre, index) => (
+					<GenreTile key={genre.value} genre={genre} color={TILE_COLORS[(index + explorers.length) % TILE_COLORS.length]} />
+				))}
+			</View>
+		</>
+	)
+}
+
 const SearchResult = ({ state, query, results, history, setHistory, setQuery, addHistory, onRetry }) => {
 	const { t } = useTranslation()
 	const theme = useTheme()
@@ -45,51 +114,10 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 
 	if (query.length === 0 || state === STATES.INIT) return (
 		<>
-			<View style={{
-				display: 'flex',
-				marginHorizontal: 20,
-				flexDirection: 'row',
-				alignItems: 'center',
-				gap: 10,
-			}}>
-				<Pressable
-					style={styles.explorer(theme)}
-					onPress={() => {
-						navigation.navigate('ArtistExplorer')
-					}}>
-					<Text numberOfLines={1} style={{
-						color: theme.primaryText,
-						fontSize: size.text.large,
-						fontWeight: 'bold',
-					}}>{t('Artists')}</Text>
-				</Pressable>
-				<Pressable
-					style={styles.explorer(theme)}
-					onPress={() => {
-						navigation.navigate('AlbumExplorer')
-					}}>
-					<Text numberOfLines={1} style={{
-						color: theme.primaryText,
-						fontSize: size.text.large,
-						fontWeight: 'bold',
-					}}>{t('Albums')}</Text>
-				</Pressable>
-				<Pressable
-					style={styles.explorer(theme)}
-					onPress={() => {
-						navigation.navigate('SongExplorer')
-					}}>
-					<Text numberOfLines={1} style={{
-						color: theme.primaryText,
-						fontSize: size.text.large,
-						fontWeight: 'bold',
-					}}>{t('Songs')}</Text>
-				</Pressable>
-			</View>
 			{
 				history.length === 0 ? null : (
 					<>
-						<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.large, marginTop: 10, marginBottom: 3 }]}>{t('History')}</Text>
+						<Text style={[mainStyles.titleSection(theme), { fontSize: size.text.medium + 1, marginTop: 10, marginBottom: 3 }]}>{t('Recent searches')}</Text>
 						{
 							history.map((item, index) => (
 								<HistoryItem key={index} itemHist={item} index={index} setQuery={setQuery} delItemHistory={delItemHistory} />
@@ -97,6 +125,7 @@ const SearchResult = ({ state, query, results, history, setHistory, setQuery, ad
 						}
 					</>
 				)}
+			<BrowseAll />
 		</>
 	)
 	else if (state === STATES.LOADING) {
@@ -284,17 +313,19 @@ const Search = () => {
 				<TextInput
 					style={{
 						flex: 1,
-						color: theme.primaryText,
-						fontSize: size.text.large,
+						color: theme.primaryBack,
+						fontSize: size.text.medium,
+						fontWeight: '500',
 						textAlign: 'left',
-						padding: 8,
+						height: 46,
+						paddingHorizontal: 8,
 						paddingStart: 42,
-						borderRadius: size.radius.lg,
-						backgroundColor: theme.secondaryBack,
+						borderRadius: size.radius.md,
+						backgroundColor: theme.primaryText,
 						outline: 'none',
 					}}
-					placeholder={t("Search")}
-					placeholderTextColor={theme.secondaryText}
+					placeholder={t('What do you want to listen to?')}
+					placeholderTextColor={theme.tertiaryBack}
 					value={query}
 					autoCapitalize='none'
 					onChangeText={(query) => setQuery(query)}
@@ -305,10 +336,10 @@ const Search = () => {
 						<Pressable
 							onPress={() => { addHistory(query); setQuery(''); setResults(undefined); catalogRequest.current++; setCatalog({ state: 'idle', items: [] }) }}
 							style={({ pressed }) => ([mainStyles.opacity({ pressed }), { justifyContent: 'center' }])}>
-							<Text size={size.icon.tiny} style={{ color: theme.primaryTouch }}>{t('Clear')}</Text>
+							<Text style={{ color: theme.primaryText, fontWeight: 'bold' }}>{t('Clear')}</Text>
 						</Pressable> : null
 				}
-				<Icon name="search" size={size.icon.tiny} color={theme.secondaryText} style={{ position: 'absolute', left: 0, lineHeight: 20, paddingVertical: 11.5, paddingHorizontal: 12 }} />
+				<Icon name="search" size={size.icon.small} color={theme.primaryBack} style={{ position: 'absolute', left: 0, paddingVertical: 12.5, paddingHorizontal: 10 }} />
 			</View>
 			<ScrollView vertical={true} style={{ flex: 1 }} contentContainerStyle={{ flexDirection: 'column', paddingBottom: 80, gap: 10 }}>
 				<SearchResult
@@ -328,17 +359,35 @@ const Search = () => {
 }
 
 const styles = StyleSheet.create({
-	explorer: theme => ({
-		flex: 1,
-		paddingHorizontal: 10,
-		paddingVertical: 15,
+	grid: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: size.radius.lg,
-		backgroundColor: theme.secondaryBack,
-		maxWidth: 400,
-	}),
+		flexWrap: 'wrap',
+		gap: 13,
+		marginHorizontal: 20,
+	},
+	tile: {
+		flexBasis: '45%',
+		flexGrow: 1,
+		height: 109,
+		borderRadius: size.radius.sm,
+		overflow: 'hidden',
+		padding: 16,
+	},
+	tileText: {
+		color: '#ffffff',
+		fontSize: size.text.medium,
+		fontWeight: 'bold',
+		width: '70%',
+	},
+	tileCover: {
+		position: 'absolute',
+		width: 67,
+		height: 67,
+		right: -16,
+		bottom: 4,
+		borderRadius: size.radius.md,
+		transform: [{ rotate: '20deg' }],
+	},
 })
 
 export default Search

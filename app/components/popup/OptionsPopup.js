@@ -10,6 +10,7 @@ import { useSettings } from '~/contexts/settings'
 import { useTheme } from '~/contexts/theme'
 import { urlCover } from '~/utils/url'
 import ImageError from '~/components/ImageError'
+import { isReducedMotion } from '~/utils/reducedMotion'
 import mainStyles from '~/styles/main'
 import size from '~/styles/size'
 
@@ -100,7 +101,7 @@ const OptionsPopup = ({ ref, visible, close, options, item = null }) => {
 		slide.setValue(event.nativeEvent.layout.height)
 		Animated.timing(slide, {
 			toValue: 0,
-			duration: 100,
+			duration: isReducedMotion() ? 0 : 100,
 			useNativeDriver: Platform.OS !== 'web',
 		}).start()
 	}

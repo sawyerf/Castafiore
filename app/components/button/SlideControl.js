@@ -4,6 +4,7 @@ import { Animated, PanResponder, Platform } from 'react-native'
 import { useConfig } from '~/contexts/config'
 import { useSong, useSongDispatch } from '~/contexts/song'
 import Player from '~/utils/player'
+import { isReducedMotion } from '~/utils/reducedMotion'
 
 const SlideControl = ({ children, style }) => {
 	const song = useSong()
@@ -43,7 +44,7 @@ const SlideControl = ({ children, style }) => {
 			Animated.timing(position, {
 				toValue: 0,
 				useNativeDriver: Platform.OS !== 'web',
-				duration: 200
+				duration: isReducedMotion() ? 0 : 200
 			}).start()
 		}
 	})

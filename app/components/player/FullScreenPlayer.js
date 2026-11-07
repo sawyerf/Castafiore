@@ -23,6 +23,7 @@ import SlideBar from '~/components/button/SlideBar'
 import SlideControl from '~/components/button/SlideControl'
 import SongItem from '~/components/item/SongItem'
 import ConnectButton from '~/components/button/ConnectButton'
+import { isReducedMotion } from '~/utils/reducedMotion'
 import { HeaderGradient } from '~/components/PresHeader'
 import { useTranslation } from 'react-i18next'
 
@@ -188,6 +189,7 @@ const FullScreenPlayer = ({ setFullScreen }) => {
 		onPanResponderMove: (_, g) => dragY.setValue(Math.max(0, g.dy)),
 		onPanResponderRelease: (_, g) => {
 			if (g.dy > 120 || g.vy > 1) setFullScreen(false)
+			else if (isReducedMotion()) dragY.setValue(0)
 			else Animated.spring(dragY, { toValue: 0, useNativeDriver: Platform.OS !== 'web' }).start()
 		},
 		onPanResponderTerminate: () => Animated.spring(dragY, { toValue: 0, useNativeDriver: Platform.OS !== 'web' }).start(),

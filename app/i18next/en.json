@@ -2,12 +2,11 @@
   "translation": {
     "songService": {
       "Song service": "Song service",
-      "Access token": "Access token",
-      "Description": "Search shows songs from the full catalogue. Choosing one adds it to your server and plays it. Leave the address empty to turn this off.",
+      "Description": "Search shows songs from the full catalogue. Choosing one adds it to your server and plays it. The song service signs in with your server account. Leave the address empty to turn this off.",
       "Test connection": "Test connection",
-      "Not configured": "To find songs that are not on your server yet, add the song service address and access token in Settings > Song service.",
+      "Not configured": "To find songs that are not on your server yet, add the song service address in Settings > Song service.",
       "Testing": "Testing connection…",
-      "Connected": "Connected to the song service.",
+      "Connected as": "Connected to the song service as {{username}}.",
       "Turned off": "Song service turned off.",
       "Get more songs": "Get more songs",
       "Catalogue unavailable": "The song catalogue is not responding, so only songs already known to the song service are shown.",

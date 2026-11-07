@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useSettings, useSetSettings } from '~/contexts/settings'
 import { useTheme } from '~/contexts/theme'
-import { searchCatalog } from '~/utils/songService'
+import { getMe } from '~/utils/songService'
 import ButtonText from '~/components/settings/ButtonText'
 import Header from '~/components/Header'
 import mainStyles from '~/styles/main'
@@ -19,36 +19,30 @@ const SongServiceSettings = () => {
 	const settings = useSettings()
 	const setSettings = useSetSettings()
 	const [url, setUrl] = React.useState(settings.songServiceUrl)
-	const [token, setToken] = React.useState(settings.songServiceToken)
 	const [status, setStatus] = React.useState(null)
 
 	React.useEffect(() => {
 		setUrl(settings.songServiceUrl)
-		setToken(settings.songServiceToken)
-	}, [settings.songServiceUrl, settings.songServiceToken])
+	}, [settings.songServiceUrl])
 
 	// Stored as typed; songService trims it when making requests.
-	const values = (u, tk) => ({ ...settings, songServiceUrl: u, songServiceToken: tk })
+	const values = (u) => ({ ...settings, songServiceUrl: u })
 
 	// Save as the user types, so leaving the page never drops what was entered.
 	const changeUrl = (value) => {
 		setUrl(value)
-		setSettings(values(value, token))
-	}
-	const changeToken = (value) => {
-		setToken(value)
-		setSettings(values(url, value))
+		setSettings(values(value))
 	}
 
 	const test = () => {
-		const next = values(url, token)
+		const next = values(url)
 		if (!next.songServiceUrl.trim()) {
 			setStatus(t('songService.Turned off'))
 			return
 		}
 		setStatus(t('songService.Testing'))
-		searchCatalog(next, 'test', 1)
-			.then(() => setStatus(t('songService.Connected')))
+		getMe(next)
+			.then((me) => setStatus(t('songService.Connected as', { username: me.username })))
 			.catch((error) => setStatus(error.message))
 	}
 
@@ -68,13 +62,6 @@ const SongServiceSettings = () => {
 						value={url}
 						inputMode="url"
 						onChangeText={changeUrl}
-					/>
-					<OptionInput
-						title={t('songService.Access token')}
-						placeholder={t('songService.Access token')}
-						value={token}
-						isPassword
-						onChangeText={changeToken}
 						isLast
 					/>
 				</View>

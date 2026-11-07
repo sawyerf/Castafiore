@@ -157,7 +157,6 @@ const Settings = ({ navigation }) => {
 								...defaultSettings,
 								servers: setting.servers,
 								songServiceUrl: setting.songServiceUrl,
-								songServiceToken: setting.songServiceToken,
 							})
 						)
 					}}

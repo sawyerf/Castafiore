@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Pressable, StyleSheet } from 'react-native'
+import { Text, View, Pressable, StyleSheet, PanResponder } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from '~/components/Icon'
 
@@ -36,9 +36,24 @@ const BoxPlayer = ({ setFullScreen }) => {
 	const insets = useSafeAreaInsets()
 	const theme = useTheme()
 	const isKeyboardOpen = useKeyboardIsOpen()
+	const latest = React.useRef({})
+	latest.current = { config, song, songDispatch, setFullScreen }
+
+	// Swipe up to open the full player, sideways to skip. A plain tap still opens it.
+	const pan = React.useRef(PanResponder.create({
+		onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > 15 || g.dy < -15,
+		onPanResponderRelease: (_, g) => {
+			const { config, song, songDispatch, setFullScreen } = latest.current
+			if (Math.abs(g.dx) > Math.abs(g.dy)) {
+				if (g.dx < -60) Player.nextSong(config, song, songDispatch)
+				else if (g.dx > 60) Player.previousSong(config, song, songDispatch)
+			} else if (g.dy < -40) setFullScreen(true)
+		},
+	})).current
 
 	return (
 		<Pressable
+			{...pan.panHandlers}
 			onPress={() => setFullScreen(true)}
 			style={{
 				position: 'absolute',

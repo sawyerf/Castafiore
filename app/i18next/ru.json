@@ -17,7 +17,8 @@
       "Most Played": "На репите",
       "Recently Played": "Недавно слушали",
       "Random": "Случайные",
-      "Highest": "Популярные"
+      "Highest": "Популярные",
+      "Last queue": "Последняя очередь"
     },
     "settings": {
       "connect": {
@@ -65,7 +66,9 @@
         "Stream format Description": "Укажите формат потока для воспроизведения.",
         "Max bitrate": "Максимальный битрейт",
         "Max bitrate Description": "Укажите максимальный битрейт в килобитах в секунду для воспроизведения. Меньшие битрейты будут потреблять меньше данных, но могут привести к снижению качества звука.",
-        "Play seed first": "Сначала воспроизвести трек"
+        "Play seed first": "Сначала воспроизвести трек",
+        "Save last queue": "Сохранять последнюю очередь",
+        "Save last queue Description": "Автоматически сохранять последнюю проигранную очередь. Чтобы её открыть, включите раздел «Последняя очередь» на главной странице."
       },
       "theme": {
         "Player Theme": "Тема плеера"
@@ -187,6 +190,21 @@
     "min": "мин",
     "minutes": "минуты",
     "song": "трек",
-    "songs": "треки"
+    "songs": "треки",
+    "Disable repeat queue": "Выключить повтор очереди",
+    "Enable repeat queue": "Включить повтор очереди",
+    "No UPNP/DLNA devices found on the network": "В сети не найдено устройств UPnP/DLNA",
+    "Queue": "Очередь",
+    "Scanning for devices...": "Поиск устройств...",
+    "Remote Devices": "Удалённые устройства",
+    "Connected Device": "Подключённое устройство",
+    "Connect to Chromecast device": "Подключиться к Chromecast",
+    "Connect to UPNP/DLNA device": "Подключиться к устройству UPnP/DLNA",
+    "No Chromecast devices found or connection cancelled": "Устройства Chromecast не найдены или подключение отменено",
+    "Error connecting to Chromecast": "Ошибка подключения к Chromecast",
+    "No UPNP/DLNA devices found": "Устройства UPnP/DLNA не найдены",
+    "Error scanning for devices": "Ошибка поиска устройств",
+    "Stream music to compatible devices: Chromecast, UPNP/DLNA speakers, TVs, and media receivers.": "Передавайте музыку на совместимые устройства: Chromecast, колонки, телевизоры и ресиверы с UPnP/DLNA.",
+    "Chromecast": "Chromecast"
   }
 }

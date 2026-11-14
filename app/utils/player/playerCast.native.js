@@ -7,6 +7,7 @@ import { useRemote } from '~/contexts/remote/use'
 import { useSong } from '~/contexts/song/use'
 import logger from '~/utils/logger'
 import State from '~/utils/playerState'
+import { isLastSong } from '~/utils/tools'
 
 const initPlayer = async (_songDispatch) => { }
 
@@ -52,7 +53,7 @@ const useEvent = (_song, songDispatch, nextSong) => {
 				.catch(() => { })
 			if (global.song.actionEndOfSong === 'repeat') {
 				client.seek(0)
-			} else if (!global.repeatQueue && global.song.index === global.song.queue.length - 1) {
+			} else if (isLastSong(global.song)) {
 				client.stop()
 			} else nextSong(global.config, global.song, songDispatch)
 		}))

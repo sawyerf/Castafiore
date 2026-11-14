@@ -4,6 +4,7 @@ import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
 import { downloadNextSong } from "~/utils/player"
 import { songReducer } from "~/contexts/song"
+import { isLastSong } from "~/utils/tools"
 import logger from "~/utils/logger"
 
 let lockDownload = false
@@ -58,7 +59,7 @@ module.exports = async () => {
 		if (global.song.actionEndOfSong === 'repeat') {
 			Player.setPosition(0)
 			Player.resumeSong()
-		} else if (!global.repeatQueue && global.song.index === global.song.queue.length - 1) {
+		} else if (isLastSong(global.song)) {
 			Player.stopSong()
 		} else Player.nextSong(global.config, global.song, fakeSongDispatch)
 	})

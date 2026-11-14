@@ -51,9 +51,9 @@ const AddServer = ({ navigation }) => {
 
 		let query
 		if (lowSecurity) {
-			query = `u=${encodeURI(username)}&p=${encodeURI(password)}&v=1.16.1&c=castafiore`
+			query = `u=${encodeURIComponent(username)}&p=${encodeURIComponent(password)}&v=1.16.1&c=castafiore`
 		} else {
-			query = `u=${encodeURI(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
+			query = `u=${encodeURIComponent(username)}&t=${md5(password + salt)}&s=${salt}&v=1.16.1&c=castafiore`
 		}
 
 		if (Platform.OS !== 'android' && uri.startsWith('http://')) {

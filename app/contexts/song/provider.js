@@ -114,16 +114,24 @@ export const songReducer = (state, action) => {
 		case 'addToQueue': {
 			if (!state.songInfo || !state.queue) return state
 			const newQueue = [...state.queue]
-			if (action.index === null || action.index >= newQueue.length) {
-				newQueue.push(action.track)
-			} else {
-				newQueue.splice(action.index, 0, action.track)
+			const isAppend = action.index === null || action.index === undefined || action.index >= newQueue.length
+			const position = isAppend ? newQueue.length : Math.max(action.index, 0)
+			newQueue.splice(position, 0, action.track)
+
+			// Shuffle order: shift the indexes after the inserted song.
+			// "Play next" plays it right after the current song, "add to queue" at the end of the order.
+			let randomIndex = []
+			if (state.randomIndex?.length) {
+				randomIndex = state.randomIndex.map((i) => i >= position ? i + 1 : i)
+				const current = randomIndex.indexOf(state.index >= position && !isAppend ? state.index + 1 : state.index)
+				if (isAppend || current === -1) randomIndex.push(position)
+				else randomIndex.splice(current + 1, 0, position)
 			}
 
 			return newSong(state, {
 				queue: newQueue,
-				index: (typeof action.index === 'number' && state.index >= action.index) ? state.index + 1 : state.index,
-				randomIndex: state.randomIndex?.length ? [...state.randomIndex, newQueue.length - 1] : [],
+				index: (!isAppend && state.index >= position) ? state.index + 1 : state.index,
+				randomIndex,
 			}, true)
 		}
 		case 'setRating': {
@@ -158,7 +166,9 @@ export const songReducer = (state, action) => {
 				queue: newQueue,
 				index: newIndex,
 				songInfo: newQueue[newIndex] || null,
-				randomIndex: state.randomIndex.filter((i) => i < newQueue.length),
+				randomIndex: (state.randomIndex || [])
+					.filter((i) => i !== action.index)
+					.map((i) => i > action.index ? i - 1 : i),
 			}, true)
 		}
 		case 'setActionEndOfSong':

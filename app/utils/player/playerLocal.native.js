@@ -36,7 +36,9 @@ const initPlayer = async (songDispatch) => {
 	await TrackPlayer.updateOptions({
 		android: {
 			appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-			alwaysPauseOnInterruption: true,
+			// Notifications / navigation (focus loss "can duck"): lower the volume natively, don't pause.
+			// Calls (transient loss) are reported as paused and handled in servicePlayback.
+			alwaysPauseOnInterruption: false,
 		},
 		capabilities: [
 			Capability.Play,

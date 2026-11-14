@@ -1,4 +1,4 @@
-import TrackPlayer, { Event, State } from "react-native-track-player"
+import TrackPlayer, { Event } from "react-native-track-player"
 
 import Player from "~/utils/player"
 import { getApi } from "~/utils/api"
@@ -11,44 +11,43 @@ let lastScrobble = {
 	id: null,
 	time: 0,
 }
+// Resume after the interruption (call...) only if music was playing when it started
 let shouldPlay = false
-let pauseTimer = null
 
 const fakeSongDispatch = (action) => {
 	songReducer(global.song, action)
 }
 
 module.exports = async () => {
-	TrackPlayer.addEventListener(Event.RemotePlay, () => Player.resumeSong())
-	TrackPlayer.addEventListener(Event.RemotePause, () => Player.pauseSong())
+	TrackPlayer.addEventListener(Event.RemotePlay, () => {
+		shouldPlay = false
+		Player.resumeSong()
+	})
+	TrackPlayer.addEventListener(Event.RemotePause, () => {
+		shouldPlay = false
+		Player.pauseSong()
+	})
 	TrackPlayer.addEventListener(Event.RemoteNext, () => Player.nextSong(global.config, global.song, fakeSongDispatch))
 	TrackPlayer.addEventListener(Event.RemotePrevious, () => Player.previousSong(global.config, global.song, fakeSongDispatch))
 	TrackPlayer.addEventListener(Event.RemoteSeek, (event) => Player.setPosition(event.position))
-	// This handles the interruptions like calls or notifications
-	TrackPlayer.addEventListener(Event.RemoteDuck, (event) => {
-		clearTimeout(pauseTimer)
-		TrackPlayer.getPlaybackState()
-			.then(({ state }) => {
-				if (event.paused) {
-					if (state === State.Playing) {
-						if (event.permanent) {
-							Player.stopSong()
-							shouldPlay = false
-						} else {
-							TrackPlayer.setVolume(0.5)
-							shouldPlay = true
-							pauseTimer = setTimeout(async () => {
-								Player.pauseSong()
-							}, 5000)
-						}
-					}
-				}
-				else if (shouldPlay) {
-					TrackPlayer.setVolume(1)
-					Player.resumeSong()
-					shouldPlay = false
-				}
-			})
+	// Interruptions (audio focus).
+	// - Call / alarm (transient loss): pause at once, resume when it ends.
+	// - Another player takes the focus (permanent loss): pause, no resume.
+	// - Notification / navigation voice: ducked natively (alwaysPauseOnInterruption: false), no event to handle.
+	TrackPlayer.addEventListener(Event.RemoteDuck, async (event) => {
+		if (event.paused) {
+			if (event.permanent) shouldPlay = false
+			// playWhenReady: playing, or buffering to play (the state alone misses buffering)
+			const isPlaying = await TrackPlayer.getPlayWhenReady().catch(() => false)
+			if (!isPlaying) return
+			logger.info('Interruption', event.permanent ? 'Focus lost, pause' : 'Call / transient, pause until it ends')
+			shouldPlay = !event.permanent
+			Player.pauseSong()
+		} else if (shouldPlay) {
+			shouldPlay = false
+			logger.info('Interruption', 'Ended, resume')
+			Player.resumeSong()
+		}
 	})
 	TrackPlayer.addEventListener(Event.PlaybackQueueEnded, (_event) => {
 		if (!global.song?.queue?.length) return

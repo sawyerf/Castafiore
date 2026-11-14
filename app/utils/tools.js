@@ -17,6 +17,18 @@ export const nextRandomIndex = () => {
 	else return global.song.randomIndex[index + 1]
 }
 
+// True when the current song is the last one to play (no repeat of the queue).
+// In shuffle mode "last" is the last song of the random order, not of the list.
+export const isLastSong = (song = global.song) => {
+	if (!song?.queue?.length) return true
+	if (global.repeatQueue) return false
+	if (song.actionEndOfSong === 'random' && song.randomIndex?.length) {
+		const position = song.randomIndex.findIndex((item) => item === song.index)
+		return position === song.randomIndex.length - 1
+	}
+	return song.index === song.queue.length - 1
+}
+
 export const prevRandomIndex = () => {
 	let index = currentRandomIndex()
 	if (index - 1 < 0) return global.song.randomIndex[global.song.randomIndex.length - 1]

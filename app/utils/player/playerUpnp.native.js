@@ -5,6 +5,7 @@ import { urlCover, urlStream } from '~/utils/url'
 import UPNP from '~/utils/remote/upnp'
 import UpnpEvent, { Events } from '~/utils/remote/upnpEvents'
 import State from '~/utils/playerState'
+import { isLastSong } from '~/utils/tools'
 
 let device = null
 
@@ -24,7 +25,7 @@ const useEvent = (song, songDispatch, nextSong) => {
 				.catch(() => { })
 			if (global.song.actionEndOfSong === 'repeat') {
 				UPNP.seek(device, 0)
-			} else if (!global.repeatQueue && global.song.index === global.song.queue.length - 1) {
+			} else if (isLastSong(global.song)) {
 				UPNP.stop(device)
 			} else nextSong(global.config, global.song, songDispatch)
 		}))

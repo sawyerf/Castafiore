@@ -48,7 +48,7 @@ const convertTrack = (track) => {
 		album: track.album,
 		albumId: track.albumId,
 		duration: track.duration,
-		covertArt: track.covertArt,
+		coverArt: track.coverArt,
 		track: track.track,
 		starred: track.starred,
 		userRating: track.userRating ?? track.rating ?? 0,
@@ -56,6 +56,8 @@ const convertTrack = (track) => {
 		index: track.index,
 		mediaType: track.mediaType,
 		// radio
+		type: track.type,
+		isLiveStream: track.isLiveStream,
 		homePageUrl: track.homePageUrl,
 		name: track.name,
 		streamUrl: track.streamUrl,

@@ -20,6 +20,27 @@ export const getUrl = (config, path, query = '') => {
 	return `${config.url}/rest/${path}?${config.query}&f=json&${encodedQuery}`
 }
 
+// Same as getApi with the parameters in a form body (OpenSubsonic "formPost" extension,
+// supported by Navidrome), for requests too long for a GET url
+export const postApi = (config, path, body = '') => {
+	if (!config?.url || !config?.query) return Promise.reject({ message: 'config.url or config.query is not defined', isApiError: false })
+	return fetch(`${config.url}/rest/${path}`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: `${config.query}&f=json&${body}`,
+	})
+		.then(res => res.json())
+		.then(json => {
+			const response = json?.['subsonic-response']
+			if (response && !response.error) return response
+			throw { ...response?.error, isApiError: true }
+		})
+		.catch((error) => {
+			if (error?.isApiError) throw error
+			throw { message: error?.message || String(error), isApiError: false }
+		})
+}
+
 export const getApi = (config, path, query = '') => {
 	return new Promise((resolve, reject) => {
 		if (!config?.url || !config?.query) {

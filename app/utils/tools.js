@@ -1,4 +1,5 @@
-import { getApi } from '~/utils/api'
+import { getApi, postApi } from '~/utils/api'
+import logger from '~/utils/logger'
 
 export const shuffle = (array) => {
 	return array.map(value => ({ value, sort: Math.random() }))
@@ -23,10 +24,24 @@ export const prevRandomIndex = () => {
 	else return global.song.randomIndex[index - 1]
 }
 
+// One "id" parameter per song (Subsonic spec): comma separated ids are read as one unknown id.
+// Long queues go in a POST body: the GET url would be too long for the server / reverse proxy.
+const MAX_GET_QUERY = 4000
+
 export const saveQueue = async (config, queue, index) => {
-	if (!global.saveQueue) return
-	await getApi(config, 'savePlayQueue', {
-		id: queue.map(item => item.id).join(','),
-		current: queue[index]?.id || '',
-	})
+	if (!global.saveQueue || !queue?.length) return
+	const ids = queue
+		.map(item => item.id)
+		.filter(id => id && /^[a-zA-Z0-9-]+$/.test(id)) // no radio / special tracks
+	if (!ids.length) return
+	const current = queue[index]?.id
+	const query = [
+		...ids.map(id => `id=${encodeURIComponent(id)}`),
+		ids.includes(current) ? `current=${encodeURIComponent(current)}` : '',
+	].filter(Boolean).join('&')
+
+	const request = query.length < MAX_GET_QUERY ?
+		getApi(config, 'savePlayQueue', query) :
+		postApi(config, 'savePlayQueue', query)
+	await request.catch((error) => logger.error('saveQueue', error?.message || String(error)))
 }
